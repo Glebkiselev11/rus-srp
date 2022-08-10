@@ -1,0 +1,23 @@
+{
+  "extends": "react-app",
+  "rules": {
+    "max-len": [
+      "error",
+      {
+        "code": 90
+      }
+    ],
+    "indent": [
+      "error",
+      "tab"
+    ],
+    "quotes": [
+      "error",
+      "double"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ]
+  }
+}
