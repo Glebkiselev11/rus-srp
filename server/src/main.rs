@@ -12,10 +12,14 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(|| {
         let cors = Cors::default()
-            .allowed_origin("http://localhost:5173/")
+            .allowed_origin("http://localhost:5173")
             .allowed_methods(vec!["GET", "POST"])
             .allowed_header(http::header::CONTENT_TYPE);
-        App::new().wrap(cors).service(hello).service(create)
+        App::new()
+            .wrap(cors)
+            .service(hello)
+            .service(info)
+            .service(create)
     })
     .bind(API_URL)?
     .run()
@@ -25,6 +29,20 @@ async fn main() -> std::io::Result<()> {
 #[get("/")]
 async fn hello() -> impl Responder {
     HttpResponse::Ok().body("Rus-Srp server")
+}
+
+#[get("/info")]
+async fn info() -> impl Responder {
+    #[derive(Serialize)]
+    struct Info {
+        version: String,
+        author: String,
+    }
+
+    web::Json(Info {
+        version: "v1".to_string(),
+        author: "Gleb Kiselev".to_string(),
+    })
 }
 
 #[post("/create")]
