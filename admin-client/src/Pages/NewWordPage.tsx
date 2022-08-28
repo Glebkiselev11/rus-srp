@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { INewWord } from "../models/index";
 import { TextInput } from "../components/TextInput";
+import { AppButton } from "../components/AppButton";
 
 export default function NewWordPage() {
 
@@ -9,6 +10,10 @@ export default function NewWordPage() {
 		srp_latin: "",
 		rus: ""
 	});
+
+	const save = () => {
+		console.log("saving");
+	};
 
 	return (
 		<main className="flex w-full">
@@ -34,8 +39,13 @@ export default function NewWordPage() {
 					<TextInput 
 						value={newWord.srp_latin} 
 						label="Serbian latin"
+						className="mb-8"
 						onChange={srp_latin => setNewWord({ ...newWord, srp_latin })}
 					/>
+
+					<div>
+						<AppButton label="Save" onClick={save}/>
+					</div>
 
 				</div>
 			</div>
