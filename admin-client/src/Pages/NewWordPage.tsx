@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { INewWord } from "../models/index";
-import {TextInput} from "../components/TextInput";
+import { TextInput } from "../components/TextInput";
 
 export default function NewWordPage() {
 
@@ -22,6 +22,7 @@ export default function NewWordPage() {
 						className="mb-5" 
 						onChange={rus => setNewWord({ ...newWord, rus })}
 					/>
+
 					<TextInput 
 						value={newWord.srp_cyrillic} 
 						className="mb-5" 

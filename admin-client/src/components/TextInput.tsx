@@ -6,7 +6,7 @@ interface InputProps {
 	onChange: (arg: string) => void,
 }
 
-export function TextInput({value, className, onChange}: InputProps) {
+export function TextInput({ value, className, onChange }: InputProps) {
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		onChange(event.target.value);
 	};
