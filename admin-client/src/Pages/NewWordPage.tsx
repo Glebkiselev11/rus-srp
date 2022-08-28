@@ -2,8 +2,10 @@ import { useState } from "react";
 import { INewWord } from "../models/index";
 import { TextInput } from "../components/TextInput";
 import { AppButton } from "../components/AppButton";
+import { useTranslation } from "react-i18next";
 
 export default function NewWordPage() {
+	const { t } = useTranslation();
 
 	const [newWord, setNewWord] = useState<INewWord>({
 		srp_cyrillic: "", 
@@ -44,7 +46,7 @@ export default function NewWordPage() {
 					/>
 
 					<div>
-						<AppButton label="Save" onClick={save}/>
+						<AppButton label={t(("save"))} onClick={save}/>
 					</div>
 
 				</div>
