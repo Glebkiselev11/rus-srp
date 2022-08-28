@@ -1,19 +1,39 @@
-import { useInfoQuery } from "../store/NewWord/new-word.api";
+import { useState } from "react";
+import { INewWord } from "../models/index";
+import {TextInput} from "../components/TextInput";
 
 export default function NewWordPage() {
-	const { data, isError } = useInfoQuery();
 
-	const errorView = () => <span className="text-red-500">Something went wrong</span>;
+	const [newWord, setNewWord] = useState<INewWord>({
+		srp_cyrillic: "", 
+		srp_latin: "",
+		rus: ""
+	});
 
 	return (
 		<main className="flex w-full">
 			<div className="mt-20 ml-40">
 
-				<h1 className="text-4xl mb-5">Add new word</h1>
+				<h1 className="text-4xl mb-12">Add new word</h1>
 
-				{isError && errorView()}
+				<div className="flex flex-col w-[500px]">
+					<TextInput 
+						value={newWord.rus} 
+						className="mb-5" 
+						onChange={rus => setNewWord({ ...newWord, rus })}
+					/>
+					<TextInput 
+						value={newWord.srp_cyrillic} 
+						className="mb-5" 
+						onChange={srp_cyrillic => setNewWord({ ...newWord, srp_cyrillic })}
+					/>
 
-				{data?.author}
+					<TextInput 
+						value={newWord.srp_latin} 
+						onChange={srp_latin => setNewWord({ ...newWord, srp_latin })}
+					/>
+
+				</div>
 			</div>
 		</main>
 	);
