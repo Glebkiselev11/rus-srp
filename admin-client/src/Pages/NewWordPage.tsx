@@ -19,18 +19,21 @@ export default function NewWordPage() {
 				<div className="flex flex-col w-[500px]">
 					<TextInput 
 						value={newWord.rus} 
+						label="Russian"
 						className="mb-5" 
 						onChange={rus => setNewWord({ ...newWord, rus })}
 					/>
 
 					<TextInput 
 						value={newWord.srp_cyrillic} 
+						label="Serbian cyrilic"
 						className="mb-5" 
 						onChange={srp_cyrillic => setNewWord({ ...newWord, srp_cyrillic })}
 					/>
 
 					<TextInput 
 						value={newWord.srp_latin} 
+						label="Serbian latin"
 						onChange={srp_latin => setNewWord({ ...newWord, srp_latin })}
 					/>
 
