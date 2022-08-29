@@ -5,20 +5,25 @@ i18n
 	.use(initReactI18next) 
 	.init({
 		resources: {
-			en: {
+			"en": {
 				translation: {
 					"add-new-word": "Add new word",
-					"save": "Save"
+					"save": "Save",
+					"main": "Home",
+					"admin-panel": "Admin Panel"
 				}
 			},
-			ru: {
+			"ru": {
 				translation: {
 					"add-new-word": "Добавить новое слово",
-					"save": "Сохранить"
+					"save": "Сохранить",
+					"main": "Главная",
+					"admin-panel": "Админ Панель"
 				}
-			}
+			},
+			
 		},
-		lng: "en", 
+		lng: "en",
 		fallbackLng: "en",
 		interpolation: {
 			escapeValue: false 

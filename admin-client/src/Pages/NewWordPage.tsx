@@ -21,7 +21,7 @@ export default function NewWordPage() {
 		<main className="flex w-full">
 			<div className="mt-20 ml-40">
 
-				<h1 className="text-4xl mb-12">Add new word</h1>
+				<h1 className="text-4xl mb-12">{t("add-new-word")}</h1>
 
 				<div className="flex flex-col w-[500px]">
 					<TextInput 
