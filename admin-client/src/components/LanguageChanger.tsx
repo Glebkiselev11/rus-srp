@@ -1,14 +1,5 @@
 import { useTranslation } from "react-i18next";
-
-interface ILanguage {
-  lng: string,
-  name: string,
-}
-
-const List: ILanguage[] = [
-	{ lng: "en", name: "English" }, 
-	{ lng: "ru", name: "Русский" }
-];
+import { LanguageList } from "../i18n";
 
 export function LanguageChanger() {
 	const { i18n } = useTranslation();
@@ -19,7 +10,7 @@ export function LanguageChanger() {
 
 	return (
 		<select name="language" onChange={e => handleChangeLanguage(e.target.value)}>
-			{List.map(l => 
+			{LanguageList.map(l => 
 				<option key={l.lng} value={l.lng}>{l.name}</option>
 			)}
 		</select>
