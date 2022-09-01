@@ -10,7 +10,7 @@ export function LanguageChanger() {
 	};
 
 	return (
-		<select name="language" onChange={e => handleChangeLanguage(e.target.value)}>
+		<select name="language" value={i18n.language} onChange={e => handleChangeLanguage(e.target.value)}>
 			{LanguageList.map(l => 
 				<option key={l.lng} value={l.lng}>{l.name}</option>
 			)}
