@@ -3,21 +3,19 @@ import { initReactI18next } from "react-i18next";
 import en from "./en.json";
 import ru from "./ru.json";
 
-i18n
+export default i18n
 	.use(initReactI18next) 
 	.init({
 		resources: {
 			en,
 			ru
 		},
-		lng: "en",
+		lng: localStorage.getItem("languageKey") || "en",
 		fallbackLng: "en",
 		interpolation: {
 			escapeValue: false 
 		}
 	});
-
-export default i18n;
 
 interface ILanguageList {
   lng: string,

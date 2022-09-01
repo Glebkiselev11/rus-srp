@@ -6,6 +6,7 @@ export function LanguageChanger() {
 
 	const handleChangeLanguage = (code: string) => {
 		i18n.changeLanguage(code);
+		localStorage.setItem("languageKey", code);
 	};
 
 	return (
