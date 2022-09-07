@@ -3,6 +3,11 @@
     "add-new-word": "Add new word",
     "save": "Save",
     "main": "Home",
-    "admin-panel": "Admin Panel"
+    "admin-panel": "Admin Panel",
+    "lang": {
+      "russian": "russian",
+      "serbian-cyrilic": "serbian (cyrilic)",
+      "serbian-latin": "serbian (latin)"
+    }
   }
 }

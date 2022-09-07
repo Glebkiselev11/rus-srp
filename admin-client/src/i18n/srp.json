@@ -3,6 +3,11 @@
     "add-new-word": "Dodajte novu reč",
     "save": "Sačuvaj",
     "main": "Kuća",
-    "admin-panel": "Admin Panel"
+    "admin-panel": "Admin Panel",
+    "lang": {
+      "russian": "ruska",
+      "serbian-cyrilic": "Srpski (ćirilica)",
+      "serbian-latin": "Srpski (latinica)"
+    }
   }
 }
