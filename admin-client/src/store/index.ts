@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { newWordApi } from "./NewWord/new-word.api";
+import { wordsApi } from "./NewWord/words";
 
 export const store = configureStore({
 	reducer: {
-		[newWordApi.reducerPath]:  newWordApi.reducer
+		[wordsApi.reducerPath]:  wordsApi.reducer
 	}
 });

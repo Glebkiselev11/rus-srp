@@ -3,6 +3,7 @@ import { INewWord } from "../models/index";
 import { TextInput } from "../components/TextInput";
 import { AppButton } from "../components/AppButton";
 import { useTranslation } from "react-i18next";
+import { useCreateWordMutation } from "../store/NewWord/words";
 
 export default function NewWordPage() {
 	const { t } = useTranslation();
@@ -13,8 +14,10 @@ export default function NewWordPage() {
 		rus: ""
 	});
 
+	const [createWord] = useCreateWordMutation();
+
 	const save = () => {
-		console.log("saving");
+		createWord(newWord);
 	};
 
 	return (
