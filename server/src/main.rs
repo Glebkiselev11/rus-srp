@@ -15,11 +15,12 @@ async fn main() -> std::io::Result<()> {
             .allowed_origin("http://localhost:5173")
             .allowed_methods(vec!["GET", "POST"])
             .allowed_header(http::header::CONTENT_TYPE);
-        App::new()
-            .wrap(cors)
-            .service(hello)
-            .service(info)
-            .service(create)
+        App::new().wrap(cors).service(
+            web::scope("/api/v1")
+                .service(hello)
+                .service(info)
+                .service(web::scope("/words").service(create)),
+        )
     })
     .bind(API_URL)?
     .run()
