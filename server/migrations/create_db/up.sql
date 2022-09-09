@@ -1,0 +1,7 @@
+CREATE TABLE words (
+  id VARCHAR NOT NULL PRIMARY KEY,
+  name VARCHAR NOT NULL,
+  rus VARCHAR NOT NULL,
+  srp_latin VARCHAR NOT NULL,
+  srp_cyrillic VARCHAR NOT NULL 
+)
