@@ -5,6 +5,29 @@ use crate::models;
 
 type DbError = Box<dyn std::error::Error + Send + Sync>;
 
+/// Run query using Diesel to find word by uid and return it.
+pub fn find_word_by_uid(
+    uid: Uuid,
+    conn: &SqliteConnection,
+) -> Result<Option<models::Word>, DbError> {
+    use crate::schema::words::dsl::*;
+
+    let word = words
+        .filter(id.eq(uid.to_string()))
+        .first::<models::Word>(conn)
+        .optional()?;
+
+    Ok(word)
+}
+
+pub fn get_all_words(conn: &SqliteConnection) -> Result<Vec<models::Word>, DbError> {
+    use crate::schema::words::dsl::*;
+
+    let all_words = words.load::<models::Word>(conn)?;
+
+    Ok(all_words)
+}
+
 /// Run query using Diesel to insert a new database row and return the result.
 pub fn insert_new_user(
     word: models::NewWord,
