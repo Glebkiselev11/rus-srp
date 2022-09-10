@@ -1,4 +1,6 @@
-table! {
+// @generated automatically by Diesel CLI.
+
+diesel::table! {
     words (id) {
         id -> Text,
         rus -> Text,
