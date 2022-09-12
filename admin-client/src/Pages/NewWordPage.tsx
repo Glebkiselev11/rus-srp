@@ -14,10 +14,14 @@ export default function NewWordPage() {
 		rus: ""
 	});
 
-	const [createWord] = useCreateWordMutation();
+	const isValid = () => !Object.values(newWord).some(w => w.length < 2);
+
+	const [createWord, { isLoading: isLoadingCreatingWord }] = useCreateWordMutation();
 
 	const save = () => {
-		createWord(newWord);
+		if (isValid()) {
+			createWord(newWord);
+		} 
 	};
 
 	return (
@@ -49,7 +53,12 @@ export default function NewWordPage() {
 					/>
 
 					<div>
-						<AppButton label={t(("save"))} onClick={save}/>
+						<AppButton 
+							disabled={!isValid()} 
+							loading={isLoadingCreatingWord} 
+							label={t(("save"))} 
+							onClick={save}
+						/>
 					</div>
 
 				</div>
