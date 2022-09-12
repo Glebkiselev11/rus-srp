@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { wordsApi } from "./NewWord/words";
+import { wordsApi } from "./words";
 
 export const store = configureStore({
 	reducer: {

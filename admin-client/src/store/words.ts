@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { INewWord } from "../../models/index";
+import { INewWord } from "../models/index";
 
 export const wordsApi = createApi({
 	reducerPath: "words/api",

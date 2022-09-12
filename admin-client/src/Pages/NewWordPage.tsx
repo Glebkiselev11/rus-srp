@@ -3,7 +3,7 @@ import { INewWord } from "../models/index";
 import { TextInput } from "../components/TextInput";
 import { AppButton } from "../components/AppButton";
 import { useTranslation } from "react-i18next";
-import { useCreateWordMutation } from "../store/NewWord/words";
+import { useCreateWordMutation } from "../store/words";
 
 export default function NewWordPage() {
 	const { t } = useTranslation();
