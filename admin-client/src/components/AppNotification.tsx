@@ -17,7 +17,7 @@ export function AppNotification() {
 			}
 		};
 
-		const notificationClasses = notificationTypeClass().concat(" py-2 px-4 mt-3 transition-all -translate-y-6");
+		const notificationClasses = notificationTypeClass().concat(" py-2 px-4 mt-3");
 
 		return (<div className={notificationClasses}>{notificaion.text}</div>);
 	};
