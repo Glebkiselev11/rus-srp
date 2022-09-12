@@ -24,7 +24,7 @@ export function AppNotification() {
 
 	return (
 		<div className="fixed left-10 bottom-10" >
-			{list.map((n, i) => <div key={i}>{Notification(n)}</div>)}
+			{list.map((n, i) => <div key={n.id ?? i}>{Notification(n)}</div>)}
 		</div>
 	);
 }

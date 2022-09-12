@@ -1,28 +1,40 @@
-import { useState } from "react";
-import { INewWord } from "../models/index";
+import { useEffect, useState } from "react";
+import { ENotificationTypes, INewWord } from "../models/index";
 import { TextInput } from "../components/TextInput";
 import { AppButton } from "../components/AppButton";
 import { useTranslation } from "react-i18next";
 import { useCreateWordMutation } from "../store/words";
+import { useNotification } from "../hooks/notification";
 
 export default function NewWordPage() {
 	const { t } = useTranslation();
+	const { trigger } = useNotification();
 
-	const [newWord, setNewWord] = useState<INewWord>({
+	const initWord = {
 		srp_cyrillic: "", 
 		srp_latin: "",
 		rus: ""
-	});
+	};
+
+	const [newWord, setNewWord] = useState<INewWord>(initWord);
 
 	const isValid = () => !Object.values(newWord).some(w => w.length < 2);
 
-	const [createWord, { isLoading: isLoadingCreatingWord }] = useCreateWordMutation();
+	const [createWord, { isLoading: isLoadingCreatingWord, isSuccess: isSuccessCreatedWord }] = useCreateWordMutation();
 
 	const save = () => {
 		if (isValid()) {
 			createWord(newWord);
 		} 
 	};
+
+	useEffect(() => {
+		if (isSuccessCreatedWord) {
+			trigger({ text: t("word-added"), type: ENotificationTypes.success });
+			setNewWord(initWord);
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ isSuccessCreatedWord ]);
 
 	return (
 		<main className="flex w-full">

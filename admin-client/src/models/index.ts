@@ -11,6 +11,7 @@ export interface IWord extends INewWord {
 export interface INotification {
   type: ENotificationTypes;
   text: string;
+  id?: string;
 }
 
 export enum ENotificationTypes {

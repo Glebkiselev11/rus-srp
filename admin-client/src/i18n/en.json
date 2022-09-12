@@ -5,6 +5,7 @@
     "main": "Home",
     "admin-panel": "Admin Panel",
     "wait": "Wait",
+    "word-added": "Word was added",
     "lang": {
       "russian": "russian",
       "serbian-cyrilic": "serbian (cyrilic)",

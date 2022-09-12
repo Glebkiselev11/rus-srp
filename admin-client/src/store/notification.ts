@@ -6,24 +6,18 @@ interface INotificationState {
   list: INotification[]
 }
 
-const initialState = { 
-	list: [
-		{ type: "success", text: "cool" }, 
-		{ type: "error", text: "error" }
-	] 
-} as INotificationState;
+const initialState = { list: [] } as INotificationState;
 
 const notificationSlice = createSlice({
 	name: "counter",
 	initialState,
 	reducers: {
 		add(state, action: PayloadAction<INotification>) {
-			state.list.push(action.payload);
-
-			setTimeout(() => {
-				state.list.shift();
-			}, 5000);
+			state.list.push({ ...action.payload, id: new Date().toString() });
 		},
+		shift(state) {
+			state.list.shift();
+		}
 	},
 });
 
