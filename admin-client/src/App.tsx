@@ -1,10 +1,12 @@
 import { Routes, Route } from "react-router-dom";
+import { AppNotification } from "./components/AppNotification";
 import { Navigation } from "./components/Navigation";
 import HomePage from "./Pages/HomePage";
 import NewWordPage from "./Pages/NewWordPage";
 import NotFoundPage from "./Pages/NotFoundPage";
 
 function App() {
+
 	return (
 		<>
 			<Navigation/>
@@ -16,6 +18,9 @@ function App() {
 					element={<NotFoundPage/>}
 				/>
 			</Routes>
+
+			<AppNotification/>
+
 		</>
 	);
 }

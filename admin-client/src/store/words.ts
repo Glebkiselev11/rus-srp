@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { INewWord } from "../models/index";
+import { INewWord, IWord } from "../models/index";
 
 export const wordsApi = createApi({
 	reducerPath: "words/api",
@@ -7,7 +7,7 @@ export const wordsApi = createApi({
 		baseUrl: "http://127.0.0.1:7070/api/v1/words"
 	}),
 	endpoints: build => ({
-		createWord: build.mutation<unknown, INewWord>({
+		createWord: build.mutation<IWord, INewWord>({
 			query(body: INewWord) {
 				return {
 					url: "/create",
@@ -15,7 +15,7 @@ export const wordsApi = createApi({
 					body
 				};
 			}
-		})
+		}),
 	})
 });
 
