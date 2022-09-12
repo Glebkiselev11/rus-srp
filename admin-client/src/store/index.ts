@@ -6,7 +6,8 @@ const store = configureStore({
 	reducer: {
 		[wordsApi.reducerPath]:  wordsApi.reducer,
 		notification: notificationReducer
-	}
+	},
+	middleware: getDefaultMiddleware => getDefaultMiddleware().concat(wordsApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>
