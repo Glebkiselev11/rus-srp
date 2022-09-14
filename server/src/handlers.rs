@@ -34,7 +34,10 @@ pub mod words {
         .await?
         .map_err(actix_web::error::ErrorInternalServerError)?;
 
-        Ok(HttpResponse::Ok().json(words))
+        Ok(HttpResponse::Ok().json(models::Pagination {
+            count: words.len(),
+            result: words,
+        }))
     }
 
     pub async fn find_word_by_uid(

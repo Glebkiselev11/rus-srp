@@ -16,3 +16,9 @@ pub struct NewWord {
     pub srp_latin: String,
     pub srp_cyrillic: String,
 }
+
+#[derive(Debug, Serialize)]
+pub struct Pagination<T> {
+    pub count: usize,
+    pub result: Vec<T>,
+}
