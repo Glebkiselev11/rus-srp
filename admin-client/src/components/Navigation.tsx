@@ -6,10 +6,9 @@ export function Navigation() {
 	const { t } = useTranslation();
 	return (
 		<nav className="flex justify-between items-center px-5 h-[50px] bg-gray-300">
-			<span className="text-xl">{t("admin-panel")}</span>
+			<Link to="/" className="text-xl">{t("admin-panel")}</Link>
 
 			<div className="flex">
-				<Link to="/" className="uppercase hover:underline mr-6">{t("main")}</Link>
 				<LanguageChanger/>
 			</div>
 		</nav>
