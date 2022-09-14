@@ -19,6 +19,12 @@ pub struct NewWord {
 
 #[derive(Debug, Serialize)]
 pub struct Pagination<T> {
+    pub offset: u32,
     pub count: usize,
     pub result: Vec<T>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct OptionalQuery {
+    pub offset: Option<u32>,
 }

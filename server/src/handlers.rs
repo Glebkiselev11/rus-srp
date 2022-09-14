@@ -2,6 +2,7 @@ pub mod words {
 
     use crate::actions;
     use crate::models;
+    use crate::models::OptionalQuery;
     use crate::DbPool;
     use actix_web::{web, HttpResponse, Responder, Result};
 
@@ -26,16 +27,25 @@ pub mod words {
         Ok(HttpResponse::Ok().json(word))
     }
 
-    pub async fn get_all_words(pool: web::Data<DbPool>) -> Result<impl Responder> {
+    pub async fn get_all_words(
+        pool: web::Data<DbPool>,
+        query: web::Query<OptionalQuery>,
+    ) -> Result<impl Responder> {
+        let offset = match query.offset {
+            None => 0,
+            Some(i) => i,
+        };
+
         let words = web::block(move || {
             let conn = pool.get()?;
-            actions::get_all_words(&conn)
+            actions::get_all_words(&conn, offset)
         })
         .await?
         .map_err(actix_web::error::ErrorInternalServerError)?;
 
         Ok(HttpResponse::Ok().json(models::Pagination {
             count: words.len(),
+            offset,
             result: words,
         }))
     }
