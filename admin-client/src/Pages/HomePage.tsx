@@ -1,8 +1,12 @@
 import { CircleButton } from "../components/CircleButton";
 import { useNavigate } from "react-router-dom";
+import { useGetAllQuery } from "../store/words";
+import { WordItem } from "../components/WordItem";
 
 export default function HomePage() {
 	const navigate = useNavigate();
+
+	const { data, isSuccess } = useGetAllQuery(0);
 
 	const circleButtonHandler = () => {
 		navigate("/new");
@@ -10,7 +14,9 @@ export default function HomePage() {
 	
 	return (
 		<main>
-			<h1 className="text-3xl font-bold">HomePage</h1>
+			<div className="mt-20 ml-40">
+				{isSuccess && data.result.map(word => <WordItem key={word.id} word={word} />)}
+			</div>
 
 			<div className="fixed bottom-5 right-5">
 				<CircleButton icon="+" onClick={() => circleButtonHandler()}/>

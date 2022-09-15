@@ -18,3 +18,9 @@ export enum ENotificationTypes {
   success = "success",
   error = "error"
 }
+
+export interface IListResponse<T> {
+  offset: number,
+  count: number,
+  result: Array<T>
+}
