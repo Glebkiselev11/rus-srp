@@ -11,7 +11,7 @@ export default function HomePage() {
 	const navigate = useNavigate();
 	const [search, setSearch] = useState("");
 
-	const { data, isSuccess } = useGetAllQuery(0);
+	const { data, isSuccess } = useGetAllQuery({ search, offset: 0 });
 
 	const circleButtonHandler = () => {
 		navigate("/new");

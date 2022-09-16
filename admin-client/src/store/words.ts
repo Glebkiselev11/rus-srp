@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IListResponse, INewWord, IWord } from "../models/index";
+import { INewWord, IWord } from "../models/index";
+import { IListResponse, IRequestParams } from "../models/api";
 
 export const wordsApi = createApi({
 	reducerPath: "words/api",
@@ -16,12 +17,12 @@ export const wordsApi = createApi({
 				};
 			},
 		}),
-		getAll: build.query<IListResponse<IWord>, number>({
-			query(offset: number) {
+		getAll: build.query<IListResponse<IWord>, IRequestParams>({
+			query(params) {
 				return {
 					url: "",
 					method: "GET",
-					params: { offset }
+					params 
 				};
 			}
 		})
