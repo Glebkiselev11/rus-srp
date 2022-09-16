@@ -20,10 +20,19 @@ pub fn find_word_by_uid(
     Ok(word)
 }
 
-pub fn get_all_words(conn: &SqliteConnection, offset: u32) -> Result<Vec<models::Word>, DbError> {
+pub fn get_all_words(
+    conn: &SqliteConnection,
+    offset: u32,
+    search: String,
+) -> Result<Vec<models::Word>, DbError> {
     use crate::schema::words::dsl::*;
 
+    let format = |w: &str| format!("%{}%", w);
+
     let all_words = words
+        .or_filter(srp_cyrillic.like(format(&search)))
+        .or_filter(srp_latin.like(format(&search)))
+        .or_filter(rus.like(format(&search)).or(&search == ""))
         .limit(20)
         .offset(offset.into())
         .load::<models::Word>(conn)?;

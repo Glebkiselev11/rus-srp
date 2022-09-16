@@ -27,4 +27,6 @@ pub struct Pagination<T> {
 #[derive(Debug, Clone, Deserialize)]
 pub struct OptionalQuery {
     pub offset: Option<u32>,
+    pub search: Option<String>,
+    pub limit: Option<u32>,
 }

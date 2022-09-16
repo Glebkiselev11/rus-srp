@@ -36,9 +36,14 @@ pub mod words {
             Some(i) => i,
         };
 
+        let search = match &query.search {
+            None => String::new(),
+            Some(s) => s.clone(),
+        };
+
         let words = web::block(move || {
             let conn = pool.get()?;
-            actions::get_all_words(&conn, offset)
+            actions::get_all_words(&conn, offset, search)
         })
         .await?
         .map_err(actix_web::error::ErrorInternalServerError)?;
