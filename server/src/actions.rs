@@ -27,7 +27,7 @@ pub fn get_all_words(
 ) -> Result<Vec<models::Word>, DbError> {
     use crate::schema::words::dsl::*;
 
-    let format = |w: &str| format!("%{}%", w);
+    let format = |w: &str| format!("%{}%", w.to_lowercase());
 
     let all_words = words
         .or_filter(srp_cyrillic.like(format(&search)))
@@ -50,11 +50,13 @@ pub fn insert_new_user(
     // to prevent import collisions and namespace pollution.
     use crate::schema::words::dsl::*;
 
+    let format = |w: &str| w.to_lowercase();
+
     let new_word = models::Word {
         id: Uuid::new_v4().to_string(),
-        rus: word.rus,
-        srp_cyrillic: word.srp_cyrillic,
-        srp_latin: word.srp_latin,
+        rus: format(&word.rus),
+        srp_cyrillic: format(&word.srp_cyrillic),
+        srp_latin: format(&word.srp_latin),
     };
 
     diesel::insert_into(words).values(&new_word).execute(conn)?;
