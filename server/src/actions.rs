@@ -24,7 +24,7 @@ pub fn get_all_words(conn: &SqliteConnection, offset: u32) -> Result<Vec<models:
     use crate::schema::words::dsl::*;
 
     let all_words = words
-        .limit(10)
+        .limit(20)
         .offset(offset.into())
         .load::<models::Word>(conn)?;
 
