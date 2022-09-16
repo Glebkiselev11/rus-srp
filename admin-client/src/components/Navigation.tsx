@@ -4,8 +4,9 @@ import { LanguageChanger } from "./LanguageChanger";
 
 export function Navigation() {
 	const { t } = useTranslation();
+
 	return (
-		<nav className="sticky top-0 flex justify-between items-center px-5 h-[50px] bg-gray-300">
+		<nav className="sticky top-0 flex justify-between items-center px-5 h-[50px] bg-gray-300 shadow-sm">
 			<Link to="/" className="text-xl">{t("admin-panel")}</Link>
 
 			<div className="flex">
