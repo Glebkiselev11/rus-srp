@@ -25,8 +25,16 @@ export const wordsApi = createApi({
 					params 
 				};
 			}
+		}),
+		delete: build.mutation<any, string>({
+			query(id) {
+				return {
+					url: `/${id}`,
+					method: "DELETE",
+				};
+			}
 		})
 	})
 });
 
-export const { useCreateWordMutation, useGetAllQuery } = wordsApi;
+export const { useCreateWordMutation, useGetAllQuery, useDeleteMutation } = wordsApi;
