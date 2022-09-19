@@ -67,12 +67,7 @@ pub async fn find_word_by_uid(
     Ok(HttpResponse::Ok().json(words))
 }
 
-pub async fn delete(
-    pool: web::Data<DbPool>,
-    id: web::Path<uuid::Uuid>,
-) -> Result<impl Responder> {
-    println!("{:?}", id);
-
+pub async fn delete(pool: web::Data<DbPool>, id: web::Path<uuid::Uuid>) -> Result<impl Responder> {
     web::block(move || {
         let conn = pool.get()?;
         db::words::delete(id.into_inner(), &conn)
