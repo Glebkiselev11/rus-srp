@@ -41,7 +41,7 @@ pub fn get_all_words(
 }
 
 /// Run query using Diesel to insert a new database row and return the result.
-pub fn insert_new_user(
+pub fn insert_new_word(
     word: models::NewWord,
     conn: &SqliteConnection,
 ) -> Result<models::Word, DbError> {
@@ -62,4 +62,12 @@ pub fn insert_new_user(
     diesel::insert_into(words).values(&new_word).execute(conn)?;
 
     Ok(new_word)
+}
+
+pub fn delete(uid: Uuid, conn: &SqliteConnection) -> Result<(), DbError> {
+    use crate::schema::words::dsl::*;
+
+    diesel::delete(words.filter(id.eq(uid.to_string()))).execute(conn)?;
+
+    Ok(())
 }

@@ -19,7 +19,7 @@ pub mod words {
         // use web::block to offload blocking Diesel code without blocking server thread
         let word = web::block(move || {
             let conn = pool.get()?;
-            actions::insert_new_user(word, &conn)
+            actions::insert_new_word(word, &conn)
         })
         .await?
         .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -67,5 +67,21 @@ pub mod words {
         .map_err(actix_web::error::ErrorInternalServerError)?;
 
         Ok(HttpResponse::Ok().json(words))
+    }
+
+    pub async fn delete(
+        pool: web::Data<DbPool>,
+        id: web::Path<uuid::Uuid>,
+    ) -> Result<impl Responder> {
+        println!("{:?}", id);
+
+        web::block(move || {
+            let conn = pool.get()?;
+            actions::delete(id.into_inner(), &conn)
+        })
+        .await?
+        .map_err(actix_web::error::ErrorInternalServerError)?;
+
+        Ok(HttpResponse::Ok().finish())
     }
 }
