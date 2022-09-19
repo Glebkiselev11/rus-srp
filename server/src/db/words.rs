@@ -10,7 +10,7 @@ pub fn find_word_by_uid(
     uid: Uuid,
     conn: &SqliteConnection,
 ) -> Result<Option<models::Word>, DbError> {
-    use crate::schema::words::dsl::*;
+    use crate::db::schema::words::dsl::*;
 
     let word = words
         .filter(id.eq(uid.to_string()))
@@ -25,7 +25,7 @@ pub fn get_all_words(
     offset: u32,
     search: String,
 ) -> Result<Vec<models::Word>, DbError> {
-    use crate::schema::words::dsl::*;
+    use crate::db::schema::words::dsl::*;
 
     let format = |w: &str| format!("%{}%", w.to_lowercase());
 
@@ -48,7 +48,7 @@ pub fn insert_new_word(
     // It is common when using Diesel with Actix Web to import schema-related
     // modules inside a function's scope (rather than the normal module's scope)
     // to prevent import collisions and namespace pollution.
-    use crate::schema::words::dsl::*;
+    use crate::db::schema::words::dsl::*;
 
     let format = |w: &str| w.to_lowercase();
 
@@ -65,7 +65,7 @@ pub fn insert_new_word(
 }
 
 pub fn delete(uid: Uuid, conn: &SqliteConnection) -> Result<(), DbError> {
-    use crate::schema::words::dsl::*;
+    use crate::db::schema::words::dsl::*;
 
     diesel::delete(words.filter(id.eq(uid.to_string()))).execute(conn)?;
 

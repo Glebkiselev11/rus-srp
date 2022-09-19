@@ -1,6 +1,6 @@
 pub mod words {
 
-    use crate::actions;
+    use crate::db;
     use crate::models;
     use crate::models::OptionalQuery;
     use crate::DbPool;
@@ -19,7 +19,7 @@ pub mod words {
         // use web::block to offload blocking Diesel code without blocking server thread
         let word = web::block(move || {
             let conn = pool.get()?;
-            actions::insert_new_word(word, &conn)
+            db::words::insert_new_word(word, &conn)
         })
         .await?
         .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -43,7 +43,7 @@ pub mod words {
 
         let words = web::block(move || {
             let conn = pool.get()?;
-            actions::get_all_words(&conn, offset, search)
+            db::words::get_all_words(&conn, offset, search)
         })
         .await?
         .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -61,7 +61,7 @@ pub mod words {
     ) -> Result<impl Responder> {
         let words = web::block(move || {
             let conn = pool.get()?;
-            actions::find_word_by_uid(id.into_inner(), &conn)
+            db::words::find_word_by_uid(id.into_inner(), &conn)
         })
         .await?
         .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -77,7 +77,7 @@ pub mod words {
 
         web::block(move || {
             let conn = pool.get()?;
-            actions::delete(id.into_inner(), &conn)
+            db::words::delete(id.into_inner(), &conn)
         })
         .await?
         .map_err(actix_web::error::ErrorInternalServerError)?;

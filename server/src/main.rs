@@ -6,10 +6,9 @@ use actix_web::{http, web, App, HttpServer};
 use diesel::prelude::*;
 use diesel::r2d2::{self, ConnectionManager};
 
-mod actions;
+mod db;
 mod handlers;
 mod models;
-mod schema;
 
 use crate::handlers as handler;
 
