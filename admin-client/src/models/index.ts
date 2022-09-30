@@ -18,4 +18,3 @@ export enum ENotificationTypes {
   success = "success",
   error = "error"
 }
-
