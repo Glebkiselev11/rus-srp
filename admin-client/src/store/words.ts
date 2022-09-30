@@ -7,6 +7,7 @@ export const wordsApi = createApi({
 	baseQuery: fetchBaseQuery({
 		baseUrl: "http://127.0.0.1:7070/api/v1/words"
 	}),
+	tagTypes: ["Words"],
 	endpoints: build => ({
 		createWord: build.mutation<IWord, INewWord>({
 			query(body: INewWord) {
@@ -16,6 +17,7 @@ export const wordsApi = createApi({
 					body
 				};
 			},
+			invalidatesTags: ["Words"],
 		}),
 		getAll: build.query<IListResponse<IWord>, IRequestParams>({
 			query(params) {
@@ -24,7 +26,8 @@ export const wordsApi = createApi({
 					method: "GET",
 					params 
 				};
-			}
+			},
+			providesTags: ["Words"]
 		}),
 		delete: build.mutation<any, string>({
 			query(id) {
@@ -32,7 +35,8 @@ export const wordsApi = createApi({
 					url: `/${id}`,
 					method: "DELETE",
 				};
-			}
+			},
+			invalidatesTags: ["Words"]
 		})
 	})
 });
