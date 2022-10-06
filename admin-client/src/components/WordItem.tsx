@@ -1,7 +1,7 @@
 import { IWord } from "../models";
 import { useDeleteMutation } from "../store/words";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface WordItemProps {
@@ -14,8 +14,14 @@ export function WordItem({ word }: WordItemProps) {
 	const [showRemoveButton, setShowRemoveButton] = useState(false);
 	const [deleteWord] = useDeleteMutation();
 
-	async function handleDelete()	{
-		await deleteWord(word.id);
+	async function handleDelete(event: React.MouseEvent<HTMLButtonElement>)	{
+		event.stopPropagation();
+		event.nativeEvent.stopImmediatePropagation();
+
+		const shouldDelete = window.confirm(t("are-you-sure-delete", { word: word.rus }));
+		if (shouldDelete) {
+		 	await deleteWord(word.id);
+		}
 	}
 
 	function handleClick() {
@@ -37,7 +43,7 @@ export function WordItem({ word }: WordItemProps) {
 			<button 
 				style={{ visibility: showRemoveButton ? "visible" : "hidden" }} 
 				className="border border-red-200 px-2 bg-red-200" 
-				onClick={() => handleDelete()}
+				onClick={handleDelete}
 			>
 				{t("delete")}
 			</button>
