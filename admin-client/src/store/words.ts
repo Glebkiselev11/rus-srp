@@ -19,6 +19,14 @@ export const wordsApi = createApi({
 			},
 			invalidatesTags: ["Words"],
 		}),
+		get: build.query<IWord, string>({
+			query(id) {
+				return {
+					url: `/${id}`,
+					method: "GET"
+				};
+			}
+		}),
 		getAll: build.query<IListResponse<IWord>, IRequestParams>({
 			query(params) {
 				return {
@@ -41,4 +49,4 @@ export const wordsApi = createApi({
 	})
 });
 
-export const { useCreateWordMutation, useGetAllQuery, useDeleteMutation } = wordsApi;
+export const { useCreateWordMutation, useGetAllQuery, useDeleteMutation, useGetQuery } = wordsApi;

@@ -2,6 +2,7 @@ import { IWord } from "../models";
 import { useDeleteMutation } from "../store/words";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface WordItemProps {
   word: IWord
@@ -9,6 +10,7 @@ interface WordItemProps {
 
 export function WordItem({ word }: WordItemProps) {
 	const { t } = useTranslation();
+	const navigate = useNavigate();
 	const [showRemoveButton, setShowRemoveButton] = useState(false);
 	const [deleteWord] = useDeleteMutation();
 
@@ -16,11 +18,16 @@ export function WordItem({ word }: WordItemProps) {
 		await deleteWord(word.id);
 	}
 
+	function handleClick() {
+		navigate(`words/${word.id}`);	
+	}
+
 	return (
 		<div 
 			onMouseEnter={() => setShowRemoveButton(true)}
 			onMouseLeave={() => setShowRemoveButton(false)}
-			className="flex justify-between border border-gray-200 py-2 px-4"
+			onClick={handleClick}
+			className="flex justify-between border border-gray-200 py-2 px-4 hover:cursor-pointer"
 		>
 
 			<div>
