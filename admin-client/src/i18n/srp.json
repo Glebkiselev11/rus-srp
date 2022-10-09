@@ -6,7 +6,8 @@
     "delete": "Izbriši",
     "admin-panel": "Admin Panel",
     "wait": "Čekati",
-    "word-added": "Vord je uspešno dodat",
+    "word-added": "Riječ je uspešno dodat",
+    "word-updated": "Riječ je uspešno ažurirana",
     "are-you-sure-delete": "Da li želite izbrisati {{word}}?",
     "lang": {
       "russian": "ruska",

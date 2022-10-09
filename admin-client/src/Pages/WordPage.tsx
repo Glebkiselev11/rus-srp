@@ -3,7 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { AppButton } from "../components/AppButton";
 import { TextInput } from "../components/TextInput";
-import { IWord } from "../models";
+import { useNotification } from "../hooks/notification";
+import { ENotificationTypes, IWord } from "../models";
 import { useGetQuery, useUpdateMutation } from "../store/words";
 import { isWordValid } from "../utils/validators";
 
@@ -16,6 +17,7 @@ export default function NewWordPage() {
 	const { wordId } = useParams() as WordPageParams;
 	const { data: word, isSuccess } = useGetQuery(wordId);
 	const [mutatedWord, setMutatedWord] = useState(word); 
+	const { trigger } = useNotification();
 
 	useEffect(() => {
 		if (isSuccess) {
@@ -31,8 +33,9 @@ export default function NewWordPage() {
 
 	useEffect(() => {
 		if (isSuccessUpdated) {
-			console.log("updated");
+			trigger({ text: t("word-updated"), type: ENotificationTypes.success });
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isSuccessUpdated]);
 
 	function handleUpdate() {
