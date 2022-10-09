@@ -33,7 +33,7 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         let cors = Cors::default()
             .allow_any_origin()
-            .allowed_methods(vec!["GET", "POST", "DELETE"])
+            .allowed_methods(vec!["GET", "POST", "DELETE", "PUT"])
             .allowed_header(http::header::CONTENT_TYPE);
         App::new()
             // set up DB pool to be used with web::Data<Pool> extractor
@@ -45,7 +45,8 @@ async fn main() -> std::io::Result<()> {
                         .route("", web::get().to(handler::words::get_all_words))
                         .route("/{id}", web::delete().to(handler::words::delete))
                         .route("/{id}", web::get().to(handler::words::find_word_by_uid))
-                        .route("/create", web::post().to(handler::words::add_word)),
+                        .route("/create", web::post().to(handler::words::add_word))
+                        .route("/{id}", web::put().to(handler::words::update)),
                 ),
             )
     })

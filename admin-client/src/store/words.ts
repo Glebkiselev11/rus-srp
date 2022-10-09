@@ -37,6 +37,16 @@ export const wordsApi = createApi({
 			},
 			providesTags: ["Words"]
 		}),
+		update: build.mutation<IWord, IWord>({
+			query(body) {
+				return {
+					url: `/${body.id}`,
+					method: "PUT",
+					body
+				};
+			},
+			invalidatesTags: ["Words"]
+		}),
 		delete: build.mutation<any, string>({
 			query(id) {
 				return {
@@ -49,4 +59,4 @@ export const wordsApi = createApi({
 	})
 });
 
-export const { useCreateWordMutation, useGetAllQuery, useDeleteMutation, useGetQuery } = wordsApi;
+export const { useCreateWordMutation, useGetAllQuery, useDeleteMutation, useGetQuery, useUpdateMutation } = wordsApi;

@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::db::schema::words;
 
-#[derive(Debug, Clone, Serialize, Deserialize, Queryable, Insertable)]
+#[derive(Debug, Clone, Serialize, Deserialize, Queryable, Insertable, AsChangeset)]
 pub struct Word {
     pub id: String,
     pub rus: String,

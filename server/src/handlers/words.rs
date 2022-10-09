@@ -77,3 +77,24 @@ pub async fn delete(pool: web::Data<DbPool>, id: web::Path<uuid::Uuid>) -> Resul
 
     Ok(HttpResponse::Ok().finish())
 }
+
+pub async fn update(
+    pool: web::Data<DbPool>,
+    body: web::Json<models::Word>,
+) -> Result<impl Responder> {
+    let word = models::Word {
+        id: body.id.clone(),
+        rus: body.rus.clone(),
+        srp_cyrillic: body.srp_cyrillic.clone(),
+        srp_latin: body.srp_latin.clone(),
+    };
+
+    web::block(move || {
+        let conn = pool.get()?;
+        db::words::update(word, &conn)
+    })
+    .await?
+    .map_err(actix_web::error::ErrorInternalServerError)?;
+
+    Ok(HttpResponse::Ok().json(body))
+}

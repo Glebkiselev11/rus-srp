@@ -71,3 +71,15 @@ pub fn delete(uid: Uuid, conn: &SqliteConnection) -> Result<(), DbError> {
 
     Ok(())
 }
+
+pub fn update(word: models::Word, conn: &SqliteConnection) -> Result<(), DbError> {
+    use crate::db::schema::words::dsl::*;
+
+    let word_id = word.id.clone();
+
+    diesel::update(words.find(word_id))
+        .set(word)
+        .execute(conn)?;
+
+    Ok(())
+}
