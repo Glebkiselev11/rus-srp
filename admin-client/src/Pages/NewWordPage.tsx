@@ -5,6 +5,7 @@ import { AppButton } from "../components/AppButton";
 import { useTranslation } from "react-i18next";
 import { useCreateWordMutation } from "../store/words";
 import { useNotification } from "../hooks/notification";
+import { isWordValid } from "../utils/validators";
 
 export default function NewWordPage() {
 	const { t } = useTranslation();
@@ -18,12 +19,10 @@ export default function NewWordPage() {
 
 	const [newWord, setNewWord] = useState<INewWord>(initWord);
 
-	const isValid = () => !Object.values(newWord).some(w => w.length < 2);
-
 	const [createWord, { isLoading: isLoadingCreatingWord, isSuccess: isSuccessCreatedWord }] = useCreateWordMutation();
 
 	const save = () => {
-		if (isValid()) {
+		if (isWordValid(newWord)) {
 			createWord(newWord);
 		} 
 	};
@@ -66,7 +65,7 @@ export default function NewWordPage() {
 
 					<div>
 						<AppButton 
-							disabled={!isValid()} 
+							disabled={!isWordValid(newWord)} 
 							loading={isLoadingCreatingWord} 
 							label={t(("save"))} 
 							onClick={save}
