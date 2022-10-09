@@ -5,12 +5,14 @@ import { WordItem } from "../components/WordItem";
 import { useState } from "react";
 import { FilterPanel } from "../components/FilterPanel";
 import { IRequestParams } from "../models/api";
+import { useDebounce } from "../hooks/debounce";
 
 export default function HomePage() {
 	const navigate = useNavigate();
 	const [params, setParams] = useState<IRequestParams>({});
 
-	const { data, isSuccess } = useGetAllQuery(params);
+	const debouncedParams = useDebounce(params, 500);
+	const { data, isSuccess } = useGetAllQuery(debouncedParams);
 
 	const circleButtonHandler = () => {
 		navigate("/new");
