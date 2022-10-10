@@ -2,19 +2,21 @@ use serde::{Deserialize, Serialize};
 
 use crate::db::schema::words;
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct NewWord {
+    pub rus: String,
+    pub srp_latin: String,
+    pub srp_cyrillic: String,
+    pub eng: String,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, Queryable, Insertable, AsChangeset)]
 pub struct Word {
     pub id: String,
     pub rus: String,
     pub srp_latin: String,
     pub srp_cyrillic: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct NewWord {
-    pub rus: String,
-    pub srp_latin: String,
-    pub srp_cyrillic: String,
+    pub eng: String,
 }
 
 #[derive(Debug, Serialize)]

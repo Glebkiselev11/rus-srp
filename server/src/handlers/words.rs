@@ -10,6 +10,7 @@ pub async fn add_word(
 ) -> Result<impl Responder> {
     let word = models::NewWord {
         rus: body.rus.clone(),
+        eng: body.eng.clone(),
         srp_latin: body.srp_latin.clone(),
         srp_cyrillic: body.srp_cyrillic.clone(),
     };
@@ -85,6 +86,7 @@ pub async fn update(
     let word = models::Word {
         id: body.id.clone(),
         rus: body.rus.clone(),
+        eng: body.eng.clone(),
         srp_cyrillic: body.srp_cyrillic.clone(),
         srp_latin: body.srp_latin.clone(),
     };

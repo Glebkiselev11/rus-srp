@@ -55,6 +55,7 @@ pub fn insert_new_word(
     let new_word = models::Word {
         id: Uuid::new_v4().to_string(),
         rus: format(&word.rus),
+        eng: format(&word.eng),
         srp_cyrillic: format(&word.srp_cyrillic),
         srp_latin: format(&word.srp_latin),
     };
