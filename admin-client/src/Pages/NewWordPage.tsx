@@ -11,13 +11,14 @@ export default function NewWordPage() {
 	const { t } = useTranslation();
 	const { trigger } = useNotification();
 
-	const initWord = {
+	const initWord: INewWord = {
 		srp_cyrillic: "", 
 		srp_latin: "",
-		rus: ""
+		rus: "",
+		eng: "",
 	};
 
-	const [newWord, setNewWord] = useState<INewWord>(initWord);
+	const [newWord, setNewWord] = useState(initWord);
 
 	const [createWord, { isLoading: isLoadingCreatingWord, isSuccess: isSuccessCreatedWord }] = useCreateWordMutation();
 
@@ -42,12 +43,6 @@ export default function NewWordPage() {
 				<h1 className="text-4xl mb-12">{t("add-new-word")}</h1>
 
 				<div className="flex flex-col w-[500px]">
-					<TextInput 
-						value={newWord.rus} 
-						label={t("lang.russian")}
-						className="mb-5" 
-						onChange={rus => setNewWord({ ...newWord, rus })}
-					/>
 
 					<TextInput 
 						value={newWord.srp_cyrillic} 
@@ -59,8 +54,22 @@ export default function NewWordPage() {
 					<TextInput 
 						value={newWord.srp_latin} 
 						label={t("lang.serbian-latin")}
-						className="mb-8"
+						className="mb-5"
 						onChange={srp_latin => setNewWord({ ...newWord, srp_latin })}
+					/>
+
+					<TextInput 
+						value={newWord.rus} 
+						label={t("lang.russian")}
+						className="mb-5" 
+						onChange={rus => setNewWord({ ...newWord, rus })}
+					/>
+
+					<TextInput 
+						value={newWord.eng} 
+						label={t("lang.english")}
+						className="mb-8" 
+						onChange={eng => setNewWord({ ...newWord, eng })}
 					/>
 
 					<div>

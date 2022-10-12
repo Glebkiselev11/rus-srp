@@ -1,5 +1,6 @@
 export interface INewWord {
   rus: string;
+  eng: string;
   srp_latin: string;
   srp_cyrillic: string;
 }

@@ -11,6 +11,7 @@
     "are-you-sure-delete": "Вы уверены, что хотите удалить {{word}}?",
     "lang": {
       "russian": "русское",
+      "english": "английский",
       "serbian-cyrilic": "сербское (кириллица)",
       "serbian-latin": "сербское (латиница)"
     }

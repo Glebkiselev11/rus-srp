@@ -11,6 +11,7 @@
     "are-you-sure-delete": "Da li želite izbrisati {{word}}?",
     "lang": {
       "russian": "ruska",
+      "english": "engleski",
       "serbian-cyrilic": "Srpski (ćirilica)",
       "serbian-latin": "Srpski (latinica)"
     }
