@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { INewWord, IWord } from "../models/index";
+import { IDraftWord, IWord } from "../models/index";
 import { IListResponse, IRequestParams } from "../models/api";
 
 export const wordsApi = createApi({
@@ -9,8 +9,8 @@ export const wordsApi = createApi({
 	}),
 	tagTypes: ["Words"],
 	endpoints: build => ({
-		createWord: build.mutation<IWord, INewWord>({
-			query(body: INewWord) {
+		createWord: build.mutation<IWord, IDraftWord>({
+			query(body: IDraftWord) {
 				return {
 					url: "/create",
 					method: "POST",

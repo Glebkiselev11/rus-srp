@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ENotificationTypes, INewWord } from "../models/index";
+import { ENotificationTypes, IDraftWord } from "../models/index";
 import { TextInput } from "../components/TextInput";
 import { AppButton } from "../components/AppButton";
 import { useTranslation } from "react-i18next";
@@ -11,7 +11,7 @@ export default function NewWordPage() {
 	const { t } = useTranslation();
 	const { trigger } = useNotification();
 
-	const initWord: INewWord = {
+	const initWord: IDraftWord = {
 		srp_cyrillic: "", 
 		srp_latin: "",
 		rus: "",

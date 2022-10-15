@@ -1,6 +1,6 @@
-import { INewWord, IWord } from "../models";
+import { IDraftWord } from "../models";
 
-export function isWordValid(word: INewWord | IWord): boolean {
+export function isWordValid(word: IDraftWord): boolean {
 	return !Object
 		.values(word)
 		.some(w => w.length < 2);
