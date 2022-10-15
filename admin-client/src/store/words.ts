@@ -25,7 +25,8 @@ export const wordsApi = createApi({
 					url: `/${id}`,
 					method: "GET"
 				};
-			}
+			},
+			providesTags: ["Words"]
 		}),
 		getAll: build.query<IListResponse<IWord>, IRequestParams>({
 			query(params) {
