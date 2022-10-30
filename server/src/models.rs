@@ -14,9 +14,9 @@ pub struct NewWord {
 pub struct Word {
     pub id: String,
     pub rus: String,
+    pub eng: String,
     pub srp_latin: String,
     pub srp_cyrillic: String,
-    pub eng: String,
 }
 
 #[derive(Debug, Serialize)]
