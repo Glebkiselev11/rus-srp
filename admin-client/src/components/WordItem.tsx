@@ -37,7 +37,7 @@ export function WordItem({ word }: WordItemProps) {
 		>
 
 			<div>
-				{word.rus} - {word.srp_cyrillic} - {word.srp_latin}
+				{word.rus} - {word.srp_cyrillic} - {word.srp_latin} - {word.eng}
 			</div>
 
 			<button 

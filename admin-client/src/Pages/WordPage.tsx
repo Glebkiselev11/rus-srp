@@ -69,6 +69,13 @@ export default function NewWordPage() {
 						onChange={srp_latin => handleChange({ ...mutatedWord, srp_latin })}
 					/> 
 
+					<TextInput 
+						value={mutatedWord.eng} 
+						label={t("lang.english")}
+						className="mb-8"
+						onChange={eng => handleChange({ ...mutatedWord, eng })}
+					/> 
+
 					<div>
 						<AppButton 
 							disabled={!isWordValid(mutatedWord)} 
