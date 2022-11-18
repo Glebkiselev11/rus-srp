@@ -28,6 +28,10 @@ export function WordItem({ word }: WordItemProps) {
 		navigate(`words/${word.id}`);	
 	}
 
+	function getWordView() {
+		return [word.srp_latin, word.rus, word.eng, word.srp_cyrillic].filter(w => w).join(" - ");
+	}
+
 	return (
 		<div 
 			onMouseEnter={() => setShowRemoveButton(true)}
@@ -37,7 +41,7 @@ export function WordItem({ word }: WordItemProps) {
 		>
 
 			<div>
-				{word.rus} - {word.srp_cyrillic} - {word.srp_latin} - {word.eng}
+				{getWordView()}
 			</div>
 
 			<button 
