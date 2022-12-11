@@ -6,7 +6,7 @@ export function Navigation() {
 	const { t } = useTranslation();
 
 	return (
-		<nav className="sticky top-0 flex justify-between items-center px-5 h-[50px] bg-gray-300 shadow-sm z-10">
+		<nav className="fixed top-0 w-full flex justify-between items-center px-5 h-[50px] bg-gray-300 shadow-sm z-10">
 			<Link to="/" className="text-xl">{t("admin-panel")}</Link>
 
 			<LanguageChanger/>

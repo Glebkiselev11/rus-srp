@@ -11,15 +11,18 @@ function App() {
 	return (
 		<>
 			<Navigation/>
-			<Routes>
-				<Route path="/" element={<HomePage/>}/>
-				<Route path="/new" element={<NewWordPage/>}/>
-				<Route path="/words/:wordId" element={<WordPage/>}/>
-				<Route
-					path="*"
-					element={<NotFoundPage/>}
-				/>
-			</Routes>
+
+			<div className="mt-[100px]">
+				<Routes >
+					<Route path="/" element={<HomePage/>}/>
+					<Route path="/new" element={<NewWordPage/>}/>
+					<Route path="/words/:wordId" element={<WordPage/>}/>
+					<Route
+						path="*"
+						element={<NotFoundPage/>}
+					/>
+				</Routes>
+			</div>
 
 			<AppNotification/>
 
