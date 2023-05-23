@@ -22,8 +22,8 @@ async fn main() -> std::io::Result<()> {
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
     // set up database connection pool
-    let conn_spec = std::env::var("DATABASE_URL").expect("DATABASE_URL");
-    let manager = ConnectionManager::<SqliteConnection>::new(conn_spec);
+    // let conn_spec = std::env::var("DATABASE_URL").expect("DATABASE_URL");
+    let manager = ConnectionManager::<SqliteConnection>::new("words.db");
     let pool = r2d2::Pool::builder()
         .build(manager)
         .expect("Failed to create pool.");
