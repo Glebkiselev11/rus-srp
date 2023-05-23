@@ -14,8 +14,9 @@ COPY ./diesel.toml ./diesel.toml
 RUN cargo build --release
 RUN rm src/*.rs
 
-# Copy your source tree
+# Copy your source tree and migrations
 COPY ./src ./src
+COPY ./migrations ./migrations
 
 # Build for release.
 RUN rm ./target/release/deps/server*

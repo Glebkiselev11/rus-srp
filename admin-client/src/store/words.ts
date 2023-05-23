@@ -5,7 +5,7 @@ import { IListResponse, IRequestParams } from "../models/api";
 export const wordsApi = createApi({
 	reducerPath: "words/api",
 	baseQuery: fetchBaseQuery({
-		baseUrl: "http://127.0.0.1:7070/api/v1/words"
+		baseUrl: "http://127.0.0.1:8080/api/v1/words"
 	}),
 	tagTypes: ["Words"],
 	endpoints: build => ({

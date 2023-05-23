@@ -1,1 +1,1 @@
-cargo watch -x 'run --bin server' 
+docker run -p 8080:8080 -v $(pwd)/words.db:/words.db -v $(pwd)/migrations:/migrations -e DATABASE_URL=words.db server

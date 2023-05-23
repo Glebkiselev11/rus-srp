@@ -14,7 +14,7 @@ use crate::handlers as handler;
 
 pub type DbPool = r2d2::Pool<ConnectionManager<SqliteConnection>>;
 
-const API_URL: (&str, u16) = ("127.0.0.1", 7070);
+const API_URL: (&str, u16) = ("0.0.0.0", 8080);
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -22,8 +22,8 @@ async fn main() -> std::io::Result<()> {
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
     // set up database connection pool
-    // let conn_spec = std::env::var("DATABASE_URL").expect("DATABASE_URL");
-    let manager = ConnectionManager::<SqliteConnection>::new("words.db");
+    let conn_spec = std::env::var("DATABASE_URL").expect("DATABASE_URL");
+    let manager = ConnectionManager::<SqliteConnection>::new(conn_spec);
     let pool = r2d2::Pool::builder()
         .build(manager)
         .expect("Failed to create pool.");
