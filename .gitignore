@@ -2,5 +2,3 @@ node_modules
 server/target
 .env
 dist
-
-server/*.db
