@@ -2,6 +2,10 @@
 
 docker -v
 
+# Run local development
+
+sh ./dev.sh
+
 # Run prod
 
-sh ./server.sh
+sh ./prod.sh
