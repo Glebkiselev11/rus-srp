@@ -1,0 +1,31 @@
+# Start from a Rust base image
+FROM rust:1.65
+
+# Create a new empty shell project
+RUN USER=root cargo new --bin server
+WORKDIR /server
+
+# Copy over your manifests
+COPY ./Cargo.toml ./Cargo.toml
+COPY ./Cargo.lock ./Cargo.lock
+COPY ./diesel.toml ./diesel.toml
+
+# Install necessary dependencies for development
+RUN cargo install cargo-watch
+RUN cargo install diesel_cli --no-default-features --features sqlite
+
+# Copy your source tree and migrations
+COPY ./src ./src
+COPY ./words.db ./words.db
+COPY ./migrations ./migrations
+
+# Build for debug (don't remove the binary or the deps)
+RUN cargo build
+
+# Install libpq for Diesel
+RUN apt-get update && \
+    apt-get install -y libsqlite3-0 && \
+    apt-get clean
+
+# Use cargo watch to run the server, it will rebuild and rerun on source changes
+CMD diesel migration run && cargo watch -x run

@@ -1,0 +1,13 @@
+services:
+  server:
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+      - DATABASE_URL=words.db
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./words.db:/words.db
+      - ./migrations:/migrations
+      - ./src:/server/src

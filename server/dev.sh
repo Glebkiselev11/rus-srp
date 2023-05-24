@@ -1,1 +1,1 @@
-cargo watch -x 'run --bin server' 
+docker-compose -f docker-compose.dev.yml up --build
