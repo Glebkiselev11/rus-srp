@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::db::schema::words;
+use crate::db::schema::{users, words};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct NewWord {
@@ -31,4 +31,17 @@ pub struct OptionalQuery {
     pub offset: Option<u32>,
     pub search: Option<String>,
     pub limit: Option<u32>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Queryable, Insertable, AsChangeset)]
+pub struct User {
+    pub id: String,
+    pub username: String,
+    pub password: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct NewUser {
+    pub username: String,
+    pub password: String,
 }
