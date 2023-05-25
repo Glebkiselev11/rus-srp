@@ -9,6 +9,7 @@ use diesel::r2d2::{self, ConnectionManager};
 mod db;
 mod handlers;
 mod models;
+mod utils;
 
 use crate::handlers as handler;
 
