@@ -19,9 +19,6 @@ COPY ./src ./src
 COPY ./words.db ./words.db
 COPY ./migrations ./migrations
 
-# Build for debug (don't remove the binary or the deps)
-RUN cargo build
-
 # Install libpq for Diesel
 RUN apt-get update && \
     apt-get install -y libsqlite3-0 && \
