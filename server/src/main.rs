@@ -9,6 +9,7 @@ use diesel::r2d2::{self, ConnectionManager};
 mod db;
 mod handlers;
 mod models;
+mod utils;
 
 use crate::handlers as handler;
 
@@ -36,18 +37,22 @@ async fn main() -> std::io::Result<()> {
             .allowed_methods(vec!["GET", "POST", "DELETE", "PUT"])
             .allowed_header(http::header::CONTENT_TYPE);
         App::new()
-            // set up DB pool to be used with web::Data<Pool> extractor
             .app_data(web::Data::new(pool.clone()))
             .wrap(cors)
             .service(
-                web::scope("/api/v1").service(
-                    web::scope("/words")
-                        .route("", web::get().to(handler::words::get_all_words))
-                        .route("/{id}", web::delete().to(handler::words::delete))
-                        .route("/{id}", web::get().to(handler::words::find_word_by_uid))
-                        .route("/create", web::post().to(handler::words::add_word))
-                        .route("/{id}", web::put().to(handler::words::update)),
-                ),
+                web::scope("/api/v1")
+                    .service(
+                        web::scope("/auth")
+                            .route("/register", web::post().to(handler::auth::register)),
+                    )
+                    .service(
+                        web::scope("/words")
+                            .route("", web::get().to(handler::words::get_all_words))
+                            .route("/{id}", web::delete().to(handler::words::delete))
+                            .route("/{id}", web::get().to(handler::words::find_word_by_uid))
+                            .route("/create", web::post().to(handler::words::add_word))
+                            .route("/{id}", web::put().to(handler::words::update)),
+                    ),
             )
     })
     .bind(API_URL)?

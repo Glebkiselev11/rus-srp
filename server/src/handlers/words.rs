@@ -2,12 +2,12 @@ use crate::db;
 use crate::models;
 use crate::models::OptionalQuery;
 use crate::DbPool;
-use actix_web::{web, HttpResponse, Responder, Result};
+use actix_web::{web, HttpResponse, Responder};
 
 pub async fn add_word(
     pool: web::Data<DbPool>,
     body: web::Json<models::NewWord>,
-) -> Result<impl Responder> {
+) -> actix_web::Result<impl Responder> {
     let word = models::NewWord {
         rus: body.rus.clone(),
         eng: body.eng.clone(),
@@ -29,7 +29,7 @@ pub async fn add_word(
 pub async fn get_all_words(
     pool: web::Data<DbPool>,
     query: web::Query<OptionalQuery>,
-) -> Result<impl Responder> {
+) -> actix_web::Result<impl Responder> {
     let offset = match query.offset {
         None => 0,
         Some(i) => i,
@@ -57,7 +57,7 @@ pub async fn get_all_words(
 pub async fn find_word_by_uid(
     pool: web::Data<DbPool>,
     id: web::Path<uuid::Uuid>,
-) -> Result<impl Responder> {
+) -> actix_web::Result<impl Responder> {
     let words = web::block(move || {
         let conn = pool.get()?;
         db::words::find_word_by_uid(id.into_inner(), &conn)
@@ -68,7 +68,10 @@ pub async fn find_word_by_uid(
     Ok(HttpResponse::Ok().json(words))
 }
 
-pub async fn delete(pool: web::Data<DbPool>, id: web::Path<uuid::Uuid>) -> Result<impl Responder> {
+pub async fn delete(
+    pool: web::Data<DbPool>,
+    id: web::Path<uuid::Uuid>,
+) -> actix_web::Result<impl Responder> {
     web::block(move || {
         let conn = pool.get()?;
         db::words::delete(id.into_inner(), &conn)
@@ -82,7 +85,7 @@ pub async fn delete(pool: web::Data<DbPool>, id: web::Path<uuid::Uuid>) -> Resul
 pub async fn update(
     pool: web::Data<DbPool>,
     body: web::Json<models::Word>,
-) -> Result<impl Responder> {
+) -> actix_web::Result<impl Responder> {
     let word = models::Word {
         id: body.id.clone(),
         rus: body.rus.clone(),
