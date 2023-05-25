@@ -3,8 +3,9 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile.prod
-    environment:
-      - DATABASE_URL=words.db
+    # Make sure to deliver correct .env file to container
+    env_file:
+      - .env
     ports:
       - "8080:8080"
     volumes:

@@ -5,6 +5,7 @@ services:
       dockerfile: Dockerfile.dev
     environment:
       - DATABASE_URL=words.db
+      - SALT=123456
     ports:
       - "8080:8080"
     volumes:
