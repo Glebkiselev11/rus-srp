@@ -15,19 +15,12 @@ pub async fn register(
     pool: web::Data<DbPool>,
     body: web::Json<RegisterInfo>,
 ) -> actix_web::Result<impl Responder> {
-    let salt = std::env::var("SALT").expect("Password SALT env");
-    let password = match hash_password(&body.password, &salt) {
-        Ok(x) => x,
-        Err(_) => {
-            return Err(actix_web::error::ErrorInternalServerError(
-                "Failed to hash password",
-            ));
-        }
-    };
+    let salted_password = hash_password(&body.password)
+        .map_err(|_| actix_web::error::ErrorInternalServerError("Failed to hash password"))?;
 
     let user = NewUser {
         username: body.username.clone(),
-        password,
+        password: salted_password,
     };
 
     let user = web::block(move || {
