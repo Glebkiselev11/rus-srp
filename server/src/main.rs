@@ -43,7 +43,8 @@ async fn main() -> std::io::Result<()> {
                 web::scope("/api/v1")
                     .service(
                         web::scope("/auth")
-                            .route("/register", web::post().to(handler::auth::register)),
+                            .route("/register", web::post().to(handler::auth::register))
+                            .route("/login", web::post().to(handler::auth::login)),
                     )
                     .service(
                         web::scope("/words")
