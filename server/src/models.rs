@@ -45,3 +45,14 @@ pub struct NewUser {
     pub username: String,
     pub password: String,
 }
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Claims {
+    pub sub: String,
+    pub iss: String,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Token {
+    pub token: String,
+}

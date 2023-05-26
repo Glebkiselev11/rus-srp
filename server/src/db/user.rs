@@ -4,7 +4,7 @@ use diesel::SqliteConnection;
 type DbError = Box<dyn std::error::Error + Send + Sync>;
 use uuid::Uuid;
 
-pub fn register(new_user: NewUser, conn: &SqliteConnection) -> Result<User, DbError> {
+pub fn add(new_user: NewUser, conn: &SqliteConnection) -> Result<User, DbError> {
     use crate::db::schema::users::dsl::*;
 
     let user = User {
@@ -14,6 +14,17 @@ pub fn register(new_user: NewUser, conn: &SqliteConnection) -> Result<User, DbEr
     };
 
     diesel::insert_into(users).values(&user).execute(conn)?;
+
+    Ok(user)
+}
+
+pub fn find(_username: &str, conn: &SqliteConnection) -> Result<Option<User>, DbError> {
+    use crate::db::schema::users::dsl::*;
+
+    let user = users
+        .filter(username.eq(_username))
+        .first::<User>(conn)
+        .optional()?;
 
     Ok(user)
 }
