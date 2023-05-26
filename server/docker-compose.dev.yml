@@ -4,11 +4,11 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     environment:
-      - DATABASE_URL=words.db
+      - DATABASE_URL=database.db
       - SALT=123456
     ports:
       - "8080:8080"
     volumes:
-      - ./words.db:/words.db
+      - ./database.db:/database.db
       - ./migrations:/migrations
       - ./src:/server/src

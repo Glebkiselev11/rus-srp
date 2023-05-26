@@ -16,7 +16,7 @@ RUN cargo install diesel_cli --no-default-features --features sqlite
 
 # Copy your source tree and migrations
 COPY ./src ./src
-COPY ./words.db ./words.db
+COPY ./database.db ./database.db
 COPY ./migrations ./migrations
 
 # Install libpq for Diesel
