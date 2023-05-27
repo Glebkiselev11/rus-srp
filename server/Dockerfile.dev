@@ -1,5 +1,5 @@
 # Start from a Rust base image
-FROM rust:1.65
+FROM rust:1.69
 
 # Create a new empty shell project
 RUN USER=root cargo new --bin server
