@@ -25,13 +25,11 @@ RUN cargo build --release
 # Start a new stage
 FROM debian:buster-slim
 
-# Install libpq for Diesel
-RUN apt-get update && \
-    apt-get install -y libsqlite3-0 && \
-    apt-get clean
-
-# Add database client
-RUN apt-get update && apt-get install -y sqlite3
+# Install sqlite3 for see db on server (in debug cases)
+RUN apt update && \
+    apt upgrade && \
+    apt install -y sqlite3 && \
+    apt clean
 
 # Copy the binary from builder
 COPY --from=builder /server/target/release/server .

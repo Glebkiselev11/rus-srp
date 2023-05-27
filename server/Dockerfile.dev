@@ -19,13 +19,11 @@ COPY ./src ./src
 COPY ./database.db ./database.db
 COPY ./migrations ./migrations
 
-# Install libpq for Diesel
-RUN apt-get update && \
-    apt-get install -y libsqlite3-0 && \
-    apt-get clean
-
-# Add database client
-RUN apt-get update && apt-get install -y sqlite3
+# Install sqlite3 for see db on server (in debug cases)
+RUN apt update && \
+    apt upgrade && \
+    apt install sqlite3 && \
+    apt clean
 
 # Use cargo watch to run the server, it will rebuild and rerun on source changes
 CMD diesel migration run && cargo watch -x run
