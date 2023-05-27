@@ -30,6 +30,9 @@ RUN apt-get update && \
     apt-get install -y libsqlite3-0 && \
     apt-get clean
 
+# Add database client
+RUN apt-get update && apt-get install -y sqlite3
+
 # Copy the binary from builder
 COPY --from=builder /server/target/release/server .
 

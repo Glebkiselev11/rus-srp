@@ -24,5 +24,8 @@ RUN apt-get update && \
     apt-get install -y libsqlite3-0 && \
     apt-get clean
 
+# Add database client
+RUN apt-get update && apt-get install -y sqlite3
+
 # Use cargo watch to run the server, it will rebuild and rerun on source changes
 CMD diesel migration run && cargo watch -x run
