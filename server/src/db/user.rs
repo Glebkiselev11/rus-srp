@@ -4,7 +4,7 @@ use diesel::SqliteConnection;
 type DbError = Box<dyn std::error::Error + Send + Sync>;
 use uuid::Uuid;
 
-pub fn add(new_user: NewUser, conn: &SqliteConnection) -> Result<User, DbError> {
+pub fn add(new_user: NewUser, conn: &mut SqliteConnection) -> Result<User, DbError> {
     use crate::db::schema::users::dsl::*;
 
     let user = User {
@@ -18,7 +18,7 @@ pub fn add(new_user: NewUser, conn: &SqliteConnection) -> Result<User, DbError> 
     Ok(user)
 }
 
-pub fn find(_username: &str, conn: &SqliteConnection) -> Result<Option<User>, DbError> {
+pub fn find(_username: &str, conn: &mut SqliteConnection) -> Result<Option<User>, DbError> {
     use crate::db::schema::users::dsl::*;
 
     let user = users
