@@ -18,7 +18,7 @@ pub async fn add_word(
     // use web::block to offload blocking Diesel code without blocking server thread
     let word = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::insert_new_word(word, &mut conn)
+        db::words::insert(word, &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -54,13 +54,13 @@ pub async fn get_all_words(
     }))
 }
 
-pub async fn find_word_by_uid(
+pub async fn get_by_id(
     pool: web::Data<DbPool>,
-    id: web::Path<uuid::Uuid>,
+    id: web::Path<i32>,
 ) -> actix_web::Result<impl Responder> {
     let words = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::find_word_by_uid(id.into_inner(), &mut conn)
+        db::words::select_by_id(id.into_inner(), &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -70,7 +70,7 @@ pub async fn find_word_by_uid(
 
 pub async fn delete(
     pool: web::Data<DbPool>,
-    id: web::Path<uuid::Uuid>,
+    id: web::Path<i32>,
 ) -> actix_web::Result<impl Responder> {
     web::block(move || {
         let mut conn = pool.get()?;

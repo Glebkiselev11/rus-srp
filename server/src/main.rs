@@ -50,7 +50,7 @@ async fn main() -> std::io::Result<()> {
                         web::scope("/words")
                             .route("", web::get().to(handler::words::get_all_words))
                             .route("/{id}", web::delete().to(handler::words::delete))
-                            .route("/{id}", web::get().to(handler::words::find_word_by_uid))
+                            .route("/{id}", web::get().to(handler::words::get_by_id))
                             .route("/create", web::post().to(handler::words::add_word))
                             .route("/{id}", web::put().to(handler::words::update)),
                     )

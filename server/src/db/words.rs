@@ -1,19 +1,15 @@
 use diesel::prelude::*;
-use uuid::Uuid;
 
 use crate::models;
 
 type DbError = Box<dyn std::error::Error + Send + Sync>;
 
 /// Run query using Diesel to find word by uid and return it.
-pub fn find_word_by_uid(
-    uid: Uuid,
-    conn: &mut SqliteConnection,
-) -> Result<Option<models::Word>, DbError> {
-    use crate::db::schema::words::dsl::*;
+pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<Option<models::Word>, DbError> {
+    use crate::db::schema::words::dsl;
 
-    let word = words
-        .filter(id.eq(uid.to_string()))
+    let word = dsl::words
+        .filter(dsl::id.eq(id))
         .first::<models::Word>(conn)
         .optional()?;
 
@@ -51,34 +47,29 @@ pub fn get_all_words(
 }
 
 /// Run query using Diesel to insert a new database row and return the result.
-pub fn insert_new_word(
-    word: models::NewWord,
-    conn: &mut SqliteConnection,
-) -> Result<models::Word, DbError> {
-    // It is common when using Diesel with Actix Web to import schema-related
-    // modules inside a function's scope (rather than the normal module's scope)
-    // to prevent import collisions and namespace pollution.
+pub fn insert(word: models::NewWord, conn: &mut SqliteConnection) -> Result<models::Word, DbError> {
     use crate::db::schema::words::dsl::*;
 
     let format = |w: &str| w.to_lowercase();
 
-    let new_word = models::Word {
-        id: Uuid::new_v4().to_string(),
+    let new_word = models::NewWord {
         rus: format(&word.rus),
         eng: format(&word.eng),
         srp_cyrillic: format(&word.srp_cyrillic),
         srp_latin: format(&word.srp_latin),
     };
 
-    diesel::insert_into(words).values(&new_word).execute(conn)?;
+    let word = diesel::insert_into(words)
+        .values(&new_word)
+        .get_result::<models::Word>(conn)?;
 
-    Ok(new_word)
+    Ok(word)
 }
 
-pub fn delete(uid: Uuid, conn: &mut SqliteConnection) -> Result<(), DbError> {
-    use crate::db::schema::words::dsl::*;
+pub fn delete(id: i32, conn: &mut SqliteConnection) -> Result<(), DbError> {
+    use crate::db::schema::words::dsl;
 
-    diesel::delete(words.filter(id.eq(uid.to_string()))).execute(conn)?;
+    diesel::delete(dsl::words.filter(dsl::id.eq(id))).execute(conn)?;
 
     Ok(())
 }
