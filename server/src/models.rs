@@ -65,7 +65,7 @@ pub struct NewWordCategory {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Insertable)]
-#[table_name = "word_categories"]
+#[diesel(table_name = word_categories)]
 pub struct NewWordCategoryWithCreationDate {
     pub name: String,
     pub description: Option<String>,
@@ -73,7 +73,7 @@ pub struct NewWordCategoryWithCreationDate {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Queryable, AsChangeset)]
-#[table_name = "word_categories"]
+#[diesel(table_name = word_categories)]
 pub struct WordCategory {
     pub id: i32,
     pub name: String,
