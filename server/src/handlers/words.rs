@@ -4,7 +4,7 @@ use crate::models::OptionalQuery;
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 
-pub async fn add_word(
+pub async fn create(
     pool: web::Data<DbPool>,
     body: web::Json<models::NewWord>,
 ) -> actix_web::Result<impl Responder> {
@@ -18,7 +18,7 @@ pub async fn add_word(
     // use web::block to offload blocking Diesel code without blocking server thread
     let word = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::insert_new_word(word, &mut conn)
+        db::words::insert(word, &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -26,7 +26,7 @@ pub async fn add_word(
     Ok(HttpResponse::Ok().json(word))
 }
 
-pub async fn get_all_words(
+pub async fn get_list_by_query(
     pool: web::Data<DbPool>,
     query: web::Query<OptionalQuery>,
 ) -> actix_web::Result<impl Responder> {
@@ -42,7 +42,7 @@ pub async fn get_all_words(
 
     let words = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::get_all_words(&mut conn, offset, search)
+        db::words::select_all_with_filter(&mut conn, offset, search)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -54,32 +54,18 @@ pub async fn get_all_words(
     }))
 }
 
-pub async fn find_word_by_uid(
+pub async fn get_by_id(
     pool: web::Data<DbPool>,
-    id: web::Path<uuid::Uuid>,
+    id: web::Path<i32>,
 ) -> actix_web::Result<impl Responder> {
     let words = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::find_word_by_uid(id.into_inner(), &mut conn)
+        db::words::select_by_id(id.into_inner(), &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
 
     Ok(HttpResponse::Ok().json(words))
-}
-
-pub async fn delete(
-    pool: web::Data<DbPool>,
-    id: web::Path<uuid::Uuid>,
-) -> actix_web::Result<impl Responder> {
-    web::block(move || {
-        let mut conn = pool.get()?;
-        db::words::delete(id.into_inner(), &mut conn)
-    })
-    .await?
-    .map_err(actix_web::error::ErrorInternalServerError)?;
-
-    Ok(HttpResponse::Ok().finish())
 }
 
 pub async fn update(
@@ -102,4 +88,18 @@ pub async fn update(
     .map_err(actix_web::error::ErrorInternalServerError)?;
 
     Ok(HttpResponse::Ok().json(body))
+}
+
+pub async fn delete(
+    pool: web::Data<DbPool>,
+    id: web::Path<i32>,
+) -> actix_web::Result<impl Responder> {
+    web::block(move || {
+        let mut conn = pool.get()?;
+        db::words::delete(id.into_inner(), &mut conn)
+    })
+    .await?
+    .map_err(actix_web::error::ErrorInternalServerError)?;
+
+    Ok(HttpResponse::Ok().finish())
 }

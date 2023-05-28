@@ -3,7 +3,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::db::schema::{users, word_categories, words};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Insertable)]
+#[diesel(table_name = words)]
 pub struct NewWord {
     pub rus: String,
     pub srp_latin: String,
@@ -13,7 +14,7 @@ pub struct NewWord {
 
 #[derive(Debug, Clone, Serialize, Deserialize, Queryable, Insertable, AsChangeset)]
 pub struct Word {
-    pub id: String,
+    pub id: i32,
     pub rus: String,
     pub eng: String,
     pub srp_latin: String,
@@ -36,12 +37,13 @@ pub struct OptionalQuery {
 
 #[derive(Debug, Clone, Serialize, Deserialize, Queryable, Insertable, AsChangeset)]
 pub struct User {
-    pub id: String,
+    pub id: i32,
     pub username: String,
     pub password: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Insertable)]
+#[diesel(table_name = users)]
 pub struct NewUser {
     pub username: String,
     pub password: String,

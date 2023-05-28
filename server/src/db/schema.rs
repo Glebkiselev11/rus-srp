@@ -2,7 +2,7 @@
 
 diesel::table! {
     users (id) {
-        id -> Text,
+        id -> Integer,
         username -> Text,
         password -> Text,
     }
@@ -20,7 +20,7 @@ diesel::table! {
 
 diesel::table! {
     words (id) {
-        id -> Text,
+        id -> Integer,
         rus -> Text,
         eng -> Text,
         srp_latin -> Text,
