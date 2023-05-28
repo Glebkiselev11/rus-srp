@@ -2,20 +2,13 @@ use crate::models::{NewUser, User};
 use diesel::prelude::*;
 use diesel::SqliteConnection;
 type DbError = Box<dyn std::error::Error + Send + Sync>;
-use uuid::Uuid;
 
 pub fn add(new_user: NewUser, conn: &mut SqliteConnection) -> Result<User, DbError> {
     use crate::db::schema::users::dsl;
 
-    let user = User {
-        id: Uuid::new_v4().to_string(),
-        username: new_user.username.clone(),
-        password: new_user.password.clone(),
-    };
-
-    diesel::insert_into(dsl::users)
-        .values(&user)
-        .execute(conn)?;
+    let user = diesel::insert_into(dsl::users)
+        .values(&new_user)
+        .get_result::<User>(conn)?;
 
     Ok(user)
 }

@@ -2,7 +2,7 @@
 
 diesel::table! {
     users (id) {
-        id -> Text,
+        id -> Integer,
         username -> Text,
         password -> Text,
     }
