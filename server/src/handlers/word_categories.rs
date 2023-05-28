@@ -52,3 +52,31 @@ pub async fn get_by_id(
         None => Ok(HttpResponse::NotFound().body("Category not found")),
     }
 }
+
+pub async fn get_list_by_query(
+    pool: web::Data<DbPool>,
+    query: web::Query<models::OptionalQuery>,
+) -> actix_web::Result<impl Responder> {
+    let offset = match query.offset {
+        None => 0,
+        Some(i) => i,
+    };
+
+    let search = match &query.search {
+        None => String::new(),
+        Some(s) => s.clone(),
+    };
+
+    let result = web::block(move || {
+        let mut conn = pool.get()?;
+        db::word_categories::select_all_with_filter(&mut conn, offset, search)
+    })
+    .await?
+    .map_err(actix_web::error::ErrorInternalServerError)?;
+
+    Ok(HttpResponse::Ok().json(models::Pagination {
+        count: result.len(),
+        offset,
+        result,
+    }))
+}
