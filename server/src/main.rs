@@ -53,6 +53,17 @@ async fn main() -> std::io::Result<()> {
                             .route("/{id}", web::get().to(handler::words::find_word_by_uid))
                             .route("/create", web::post().to(handler::words::add_word))
                             .route("/{id}", web::put().to(handler::words::update)),
+                    )
+                    .service(
+                        web::scope("/word-categories")
+                            .route("/create", web::post().to(handler::word_categories::create))
+                            .route("/{id}", web::delete().to(handler::word_categories::delete))
+                            .route(
+                                "",
+                                web::get().to(handler::word_categories::get_list_by_query),
+                            )
+                            .route("/{id}", web::get().to(handler::word_categories::get_by_id))
+                            .route("/{id}", web::put().to(handler::word_categories::update)),
                     ),
             )
     })

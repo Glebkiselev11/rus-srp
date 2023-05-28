@@ -26,8 +26,8 @@ pub async fn register(
     };
 
     let user = web::block(move || {
-        let conn = pool.get()?;
-        db::user::add(user, &conn)
+        let mut conn = pool.get()?;
+        db::user::add(user, &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -42,8 +42,8 @@ pub async fn login(
     let password = body.password.clone();
 
     let user = web::block(move || {
-        let conn = pool.get()?;
-        db::user::find(&body.username, &conn)
+        let mut conn = pool.get()?;
+        db::user::find(&body.username, &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;

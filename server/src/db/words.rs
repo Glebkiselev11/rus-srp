@@ -8,7 +8,7 @@ type DbError = Box<dyn std::error::Error + Send + Sync>;
 /// Run query using Diesel to find word by uid and return it.
 pub fn find_word_by_uid(
     uid: Uuid,
-    conn: &SqliteConnection,
+    conn: &mut SqliteConnection,
 ) -> Result<Option<models::Word>, DbError> {
     use crate::db::schema::words::dsl::*;
 
@@ -21,7 +21,7 @@ pub fn find_word_by_uid(
 }
 
 pub fn get_all_words(
-    conn: &SqliteConnection,
+    conn: &mut SqliteConnection,
     offset: u32,
     search: String,
 ) -> Result<Vec<models::Word>, DbError> {
@@ -29,10 +29,20 @@ pub fn get_all_words(
 
     let format = |w: &str| format!("%{}%", w.to_lowercase());
 
+    if search.is_empty() {
+        let all_words = words
+            .limit(20)
+            .offset(offset.into())
+            .load::<models::Word>(conn)?;
+
+        return Ok(all_words);
+    }
+
     let all_words = words
         .or_filter(srp_cyrillic.like(format(&search)))
         .or_filter(srp_latin.like(format(&search)))
-        .or_filter(rus.like(format(&search)).or(&search == ""))
+        .or_filter(rus.like(format(&search)))
+        .or_filter(eng.like(format(&search)))
         .limit(20)
         .offset(offset.into())
         .load::<models::Word>(conn)?;
@@ -43,7 +53,7 @@ pub fn get_all_words(
 /// Run query using Diesel to insert a new database row and return the result.
 pub fn insert_new_word(
     word: models::NewWord,
-    conn: &SqliteConnection,
+    conn: &mut SqliteConnection,
 ) -> Result<models::Word, DbError> {
     // It is common when using Diesel with Actix Web to import schema-related
     // modules inside a function's scope (rather than the normal module's scope)
@@ -65,7 +75,7 @@ pub fn insert_new_word(
     Ok(new_word)
 }
 
-pub fn delete(uid: Uuid, conn: &SqliteConnection) -> Result<(), DbError> {
+pub fn delete(uid: Uuid, conn: &mut SqliteConnection) -> Result<(), DbError> {
     use crate::db::schema::words::dsl::*;
 
     diesel::delete(words.filter(id.eq(uid.to_string()))).execute(conn)?;
@@ -73,7 +83,7 @@ pub fn delete(uid: Uuid, conn: &SqliteConnection) -> Result<(), DbError> {
     Ok(())
 }
 
-pub fn update(word: models::Word, conn: &SqliteConnection) -> Result<(), DbError> {
+pub fn update(word: models::Word, conn: &mut SqliteConnection) -> Result<(), DbError> {
     use crate::db::schema::words::dsl::*;
 
     let word_id = word.id.clone();

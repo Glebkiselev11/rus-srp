@@ -17,8 +17,8 @@ pub async fn add_word(
 
     // use web::block to offload blocking Diesel code without blocking server thread
     let word = web::block(move || {
-        let conn = pool.get()?;
-        db::words::insert_new_word(word, &conn)
+        let mut conn = pool.get()?;
+        db::words::insert_new_word(word, &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -41,8 +41,8 @@ pub async fn get_all_words(
     };
 
     let words = web::block(move || {
-        let conn = pool.get()?;
-        db::words::get_all_words(&conn, offset, search)
+        let mut conn = pool.get()?;
+        db::words::get_all_words(&mut conn, offset, search)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -59,8 +59,8 @@ pub async fn find_word_by_uid(
     id: web::Path<uuid::Uuid>,
 ) -> actix_web::Result<impl Responder> {
     let words = web::block(move || {
-        let conn = pool.get()?;
-        db::words::find_word_by_uid(id.into_inner(), &conn)
+        let mut conn = pool.get()?;
+        db::words::find_word_by_uid(id.into_inner(), &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -73,8 +73,8 @@ pub async fn delete(
     id: web::Path<uuid::Uuid>,
 ) -> actix_web::Result<impl Responder> {
     web::block(move || {
-        let conn = pool.get()?;
-        db::words::delete(id.into_inner(), &conn)
+        let mut conn = pool.get()?;
+        db::words::delete(id.into_inner(), &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -95,8 +95,8 @@ pub async fn update(
     };
 
     web::block(move || {
-        let conn = pool.get()?;
-        db::words::update(word, &conn)
+        let mut conn = pool.get()?;
+        db::words::update(word, &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
