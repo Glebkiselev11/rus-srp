@@ -72,7 +72,8 @@ pub struct NewWordCategoryWithCreationDate {
     pub created_at: chrono::NaiveDateTime,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, Queryable)]
+#[derive(Debug, Clone, Serialize, Deserialize, Queryable, AsChangeset)]
+#[table_name = "word_categories"]
 pub struct WordCategory {
     pub id: i32,
     pub name: String,

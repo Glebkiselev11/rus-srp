@@ -32,6 +32,30 @@ pub fn delete(_id: i32, conn: &mut SqliteConnection) -> Result<(), DbError> {
     Ok(())
 }
 
+pub fn update(
+    c: models::NewWordCategory,
+    id: i32,
+    conn: &mut SqliteConnection,
+) -> Result<Option<models::WordCategory>, DbError> {
+    use crate::db::schema::word_categories::dsl;
+
+    let category = match select_by_id(id, conn)? {
+        Some(x) => models::WordCategory {
+            updated_at: Some(Utc::now().naive_utc()),
+            name: c.name,
+            description: c.description,
+            ..x
+        },
+        None => return Ok(None),
+    };
+
+    diesel::update(dsl::word_categories.find(id))
+        .set(category.clone())
+        .execute(conn)?;
+
+    Ok(Some(category))
+}
+
 pub fn select_by_id(
     _id: i32,
     conn: &mut SqliteConnection,

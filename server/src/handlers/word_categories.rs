@@ -36,6 +36,29 @@ pub async fn delete(
     Ok(HttpResponse::Ok().finish())
 }
 
+pub async fn update(
+    pool: web::Data<DbPool>,
+    id: web::Path<i32>,
+    body: web::Json<models::NewWordCategory>,
+) -> actix_web::Result<impl Responder> {
+    let category = models::NewWordCategory {
+        name: body.name.clone(),
+        description: body.description.clone(),
+    };
+
+    let category = web::block(move || {
+        let mut conn = pool.get()?;
+        db::word_categories::update(category, id.into_inner(), &mut conn)
+    })
+    .await?
+    .map_err(actix_web::error::ErrorInternalServerError)?;
+
+    match category {
+        Some(x) => Ok(HttpResponse::Ok().json(x)),
+        None => Ok(HttpResponse::NotFound().body("Category not found")),
+    }
+}
+
 pub async fn get_by_id(
     pool: web::Data<DbPool>,
     id: web::Path<i32>,
