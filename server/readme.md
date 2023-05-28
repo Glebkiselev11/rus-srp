@@ -2,10 +2,6 @@
 
 docker -v
 
-# Run local development
+# Run dev server
 
-sh ./dev.sh
-
-# Run prod
-
-sh ./prod.sh
+docker-composes up
