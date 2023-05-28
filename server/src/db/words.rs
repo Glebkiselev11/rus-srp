@@ -21,12 +21,12 @@ pub fn get_all_words(
     offset: u32,
     search: String,
 ) -> Result<Vec<models::Word>, DbError> {
-    use crate::db::schema::words::dsl::*;
+    use crate::db::schema::words::dsl;
 
     let format = |w: &str| format!("%{}%", w.to_lowercase());
 
     if search.is_empty() {
-        let all_words = words
+        let all_words = dsl::words
             .limit(20)
             .offset(offset.into())
             .load::<models::Word>(conn)?;
@@ -34,11 +34,11 @@ pub fn get_all_words(
         return Ok(all_words);
     }
 
-    let all_words = words
-        .or_filter(srp_cyrillic.like(format(&search)))
-        .or_filter(srp_latin.like(format(&search)))
-        .or_filter(rus.like(format(&search)))
-        .or_filter(eng.like(format(&search)))
+    let all_words = dsl::words
+        .or_filter(dsl::srp_cyrillic.like(format(&search)))
+        .or_filter(dsl::srp_latin.like(format(&search)))
+        .or_filter(dsl::rus.like(format(&search)))
+        .or_filter(dsl::eng.like(format(&search)))
         .limit(20)
         .offset(offset.into())
         .load::<models::Word>(conn)?;
@@ -48,7 +48,7 @@ pub fn get_all_words(
 
 /// Run query using Diesel to insert a new database row and return the result.
 pub fn insert(word: models::NewWord, conn: &mut SqliteConnection) -> Result<models::Word, DbError> {
-    use crate::db::schema::words::dsl::*;
+    use crate::db::schema::words::dsl;
 
     let format = |w: &str| w.to_lowercase();
 
@@ -59,7 +59,7 @@ pub fn insert(word: models::NewWord, conn: &mut SqliteConnection) -> Result<mode
         srp_latin: format(&word.srp_latin),
     };
 
-    let word = diesel::insert_into(words)
+    let word = diesel::insert_into(dsl::words)
         .values(&new_word)
         .get_result::<models::Word>(conn)?;
 
@@ -75,11 +75,11 @@ pub fn delete(id: i32, conn: &mut SqliteConnection) -> Result<(), DbError> {
 }
 
 pub fn update(word: models::Word, conn: &mut SqliteConnection) -> Result<(), DbError> {
-    use crate::db::schema::words::dsl::*;
+    use crate::db::schema::words::dsl;
 
     let word_id = word.id.clone();
 
-    diesel::update(words.find(word_id))
+    diesel::update(dsl::words.find(word_id))
         .set(word)
         .execute(conn)?;
 
