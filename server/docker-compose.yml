@@ -3,7 +3,6 @@ services:
   server:
     build: 
       context: .
-      dockerfile: Dockerfile.dev
     environment:
       DATABASE_URL: database.db
       SALT: 123456
