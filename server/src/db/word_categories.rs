@@ -5,7 +5,7 @@ use crate::models;
 
 type DbError = Box<dyn std::error::Error + Send + Sync>;
 
-pub fn add(
+pub fn insert(
     c: models::NewWordCategory,
     conn: &mut SqliteConnection,
 ) -> Result<models::WordCategory, DbError> {
@@ -22,4 +22,12 @@ pub fn add(
         .get_result::<models::WordCategory>(conn)?;
 
     Ok(category)
+}
+
+pub fn delete(_id: i32, conn: &mut SqliteConnection) -> Result<(), DbError> {
+    use crate::db::schema::word_categories::dsl::*;
+
+    diesel::delete(word_categories.filter(id.eq(_id))).execute(conn)?;
+
+    Ok(())
 }
