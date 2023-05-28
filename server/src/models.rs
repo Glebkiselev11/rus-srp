@@ -1,6 +1,7 @@
+use chrono;
 use serde::{Deserialize, Serialize};
 
-use crate::db::schema::{users, words};
+use crate::db::schema::{users, word_categories, words};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct NewWord {
@@ -55,4 +56,27 @@ pub struct Claims {
 #[derive(Serialize, Deserialize)]
 pub struct Token {
     pub token: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct NewWordCategory {
+    pub name: String,
+    pub description: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Insertable)]
+#[table_name = "word_categories"]
+pub struct NewWordCategoryWithCreationDate {
+    pub name: String,
+    pub description: Option<String>,
+    pub created_at: chrono::NaiveDateTime,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Queryable)]
+pub struct WordCategory {
+    pub id: i32,
+    pub name: String,
+    pub description: Option<String>,
+    pub created_at: chrono::NaiveDateTime,
+    pub updated_at: Option<chrono::NaiveDateTime>,
 }

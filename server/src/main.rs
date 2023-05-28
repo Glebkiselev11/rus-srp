@@ -53,7 +53,11 @@ async fn main() -> std::io::Result<()> {
                             .route("/{id}", web::get().to(handler::words::find_word_by_uid))
                             .route("/create", web::post().to(handler::words::add_word))
                             .route("/{id}", web::put().to(handler::words::update)),
-                    ),
+                    )
+                    .service(web::scope("/word-categories").route(
+                        "/create",
+                        web::post().to(handler::word_categories::add_cetogory),
+                    )),
             )
     })
     .bind(API_URL)?
