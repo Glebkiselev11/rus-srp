@@ -43,7 +43,7 @@ pub async fn login(
 
     let user = web::block(move || {
         let mut conn = pool.get()?;
-        db::user::find(&body.username, &mut conn)
+        db::user::select(&body.username, &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;

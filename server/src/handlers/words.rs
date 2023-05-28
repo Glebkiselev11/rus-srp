@@ -4,7 +4,7 @@ use crate::models::OptionalQuery;
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 
-pub async fn add_word(
+pub async fn create(
     pool: web::Data<DbPool>,
     body: web::Json<models::NewWord>,
 ) -> actix_web::Result<impl Responder> {
@@ -26,7 +26,7 @@ pub async fn add_word(
     Ok(HttpResponse::Ok().json(word))
 }
 
-pub async fn get_all_words(
+pub async fn get_list_by_query(
     pool: web::Data<DbPool>,
     query: web::Query<OptionalQuery>,
 ) -> actix_web::Result<impl Responder> {
@@ -42,7 +42,7 @@ pub async fn get_all_words(
 
     let words = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::get_all_words(&mut conn, offset, search)
+        db::words::select_all_with_filter(&mut conn, offset, search)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -68,20 +68,6 @@ pub async fn get_by_id(
     Ok(HttpResponse::Ok().json(words))
 }
 
-pub async fn delete(
-    pool: web::Data<DbPool>,
-    id: web::Path<i32>,
-) -> actix_web::Result<impl Responder> {
-    web::block(move || {
-        let mut conn = pool.get()?;
-        db::words::delete(id.into_inner(), &mut conn)
-    })
-    .await?
-    .map_err(actix_web::error::ErrorInternalServerError)?;
-
-    Ok(HttpResponse::Ok().finish())
-}
-
 pub async fn update(
     pool: web::Data<DbPool>,
     body: web::Json<models::Word>,
@@ -102,4 +88,18 @@ pub async fn update(
     .map_err(actix_web::error::ErrorInternalServerError)?;
 
     Ok(HttpResponse::Ok().json(body))
+}
+
+pub async fn delete(
+    pool: web::Data<DbPool>,
+    id: web::Path<i32>,
+) -> actix_web::Result<impl Responder> {
+    web::block(move || {
+        let mut conn = pool.get()?;
+        db::words::delete(id.into_inner(), &mut conn)
+    })
+    .await?
+    .map_err(actix_web::error::ErrorInternalServerError)?;
+
+    Ok(HttpResponse::Ok().finish())
 }

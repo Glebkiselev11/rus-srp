@@ -20,7 +20,7 @@ pub fn add(new_user: NewUser, conn: &mut SqliteConnection) -> Result<User, DbErr
     Ok(user)
 }
 
-pub fn find(username: &str, conn: &mut SqliteConnection) -> Result<Option<User>, DbError> {
+pub fn select(username: &str, conn: &mut SqliteConnection) -> Result<Option<User>, DbError> {
     use crate::db::schema::users::dsl;
 
     let user = dsl::users

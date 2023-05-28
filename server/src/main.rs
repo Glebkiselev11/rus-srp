@@ -48,22 +48,22 @@ async fn main() -> std::io::Result<()> {
                     )
                     .service(
                         web::scope("/words")
-                            .route("", web::get().to(handler::words::get_all_words))
-                            .route("/{id}", web::delete().to(handler::words::delete))
+                            .route("/create", web::post().to(handler::words::create))
+                            .route("", web::get().to(handler::words::get_list_by_query))
                             .route("/{id}", web::get().to(handler::words::get_by_id))
-                            .route("/create", web::post().to(handler::words::add_word))
-                            .route("/{id}", web::put().to(handler::words::update)),
+                            .route("/{id}", web::put().to(handler::words::update))
+                            .route("/{id}", web::delete().to(handler::words::delete)),
                     )
                     .service(
                         web::scope("/word-categories")
                             .route("/create", web::post().to(handler::word_categories::create))
-                            .route("/{id}", web::delete().to(handler::word_categories::delete))
                             .route(
                                 "",
                                 web::get().to(handler::word_categories::get_list_by_query),
                             )
                             .route("/{id}", web::get().to(handler::word_categories::get_by_id))
-                            .route("/{id}", web::put().to(handler::word_categories::update)),
+                            .route("/{id}", web::put().to(handler::word_categories::update))
+                            .route("/{id}", web::delete().to(handler::word_categories::delete)),
                     ),
             )
     })

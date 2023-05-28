@@ -24,38 +24,6 @@ pub fn insert(
     Ok(category)
 }
 
-pub fn delete(id: i32, conn: &mut SqliteConnection) -> Result<(), DbError> {
-    use crate::db::schema::word_categories::dsl;
-
-    diesel::delete(dsl::word_categories.filter(dsl::id.eq(id))).execute(conn)?;
-
-    Ok(())
-}
-
-pub fn update(
-    category: models::NewWordCategory,
-    id: i32,
-    conn: &mut SqliteConnection,
-) -> Result<Option<models::WordCategory>, DbError> {
-    use crate::db::schema::word_categories::dsl;
-
-    let category = match select_by_id(id, conn)? {
-        Some(x) => models::WordCategory {
-            updated_at: Some(Utc::now().naive_utc()),
-            name: category.name,
-            description: category.description,
-            ..x
-        },
-        None => return Ok(None),
-    };
-
-    diesel::update(dsl::word_categories.find(id))
-        .set(category.clone())
-        .execute(conn)?;
-
-    Ok(Some(category))
-}
-
 pub fn select_by_id(
     id: i32,
     conn: &mut SqliteConnection,
@@ -96,4 +64,36 @@ pub fn select_all_with_filter(
         .load::<models::WordCategory>(conn)?;
 
     Ok(categories)
+}
+
+pub fn update(
+    category: models::NewWordCategory,
+    id: i32,
+    conn: &mut SqliteConnection,
+) -> Result<Option<models::WordCategory>, DbError> {
+    use crate::db::schema::word_categories::dsl;
+
+    let category = match select_by_id(id, conn)? {
+        Some(x) => models::WordCategory {
+            updated_at: Some(Utc::now().naive_utc()),
+            name: category.name,
+            description: category.description,
+            ..x
+        },
+        None => return Ok(None),
+    };
+
+    diesel::update(dsl::word_categories.find(id))
+        .set(category.clone())
+        .execute(conn)?;
+
+    Ok(Some(category))
+}
+
+pub fn delete(id: i32, conn: &mut SqliteConnection) -> Result<(), DbError> {
+    use crate::db::schema::word_categories::dsl;
+
+    diesel::delete(dsl::word_categories.filter(dsl::id.eq(id))).execute(conn)?;
+
+    Ok(())
 }
