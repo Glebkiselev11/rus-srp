@@ -31,3 +31,17 @@ pub fn delete(_id: i32, conn: &mut SqliteConnection) -> Result<(), DbError> {
 
     Ok(())
 }
+
+pub fn select_by_id(
+    _id: i32,
+    conn: &mut SqliteConnection,
+) -> Result<Option<models::WordCategory>, DbError> {
+    use crate::db::schema::word_categories::dsl::*;
+
+    let category = word_categories
+        .filter(id.eq(_id))
+        .first::<models::WordCategory>(conn)
+        .optional()?;
+
+    Ok(category)
+}

@@ -35,3 +35,20 @@ pub async fn delete(
 
     Ok(HttpResponse::Ok().finish())
 }
+
+pub async fn get_by_id(
+    pool: web::Data<DbPool>,
+    id: web::Path<i32>,
+) -> actix_web::Result<impl Responder> {
+    let category = web::block(move || {
+        let mut conn = pool.get()?;
+        db::word_categories::select_by_id(id.into_inner(), &mut conn)
+    })
+    .await?
+    .map_err(actix_web::error::ErrorInternalServerError)?;
+
+    match category {
+        Some(x) => Ok(HttpResponse::Ok().json(x)),
+        None => Ok(HttpResponse::NotFound().body("Category not found")),
+    }
+}
