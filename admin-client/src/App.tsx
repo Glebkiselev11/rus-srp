@@ -1,20 +1,22 @@
 import { Routes, Route } from "react-router-dom";
 import { AppNotification } from "./components/AppNotification";
-import { Navigation } from "./components/Navigation";
+import { SideMenu } from "./components/SideMenu";
 import HomePage from "./Pages/HomePage";
 import NewWordPage from "./Pages/NewWordPage";
 import WordPage from "./Pages/WordPage";
 import NotFoundPage from "./Pages/NotFoundPage";
+import SettingsPage from "./Pages/SettingsPage";
 
 function App() {
 
 	return (
-		<>
-			<Navigation/>
+		<div className="flex">
+			<SideMenu/>
 
-			<div className="mt-[100px]">
+			<div className="w-full h-[100vh] overflow-y-scroll bg-slate-100">
 				<Routes >
 					<Route path="/" element={<HomePage/>}/>
+					<Route path="/settings" element={<SettingsPage/>}/>
 					<Route path="/new" element={<NewWordPage/>}/>
 					<Route path="/words/:wordId" element={<WordPage/>}/>
 					<Route
@@ -25,8 +27,7 @@ function App() {
 			</div>
 
 			<AppNotification/>
-
-		</>
+		</div>
 	);
 }
 
