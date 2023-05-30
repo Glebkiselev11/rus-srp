@@ -13,7 +13,7 @@ function App() {
 		<div className="flex">
 			<SideMenu/>
 
-			<div className="w-full h-[100vh] overflow-y-scroll bg-slate-100">
+			<div className="w-full h-[100vh] overflow-hidden bg-slate-100">
 				<Routes >
 					<Route path="/" element={<HomePage/>}/>
 					<Route path="/settings" element={<SettingsPage/>}/>

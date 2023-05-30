@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
-import AppHeader from "../components/AppHeader";
+import { AppHeader }  from "../components/AppHeader";
 import { LanguageChanger } from "../components/LanguageChanger";
+import { AppMain } from "../components/AppMain";
 
 export default function SettingsPage() {
 	const { t } = useTranslation();
@@ -8,12 +9,11 @@ export default function SettingsPage() {
 	return (
 		<>
 			<AppHeader title={t("settings")}></AppHeader>
-
-			<main>
+			<AppMain>
 				<div className="mt-10 mx-40">
 					<LanguageChanger/>
 				</div>
-			</main>
+			</AppMain>
 		</>
 	);
 }

@@ -6,8 +6,12 @@ import { useState } from "react";
 import { FilterPanel } from "../components/FilterPanel";
 import { IRequestParams } from "../models/api";
 import { useDebounce } from "../hooks/debounce";
+import { AppHeader } from "../components/AppHeader";
+import { useTranslation } from "react-i18next";
+import { AppMain } from "../components/AppMain";
 
 export default function HomePage() {
+	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [params, setParams] = useState<IRequestParams>({});
 
@@ -19,22 +23,25 @@ export default function HomePage() {
 	};
 	
 	return (
-		<main>
-			<div className="mt-10 mx-40">
-				<div className="mb-5">
-					<FilterPanel params={params} onChange={p => setParams(p)} />
+		<>
+			<AppHeader title={t("all-words")}></AppHeader>
+			<AppMain>
+				<div className="mt-10 mx-40">
+					<div className="mb-5">
+						<FilterPanel params={params} onChange={p => setParams(p)} />
+					</div>
+
+					{isSuccess && data.result.map(word => 
+						<div key={word.id} className="mb-3">
+							<WordItem word={word} />
+						</div>
+					)}
 				</div>
 
-				{isSuccess && data.result.map(word => 
-					<div key={word.id} className="mb-3">
-						<WordItem word={word} />
-					</div>
-				)}
-			</div>
-
-			<div className="fixed bottom-5 right-5">
-				<CircleButton icon="+" onClick={() => circleButtonHandler()}/>
-			</div>
-		</main>
+				<div className="fixed bottom-5 right-5">
+					<CircleButton icon="+" onClick={() => circleButtonHandler()}/>
+				</div>
+			</AppMain>
+		</>
 	);
 }
