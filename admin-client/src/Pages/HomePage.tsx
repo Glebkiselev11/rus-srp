@@ -25,7 +25,7 @@ export default function HomePage() {
 	return (
 		<>
 			<AppHeader title={t("all-words")}>
-				<AppButton label={t("add-new-word")} type="filled" onClick={() => circleButtonHandler()}/>
+				<AppButton label={t("add-word")} type="filled" onClick={() => circleButtonHandler()}/>
 
 			</AppHeader>
 			<AppMain>
