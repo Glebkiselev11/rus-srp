@@ -9,7 +9,7 @@ interface AppButtonProps {
 	loading?: boolean,
 	disabled?: boolean,
 	icon?: IconName,
-	type: "filled" | "inline"
+	type?: "filled" | "inline"
 }
 
 export function AppButton({ label, onClick, className, loading, disabled, icon, type = "inline" }: AppButtonProps) {
