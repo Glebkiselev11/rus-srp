@@ -4,7 +4,7 @@ import { AppIcon } from "./AppIcon";
 import { useMemo } from "react";
 
 interface AppButtonProps {
-  label: string,
+  label?: string,
   onClick: () => void,
   className?: string,
 	loading?: boolean,
@@ -22,7 +22,7 @@ export function AppButton({
 	icon, 
 	className = "",
 	disabled = false, 
-	type = "inline" 
+	type = "inline"
 }: AppButtonProps) {
 	const { t } = useTranslation();
 
@@ -30,7 +30,7 @@ export function AppButton({
 		if (disabled) return "text-gray-400";
 	
 		if (type === "inline") {
-			return "text-indigo-600";	
+			return "text-black-600";	
 		} else {
 			return "text-white";
 		}
@@ -40,7 +40,7 @@ export function AppButton({
 		if (disabled) return "gray";
 	
 		if (type === "inline") {
-			return "indigo";	
+			return "black";	
 		} else {
 			return "white";
 		}
@@ -52,11 +52,13 @@ export function AppButton({
 
 		return `
 			${fontColor}
-			px-4 py-2 rounded-full text-sm font-medium flex items-center 
+			${label ? "px-4 py-2" : "p-2"} rounded-full text-sm font-medium flex items-center 
 			${type === "inline" ? inlineBgClasses : filledBgClasses} 
 			${className}`;
 
-	}, [type, disabled, className, fontColor]);
+	}, [type, disabled, className, fontColor, label]);
+
+	const iconSize = label ? "20px" : "24px";
 		
 	return (
 		<button 
@@ -65,15 +67,17 @@ export function AppButton({
 			disabled={loading || disabled}
 		>
 			{icon && 
-				<div className="mr-2">
 					<AppIcon 
 						name={icon} 
 						color={iconColor}
-						size="20px"
+						size={iconSize}
 					/>
-				</div>
 			}
-			{loading ? t("wait") : label}
+			{label && 
+				<span className="ml-2">
+					{loading ? t("wait") : label}
+				</span>
+			}
 		</button>
 	);
 }
