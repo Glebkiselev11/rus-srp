@@ -8,7 +8,7 @@ interface AppHeaderProps {
 export function AppHeader({ children, title }: AppHeaderProps) {
 	return (
 		<header className="bg-white py-2 px-6 flex items-center justify-between">
-			<h1 className="text-2xl bg-neutral-950">{title}</h1>
+			<h1 className="text-2xl">{title}</h1>
 
 			<div>
 				{children}
