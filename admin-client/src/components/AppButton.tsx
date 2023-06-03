@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { IconName } from "./AppIcon/types";
 import { AppIcon } from "./AppIcon";
+import { useMemo } from "react";
 
 interface AppButtonProps {
   label: string,
@@ -9,35 +10,69 @@ interface AppButtonProps {
 	loading?: boolean,
 	disabled?: boolean,
 	icon?: IconName,
-	type?: "filled" | "inline"
+	type?: ButtonType
 }
 
-export function AppButton({ label, onClick, className, loading, disabled, icon, type = "inline" }: AppButtonProps) {
+type ButtonType = "filled" | "inline";
+
+export function AppButton({ 
+	label, 
+	onClick, 
+	loading, 
+	icon, 
+	className = "",
+	disabled = false, 
+	type = "inline" 
+}: AppButtonProps) {
 	const { t } = useTranslation();
 
-	const inlineClasses = [
-		"text-indigo-600 bg-transparent",
-		disabled ? "text-neutral-900/[.38]" : "hover:bg-indigo-100",
-	];
-
-	const filledClasses = [
-		"bg-indigo-600 text-white",
-		disabled ? "bg-zinc-900/[.12] text-neutral-900/[.38]" : "hover:bg-indigo-600/[.92]",
-	];
+	const fontColor = useMemo(() => {
+		if (disabled) return "text-gray-400";
 	
-	const buttonClasses = [
-		"px-4 py-2 rounded-full text-sm font-medium",
-		type === "inline" ? inlineClasses : filledClasses,
-		className,
-	].flat().join(" ");
+		if (type === "inline") {
+			return "text-indigo-600";	
+		} else {
+			return "text-white";
+		}
+	}, [disabled, type]);
 
+	const iconColor = useMemo(() => {
+		if (disabled) return "gray";
+	
+		if (type === "inline") {
+			return "indigo";	
+		} else {
+			return "white";
+		}
+	}, [disabled, type]); 
+	
+	const buttonClasses = useMemo(() => {
+		const inlineBgClasses = `bg-transparent ${!disabled && "hover:bg-indigo-100"}`;
+		const filledBgClasses = `bg-indigo-600 ${disabled ? "bg-zinc-900/[.12]" : "hover:bg-indigo-600/[.92]"}`;
+
+		return `
+			${fontColor}
+			px-4 py-2 rounded-full text-sm font-medium flex items-center 
+			${type === "inline" ? inlineBgClasses : filledBgClasses} 
+			${className}`;
+
+	}, [type, disabled, className, fontColor]);
+		
 	return (
 		<button 
 			className={buttonClasses} 
-			onClick={() => onClick()}
+			onClick={onClick}
 			disabled={loading || disabled}
 		>
-			{icon && <AppIcon name={icon}/>}
+			{icon && 
+				<div className="mr-2">
+					<AppIcon 
+						name={icon} 
+						color={iconColor}
+						size="20px"
+					/>
+				</div>
+			}
 			{loading ? t("wait") : label}
 		</button>
 	);

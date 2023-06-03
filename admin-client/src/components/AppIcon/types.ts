@@ -1,5 +1,8 @@
 export interface AppIconSVGProps {
-  color: string
+  color: string,
+  size: IconSize 
 }
 
-export type IconName = "arrow_back" | "list" | "settings"
+export type IconName = "arrow_back" | "list" | "settings" | "add"
+
+export type IconSize = "20px" | "24px"

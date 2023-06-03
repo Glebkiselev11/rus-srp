@@ -1,21 +1,31 @@
 import { ArrowBackIcon } from "./ArrowBackIcon";
 import { ListIcon } from "./ListIcon";
-import { IconName } from "./types";
+import { IconName, IconSize } from "./types";
 import { SettingsIcon } from "./SettingsIcon";
+import { AddIcon } from "./AddIcon";
 
 interface AppIconProps {
-  color?: string,
+  color?: "black" | "white" | "gray" | "indigo", 
+	size?: IconSize,
   name: IconName
 }
 
-export function AppIcon({ color = "black", name }: AppIconProps) {
+export function AppIcon({ color = "black", name, size = "24px" }: AppIconProps) {
+	const _color = {
+		"black": "fill-black",
+		"white": "fill-white",
+		"gray": "fill-gray-400",
+		"indigo": "fill-indigo-600"
+	}[color]; 
+
 	const Icon = {
 		"arrow_back": ArrowBackIcon,
 		"list": ListIcon,
-		"settings": SettingsIcon
+		"settings": SettingsIcon,
+		"add": AddIcon
 	}[name];
 
 	return (
-		<Icon color={color}/>
+		<Icon color={_color} size={size}/>
 	);
 }
