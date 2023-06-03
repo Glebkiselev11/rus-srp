@@ -4,6 +4,7 @@ import { IconName, IconSize } from "./types";
 import { SettingsIcon } from "./SettingsIcon";
 import { AddIcon } from "./AddIcon";
 import { MenuIcon } from "./MenuIcon";
+import { CloseIcon } from "./CloseIcon";
 
 interface AppIconProps {
   color?: "black" | "white" | "gray" | "indigo", 
@@ -24,7 +25,8 @@ export function AppIcon({ color = "black", name, size = "24px" }: AppIconProps) 
 		"list": ListIcon,
 		"settings": SettingsIcon,
 		"add": AddIcon,
-		"menu": MenuIcon
+		"menu": MenuIcon,
+		"close": CloseIcon
 	}[name];
 
 	return (
