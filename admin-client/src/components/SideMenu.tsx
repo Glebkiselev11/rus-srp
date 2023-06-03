@@ -30,15 +30,17 @@ export function SideMenu() {
 
 	const asideClass = `
 		px-[12px] bg-white h-[100vh]
-		${isSideMenuOpen ? "w-[265px]" : "w-[80px]"}
+		${isSideMenuOpen ? "w-[320px]" : "w-[80px]"}
 		`;
 
 	return (
 		<aside className={asideClass}>
-			<div className="pl-2 flex items-center mb-[40px] h-[60px]">
-				<AppButton icon="menu" className="mr-1.5" onClick={handleToggleMenu}/>
+			<div className="pl-2 flex items-center mb-[40px] h-[56px]">
+				<AppButton icon="menu" className="mr-1" onClick={handleToggleMenu}/>
 
-				{isSideMenuOpen && <h6>Srpski reć - admin</h6>}
+				{isSideMenuOpen && 
+					<h6 className="text-xl font-normal">Srpski reć - admin</h6>
+				}
 			</div>
 			<nav className="flex flex-col">
 				{navigation.map(({ link, label, className, icon }) => 
