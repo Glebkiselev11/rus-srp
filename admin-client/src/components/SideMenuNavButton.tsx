@@ -7,10 +7,11 @@ interface SideMenuNavButtonProps {
   link: string,
   label: string,
   className?: string,
-	icon: IconName
+	icon: IconName,
+	isOpen: boolean
 }
 
-export function SideMenuNavButton({ link, label, className = "", icon }: SideMenuNavButtonProps) {
+export function SideMenuNavButton({ link, label, className = "", icon, isOpen }: SideMenuNavButtonProps) {
 	const { pathname } = useLocation();
 	const  isActive = pathname === link;
 	const enabledClass = isActive ? "bg-purple-200" : "" ;
@@ -31,7 +32,7 @@ export function SideMenuNavButton({ link, label, className = "", icon }: SideMen
 			aria-current={isActive ? "page" : undefined}
 		>
 			<AppIcon name={icon}/>
-			<span className="ml-3">{label}</span>
+			{isOpen && <span className="ml-3">{label}</span>}
 		</Link>
 	);
 }

@@ -3,6 +3,6 @@ export interface AppIconSVGProps {
   size: IconSize 
 }
 
-export type IconName = "arrow_back" | "list" | "settings" | "add"
+export type IconName = "arrow_back" | "list" | "settings" | "add" | "menu"
 
 export type IconSize = "20px" | "24px"
