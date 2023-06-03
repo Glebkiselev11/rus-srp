@@ -1,10 +1,11 @@
 {
   "translation": {
-    "add-new-word": "Dodajte novu reč",
+    "settings": "Podešavanja",
+    "all-words": "Sve reči",
+    "add-word": "Dodajte reč",
     "search": "Pretraga",
     "save": "Sačuvaj",
     "delete": "Izbriši",
-    "admin-panel": "Admin Panel",
     "wait": "Čekati",
     "word-added": "Riječ je uspešno dodat",
     "word-updated": "Riječ je uspešno ažurirana",

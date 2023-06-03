@@ -1,10 +1,11 @@
 {
   "translation": {
-    "add-new-word": "Add new word",
+    "settings": "Settings",
+    "all-words": "All words",
+    "add-word": "Add word",
     "search": "Search",
     "save": "Save",
     "delete": "Delete",
-    "admin-panel": "Admin Panel",
     "wait": "Wait",
     "word-added": "Word was added",
     "word-updated": "Word was updated",
