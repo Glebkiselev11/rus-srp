@@ -73,8 +73,11 @@ export function AppButton({
 						size={iconSize}
 					/>
 			}
+			
+			{(icon && label) && <span className="w-[8px]"/> }
+
 			{label && 
-				<span className="ml-2">
+				<span>
 					{loading ? t("wait") : label}
 				</span>
 			}
