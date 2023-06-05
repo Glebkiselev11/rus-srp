@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { HEADER_SIZE } from "../consts";
 
 interface AppHeaderProps {
   children?: ReactNode,
@@ -7,7 +8,10 @@ interface AppHeaderProps {
 
 export function AppHeader({ children, title }: AppHeaderProps) {
 	return (
-		<header className="bg-white px-6 h-[56px] flex items-center justify-between">
+		<header 
+			style={{ height: HEADER_SIZE }} 
+			className="bg-white px-6 flex items-center justify-between"
+		>
 			<h1 className="text-2xl">{title}</h1>
 
 			<div>
