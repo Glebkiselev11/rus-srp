@@ -2,6 +2,10 @@
   "translation": {
     "settings": "Settings",
     "all-words": "All words",
+    "adding-word": {
+      "title": "Adding a word",
+      "description": "Enter a word in the corresponding language"
+    },
     "add-word": "Add word",
     "search": "Search",
     "save": "Save",

@@ -14,18 +14,19 @@ export function TextInput({ value, className, onChange, label }: InputProps) {
 		onChange(event.target.value);
 	};
 
-	const onFocusLabelClasses = "top-1 text-xs text-gray-500";
-	const onBlurLabelClasses = "top-4 text-gray-300";
+	const onFocusLabelClasses = "top-[-7px] bg-white px-0.5 text-xs text-indigo-700";
+	const onBlurLabelClasses = "top-3 text-gray-300";
 
 	const labelClasses = [
 		"absolute left-4 transition-all",
 		focus || value !== "" ? onFocusLabelClasses : onBlurLabelClasses
 	].join(" ");
 
-	const inputClasses = ["border h-[56px] px-4 w-full", className].join(" ");
+	const inputClasses = 
+		["border h-[48px] px-4 w-full border-2 rounded-md outline-indigo-700", className, ].join(" ");
 
 	return (
-		<div className="relative">
+		<div className="relative my-1">
 			{label && <label htmlFor={label} className={labelClasses}>{label}</label>}
 			<input 
 				id={label}

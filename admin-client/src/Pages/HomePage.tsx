@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useGetAllQuery } from "../store/words";
 import { WordItem } from "../components/WordItem";
 import { useState } from "react";
@@ -9,23 +8,28 @@ import { AppHeader } from "../components/AppHeader";
 import { useTranslation } from "react-i18next";
 import { AppMain } from "../components/AppMain";
 import { AppButton } from "../components/AppButton";
+import { NewWordModal } from "../components/NewWordModal";
 
 export default function HomePage() {
 	const { t } = useTranslation();
-	const navigate = useNavigate();
 	const [params, setParams] = useState<IRequestParams>({});
 
 	const debouncedParams = useDebounce(params, 500);
 	const { data, isSuccess } = useGetAllQuery(debouncedParams);
 
-	const circleButtonHandler = () => {
-		navigate("/new");
+	const [showNewWordModal, setShowNewWordModal] = useState(false);
+	const addWordButtonHandler = () => {
+		setShowNewWordModal(!showNewWordModal);
+	};
+
+	const closeNewWordModalHandler = () => {
+		setShowNewWordModal(false);
 	};
 	
 	return (
 		<>
 			<AppHeader title={t("all-words")}>
-				<AppButton label={t("add-word")} icon="add" type="filled" onClick={circleButtonHandler}/>
+				<AppButton label={t("add-word")} icon="add" type="filled" onClick={addWordButtonHandler}/>
 
 			</AppHeader>
 			<AppMain>
@@ -42,6 +46,8 @@ export default function HomePage() {
 				</div>
 
 			</AppMain>
+
+			<NewWordModal closeHander={closeNewWordModalHandler} show={showNewWordModal} />
 		</>
 	);
 }
