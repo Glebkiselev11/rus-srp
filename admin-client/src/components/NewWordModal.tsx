@@ -77,10 +77,15 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
 
 				<div className="flex justify-end">
 					<AppButton 
+						className="mr-2"
+						label={t("cancel")} 
+						onClick={closeHander}
+					/>
+					<AppButton 
 						type="filled"
 						disabled={!isWordValid(newWord)} 
 						loading={isLoadingCreatingWord} 
-						label={t(("save"))} 
+						label={t("save")} 
 						onClick={save}
 					/>
 				</div>
