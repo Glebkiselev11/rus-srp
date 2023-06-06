@@ -5,6 +5,7 @@ import { SettingsIcon } from "./SettingsIcon";
 import { AddIcon } from "./AddIcon";
 import { MenuIcon } from "./MenuIcon";
 import { CloseIcon } from "./CloseIcon";
+import { CancelIcon } from "./CancelIcon";
 
 interface AppIconProps {
   color?: "black" | "white" | "gray" | "indigo", 
@@ -26,7 +27,8 @@ export function AppIcon({ color = "black", name, size = "24px" }: AppIconProps) 
 		"settings": SettingsIcon,
 		"add": AddIcon,
 		"menu": MenuIcon,
-		"close": CloseIcon
+		"close": CloseIcon,
+		"cancel": CancelIcon
 	}[name];
 
 	return (

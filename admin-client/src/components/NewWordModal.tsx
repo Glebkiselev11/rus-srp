@@ -50,6 +50,7 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
 						value={newWord.eng} 
 						label="English"
 						className="mb-5" 
+						clearable
 						onChange={eng => setNewWord({ ...newWord, eng })}
 					/>
 
@@ -57,6 +58,7 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
 						value={newWord.rus} 
 						label="Русский"
 						className="mb-5" 
+						clearable
 						onChange={rus => setNewWord({ ...newWord, rus })}
 					/>
 
@@ -64,6 +66,7 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
 						value={newWord.srp_cyrillic} 
 						label="Српски"
 						className="mb-5" 
+						clearable
 						onChange={srp_cyrillic => setNewWord({ ...newWord, srp_cyrillic })}
 					/>
 
@@ -71,6 +74,7 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
 						value={newWord.srp_latin} 
 						label="Srpski"
 						className="mb-5"
+						clearable
 						onChange={srp_latin => setNewWord({ ...newWord, srp_latin })}
 					/>
 				</div>
