@@ -1,8 +1,13 @@
 {
   "translation": {
+    "cancel": "Otkazati",
     "settings": "Podešavanja",
     "all-words": "Sve reči",
     "add-word": "Dodajte reč",
+    "adding-word": {
+      "title": "Dodavanje reči",
+      "description": "Unesite reč na odgovarajućem jeziku"
+    },
     "search": "Pretraga",
     "save": "Sačuvaj",
     "delete": "Izbriši",

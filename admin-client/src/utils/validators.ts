@@ -1,7 +1,7 @@
 import { IDraftWord } from "../models";
 
 export function isWordValid(word: IDraftWord): boolean {
-	return Object
+	return !Object
 		.values(word)
-		.some(w => w.length > 2);
+		.some((w: string) => w.length === 0);
 } 

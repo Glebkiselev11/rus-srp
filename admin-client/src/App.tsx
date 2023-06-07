@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 import { AppNotification } from "./components/AppNotification";
 import { SideMenu } from "./components/SideMenu";
 import HomePage from "./Pages/HomePage";
-import NewWordPage from "./Pages/NewWordPage";
 import WordPage from "./Pages/WordPage";
 import NotFoundPage from "./Pages/NotFoundPage";
 import SettingsPage from "./Pages/SettingsPage";
@@ -17,7 +16,6 @@ function App() {
 				<Routes >
 					<Route path="/" element={<HomePage/>}/>
 					<Route path="/settings" element={<SettingsPage/>}/>
-					<Route path="/new" element={<NewWordPage/>}/>
 					<Route path="/words/:wordId" element={<WordPage/>}/>
 					<Route
 						path="*"
