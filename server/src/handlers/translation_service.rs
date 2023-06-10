@@ -25,6 +25,7 @@ impl Language {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct TranslatePayload {
+    from: Language,
     text: String,
     target: Vec<Language>,
 }
@@ -43,6 +44,7 @@ struct ResponseData {
 pub async fn translate(body: web::Json<TranslatePayload>) -> actix_web::Result<impl Responder> {
     let text = body.text.clone();
     let target = body.target.clone();
+    let from = body.from.clone().as_str();
 
     let client = reqwest::Client::new();
 
@@ -68,7 +70,7 @@ pub async fn translate(body: web::Json<TranslatePayload>) -> actix_web::Result<i
     );
     headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
 
-    let body = json!([{ "Text": text }]);
+    let body = json!([{ "Text": text, "from": from }]);
 
     let res = client
         .post("https://microsoft-translator-text.p.rapidapi.com/translate")
