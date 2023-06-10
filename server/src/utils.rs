@@ -21,37 +21,9 @@ pub fn hash_password(password: &str) -> Result<String, bcrypt::BcryptError> {
 }
 
 pub fn serbian_latin_to_cyrillic(latin: &str) -> String {
+    let latin: &str = &latin.clone().to_lowercase();
+
     let lat_to_cyr: HashMap<&str, &str> = [
-        ("A", "А"),
-        ("B", "Б"),
-        ("V", "В"),
-        ("G", "Г"),
-        ("D", "Д"),
-        ("Đ", "Ђ"),
-        ("E", "Е"),
-        ("Ž", "Ж"),
-        ("Z", "З"),
-        ("I", "И"),
-        ("J", "Ј"),
-        ("K", "К"),
-        ("L", "Л"),
-        ("Lj", "Љ"),
-        ("M", "М"),
-        ("N", "Н"),
-        ("Nj", "Њ"),
-        ("O", "О"),
-        ("P", "П"),
-        ("R", "Р"),
-        ("S", "С"),
-        ("T", "Т"),
-        ("Ć", "Ћ"),
-        ("U", "У"),
-        ("F", "Ф"),
-        ("H", "Х"),
-        ("C", "Ц"),
-        ("Č", "Ч"),
-        ("Dž", "Џ"),
-        ("Š", "Ш"),
         ("a", "а"),
         ("b", "б"),
         ("v", "в"),
@@ -88,11 +60,31 @@ pub fn serbian_latin_to_cyrillic(latin: &str) -> String {
     .collect();
 
     let graphemes = UnicodeSegmentation::graphemes(latin, true).collect::<Vec<&str>>();
+    let mut _graphemes: Vec<String> = vec![];
+    let mut letters_group: Vec<&str> = vec![];
+    for (right, letter) in graphemes.iter().enumerate() {
+        letters_group.push(letter);
+
+        while letters_group.len() > 1 {
+            let combination = format!("{}{}", letters_group[0], letters_group[1]);
+            if ["lj", "nj", "dž"].contains(&combination.as_str()) {
+                _graphemes.push(combination);
+                letters_group.clear();
+            } else {
+                _graphemes.push(letters_group[0].to_string());
+                letters_group = vec![letters_group[1]];
+            }
+        }
+
+        if right == graphemes.len() - 1 && letters_group.len() == 1 {
+            _graphemes.push(letters_group[0].to_string());
+        }
+    }
+    drop(graphemes);
 
     let mut cyrillic = String::new();
-    for grapheme in graphemes {
-        println!("{grapheme}");
-        match lat_to_cyr.get(grapheme) {
+    for grapheme in _graphemes.iter() {
+        match lat_to_cyr.get(grapheme as &str) {
             Some(cyr) => cyrillic.push_str(cyr),
             None => cyrillic.push_str(grapheme),
         }
