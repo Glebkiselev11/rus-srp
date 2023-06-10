@@ -19,6 +19,7 @@ jsonwebtoken = "8.3.0"
 chrono = { version = "0.4.24", features = ["serde"] }
 reqwest = { version = "0.11", features = ["json"] }
 openssl = { version = "0.10", features = ["vendored"] }
+unicode-segmentation = "1.10.1"
 
 
 [dev-dependencies]
