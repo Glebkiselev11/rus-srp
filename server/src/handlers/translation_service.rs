@@ -6,6 +6,8 @@ use reqwest::{
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 
+const API_VERSION: [(&str, &str); 1] = [("api-version", "3.0")];
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
 enum Language {
     RU,
@@ -27,7 +29,7 @@ impl Language {
 pub struct TranslatePayload {
     from: Language,
     text: String,
-    target: Vec<Language>,
+    targets: Vec<Language>,
 }
 
 #[derive(Deserialize, Debug, Serialize)]
@@ -43,22 +45,47 @@ struct ResponseData {
 
 pub async fn translate(body: web::Json<TranslatePayload>) -> actix_web::Result<impl Responder> {
     let text = body.text.clone();
-    let target = body.target.clone();
+    let targets = body.targets.clone();
     let from = body.from.clone().as_str();
 
     let client = reqwest::Client::new();
 
-    let mut headers = HeaderMap::new();
-
-    let form_query_target = || {
-        let mut query: Vec<(String, &str)> = vec![];
-
-        for (i, t) in target.iter().enumerate() {
-            query.push((format!("to[{i}]"), t.as_str()))
-        }
-
-        return query;
+    let query_targets = || -> Vec<(String, &str)> {
+        targets
+            .iter()
+            .enumerate()
+            .fold(vec![], |mut query, (i, to)| {
+                query.push((format!("to[{i}]"), to.as_str()));
+                query
+            })
     };
+
+    let body = json!([{ "Text": text, "from": from }]);
+
+    let res = client
+        .post(url("translate"))
+        .headers(headers())
+        .query(&API_VERSION)
+        .query(&query_targets())
+        .json(&body)
+        .send()
+        .await;
+
+    match res {
+        Ok(resp) => {
+            let data: Vec<ResponseData> = resp.json().await.unwrap();
+            Ok(HttpResponse::Ok().json(&data[0]))
+        }
+        Err(e) => Err(actix_web::error::ErrorInternalServerError(e)),
+    }
+}
+
+fn url(path: &str) -> String {
+    format!("https://microsoft-translator-text.p.rapidapi.com/{path}")
+}
+
+fn headers() -> HeaderMap {
+    let mut headers = HeaderMap::new();
 
     headers.insert(
         "X-RapidAPI-Key",
@@ -70,23 +97,5 @@ pub async fn translate(body: web::Json<TranslatePayload>) -> actix_web::Result<i
     );
     headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
 
-    let body = json!([{ "Text": text, "from": from }]);
-
-    let res = client
-        .post("https://microsoft-translator-text.p.rapidapi.com/translate")
-        .headers(headers)
-        .query(&[("api-version", "3.0"), ("profanityAction", "NoAction")])
-        .query(&form_query_target())
-        .json(&body)
-        .send()
-        .await;
-
-    match res {
-        Ok(resp) => {
-            let data: Vec<ResponseData> = resp.json().await.unwrap();
-
-            Ok(HttpResponse::Ok().json(&data[0]))
-        }
-        Err(e) => Err(actix_web::error::ErrorInternalServerError(e)),
-    }
+    headers
 }
