@@ -1,0 +1,51 @@
+import { IDraftWord } from "../models";
+import { ITranslateResponse } from "../models/api";
+
+export function getTranslationTargets(newWord: IDraftWord) {
+	const table = {
+		"srp_latin": "SR",
+		"rus": "RU",
+		"eng": "EN"
+	};
+  
+	const translationFromPriority = ["RU", "SR", "EN"];
+
+	const targets = [];
+	const fromMap: Map<string, string> = new Map();
+
+	for (const key of Object.keys(newWord) as Array<keyof typeof newWord>) {
+		const value = newWord[key];
+		if (value) {
+			fromMap.set(table[key], value);
+		} else {
+			targets.push(table[key]);
+		}
+	}
+
+	const fromCode = translationFromPriority.find(key => fromMap.has(key));
+  
+	return {
+		targets,
+		from: fromCode,
+		text: fromCode ? fromMap.get(fromCode) : "",
+	};
+}
+
+export function fillDrafWordWithTranslation({ translations }: ITranslateResponse, word: IDraftWord): IDraftWord {
+	const table = {
+		"sr-Latn": "srp_latin",
+		"ru": "rus",
+		"en": "eng"
+	};
+
+	const _word = {
+		...word,
+	};
+
+	translations.forEach(({ text, to }) => {
+		const key = table[to] as keyof IDraftWord;
+		_word[key] = text;
+	});
+
+	return _word;
+}

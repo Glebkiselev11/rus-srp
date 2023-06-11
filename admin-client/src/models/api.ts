@@ -9,3 +9,13 @@ export interface IRequestParams {
   offset?: number,
   limti?: number,
 }
+
+export interface ITranslateRequest {
+  from: string,
+  targets: Array<string>,
+  text: string
+}
+
+export interface ITranslateResponse {
+  translations: Array<{text: string, to: "sr-Latn" | "ru" | "en"}>
+}
