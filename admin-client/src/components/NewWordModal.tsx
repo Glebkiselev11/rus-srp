@@ -18,7 +18,6 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
 	const { trigger } = useNotification();
 
 	const initWord: IDraftWord = {
-		srp_cyrillic: "", 
 		srp_latin: "",
 		rus: "",
 		eng: "",
@@ -60,14 +59,6 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
 						className="mb-5" 
 						clearable
 						onChange={rus => setNewWord({ ...newWord, rus })}
-					/>
-
-					<TextInput 
-						value={newWord.srp_cyrillic} 
-						label="Српски"
-						className="mb-5" 
-						clearable
-						onChange={srp_cyrillic => setNewWord({ ...newWord, srp_cyrillic })}
 					/>
 
 					<TextInput 
