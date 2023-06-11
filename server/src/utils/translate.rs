@@ -4,7 +4,7 @@ use unicode_segmentation::UnicodeSegmentation;
 pub struct SerbianCyrillic {}
 
 impl SerbianCyrillic {
-    fn get_lat_to_cyr_dictionary<'a>() -> HashMap<&'a str, &'a str> {
+    fn get_lat_to_cyr_dictionary() -> HashMap<&'static str, &'static str> {
         [
             ("A", "А"),
             ("B", "Б"),
