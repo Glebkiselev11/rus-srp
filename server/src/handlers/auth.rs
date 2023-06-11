@@ -1,6 +1,6 @@
 use crate::db;
 use crate::models::{Claims, NewUser, Token};
-use crate::utils::hash_password;
+use crate::utils::hash::hash_password;
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 use bcrypt::verify;

@@ -1,7 +1,7 @@
 use crate::db;
 use crate::models;
 use crate::models::OptionalQuery;
-use crate::utils::serbian_latin_to_cyrillic;
+use crate::utils::translate::SerbianCyrillic;
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 use serde::Deserialize;
@@ -21,7 +21,7 @@ pub async fn create(
         rus: body.rus.clone(),
         eng: body.eng.clone(),
         srp_latin: body.srp_latin.clone(),
-        srp_cyrillic: serbian_latin_to_cyrillic(&body.srp_latin),
+        srp_cyrillic: SerbianCyrillic::from_latin(&body.srp_latin),
     };
 
     // use web::block to offload blocking Diesel code without blocking server thread
