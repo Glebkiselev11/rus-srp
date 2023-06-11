@@ -122,3 +122,26 @@ impl SerbianCyrillic {
         letters_with_combinations
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::SerbianCyrillic;
+
+    #[test]
+    fn test_from_latin() {
+        let cyrillic = SerbianCyrillic::from_latin("njegov čaj");
+        assert_eq!(cyrillic, "његов чај");
+
+        let cyrillic = SerbianCyrillic::from_latin("život i priključenja");
+        assert_eq!(cyrillic, "живот и прикључења");
+
+        let cyrillic = SerbianCyrillic::from_latin("ljulja se ljuljaška");
+        assert_eq!(cyrillic, "љуља се љуљашка");
+
+        let cyrillic = SerbianCyrillic::from_latin("džep pun para?");
+        assert_eq!(cyrillic, "џеп пун пара?");
+
+        let cyrillic = SerbianCyrillic::from_latin("");
+        assert_eq!(cyrillic, "");
+    }
+}
