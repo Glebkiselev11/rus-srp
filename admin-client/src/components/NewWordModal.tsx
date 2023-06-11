@@ -96,7 +96,12 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
 					/>
 
 					{isAnyInputFilled && 
-						<AppButton icon="add" type="filled" onClick={fillEmptyInputs}/>
+						<AppButton 
+						  disabled={isLoadingTranslation} 
+							icon="edit_note" 
+							label={t("fill-in-auto")} 
+							onClick={fillEmptyInputs}
+						/>
 					}
 				</div>
 
