@@ -3,9 +3,6 @@ services:
   server:
     build: 
       context: .
-    environment:
-      DATABASE_URL: database.db
-      SALT: 123456
     ports:
       - "8080:8080"
     volumes:

@@ -10,6 +10,7 @@ export type IconName =
   "add" | 
   "menu" | 
   "close" | 
-  "cancel";
+  "cancel"|
+  "edit_note";
 
 export type IconSize = "20px" | "24px"

@@ -1,18 +1,27 @@
 use crate::db;
 use crate::models;
 use crate::models::OptionalQuery;
+use crate::utils::translate::SerbianCyrillic;
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
+use serde::Deserialize;
+
+#[derive(Debug, Deserialize)]
+pub struct NewWordPayload {
+    pub rus: String,
+    pub eng: String,
+    pub srp_latin: String,
+}
 
 pub async fn create(
     pool: web::Data<DbPool>,
-    body: web::Json<models::NewWord>,
+    body: web::Json<NewWordPayload>,
 ) -> actix_web::Result<impl Responder> {
     let word = models::NewWord {
         rus: body.rus.clone(),
         eng: body.eng.clone(),
         srp_latin: body.srp_latin.clone(),
-        srp_cyrillic: body.srp_cyrillic.clone(),
+        srp_cyrillic: SerbianCyrillic::from_latin(&body.srp_latin),
     };
 
     // use web::block to offload blocking Diesel code without blocking server thread
