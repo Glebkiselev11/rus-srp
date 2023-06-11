@@ -73,39 +73,52 @@ impl SerbianCyrillic {
     }
 
     pub fn from_latin(latin: &str) -> String {
-        let dictionary = Self::get_lat_to_cyr_dictionary();
+        let dict = Self::get_lat_to_cyr_dictionary();
 
-        let graphemes = UnicodeSegmentation::graphemes(latin, true).collect::<Vec<&str>>();
-        let mut _graphemes: Vec<String> = vec![];
-        let mut letters_group: Vec<&str> = vec![];
-        for (right, letter) in graphemes.iter().enumerate() {
-            letters_group.push(letter);
-
-            while letters_group.len() > 1 {
-                let combination = format!("{}{}", letters_group[0], letters_group[1]);
-                if dictionary.contains_key(&combination.as_str()) {
-                    _graphemes.push(combination);
-                    letters_group.clear();
-                } else {
-                    _graphemes.push(letters_group[0].to_string());
-                    letters_group = vec![letters_group[1]];
-                }
-            }
-
-            if right == graphemes.len() - 1 && letters_group.len() == 1 {
-                _graphemes.push(letters_group[0].to_string());
-            }
-        }
-        drop(graphemes);
+        let splitted_latin: Vec<String> = Self::split_latin(&latin);
 
         let mut cyrillic = String::new();
-        for grapheme in _graphemes.iter() {
-            match dictionary.get(grapheme as &str) {
+        for grapheme in splitted_latin.iter() {
+            match dict.get(grapheme as &str) {
                 Some(cyr) => cyrillic.push_str(cyr),
                 None => cyrillic.push_str(grapheme),
             }
         }
 
         cyrillic
+    }
+
+    fn split_latin(text: &str) -> Vec<String> {
+        let dict = Self::get_lat_to_cyr_dictionary();
+        // for example we have serbian "njegov čaj"
+
+        // Here we split by letters;
+        // ["n", "j", "e", "g", "o", "v", "č", "a", "j"]
+        let letters = UnicodeSegmentation::graphemes(text, true).collect::<Vec<&str>>();
+
+        // And here we make it correct for serbian dictionary, because sometimes 2 latin letters will be one letter in cyrillic: "nj" -> "њ"
+        // ["nj", "e", "g", "o", "v", "č", "a", "j"]
+        let mut letters_with_combinations: Vec<String> = vec![];
+        let mut letters_group: Vec<&str> = vec![];
+        for (right, letter) in letters.iter().enumerate() {
+            letters_group.push(letter);
+
+            while letters_group.len() > 1 {
+                let combination = format!("{}{}", letters_group[0], letters_group[1]);
+                if dict.contains_key(&combination.as_str()) {
+                    letters_with_combinations.push(combination);
+                    letters_group.clear();
+                } else {
+                    letters_with_combinations.push(letters_group[0].to_string());
+                    letters_group = vec![letters_group[1]];
+                }
+            }
+
+            if right == letters.len() - 1 && letters_group.len() == 1 {
+                letters_with_combinations.push(letters_group[0].to_string());
+            }
+        }
+
+        letters_with_combinations
     }
 }
