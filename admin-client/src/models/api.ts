@@ -10,9 +10,11 @@ export interface IRequestParams {
   limti?: number,
 }
 
+export type TranslationTarget = "RU" | "EN" | "SR"; 
+
 export interface ITranslateRequest {
   from: string,
-  targets: Array<string>,
+  targets: Array<TranslationTarget>,
   text: string
 }
 

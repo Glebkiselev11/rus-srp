@@ -1,8 +1,8 @@
 import { IDraftWord } from "../models";
-import { ITranslateResponse } from "../models/api";
+import { ITranslateResponse, TranslationTarget } from "../models/api";
 
 export function getTranslationTargets(newWord: IDraftWord) {
-	const table = {
+	const table: Record<keyof typeof newWord, TranslationTarget> = {
 		"srp_latin": "SR",
 		"rus": "RU",
 		"eng": "EN"
@@ -10,7 +10,7 @@ export function getTranslationTargets(newWord: IDraftWord) {
   
 	const translationFromPriority = ["RU", "SR", "EN"];
 
-	const targets = [];
+	const targets: Array<TranslationTarget> = [];
 	const fromMap: Map<string, string> = new Map();
 
 	for (const key of Object.keys(newWord) as Array<keyof typeof newWord>) {
