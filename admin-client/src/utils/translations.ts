@@ -33,7 +33,7 @@ export function getTranslationTargets(newWord: IDraftWord) {
 
 export function fillDrafWordWithTranslation({ translations }: ITranslateResponse, word: IDraftWord): IDraftWord {
 	const table = {
-		"sr-Latn": "srp_latin",
+		"bs": "srp_latin",
 		"ru": "rus",
 		"en": "eng"
 	};

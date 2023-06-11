@@ -20,7 +20,7 @@ impl Language {
         match *self {
             Language::RU => "ru",
             Language::EN => "en",
-            Language::SR => "sr",
+            Language::SR => "bs",
         }
     }
 }

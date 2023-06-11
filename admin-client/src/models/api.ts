@@ -17,5 +17,5 @@ export interface ITranslateRequest {
 }
 
 export interface ITranslateResponse {
-  translations: Array<{text: string, to: "sr-Latn" | "ru" | "en"}>
+  translations: Array<{text: string, to: "bs" | "ru" | "en"}>
 }
