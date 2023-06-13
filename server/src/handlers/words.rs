@@ -1,33 +1,19 @@
 use crate::db;
 use crate::models;
 use crate::models::OptionalQuery;
-use crate::utils::translate::SerbianCyrillic;
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
-use serde::Deserialize;
-
-#[derive(Debug, Deserialize)]
-pub struct NewWordPayload {
-    pub rus: String,
-    pub eng: String,
-    pub srp_latin: String,
-}
 
 pub async fn create(
     pool: web::Data<DbPool>,
-    body: web::Json<NewWordPayload>,
+    body: web::Json<models::words::NewWordBody>,
 ) -> actix_web::Result<impl Responder> {
-    let word = models::NewWord {
-        rus: body.rus.clone(),
-        eng: body.eng.clone(),
-        srp_latin: body.srp_latin.clone(),
-        srp_cyrillic: SerbianCyrillic::from_latin(&body.srp_latin),
-    };
+    let new_word = models::words::NewWord::from(body);
 
     // use web::block to offload blocking Diesel code without blocking server thread
     let word = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::insert(word, &mut conn)
+        db::words::insert(new_word, &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -79,24 +65,19 @@ pub async fn get_by_id(
 
 pub async fn update(
     pool: web::Data<DbPool>,
-    body: web::Json<models::Word>,
+    id: web::Path<i32>,
+    body: web::Json<models::words::UpdateWordBody>,
 ) -> actix_web::Result<impl Responder> {
-    let word = models::Word {
-        id: body.id.clone(),
-        rus: body.rus.clone(),
-        eng: body.eng.clone(),
-        srp_cyrillic: body.srp_cyrillic.clone(),
-        srp_latin: body.srp_latin.clone(),
-    };
+    let word = body.into_inner();
 
-    web::block(move || {
+    let word = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::update(word, &mut conn)
+        db::words::update(word, id.into_inner(), &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
 
-    Ok(HttpResponse::Ok().json(body))
+    Ok(HttpResponse::Ok().json(word))
 }
 
 pub async fn delete(

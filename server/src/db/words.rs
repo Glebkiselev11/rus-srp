@@ -1,3 +1,4 @@
+use chrono::Utc;
 use diesel::prelude::*;
 
 use crate::models;
@@ -5,32 +6,31 @@ use crate::models;
 type DbError = Box<dyn std::error::Error + Send + Sync>;
 
 /// Run query using Diesel to insert a new database row and return the result.
-pub fn insert(word: models::NewWord, conn: &mut SqliteConnection) -> Result<models::Word, DbError> {
+pub fn insert(
+    new_word: models::words::NewWord,
+    conn: &mut SqliteConnection,
+) -> Result<models::words::DbWord, DbError> {
     use crate::db::schema::words::dsl;
 
-    let format = |w: &str| w.to_lowercase();
-
-    let new_word = models::NewWord {
-        rus: format(&word.rus),
-        eng: format(&word.eng),
-        srp_cyrillic: format(&word.srp_cyrillic),
-        srp_latin: format(&word.srp_latin),
-    };
+    let new_word = models::words::DbNewWord::from(new_word);
 
     let word = diesel::insert_into(dsl::words)
         .values(&new_word)
-        .get_result::<models::Word>(conn)?;
+        .get_result::<models::words::DbWord>(conn)?;
 
     Ok(word)
 }
 
 /// Run query using Diesel to find word by uid and return it.
-pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<Option<models::Word>, DbError> {
+pub fn select_by_id(
+    id: i32,
+    conn: &mut SqliteConnection,
+) -> Result<Option<models::words::DbWord>, DbError> {
     use crate::db::schema::words::dsl;
 
     let word = dsl::words
         .filter(dsl::id.eq(id))
-        .first::<models::Word>(conn)
+        .first::<models::words::DbWord>(conn)
         .optional()?;
 
     Ok(word)
@@ -40,7 +40,7 @@ pub fn select_all_with_filter(
     conn: &mut SqliteConnection,
     offset: u32,
     search: String,
-) -> Result<Vec<models::Word>, DbError> {
+) -> Result<Vec<models::words::DbWord>, DbError> {
     use crate::db::schema::words::dsl;
 
     let format = |w: &str| format!("%{}%", w.to_lowercase());
@@ -49,7 +49,7 @@ pub fn select_all_with_filter(
         let all_words = dsl::words
             .limit(20)
             .offset(offset.into())
-            .load::<models::Word>(conn)?;
+            .load::<models::words::DbWord>(conn)?;
 
         return Ok(all_words);
     }
@@ -61,21 +61,35 @@ pub fn select_all_with_filter(
         .or_filter(dsl::eng.like(format(&search)))
         .limit(20)
         .offset(offset.into())
-        .load::<models::Word>(conn)?;
+        .load::<models::words::DbWord>(conn)?;
 
     Ok(all_words)
 }
 
-pub fn update(word: models::Word, conn: &mut SqliteConnection) -> Result<(), DbError> {
+pub fn update(
+    word: models::words::UpdateWordBody,
+    id: i32,
+    conn: &mut SqliteConnection,
+) -> Result<Option<models::words::DbWord>, DbError> {
     use crate::db::schema::words::dsl;
 
-    let word_id = word.id.clone();
+    let word = match select_by_id(id, conn)? {
+        Some(x) => models::words::DbWord {
+            updated_at: Some(Utc::now().naive_utc()),
+            rus: word.rus,
+            eng: word.eng,
+            srp_cyrillic: word.srp_cyrillic,
+            srp_latin: word.srp_latin,
+            ..x
+        },
+        None => return Ok(None),
+    };
 
-    diesel::update(dsl::words.find(word_id))
-        .set(word)
+    diesel::update(dsl::words.find(id))
+        .set(word.clone())
         .execute(conn)?;
 
-    Ok(())
+    Ok(Some(word))
 }
 
 pub fn delete(id: i32, conn: &mut SqliteConnection) -> Result<(), DbError> {

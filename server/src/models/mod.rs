@@ -1,25 +1,9 @@
+pub mod words;
+
 use chrono;
 use serde::{Deserialize, Serialize};
 
-use crate::db::schema::{users, word_categories, words};
-
-#[derive(Debug, Clone, Serialize, Deserialize, Insertable)]
-#[diesel(table_name = words)]
-pub struct NewWord {
-    pub rus: String,
-    pub srp_latin: String,
-    pub srp_cyrillic: String,
-    pub eng: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, Queryable, Insertable, AsChangeset)]
-pub struct Word {
-    pub id: i32,
-    pub rus: String,
-    pub eng: String,
-    pub srp_latin: String,
-    pub srp_cyrillic: String,
-}
+use crate::db::schema::{users, word_categories};
 
 #[derive(Debug, Serialize)]
 pub struct Pagination<T> {
