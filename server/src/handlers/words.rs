@@ -6,9 +6,9 @@ use actix_web::{web, HttpResponse, Responder};
 
 pub async fn create(
     pool: web::Data<DbPool>,
-    body: web::Json<models::words::NewWordBody>,
+    body: web::Json<models::word::NewWordBody>,
 ) -> actix_web::Result<impl Responder> {
-    let new_word = models::words::NewWord::from(body);
+    let new_word = models::word::NewWord::from(body);
 
     // use web::block to offload blocking Diesel code without blocking server thread
     let word = web::block(move || {
@@ -66,7 +66,7 @@ pub async fn get_by_id(
 pub async fn update(
     pool: web::Data<DbPool>,
     id: web::Path<i32>,
-    body: web::Json<models::words::UpdateWordBody>,
+    body: web::Json<models::word::UpdateWordBody>,
 ) -> actix_web::Result<impl Responder> {
     let word = body.into_inner();
 
