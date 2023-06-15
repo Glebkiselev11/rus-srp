@@ -48,7 +48,7 @@ export const wordsApi = createApi({
 			},
 			invalidatesTags: ["Words"]
 		}),
-		delete: build.mutation<any, string>({
+		delete: build.mutation<void, number>({
 			query(id) {
 				return {
 					url: `/${id}`,

@@ -1,7 +1,6 @@
 import { IDraftWord } from "../models";
 
 export function isWordValid(word: IDraftWord): boolean {
-	return !Object
-		.values(word)
-		.some((w: string) => w.length === 0);
+	const { rus, srp_latin, eng } = word;
+	return Boolean(rus && srp_latin && eng); 
 } 

@@ -5,7 +5,10 @@ export interface IDraftWord {
 }
 
 export interface IWord extends IDraftWord {
-  id: string;
+  id: number;
+  srp_cyrillic: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface INotification {
