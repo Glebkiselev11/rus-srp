@@ -1,7 +1,7 @@
 use chrono::Utc;
-use diesel::prelude::*;
+use diesel::{expression::expression_types::NotSelectable, prelude::*, sqlite::Sqlite};
 
-use crate::models;
+use crate::models::{self, Order};
 
 type DbError = Box<dyn std::error::Error + Send + Sync>;
 
@@ -40,15 +40,23 @@ pub fn select_all_with_filter(
     conn: &mut SqliteConnection,
     offset: u32,
     search: String,
+    order: Order,
 ) -> Result<Vec<models::word::DbWord>, DbError> {
     use crate::db::schema::words::dsl;
 
     let format = |w: &str| format!("%{}%", w.to_lowercase());
 
+    let order_clause: Box<dyn BoxableExpression<dsl::words, Sqlite, SqlType = NotSelectable>> =
+        match order {
+            Order::Asc => Box::new(dsl::created_at.asc()),
+            Order::Desc => Box::new(dsl::created_at.desc()),
+        };
+
     if search.is_empty() {
         let all_words = dsl::words
             .limit(20)
             .offset(offset.into())
+            .order(order_clause)
             .load::<models::word::DbWord>(conn)?;
 
         return Ok(all_words);
@@ -61,6 +69,7 @@ pub fn select_all_with_filter(
         .or_filter(dsl::eng.like(format(&search)))
         .limit(20)
         .offset(offset.into())
+        .order(order_clause)
         .load::<models::word::DbWord>(conn)?;
 
     Ok(all_words)
