@@ -37,11 +37,9 @@ pub async fn get_list_by_query(
         Some(s) => s.clone(),
     };
 
-    let order = query.order.unwrap_or_default();
-
     let words = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::select_all_with_filter(&mut conn, offset, search, order)
+        db::words::select_all_with_filter(&mut conn, offset, search, query.order)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;

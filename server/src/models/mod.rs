@@ -12,25 +12,12 @@ pub struct Pagination<T> {
     pub result: Vec<T>,
 }
 
-#[derive(Debug, Deserialize, Clone)]
-#[serde(rename_all = "lowercase")]
-pub enum Order {
-    Asc,
-    Desc,
-}
-
-impl Default for Order {
-    fn default() -> Self {
-        Order::Asc
-    }
-}
-
 #[derive(Debug, Clone, Deserialize)]
 pub struct OptionalQuery {
     pub offset: Option<u32>,
     pub search: Option<String>,
     pub limit: Option<u32>,
-    pub order: Option<Order>,
+    pub order: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Queryable, Insertable, AsChangeset)]

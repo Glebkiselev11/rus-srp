@@ -1,7 +1,7 @@
 use chrono::Utc;
 use diesel::{expression::expression_types::NotSelectable, prelude::*, sqlite::Sqlite};
 
-use crate::models::{self, Order};
+use crate::models::{self};
 
 type DbError = Box<dyn std::error::Error + Send + Sync>;
 
@@ -40,17 +40,30 @@ pub fn select_all_with_filter(
     conn: &mut SqliteConnection,
     offset: u32,
     search: String,
-    order: Order,
+    order: Option<String>,
 ) -> Result<Vec<models::word::DbWord>, DbError> {
     use crate::db::schema::words::dsl;
 
     let format = |w: &str| format!("%{}%", w.to_lowercase());
 
-    let order_clause: Box<dyn BoxableExpression<dsl::words, Sqlite, SqlType = NotSelectable>> =
-        match order {
-            Order::Asc => Box::new(dsl::created_at.asc()),
-            Order::Desc => Box::new(dsl::created_at.desc()),
-        };
+    let mut order_clause: Box<dyn BoxableExpression<dsl::words, Sqlite, SqlType = NotSelectable>> =
+        Box::new(dsl::created_at.asc());
+
+    if let Some(o) = order {
+        match o.as_str() {
+            "rus" => order_clause = Box::new(dsl::rus.asc()),
+            "-rus" => order_clause = Box::new(dsl::rus.desc()),
+            "eng" => order_clause = Box::new(dsl::eng.asc()),
+            "-eng" => order_clause = Box::new(dsl::eng.desc()),
+            "srp_latin" => order_clause = Box::new(dsl::srp_latin.asc()),
+            "-srp_latin" => order_clause = Box::new(dsl::srp_latin.desc()),
+            "created_at" => order_clause = Box::new(dsl::created_at.asc()),
+            "-created_at" => order_clause = Box::new(dsl::created_at.desc()),
+            "updated_at" => order_clause = Box::new(dsl::updated_at.asc()),
+            "-updated_at" => order_clause = Box::new(dsl::updated_at.desc()),
+            _ => {}
+        }
+    }
 
     if search.is_empty() {
         let all_words = dsl::words
