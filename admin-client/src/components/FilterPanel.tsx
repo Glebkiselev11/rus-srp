@@ -17,8 +17,8 @@ export function FilterPanel({ params, onChange }: FilterPanelProps) {
 	const [orderState, setOrderState] = useState<Order>(params.order ?? "created_at");
 
 	const orderOptions: OrderOptionType[] = [
-		{ label: "asc", value: "created_at" },
-		{ label: "desc", value: "-created_at" }
+		{ label: t("order.old-words"), value: "created_at" },
+		{ label: t("order.new-words"), value: "-created_at" }
 	];
 
 	const handleOrderChange = (x: string) => {

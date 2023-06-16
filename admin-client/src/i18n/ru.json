@@ -1,5 +1,9 @@
 {
   "translation": {
+    "order" : {
+      "new-words": "Новые слова",
+      "old-words": "Старые слова"
+    },
     "fill-in-auto": "Заполнить автоматически",
     "cancel": "Отмена",
     "settings": "Настройки",
