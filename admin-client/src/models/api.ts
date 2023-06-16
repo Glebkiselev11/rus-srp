@@ -4,10 +4,13 @@ export interface IListResponse<T> {
   result: Array<T>
 }
 
+export type Order = "created_at" | "-created_at"
+
 export interface IRequestParams {
   search?: string,
   offset?: number,
   limti?: number,
+  order?: Order, 
 }
 
 export type TranslationTarget = "RU" | "EN" | "SR"; 
