@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { LanguageList } from "../i18n";
+import { AppSelect } from "./AppSelect";
 
 export function LanguageChanger() {
 	const { i18n } = useTranslation();
@@ -9,11 +10,9 @@ export function LanguageChanger() {
 		localStorage.setItem("languageKey", code);
 	};
 
+	const languageOptions = LanguageList.map((x) => ({ label: x.name, value: x.lng }));
+
 	return (
-		<select name="language" value={i18n.language} onChange={e => handleChangeLanguage(e.target.value)}>
-			{LanguageList.map(l => 
-				<option key={l.lng} value={l.lng}>{l.name}</option>
-			)}
-		</select>
+		<AppSelect selected={i18n.language} onChange={handleChangeLanguage} options={languageOptions} />
 	);
 }
