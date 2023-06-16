@@ -28,7 +28,7 @@ export function FilterPanel({ params, onChange }: FilterPanelProps) {
 	};
 
 	return (
-		<div className="flex items-center justify-between">
+		<div className="flex items-end justify-between">
 			<TextInput 
 				value={params.search || ""} 
 				onChange={search => onChange({ ...params, search })} 
