@@ -2,7 +2,8 @@
   "translation": {
     "order" : {
       "new-words": "Новые слова",
-      "old-words": "Старые слова"
+      "old-words": "Старые слова",
+      "last-updated": "Последние обновленные"
     },
     "fill-in-auto": "Заполнить автоматически",
     "cancel": "Отмена",

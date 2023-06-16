@@ -4,7 +4,7 @@ export interface IListResponse<T> {
   result: Array<T>
 }
 
-export type Order = "created_at" | "-created_at"
+export type Order = "created_at" | "-created_at" | "-updated_at"
 
 export interface IRequestParams {
   search?: string,

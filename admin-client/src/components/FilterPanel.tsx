@@ -18,7 +18,8 @@ export function FilterPanel({ params, onChange }: FilterPanelProps) {
 
 	const orderOptions: OrderOptionType[] = [
 		{ label: t("order.old-words"), value: "created_at" },
-		{ label: t("order.new-words"), value: "-created_at" }
+		{ label: t("order.new-words"), value: "-created_at" },
+		{ label: t("order.last-updated"), value: "-updated_at" }
 	];
 
 	const handleOrderChange = (x: string) => {
