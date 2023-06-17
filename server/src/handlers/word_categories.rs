@@ -1,16 +1,14 @@
 use crate::db;
-use crate::models;
+use crate::models::word_category::WordCategoryBody;
+use crate::models::{OptionalQuery, Pagination};
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 
 pub async fn create(
     pool: web::Data<DbPool>,
-    body: web::Json<models::NewWordCategory>,
+    body: web::Json<WordCategoryBody>,
 ) -> actix_web::Result<impl Responder> {
-    let category = models::NewWordCategory {
-        name: body.name.clone(),
-        description: body.description.clone(),
-    };
+    let category = body.into_inner();
 
     let category = web::block(move || {
         let mut conn = pool.get()?;
@@ -41,7 +39,7 @@ pub async fn get_by_id(
 
 pub async fn get_list_by_query(
     pool: web::Data<DbPool>,
-    query: web::Query<models::OptionalQuery>,
+    query: web::Query<OptionalQuery>,
 ) -> actix_web::Result<impl Responder> {
     let offset = match query.offset {
         None => 0,
@@ -60,7 +58,7 @@ pub async fn get_list_by_query(
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
 
-    Ok(HttpResponse::Ok().json(models::Pagination {
+    Ok(HttpResponse::Ok().json(Pagination {
         count: result.len(),
         offset,
         result,
@@ -70,12 +68,9 @@ pub async fn get_list_by_query(
 pub async fn update(
     pool: web::Data<DbPool>,
     id: web::Path<i32>,
-    body: web::Json<models::NewWordCategory>,
+    body: web::Json<WordCategoryBody>,
 ) -> actix_web::Result<impl Responder> {
-    let category = models::NewWordCategory {
-        name: body.name.clone(),
-        description: body.description.clone(),
-    };
+    let category = body.into_inner();
 
     let category = web::block(move || {
         let mut conn = pool.get()?;

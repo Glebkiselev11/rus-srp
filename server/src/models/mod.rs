@@ -1,9 +1,9 @@
 pub mod word;
+pub mod word_category;
 
-use chrono;
 use serde::{Deserialize, Serialize};
 
-use crate::db::schema::{users, word_categories};
+use crate::db::schema::users;
 
 #[derive(Debug, Serialize)]
 pub struct Pagination<T> {
@@ -43,28 +43,4 @@ pub struct Claims {
 #[derive(Serialize, Deserialize)]
 pub struct Token {
     pub token: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct NewWordCategory {
-    pub name: String,
-    pub description: Option<String>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, Insertable)]
-#[diesel(table_name = word_categories)]
-pub struct NewWordCategoryWithCreationDate {
-    pub name: String,
-    pub description: Option<String>,
-    pub created_at: chrono::NaiveDateTime,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, Queryable, AsChangeset)]
-#[diesel(table_name = word_categories)]
-pub struct WordCategory {
-    pub id: i32,
-    pub name: String,
-    pub description: Option<String>,
-    pub created_at: chrono::NaiveDateTime,
-    pub updated_at: Option<chrono::NaiveDateTime>,
 }
