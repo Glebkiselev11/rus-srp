@@ -1,6 +1,5 @@
 use crate::db::schema::words;
 use crate::utils::translate::SerbianCyrillic;
-use actix_web::web::Json;
 use chrono;
 use serde::{Deserialize, Serialize};
 
@@ -20,15 +19,15 @@ pub struct NewWord {
     pub eng: String,
 }
 
-impl From<Json<NewWordBody>> for NewWord {
-    fn from(data: Json<NewWordBody>) -> Self {
+impl From<NewWordBody> for NewWord {
+    fn from(body: NewWordBody) -> Self {
         let format = |w: &str| w.to_lowercase();
 
         NewWord {
-            rus: format(&data.rus),
-            srp_latin: format(&data.srp_latin),
-            eng: format(&data.eng),
-            srp_cyrillic: format(&SerbianCyrillic::from_latin(&data.srp_latin)),
+            rus: format(&body.rus),
+            srp_latin: format(&body.srp_latin),
+            eng: format(&body.eng),
+            srp_cyrillic: format(&SerbianCyrillic::from_latin(&body.srp_latin)),
         }
     }
 }
@@ -55,6 +54,15 @@ impl From<NewWord> for DbNewWord {
     }
 }
 
+#[derive(Debug, Deserialize, Serialize)]
+pub struct UpdateWordBody {
+    pub id: i32,
+    pub rus: String,
+    pub eng: String,
+    pub srp_latin: String,
+    pub srp_cyrillic: String,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, Queryable, AsChangeset)]
 #[diesel(table_name = words)]
 pub struct DbWord {
@@ -67,11 +75,16 @@ pub struct DbWord {
     pub updated_at: Option<chrono::NaiveDateTime>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
-pub struct UpdateWordBody {
-    pub id: i32,
-    pub rus: String,
-    pub eng: String,
-    pub srp_latin: String,
-    pub srp_cyrillic: String,
+impl DbWord {
+    pub fn with_update(&self, payload: UpdateWordBody) -> DbWord {
+        DbWord {
+            id: self.id,
+            created_at: self.created_at,
+            rus: payload.rus,
+            eng: payload.eng,
+            srp_latin: payload.srp_latin,
+            srp_cyrillic: payload.srp_cyrillic,
+            updated_at: Some(chrono::Utc::now().naive_utc()),
+        }
+    }
 }

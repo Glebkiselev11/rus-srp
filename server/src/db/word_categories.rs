@@ -1,25 +1,23 @@
-use chrono::Utc;
 use diesel::prelude::*;
 
-use crate::models;
+use crate::models::{
+    query_options::QueryOptions,
+    word_category::{DbNewWordCategory, DbWordCategory, WordCategoryBody},
+};
 
 type DbError = Box<dyn std::error::Error + Send + Sync>;
 
 pub fn insert(
-    new_category: models::NewWordCategory,
+    new_category: WordCategoryBody,
     conn: &mut SqliteConnection,
-) -> Result<models::WordCategory, DbError> {
+) -> Result<DbWordCategory, DbError> {
     use crate::db::schema::word_categories::dsl;
 
-    let category = models::NewWordCategoryWithCreationDate {
-        name: new_category.name.clone(),
-        description: new_category.description.clone(),
-        created_at: Utc::now().naive_utc(),
-    };
+    let new_category = DbNewWordCategory::from(new_category);
 
     let category = diesel::insert_into(dsl::word_categories)
-        .values(&category)
-        .get_result::<models::WordCategory>(conn)?;
+        .values(&new_category)
+        .get_result::<DbWordCategory>(conn)?;
 
     Ok(category)
 }
@@ -27,12 +25,12 @@ pub fn insert(
 pub fn select_by_id(
     id: i32,
     conn: &mut SqliteConnection,
-) -> Result<Option<models::WordCategory>, DbError> {
+) -> Result<Option<DbWordCategory>, DbError> {
     use crate::db::schema::word_categories::dsl;
 
     let category = dsl::word_categories
         .filter(dsl::id.eq(id))
-        .first::<models::WordCategory>(conn)
+        .first::<DbWordCategory>(conn)
         .optional()?;
 
     Ok(category)
@@ -40,46 +38,42 @@ pub fn select_by_id(
 
 pub fn select_all_with_filter(
     conn: &mut SqliteConnection,
-    offset: u32,
-    search: String,
-) -> Result<Vec<models::WordCategory>, DbError> {
+    query: QueryOptions,
+) -> Result<Vec<DbWordCategory>, DbError> {
     use crate::db::schema::word_categories::dsl;
 
-    let format = |w: &str| format!("%{}%", w.to_lowercase());
+    let offset = query.get_offset();
 
-    if search.is_empty() {
+    if query.search.is_none() {
         let categories = dsl::word_categories
             .limit(20)
             .offset(offset.into())
-            .load::<models::WordCategory>(conn)?;
+            .load::<DbWordCategory>(conn)?;
 
         return Ok(categories);
     }
 
+    let search = query.get_search();
+
     let categories = dsl::word_categories
-        .or_filter(dsl::name.like(format(&search)))
-        .or_filter(dsl::description.like(format(&search)))
+        .or_filter(dsl::name.like(&search))
+        .or_filter(dsl::description.like(&search))
         .limit(20)
         .offset(offset.into())
-        .load::<models::WordCategory>(conn)?;
+        .load::<DbWordCategory>(conn)?;
 
     Ok(categories)
 }
 
 pub fn update(
-    category: models::NewWordCategory,
+    payload: WordCategoryBody,
     id: i32,
     conn: &mut SqliteConnection,
-) -> Result<Option<models::WordCategory>, DbError> {
+) -> Result<Option<DbWordCategory>, DbError> {
     use crate::db::schema::word_categories::dsl;
 
-    let category = match select_by_id(id, conn)? {
-        Some(x) => models::WordCategory {
-            updated_at: Some(Utc::now().naive_utc()),
-            name: category.name,
-            description: category.description,
-            ..x
-        },
+    let category: DbWordCategory = match select_by_id(id, conn)? {
+        Some(db_category) => db_category.with_update(payload),
         None => return Ok(None),
     };
 

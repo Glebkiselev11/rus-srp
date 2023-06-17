@@ -1,6 +1,7 @@
 use crate::db;
+use crate::models::pagination::Pagination;
+use crate::models::query_options::QueryOptions;
 use crate::models::word::{NewWord, NewWordBody, UpdateWordBody};
-use crate::models::{OptionalQuery, Pagination};
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 
@@ -8,7 +9,7 @@ pub async fn create(
     pool: web::Data<DbPool>,
     body: web::Json<NewWordBody>,
 ) -> actix_web::Result<impl Responder> {
-    let new_word = NewWord::from(body);
+    let new_word = NewWord::from(body.into_inner());
 
     // use web::block to offload blocking Diesel code without blocking server thread
     let word = web::block(move || {
@@ -23,23 +24,14 @@ pub async fn create(
 
 pub async fn get_list_by_query(
     pool: web::Data<DbPool>,
-    query: web::Query<OptionalQuery>,
+    query: web::Query<QueryOptions>,
 ) -> actix_web::Result<impl Responder> {
     let query = query.into_inner();
-
-    let offset = match query.offset {
-        None => 0,
-        Some(i) => i,
-    };
-
-    let search = match &query.search {
-        None => String::new(),
-        Some(s) => s.clone(),
-    };
+    let offset = query.get_offset();
 
     let words = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::select_all_with_filter(&mut conn, offset, search, query.order)
+        db::words::select_all_with_filter(&mut conn, query)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;

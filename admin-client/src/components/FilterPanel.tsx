@@ -15,8 +15,8 @@ export function FilterPanel({ params, onChange }: FilterPanelProps) {
 	const { t } = useTranslation();
 
 	const orderOptions: OrderOptionType[] = [
-		{ label: t("order.old-words"), value: "created_at" },
 		{ label: t("order.new-words"), value: "-created_at" },
+		{ label: t("order.old-words"), value: "created_at" },
 		{ label: t("order.last-updated"), value: "-updated_at" }
 	];
 

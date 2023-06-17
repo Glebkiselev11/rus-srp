@@ -1,5 +1,7 @@
-use crate::models::word::{DbNewWord, DbWord, NewWord, UpdateWordBody};
-use chrono::Utc;
+use crate::models::{
+    query_options::QueryOptions,
+    word::{DbNewWord, DbWord, NewWord, UpdateWordBody},
+};
 use diesel::{expression::expression_types::NotSelectable, prelude::*, sqlite::Sqlite};
 
 type DbError = Box<dyn std::error::Error + Send + Sync>;
@@ -31,18 +33,14 @@ pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<Option<DbWor
 
 pub fn select_all_with_filter(
     conn: &mut SqliteConnection,
-    offset: u32,
-    search: String,
-    order: Option<String>,
+    query: QueryOptions,
 ) -> Result<Vec<DbWord>, DbError> {
     use crate::db::schema::words::dsl;
 
-    let format = |w: &str| format!("%{}%", w.to_lowercase());
-
     let mut order_clause: Box<dyn BoxableExpression<dsl::words, Sqlite, SqlType = NotSelectable>> =
-        Box::new(dsl::created_at.asc());
+        Box::new(dsl::created_at.desc());
 
-    if let Some(o) = order {
+    if let Some(o) = &query.order {
         match o.as_str() {
             "rus" => order_clause = Box::new(dsl::rus.asc()),
             "-rus" => order_clause = Box::new(dsl::rus.desc()),
@@ -58,7 +56,9 @@ pub fn select_all_with_filter(
         }
     }
 
-    if search.is_empty() {
+    let offset = query.get_offset();
+
+    if query.search.is_none() {
         let all_words = dsl::words
             .limit(20)
             .offset(offset.into())
@@ -68,11 +68,13 @@ pub fn select_all_with_filter(
         return Ok(all_words);
     }
 
+    let search = query.get_search();
+
     let all_words = dsl::words
-        .or_filter(dsl::srp_cyrillic.like(format(&search)))
-        .or_filter(dsl::srp_latin.like(format(&search)))
-        .or_filter(dsl::rus.like(format(&search)))
-        .or_filter(dsl::eng.like(format(&search)))
+        .or_filter(dsl::srp_cyrillic.like(&search))
+        .or_filter(dsl::srp_latin.like(&search))
+        .or_filter(dsl::rus.like(&search))
+        .or_filter(dsl::eng.like(&search))
         .limit(20)
         .offset(offset.into())
         .order(order_clause)
@@ -82,21 +84,14 @@ pub fn select_all_with_filter(
 }
 
 pub fn update(
-    word: UpdateWordBody,
+    payload: UpdateWordBody,
     id: i32,
     conn: &mut SqliteConnection,
 ) -> Result<Option<DbWord>, DbError> {
     use crate::db::schema::words::dsl;
 
-    let word = match select_by_id(id, conn)? {
-        Some(x) => DbWord {
-            updated_at: Some(Utc::now().naive_utc()),
-            rus: word.rus,
-            eng: word.eng,
-            srp_cyrillic: word.srp_cyrillic,
-            srp_latin: word.srp_latin,
-            ..x
-        },
+    let word: DbWord = match select_by_id(id, conn)? {
+        Some(db_word) => db_word.with_update(payload),
         None => return Ok(None),
     };
 

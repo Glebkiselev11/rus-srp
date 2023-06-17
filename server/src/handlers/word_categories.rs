@@ -1,16 +1,15 @@
 use crate::db;
-use crate::models;
+use crate::models::pagination::Pagination;
+use crate::models::query_options::QueryOptions;
+use crate::models::word_category::WordCategoryBody;
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 
 pub async fn create(
     pool: web::Data<DbPool>,
-    body: web::Json<models::NewWordCategory>,
+    body: web::Json<WordCategoryBody>,
 ) -> actix_web::Result<impl Responder> {
-    let category = models::NewWordCategory {
-        name: body.name.clone(),
-        description: body.description.clone(),
-    };
+    let category = body.into_inner();
 
     let category = web::block(move || {
         let mut conn = pool.get()?;
@@ -41,26 +40,19 @@ pub async fn get_by_id(
 
 pub async fn get_list_by_query(
     pool: web::Data<DbPool>,
-    query: web::Query<models::OptionalQuery>,
+    query: web::Query<QueryOptions>,
 ) -> actix_web::Result<impl Responder> {
-    let offset = match query.offset {
-        None => 0,
-        Some(i) => i,
-    };
-
-    let search = match &query.search {
-        None => String::new(),
-        Some(s) => s.clone(),
-    };
+    let query = query.into_inner();
+    let offset = query.get_offset();
 
     let result = web::block(move || {
         let mut conn = pool.get()?;
-        db::word_categories::select_all_with_filter(&mut conn, offset, search)
+        db::word_categories::select_all_with_filter(&mut conn, query)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
 
-    Ok(HttpResponse::Ok().json(models::Pagination {
+    Ok(HttpResponse::Ok().json(Pagination {
         count: result.len(),
         offset,
         result,
@@ -70,12 +62,9 @@ pub async fn get_list_by_query(
 pub async fn update(
     pool: web::Data<DbPool>,
     id: web::Path<i32>,
-    body: web::Json<models::NewWordCategory>,
+    body: web::Json<WordCategoryBody>,
 ) -> actix_web::Result<impl Responder> {
-    let category = models::NewWordCategory {
-        name: body.name.clone(),
-        description: body.description.clone(),
-    };
+    let category = body.into_inner();
 
     let category = web::block(move || {
         let mut conn = pool.get()?;
