@@ -11,43 +11,50 @@ import { AppButton } from "../components/AppButton";
 import { NewWordModal } from "../components/NewWordModal";
 
 export default function HomePage() {
-	const { t } = useTranslation();
-	const [params, setParams] = useState<IRequestParams>({});
+  const { t } = useTranslation();
+  const [params, setParams] = useState<IRequestParams>({});
 
-	const debouncedParams = useDebounce(params, 500);
-	const { data, isSuccess } = useGetAllQuery(debouncedParams);
+  const debouncedParams = useDebounce(params, 500);
+  const { data, isSuccess } = useGetAllQuery(debouncedParams);
 
-	const [showNewWordModal, setShowNewWordModal] = useState(false);
-	const addWordButtonHandler = () => {
-		setShowNewWordModal(!showNewWordModal);
-	};
+  const [showNewWordModal, setShowNewWordModal] = useState(false);
+  const addWordButtonHandler = () => {
+    setShowNewWordModal(!showNewWordModal);
+  };
 
-	const closeNewWordModalHandler = () => {
-		setShowNewWordModal(false);
-	};
-	
-	return (
-		<>
-			<AppHeader title={t("all-words")}>
-				<AppButton label={t("add-word")} icon="add" type="filled" onClick={addWordButtonHandler}/>
+  const closeNewWordModalHandler = () => {
+    setShowNewWordModal(false);
+  };
 
-			</AppHeader>
-			<AppMain>
-				<div className="mt-10 mx-40">
-					<div className="mb-5">
-						<FilterPanel params={params} onChange={p => setParams(p)} />
-					</div>
+  return (
+    <>
+      <AppHeader title={t("all-words")}>
+        <AppButton
+          label={t("add-word")}
+          icon="add"
+          type="filled"
+          onClick={addWordButtonHandler}
+        />
+      </AppHeader>
+      <AppMain>
+        <div className="mt-10 mx-40">
+          <div className="mb-5">
+            <FilterPanel params={params} onChange={(p) => setParams(p)} />
+          </div>
 
-					{isSuccess && data.result.map(word => 
-						<div key={word.id} className="mb-3">
-							<WordItem word={word} />
-						</div>
-					)}
-				</div>
+          {isSuccess &&
+            data.result.map((word) => (
+              <div key={word.id} className="mb-3">
+                <WordItem word={word} />
+              </div>
+            ))}
+        </div>
+      </AppMain>
 
-			</AppMain>
-
-			<NewWordModal closeHander={closeNewWordModalHandler} show={showNewWordModal} />
-		</>
-	);
+      <NewWordModal
+        closeHander={closeNewWordModalHandler}
+        show={showNewWordModal}
+      />
+    </>
+  );
 }
