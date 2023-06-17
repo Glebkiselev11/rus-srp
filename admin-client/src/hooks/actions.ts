@@ -3,10 +3,10 @@ import { bindActionCreators } from "@reduxjs/toolkit";
 import { notificatonActions } from "../store/notification";
 
 const actions = {
-	...notificatonActions
+  ...notificatonActions,
 };
 
 export const useActions = () => {
-	const dispatch = useDispatch();
-	return bindActionCreators(actions, dispatch);
+  const dispatch = useDispatch();
+  return bindActionCreators(actions, dispatch);
 };

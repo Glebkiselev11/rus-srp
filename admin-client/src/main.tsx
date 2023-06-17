@@ -8,11 +8,11 @@ import { BrowserRouter } from "react-router-dom";
 import "./i18n";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-	<BrowserRouter basename='/admin'>
-		<Provider store={store}>
-			<React.StrictMode>
-				<App />
-			</React.StrictMode>
-		</Provider>
-	</BrowserRouter>
+  <BrowserRouter basename="/admin">
+    <Provider store={store}>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </Provider>
+  </BrowserRouter>
 );

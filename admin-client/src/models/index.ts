@@ -19,5 +19,5 @@ export interface INotification {
 
 export enum ENotificationTypes {
   success = "success",
-  error = "error"
+  error = "error",
 }

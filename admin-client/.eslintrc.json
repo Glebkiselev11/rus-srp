@@ -1,33 +1,25 @@
 {
-  "extends": "react-app",
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended"
+  ],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
   "rules": {
-    "max-len": [
-      "error",
-      {
-        "code": 120
-      }
-    ],
-    "indent": [
-      "error",
-      "tab"
-    ],
-    "quotes": [
-      "error",
-      "double"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ],
-    "no-multiple-empty-lines": [
-      "error",
-      {
-        "max": 1
-      }
-    ],
-    "object-curly-spacing": [
-      "error",
-      "always"
-    ]
+    "quotes": ["error", "double"],
+    "jsx-quotes": ["error", "prefer-double"],
+    "react/react-in-jsx-scope": "off",
+    "indent": ["error", 2]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }

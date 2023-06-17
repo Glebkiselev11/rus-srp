@@ -5,52 +5,53 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface WordItemProps {
-  word: IWord
+  word: IWord;
 }
 
 export function WordItem({ word }: WordItemProps) {
-	const { t } = useTranslation();
-	const navigate = useNavigate();
-	const [showRemoveButton, setShowRemoveButton] = useState(false);
-	const [deleteWord] = useDeleteMutation();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [showRemoveButton, setShowRemoveButton] = useState(false);
+  const [deleteWord] = useDeleteMutation();
 
-	async function handleDelete(event: React.MouseEvent<HTMLButtonElement>)	{
-		event.stopPropagation();
-		event.nativeEvent.stopImmediatePropagation();
+  async function handleDelete(event: React.MouseEvent<HTMLButtonElement>) {
+    event.stopPropagation();
+    event.nativeEvent.stopImmediatePropagation();
 
-		const shouldDelete = window.confirm(t("are-you-sure-delete", { word: word.rus }));
-		if (shouldDelete) {
-		 	await deleteWord(word.id);
-		}
-	}
+    const shouldDelete = window.confirm(
+      t("are-you-sure-delete", { word: word.rus })
+    );
+    if (shouldDelete) {
+      await deleteWord(word.id);
+    }
+  }
 
-	function handleClick() {
-		navigate(`words/${word.id}`);	
-	}
+  function handleClick() {
+    navigate(`words/${word.id}`);
+  }
 
-	function getWordView() {
-		return [word.srp_latin, word.rus, word.eng, word.srp_cyrillic].filter(w => w).join(" - ");
-	}
+  function getWordView() {
+    return [word.srp_latin, word.rus, word.eng, word.srp_cyrillic]
+      .filter((w) => w)
+      .join(" - ");
+  }
 
-	return (
-		<div 
-			onMouseEnter={() => setShowRemoveButton(true)}
-			onMouseLeave={() => setShowRemoveButton(false)}
-			onClick={handleClick}
-			className="flex justify-between border border-gray-200 py-2 px-4 hover:cursor-pointer"
-		>
+  return (
+    <div
+      onMouseEnter={() => setShowRemoveButton(true)}
+      onMouseLeave={() => setShowRemoveButton(false)}
+      onClick={handleClick}
+      className="flex justify-between border border-gray-200 py-2 px-4 hover:cursor-pointer"
+    >
+      <div>{getWordView()}</div>
 
-			<div>
-				{getWordView()}
-			</div>
-
-			<button 
-				style={{ visibility: showRemoveButton ? "visible" : "hidden" }} 
-				className="border border-red-200 px-2 bg-red-200" 
-				onClick={handleDelete}
-			>
-				{t("delete")}
-			</button>
-		</div>
-	);
+      <button
+        style={{ visibility: showRemoveButton ? "visible" : "hidden" }}
+        className="border border-red-200 px-2 bg-red-200"
+        onClick={handleDelete}
+      >
+        {t("delete")}
+      </button>
+    </div>
+  );
 }
