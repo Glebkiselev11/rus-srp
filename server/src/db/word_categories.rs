@@ -1,4 +1,3 @@
-use chrono::Utc;
 use diesel::prelude::*;
 
 use crate::models::word_category::{DbNewWordCategory, DbWordCategory, WordCategoryBody};
@@ -63,19 +62,14 @@ pub fn select_all_with_filter(
 }
 
 pub fn update(
-    category: WordCategoryBody,
+    payload: WordCategoryBody,
     id: i32,
     conn: &mut SqliteConnection,
 ) -> Result<Option<DbWordCategory>, DbError> {
     use crate::db::schema::word_categories::dsl;
 
-    let category = match select_by_id(id, conn)? {
-        Some(x) => DbWordCategory {
-            updated_at: Some(Utc::now().naive_utc()),
-            name: category.name,
-            description: category.description,
-            ..x
-        },
+    let category: DbWordCategory = match select_by_id(id, conn)? {
+        Some(db_category) => db_category.with_update(payload),
         None => return Ok(None),
     };
 

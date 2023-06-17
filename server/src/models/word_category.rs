@@ -35,3 +35,15 @@ pub struct DbWordCategory {
     pub created_at: chrono::NaiveDateTime,
     pub updated_at: Option<chrono::NaiveDateTime>,
 }
+
+impl DbWordCategory {
+    pub fn with_update(&self, payload: WordCategoryBody) -> DbWordCategory {
+        DbWordCategory {
+            id: self.id,
+            created_at: self.created_at,
+            name: payload.name,
+            description: payload.description,
+            updated_at: Some(chrono::Utc::now().naive_utc()),
+        }
+    }
+}
