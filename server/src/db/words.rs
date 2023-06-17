@@ -1,36 +1,29 @@
+use crate::models::word::{DbNewWord, DbWord, NewWord, UpdateWordBody};
 use chrono::Utc;
 use diesel::{expression::expression_types::NotSelectable, prelude::*, sqlite::Sqlite};
-
-use crate::models;
 
 type DbError = Box<dyn std::error::Error + Send + Sync>;
 
 /// Run query using Diesel to insert a new database row and return the result.
-pub fn insert(
-    new_word: models::word::NewWord,
-    conn: &mut SqliteConnection,
-) -> Result<models::word::DbWord, DbError> {
+pub fn insert(new_word: NewWord, conn: &mut SqliteConnection) -> Result<DbWord, DbError> {
     use crate::db::schema::words::dsl;
 
-    let new_word = models::word::DbNewWord::from(new_word);
+    let new_word = DbNewWord::from(new_word);
 
     let word = diesel::insert_into(dsl::words)
         .values(&new_word)
-        .get_result::<models::word::DbWord>(conn)?;
+        .get_result::<DbWord>(conn)?;
 
     Ok(word)
 }
 
 /// Run query using Diesel to find word by uid and return it.
-pub fn select_by_id(
-    id: i32,
-    conn: &mut SqliteConnection,
-) -> Result<Option<models::word::DbWord>, DbError> {
+pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<Option<DbWord>, DbError> {
     use crate::db::schema::words::dsl;
 
     let word = dsl::words
         .filter(dsl::id.eq(id))
-        .first::<models::word::DbWord>(conn)
+        .first::<DbWord>(conn)
         .optional()?;
 
     Ok(word)
@@ -41,7 +34,7 @@ pub fn select_all_with_filter(
     offset: u32,
     search: String,
     order: Option<String>,
-) -> Result<Vec<models::word::DbWord>, DbError> {
+) -> Result<Vec<DbWord>, DbError> {
     use crate::db::schema::words::dsl;
 
     let format = |w: &str| format!("%{}%", w.to_lowercase());
@@ -70,7 +63,7 @@ pub fn select_all_with_filter(
             .limit(20)
             .offset(offset.into())
             .order(order_clause)
-            .load::<models::word::DbWord>(conn)?;
+            .load::<DbWord>(conn)?;
 
         return Ok(all_words);
     }
@@ -83,20 +76,20 @@ pub fn select_all_with_filter(
         .limit(20)
         .offset(offset.into())
         .order(order_clause)
-        .load::<models::word::DbWord>(conn)?;
+        .load::<DbWord>(conn)?;
 
     Ok(all_words)
 }
 
 pub fn update(
-    word: models::word::UpdateWordBody,
+    word: UpdateWordBody,
     id: i32,
     conn: &mut SqliteConnection,
-) -> Result<Option<models::word::DbWord>, DbError> {
+) -> Result<Option<DbWord>, DbError> {
     use crate::db::schema::words::dsl;
 
     let word = match select_by_id(id, conn)? {
-        Some(x) => models::word::DbWord {
+        Some(x) => DbWord {
             updated_at: Some(Utc::now().naive_utc()),
             rus: word.rus,
             eng: word.eng,

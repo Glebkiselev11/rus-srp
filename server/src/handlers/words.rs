@@ -1,14 +1,14 @@
 use crate::db;
-use crate::models;
-use crate::models::OptionalQuery;
+use crate::models::word::{NewWord, NewWordBody, UpdateWordBody};
+use crate::models::{OptionalQuery, Pagination};
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 
 pub async fn create(
     pool: web::Data<DbPool>,
-    body: web::Json<models::word::NewWordBody>,
+    body: web::Json<NewWordBody>,
 ) -> actix_web::Result<impl Responder> {
-    let new_word = models::word::NewWord::from(body);
+    let new_word = NewWord::from(body);
 
     // use web::block to offload blocking Diesel code without blocking server thread
     let word = web::block(move || {
@@ -44,7 +44,7 @@ pub async fn get_list_by_query(
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
 
-    Ok(HttpResponse::Ok().json(models::Pagination {
+    Ok(HttpResponse::Ok().json(Pagination {
         count: words.len(),
         offset,
         result: words,
@@ -68,7 +68,7 @@ pub async fn get_by_id(
 pub async fn update(
     pool: web::Data<DbPool>,
     id: web::Path<i32>,
-    body: web::Json<models::word::UpdateWordBody>,
+    body: web::Json<UpdateWordBody>,
 ) -> actix_web::Result<impl Responder> {
     let word = body.into_inner();
 
