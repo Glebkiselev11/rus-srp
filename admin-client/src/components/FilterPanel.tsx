@@ -14,13 +14,13 @@ interface FilterPanelProps {
 export function FilterPanel({ params, onChange }: FilterPanelProps) {
 	const { t } = useTranslation();
 
-	const [orderState, setOrderState] = useState<Order>(params.order ?? "created_at");
-
 	const orderOptions: OrderOptionType[] = [
 		{ label: t("order.old-words"), value: "created_at" },
 		{ label: t("order.new-words"), value: "-created_at" },
 		{ label: t("order.last-updated"), value: "-updated_at" }
 	];
+
+	const [orderState, setOrderState] = useState<Order>(params.order ?? orderOptions[0].value);
 
 	const handleOrderChange = (x: string) => {
 		const order = x as Order;
