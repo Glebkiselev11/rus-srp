@@ -15,7 +15,10 @@
     "quotes": ["error", "double"],
     "jsx-quotes": ["error", "prefer-double"],
     "react/react-in-jsx-scope": "off",
-    "indent": ["error", 2, { "SwitchCase": 1 }]
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "semi": ["error", "always"],
+    "no-trailing-spaces": "error",
+    "no-multiple-empty-lines": ["warn", { "max": 2, "maxEOF": 0 }]
   },
   "settings": {
     "react": {

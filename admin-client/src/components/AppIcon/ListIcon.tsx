@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { AppIconSVGProps } from "./types";
 
 export function ListIcon({ color, size }: AppIconSVGProps) {

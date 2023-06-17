@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { AppIconSVGProps } from "./types";
 
 export function SettingsIcon({ color, size }: AppIconSVGProps) {
