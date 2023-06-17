@@ -1,24 +1,24 @@
-use crate::models::{NewUser, User};
+use crate::models::user::{DbNewUser, DbUser};
 use diesel::prelude::*;
 use diesel::SqliteConnection;
 type DbError = Box<dyn std::error::Error + Send + Sync>;
 
-pub fn add(new_user: NewUser, conn: &mut SqliteConnection) -> Result<User, DbError> {
+pub fn add(new_user: DbNewUser, conn: &mut SqliteConnection) -> Result<DbUser, DbError> {
     use crate::db::schema::users::dsl;
 
     let user = diesel::insert_into(dsl::users)
         .values(&new_user)
-        .get_result::<User>(conn)?;
+        .get_result::<DbUser>(conn)?;
 
     Ok(user)
 }
 
-pub fn select(username: &str, conn: &mut SqliteConnection) -> Result<Option<User>, DbError> {
+pub fn select(username: &str, conn: &mut SqliteConnection) -> Result<Option<DbUser>, DbError> {
     use crate::db::schema::users::dsl;
 
     let user = dsl::users
         .filter(dsl::username.eq(username))
-        .first::<User>(conn)
+        .first::<DbUser>(conn)
         .optional()?;
 
     Ok(user)
