@@ -28,11 +28,15 @@ export function FilterPanel({ params, onChange }: FilterPanelProps) {
 		onChange({ ...params, order });
 	};
 
+	const handleSearchInput = (search: string) => {
+		onChange({ ...params, search });
+	};
+
 	return (
 		<div className="flex items-end justify-between">
 			<TextInput 
 				value={params.search || ""} 
-				onChange={search => onChange({ ...params, search })} 
+				onChange={handleSearchInput} 
 				label={t("search")} 
 			/>
 
