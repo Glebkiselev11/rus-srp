@@ -1,6 +1,5 @@
 use crate::db::schema::words;
 use crate::utils::translate::SerbianCyrillic;
-use actix_web::web::Json;
 use chrono;
 use serde::{Deserialize, Serialize};
 
@@ -20,15 +19,15 @@ pub struct NewWord {
     pub eng: String,
 }
 
-impl From<Json<NewWordBody>> for NewWord {
-    fn from(data: Json<NewWordBody>) -> Self {
+impl From<NewWordBody> for NewWord {
+    fn from(body: NewWordBody) -> Self {
         let format = |w: &str| w.to_lowercase();
 
         NewWord {
-            rus: format(&data.rus),
-            srp_latin: format(&data.srp_latin),
-            eng: format(&data.eng),
-            srp_cyrillic: format(&SerbianCyrillic::from_latin(&data.srp_latin)),
+            rus: format(&body.rus),
+            srp_latin: format(&body.srp_latin),
+            eng: format(&body.eng),
+            srp_cyrillic: format(&SerbianCyrillic::from_latin(&body.srp_latin)),
         }
     }
 }
