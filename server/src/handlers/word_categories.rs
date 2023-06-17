@@ -1,7 +1,7 @@
 use crate::db;
 use crate::models::pagination::Pagination;
+use crate::models::query_options::QueryOptions;
 use crate::models::word_category::WordCategoryBody;
-use crate::models::OptionalQuery;
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 
@@ -40,7 +40,7 @@ pub async fn get_by_id(
 
 pub async fn get_list_by_query(
     pool: web::Data<DbPool>,
-    query: web::Query<OptionalQuery>,
+    query: web::Query<QueryOptions>,
 ) -> actix_web::Result<impl Responder> {
     let offset = match query.offset {
         None => 0,

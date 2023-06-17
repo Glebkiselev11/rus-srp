@@ -1,7 +1,7 @@
 use crate::db;
 use crate::models::pagination::Pagination;
+use crate::models::query_options::QueryOptions;
 use crate::models::word::{NewWord, NewWordBody, UpdateWordBody};
-use crate::models::OptionalQuery;
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 
@@ -24,7 +24,7 @@ pub async fn create(
 
 pub async fn get_list_by_query(
     pool: web::Data<DbPool>,
-    query: web::Query<OptionalQuery>,
+    query: web::Query<QueryOptions>,
 ) -> actix_web::Result<impl Responder> {
     let query = query.into_inner();
 
