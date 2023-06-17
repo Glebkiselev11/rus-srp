@@ -1,7 +1,7 @@
 use chrono::Utc;
 use diesel::{expression::expression_types::NotSelectable, prelude::*, sqlite::Sqlite};
 
-use crate::models::{self};
+use crate::models;
 
 type DbError = Box<dyn std::error::Error + Send + Sync>;
 
