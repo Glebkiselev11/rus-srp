@@ -27,20 +27,11 @@ pub async fn get_list_by_query(
     query: web::Query<QueryOptions>,
 ) -> actix_web::Result<impl Responder> {
     let query = query.into_inner();
-
-    let offset = match query.offset {
-        None => 0,
-        Some(i) => i,
-    };
-
-    let search = match &query.search {
-        None => String::new(),
-        Some(s) => s.clone(),
-    };
+    let offset = query.get_offset();
 
     let words = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::select_all_with_filter(&mut conn, offset, search, query.order)
+        db::words::select_all_with_filter(&mut conn, query)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;

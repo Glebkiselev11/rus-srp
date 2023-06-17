@@ -1,6 +1,9 @@
 use diesel::prelude::*;
 
-use crate::models::word_category::{DbNewWordCategory, DbWordCategory, WordCategoryBody};
+use crate::models::{
+    query_options::QueryOptions,
+    word_category::{DbNewWordCategory, DbWordCategory, WordCategoryBody},
+};
 
 type DbError = Box<dyn std::error::Error + Send + Sync>;
 
@@ -35,14 +38,13 @@ pub fn select_by_id(
 
 pub fn select_all_with_filter(
     conn: &mut SqliteConnection,
-    offset: u32,
-    search: String,
+    query: QueryOptions,
 ) -> Result<Vec<DbWordCategory>, DbError> {
     use crate::db::schema::word_categories::dsl;
 
-    let format = |w: &str| format!("%{}%", w.to_lowercase());
+    let offset = query.get_offset();
 
-    if search.is_empty() {
+    if query.search.is_none() {
         let categories = dsl::word_categories
             .limit(20)
             .offset(offset.into())
@@ -51,9 +53,11 @@ pub fn select_all_with_filter(
         return Ok(categories);
     }
 
+    let search = query.get_search();
+
     let categories = dsl::word_categories
-        .or_filter(dsl::name.like(format(&search)))
-        .or_filter(dsl::description.like(format(&search)))
+        .or_filter(dsl::name.like(&search))
+        .or_filter(dsl::description.like(&search))
         .limit(20)
         .offset(offset.into())
         .load::<DbWordCategory>(conn)?;
