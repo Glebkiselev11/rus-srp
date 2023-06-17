@@ -1,6 +1,7 @@
 use crate::db;
+use crate::models::pagination::Pagination;
 use crate::models::word_category::WordCategoryBody;
-use crate::models::{OptionalQuery, Pagination};
+use crate::models::OptionalQuery;
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 
