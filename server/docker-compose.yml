@@ -6,6 +6,6 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./database.db:/database.db
-      - ./migrations:/migrations
+      - ./database.db:/server/database.db
+      - ./migrations:/server/migrations
       - ./src:/server/src

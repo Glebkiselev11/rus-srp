@@ -1,5 +1,10 @@
 {
   "translation": {
+    "order" : {
+      "new-words": "New words",
+      "old-words": "Old words",
+      "last-updated": "Last updated"
+    },
     "fill-in-auto": "Fill in automatically",
     "cancel": "Cancel",
     "settings": "Settings",

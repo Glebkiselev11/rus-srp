@@ -1,5 +1,10 @@
 {
   "translation": {
+    "order" : {
+      "new-words": "Nove reči",
+      "old-words": "Stare reči",
+      "last-updated": "najnovije ažurirane"
+    },
     "fill-in-auto": "Popunite automatski",
     "cancel": "Otkazati",
     "settings": "Podešavanja",

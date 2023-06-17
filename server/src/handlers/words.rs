@@ -1,33 +1,19 @@
 use crate::db;
-use crate::models;
-use crate::models::OptionalQuery;
-use crate::utils::translate::SerbianCyrillic;
+use crate::models::word::{NewWord, NewWordBody, UpdateWordBody};
+use crate::models::{OptionalQuery, Pagination};
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
-use serde::Deserialize;
-
-#[derive(Debug, Deserialize)]
-pub struct NewWordPayload {
-    pub rus: String,
-    pub eng: String,
-    pub srp_latin: String,
-}
 
 pub async fn create(
     pool: web::Data<DbPool>,
-    body: web::Json<NewWordPayload>,
+    body: web::Json<NewWordBody>,
 ) -> actix_web::Result<impl Responder> {
-    let word = models::NewWord {
-        rus: body.rus.clone(),
-        eng: body.eng.clone(),
-        srp_latin: body.srp_latin.clone(),
-        srp_cyrillic: SerbianCyrillic::from_latin(&body.srp_latin),
-    };
+    let new_word = NewWord::from(body);
 
     // use web::block to offload blocking Diesel code without blocking server thread
     let word = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::insert(word, &mut conn)
+        db::words::insert(new_word, &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -39,6 +25,8 @@ pub async fn get_list_by_query(
     pool: web::Data<DbPool>,
     query: web::Query<OptionalQuery>,
 ) -> actix_web::Result<impl Responder> {
+    let query = query.into_inner();
+
     let offset = match query.offset {
         None => 0,
         Some(i) => i,
@@ -51,12 +39,12 @@ pub async fn get_list_by_query(
 
     let words = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::select_all_with_filter(&mut conn, offset, search)
+        db::words::select_all_with_filter(&mut conn, offset, search, query.order)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
 
-    Ok(HttpResponse::Ok().json(models::Pagination {
+    Ok(HttpResponse::Ok().json(Pagination {
         count: words.len(),
         offset,
         result: words,
@@ -79,24 +67,19 @@ pub async fn get_by_id(
 
 pub async fn update(
     pool: web::Data<DbPool>,
-    body: web::Json<models::Word>,
+    id: web::Path<i32>,
+    body: web::Json<UpdateWordBody>,
 ) -> actix_web::Result<impl Responder> {
-    let word = models::Word {
-        id: body.id.clone(),
-        rus: body.rus.clone(),
-        eng: body.eng.clone(),
-        srp_cyrillic: body.srp_cyrillic.clone(),
-        srp_latin: body.srp_latin.clone(),
-    };
+    let word = body.into_inner();
 
-    web::block(move || {
+    let word = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::update(word, &mut conn)
+        db::words::update(word, id.into_inner(), &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
 
-    Ok(HttpResponse::Ok().json(body))
+    Ok(HttpResponse::Ok().json(word))
 }
 
 pub async fn delete(
