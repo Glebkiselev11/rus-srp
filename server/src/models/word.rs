@@ -55,6 +55,15 @@ impl From<NewWord> for DbNewWord {
     }
 }
 
+#[derive(Debug, Deserialize, Serialize)]
+pub struct UpdateWordBody {
+    pub id: i32,
+    pub rus: String,
+    pub eng: String,
+    pub srp_latin: String,
+    pub srp_cyrillic: String,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, Queryable, AsChangeset)]
 #[diesel(table_name = words)]
 pub struct DbWord {
@@ -67,11 +76,16 @@ pub struct DbWord {
     pub updated_at: Option<chrono::NaiveDateTime>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
-pub struct UpdateWordBody {
-    pub id: i32,
-    pub rus: String,
-    pub eng: String,
-    pub srp_latin: String,
-    pub srp_cyrillic: String,
+impl DbWord {
+    pub fn with_update(&self, payload: UpdateWordBody) -> DbWord {
+        DbWord {
+            id: self.id,
+            created_at: self.created_at,
+            rus: payload.rus,
+            eng: payload.eng,
+            srp_latin: payload.srp_latin,
+            srp_cyrillic: payload.srp_cyrillic,
+            updated_at: Some(chrono::Utc::now().naive_utc()),
+        }
+    }
 }

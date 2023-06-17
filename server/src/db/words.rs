@@ -1,5 +1,4 @@
 use crate::models::word::{DbNewWord, DbWord, NewWord, UpdateWordBody};
-use chrono::Utc;
 use diesel::{expression::expression_types::NotSelectable, prelude::*, sqlite::Sqlite};
 
 type DbError = Box<dyn std::error::Error + Send + Sync>;
@@ -82,21 +81,14 @@ pub fn select_all_with_filter(
 }
 
 pub fn update(
-    word: UpdateWordBody,
+    payload: UpdateWordBody,
     id: i32,
     conn: &mut SqliteConnection,
 ) -> Result<Option<DbWord>, DbError> {
     use crate::db::schema::words::dsl;
 
-    let word = match select_by_id(id, conn)? {
-        Some(x) => DbWord {
-            updated_at: Some(Utc::now().naive_utc()),
-            rus: word.rus,
-            eng: word.eng,
-            srp_cyrillic: word.srp_cyrillic,
-            srp_latin: word.srp_latin,
-            ..x
-        },
+    let word: DbWord = match select_by_id(id, conn)? {
+        Some(db_word) => db_word.with_update(payload),
         None => return Ok(None),
     };
 
