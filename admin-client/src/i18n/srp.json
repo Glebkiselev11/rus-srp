@@ -1,5 +1,6 @@
 {
   "translation": {
+    "general": "Opšta",
     "order": {
       "new-words": "Nove reči",
       "old-words": "Stare reči",
@@ -21,6 +22,7 @@
     "word-added": "Riječ je uspešno dodat",
     "word-updated": "Riječ je uspešno ažurirana",
     "are-you-sure-delete": "Da li želite izbrisati {{word}}?",
+    "interface-language": "Jezik interfejsa",
     "lang": {
       "russian": "ruska",
       "english": "engleski",
