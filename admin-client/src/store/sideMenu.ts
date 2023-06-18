@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const STORAGE_KEY = "sidemenu_state";
+
 const initialState = {
-  isOpen: false,
+  isOpen: JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "true"),
 };
 
 export const sideMenuSlice = createSlice({
@@ -10,6 +12,7 @@ export const sideMenuSlice = createSlice({
   reducers: {
     toggle: (state) => {
       state.isOpen = !state.isOpen;
+      localStorage.setItem(STORAGE_KEY, state.isOpen.toString());
     },
   },
 });
