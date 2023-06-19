@@ -1,5 +1,6 @@
 {
   "translation": {
+    "general": "Общие",
     "order": {
       "new-words": "Новые слова",
       "old-words": "Старые слова",
@@ -21,6 +22,7 @@
     "word-added": "Слово успешно добавлено",
     "word-updated": "Слово успешно обновлено",
     "are-you-sure-delete": "Вы уверены, что хотите удалить {{word}}?",
+    "interface-language": "Язык интерфейса",
     "lang": {
       "russian": "русское",
       "english": "английский",

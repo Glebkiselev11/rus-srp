@@ -1,5 +1,6 @@
 {
   "translation": {
+    "general": "General",
     "order": {
       "new-words": "New words",
       "old-words": "Old words",
@@ -21,6 +22,7 @@
     "word-added": "Word was added",
     "word-updated": "Word was updated",
     "are-you-sure-delete": "Are you sure that you want to delete {{word}}?",
+    "interface-language": "Interface language",
     "lang": {
       "russian": "russian",
       "english": "english",

@@ -7,6 +7,7 @@ import { MenuIcon } from "./MenuIcon";
 import { CloseIcon } from "./CloseIcon";
 import { CancelIcon } from "./CancelIcon";
 import { EditNoteIcon } from "./EditNoteIcon";
+import { TranslateIcon } from "./TranslateIcon";
 
 interface AppIconProps {
   color?: "black" | "white" | "gray" | "indigo";
@@ -35,6 +36,7 @@ export function AppIcon({
     close: CloseIcon,
     cancel: CancelIcon,
     edit_note: EditNoteIcon,
+    translate: TranslateIcon
   }[name];
 
   return <Icon color={_color} size={size} />;
