@@ -89,7 +89,7 @@ fn headers() -> HeaderMap {
 
     headers.insert(
         "X-RapidAPI-Key",
-        HeaderValue::from_str(&std::env::var("MICROSOFT_API_KEY").unwrap()).unwrap(),
+        HeaderValue::from_str(&std::env::var("RAPID_API_KEY").unwrap()).unwrap(),
     );
     headers.insert(
         "X-RapidAPI-Host",
