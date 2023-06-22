@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { AppButton } from "./AppButton";
 import { isWordValid } from "../utils/validators";
 import { useNotification } from "../hooks/notification";
-import { useTranslateMutation } from "../store/translate";
+import { useTranslateMutation } from "../store/translation";
 import {
   getTranslationTargets,
   fillDrafWordWithTranslation,

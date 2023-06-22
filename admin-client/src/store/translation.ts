@@ -2,8 +2,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ITranslateResponse, ITranslateRequest } from "../models/api";
 import { constructUrl} from "../utils/api";
 
-export const translateApi = createApi({
-  reducerPath: "translate/api",
+export const translationApi = createApi({
+  reducerPath: "translation/api",
   baseQuery: fetchBaseQuery({
     baseUrl: constructUrl("api/v1/services/translation"),
   }),
@@ -20,4 +20,4 @@ export const translateApi = createApi({
   }),
 });
 
-export const { useTranslateMutation } = translateApi;
+export const { useTranslateMutation } = translationApi;
