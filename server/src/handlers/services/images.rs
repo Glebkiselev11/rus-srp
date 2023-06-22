@@ -1,3 +1,4 @@
+use crate::models::pagination::Pagination;
 use actix_web::{web, HttpResponse, Responder};
 use reqwest::{
     self,
@@ -36,6 +37,7 @@ struct Photo {
 struct ResponseData {
     page: u32,
     per_page: u32,
+    total_results: usize,
     photos: Vec<Photo>,
 }
 
@@ -58,7 +60,11 @@ pub async fn query(params: web::Query<ImagesQueryParams>) -> actix_web::Result<i
     match res {
         Ok(resp) => {
             let data: ResponseData = resp.json().await.unwrap();
-            Ok(HttpResponse::Ok().json(&data))
+            Ok(HttpResponse::Ok().json(Pagination {
+                offset: data.page,
+                count: data.total_results,
+                result: data.photos,
+            }))
         }
         Err(e) => Err(actix_web::error::ErrorInternalServerError(e)),
     }
