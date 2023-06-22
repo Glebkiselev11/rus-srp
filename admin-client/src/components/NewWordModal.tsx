@@ -12,6 +12,9 @@ import {
   getTranslationTargets,
   fillDrafWordWithTranslation,
 } from "../utils/translations";
+import { useDebounce } from "../hooks/debounce";
+import { useLazySearchQuery } from "../store/images";
+import { ImageSlider } from "./ImageSlider";
 
 interface NewWordModalProps {
   show: boolean;
@@ -40,7 +43,12 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
       data: translationData,
     },
   ] = useTranslateMutation();
+
+  const [queryImages, { data: imagesData, isSuccess: isSuccessImagesLoaded }] = useLazySearchQuery();
+
   const [isAnyInputFilled, setIsAnyInputFilled] = useState(false);
+
+  const imageQuery = useDebounce(draftWord.eng, 1000);
 
   const save = () => {
     if (isWordValid(draftWord)) {
@@ -75,6 +83,16 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
     setIsAnyInputFilled(anyFilled && anyEmpty);
   }, [draftWord]);
 
+  useEffect(() => {
+    if (imageQuery) {
+      queryImages({
+        search: imageQuery,
+        offset: 1,
+        limit: 15
+      });
+    }
+  }, [imageQuery]);
+
   if (!show) return null;
 
   return (
@@ -83,7 +101,7 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
       description={t("adding-word.description")}
       closeHandler={closeHander}
     >
-      <div className="pt-8 h-[548px] flex flex-col justify-between">
+      <div className="pt-8 h-[548px] w-[532px] flex flex-col justify-between">
         <div>
           <TextInput
             value={draftWord.eng}
@@ -116,6 +134,12 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
               label={t("fill-in-auto")}
               onClick={fillEmptyInputs}
             />
+          )}
+
+          {isSuccessImagesLoaded && imagesData && (
+            <div className="mt-4">
+              <ImageSlider images={imagesData.result}/>
+            </div>
           )}
         </div>
 
