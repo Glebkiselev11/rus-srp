@@ -16,12 +16,6 @@ pub struct ImagesQueryParams {
 #[derive(Deserialize, Debug, Serialize)]
 struct PhotoSrc {
     original: String,
-    large: String,
-    medium: String,
-    small: String,
-    portrait: String,
-    landscape: String,
-    tiny: String,
 }
 
 #[derive(Deserialize, Debug, Serialize)]
