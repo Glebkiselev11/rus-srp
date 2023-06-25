@@ -3,7 +3,5 @@ export interface IImage {
   width: number;
   height: number;
   avg_color: number;
-  src: {
-    original: string;
-  }
+  src: string;
 }

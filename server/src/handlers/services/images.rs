@@ -19,7 +19,7 @@ struct PhotoSrc {
 }
 
 #[derive(Deserialize, Debug, Serialize)]
-struct Photo {
+struct ResponsePhoto {
     id: u64,
     width: u16,
     height: u16,
@@ -32,7 +32,28 @@ struct ResponseData {
     page: u32,
     per_page: u32,
     total_results: usize,
-    photos: Vec<Photo>,
+    photos: Vec<ResponsePhoto>,
+}
+
+#[derive(Deserialize, Debug, Serialize, Clone)]
+struct Photo {
+    id: u64,
+    width: u16,
+    height: u16,
+    avg_color: String,
+    src: String,
+}
+
+impl From<ResponsePhoto> for Photo {
+    fn from(response_photo: ResponsePhoto) -> Self {
+        Photo {
+            id: response_photo.id,
+            width: response_photo.width,
+            height: response_photo.height,
+            avg_color: response_photo.avg_color,
+            src: response_photo.src.original,
+        }
+    }
 }
 
 pub async fn query(params: web::Query<ImagesQueryParams>) -> actix_web::Result<impl Responder> {
@@ -57,7 +78,11 @@ pub async fn query(params: web::Query<ImagesQueryParams>) -> actix_web::Result<i
             Ok(HttpResponse::Ok().json(Pagination {
                 offset: data.page,
                 count: data.total_results,
-                result: data.photos,
+                result: data
+                    .photos
+                    .into_iter()
+                    .map(|x: ResponsePhoto| Photo::from(x))
+                    .collect(),
             }))
         }
         Err(e) => Err(actix_web::error::ErrorInternalServerError(e)),

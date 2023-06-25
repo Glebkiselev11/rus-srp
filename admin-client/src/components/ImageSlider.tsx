@@ -6,8 +6,8 @@ interface ImageSliderProps {
 
 export function ImageSlider({images}: ImageSliderProps) {
 
-  const addCropImagaeParamsToUrl = (original: string): string => {
-    const url = new URL(original);
+  const addCropImagaeParamsToUrl = (src: string): string => {
+    const url = new URL(src);
     url.searchParams.append("fit", "crop");
     url.searchParams.append("h", "300");
     url.searchParams.append("w", "300");
@@ -20,7 +20,7 @@ export function ImageSlider({images}: ImageSliderProps) {
         <img
           key={id}
           className="h-[150px] w-[150px] object-cover mr-2 shrink-0"
-          src={addCropImagaeParamsToUrl(src.original)}
+          src={addCropImagaeParamsToUrl(src)}
         />
       )}
     </section>
