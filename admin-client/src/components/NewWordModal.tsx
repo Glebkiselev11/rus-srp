@@ -29,6 +29,7 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
     srp_latin: "",
     rus: "",
     eng: "",
+    image: null
   };
   const [draftWord, setDraftWord] = useState(initWord);
   const [
@@ -47,7 +48,6 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
   const [queryImages, { data: imagesData, isSuccess: isSuccessImagesLoaded }] = useLazySearchQuery();
 
   const [isAnyInputFilled, setIsAnyInputFilled] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const imageQuery = useDebounce(draftWord.eng, 1000);
 
@@ -78,7 +78,8 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
   }, [isSuccessCreatedWord]);
 
   useEffect(() => {
-    const values = Object.values(draftWord);
+    const {eng, rus, srp_latin} = draftWord;
+    const values = [eng, rus, srp_latin];
     const anyFilled = values.some((x) => x.length);
     const anyEmpty = values.some((x) => x.length === 0);
     setIsAnyInputFilled(anyFilled && anyEmpty);
@@ -141,8 +142,8 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
             <div className="mt-4">
               <ImageSlider
                 images={imagesData.result}
-                selectedImage={selectedImage}
-                selectImageHandler={src => setSelectedImage(src)}
+                selectedImage={draftWord.image}
+                selectImageHandler={image => setDraftWord({...draftWord, image})}
               />
             </div>
           )}

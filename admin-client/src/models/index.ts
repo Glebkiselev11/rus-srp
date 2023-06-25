@@ -2,6 +2,7 @@ export interface IDraftWord {
   rus: string;
   eng: string;
   srp_latin: string;
+  image: string | null;
 }
 
 export interface IWord extends IDraftWord {

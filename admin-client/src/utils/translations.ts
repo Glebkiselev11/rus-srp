@@ -2,7 +2,7 @@ import { IDraftWord } from "../models";
 import { ITranslateResponse, TranslationTarget } from "../models/api";
 
 export function getTranslationTargets(newWord: IDraftWord) {
-  const table: Record<keyof typeof newWord, TranslationTarget> = {
+  const table = {
     srp_latin: "SR",
     rus: "RU",
     eng: "EN",
@@ -13,12 +13,12 @@ export function getTranslationTargets(newWord: IDraftWord) {
   const targets: Array<TranslationTarget> = [];
   const fromMap: Map<string, string> = new Map();
 
-  for (const key of Object.keys(newWord) as Array<keyof typeof newWord>) {
+  for (const key of Object.keys(table) as Array<keyof typeof table>) {
     const value = newWord[key];
     if (value) {
       fromMap.set(table[key], value);
     } else {
-      targets.push(table[key]);
+      targets.push(table[key] as TranslationTarget);
     }
   }
 
