@@ -47,6 +47,7 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
   const [queryImages, { data: imagesData, isSuccess: isSuccessImagesLoaded }] = useLazySearchQuery();
 
   const [isAnyInputFilled, setIsAnyInputFilled] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const imageQuery = useDebounce(draftWord.eng, 1000);
 
@@ -138,7 +139,11 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
 
           {isSuccessImagesLoaded && imagesData && (
             <div className="mt-4">
-              <ImageSlider images={imagesData.result}/>
+              <ImageSlider
+                images={imagesData.result}
+                selectedImage={selectedImage}
+                selectImageHandler={src => setSelectedImage(src)}
+              />
             </div>
           )}
         </div>
