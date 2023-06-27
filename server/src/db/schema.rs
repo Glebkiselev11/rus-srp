@@ -27,6 +27,7 @@ diesel::table! {
         srp_cyrillic -> Text,
         created_at -> Timestamp,
         updated_at -> Nullable<Timestamp>,
+        image -> Nullable<Text>,
     }
 }
 
