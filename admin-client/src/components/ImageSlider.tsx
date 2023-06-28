@@ -1,4 +1,5 @@
 import { IImage } from "../models/image";
+import { addCropImagaeParamsToUrl } from "../utils/image";
 
 interface ImageSliderProps {
   images: Array<IImage>;
@@ -7,15 +8,6 @@ interface ImageSliderProps {
 }
 
 export function ImageSlider({ images, selectedImage, selectImageHandler }: ImageSliderProps) {
-
-  const addCropImagaeParamsToUrl = (src: string): string => {
-    const url = new URL(src);
-    url.searchParams.append("fit", "crop");
-    url.searchParams.append("h", "300");
-    url.searchParams.append("w", "300");
-    return url.toString();
-  };
-
   const imageClasses = "h-[150px] w-[150px] object-cover mr-2 shrink-0 cursor-pointer";
   const selectedImageClasses = "border-4 border-purple-400 ";
 
@@ -25,7 +17,7 @@ export function ImageSlider({ images, selectedImage, selectImageHandler }: Image
         <img
           key={id}
           className={`${imageClasses} ${selectedImage === src ? selectedImageClasses : ""}`}
-          src={addCropImagaeParamsToUrl(src)}
+          src={addCropImagaeParamsToUrl(src, 300)}
           onClick={() => selectImageHandler(src)}
         />
       )}
