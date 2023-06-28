@@ -7,11 +7,14 @@ import { useTranslation } from "react-i18next";
 import { AppButton } from "./AppButton";
 import { isWordValid } from "../utils/validators";
 import { useNotification } from "../hooks/notification";
-import { useTranslateMutation } from "../store/translate";
+import { useTranslateMutation } from "../store/translation";
 import {
   getTranslationTargets,
   fillDrafWordWithTranslation,
 } from "../utils/translations";
+import { useDebounce } from "../hooks/debounce";
+import { useLazySearchQuery } from "../store/images";
+import { ImageSlider } from "./ImageSlider";
 
 interface NewWordModalProps {
   show: boolean;
@@ -26,12 +29,16 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
     srp_latin: "",
     rus: "",
     eng: "",
+    image: null,
   };
+
   const [draftWord, setDraftWord] = useState(initWord);
+
   const [
     createWord,
     { isLoading: isLoadingCreatingWord, isSuccess: isSuccessCreatedWord },
   ] = useCreateWordMutation();
+
   const [
     translate,
     {
@@ -40,7 +47,21 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
       data: translationData,
     },
   ] = useTranslateMutation();
+
+  const [
+    queryImages,
+    {
+      data: imagesData,
+      isSuccess: isSuccessImagesLoaded,
+      isLoading: isImagesLoading,
+    },
+  ] = useLazySearchQuery();
+
+  const [showImagesSlider, setShowImagesSlider] = useState(false);
+
   const [isAnyInputFilled, setIsAnyInputFilled] = useState(false);
+
+  const imageQuery = useDebounce(draftWord.eng, 1000);
 
   const save = () => {
     if (isWordValid(draftWord)) {
@@ -69,11 +90,33 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
   }, [isSuccessCreatedWord]);
 
   useEffect(() => {
-    const values = Object.values(draftWord);
+    const { eng, rus, srp_latin } = draftWord;
+    const values = [eng, rus, srp_latin];
     const anyFilled = values.some((x) => x.length);
     const anyEmpty = values.some((x) => x.length === 0);
     setIsAnyInputFilled(anyFilled && anyEmpty);
   }, [draftWord]);
+
+  useEffect(() => {
+    if (imageQuery) {
+      queryImages({
+        search: imageQuery,
+        offset: 1,
+        limit: 15,
+      });
+    }
+  }, [imageQuery]);
+
+  useEffect(() => {
+    setShowImagesSlider(
+      Boolean(
+        isSuccessImagesLoaded &&
+        imagesData?.result.length &&
+        draftWord.eng.length &&
+        !isImagesLoading
+      )
+    );
+  }, [isSuccessImagesLoaded, imagesData, draftWord, isSuccessImagesLoaded, isImagesLoading]);
 
   if (!show) return null;
 
@@ -83,7 +126,7 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
       description={t("adding-word.description")}
       closeHandler={closeHander}
     >
-      <div className="pt-8 h-[548px] flex flex-col justify-between">
+      <div className="pt-8 h-[548px] w-[532px] flex flex-col justify-between">
         <div>
           <TextInput
             value={draftWord.eng}
@@ -116,6 +159,17 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
               label={t("fill-in-auto")}
               onClick={fillEmptyInputs}
             />
+          )}
+
+          {showImagesSlider && (
+            <div className="mt-4">
+              <ImageSlider
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                images={imagesData!.result}
+                selectedImage={draftWord.image}
+                selectImageHandler={image => setDraftWord({ ...draftWord, image })}
+              />
+            </div>
           )}
         </div>
 

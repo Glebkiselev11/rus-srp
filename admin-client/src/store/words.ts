@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IDraftWord, IWord } from "../models/index";
 import { IListResponse, IRequestParams } from "../models/api";
+import { constructUrl } from "../utils/api";
 
 export const wordsApi = createApi({
   reducerPath: "words/api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://127.0.0.1:8080/api/v1/words",
+    baseUrl: constructUrl("api/v1/words"),
   }),
   tagTypes: ["Words"],
   endpoints: (build) => ({

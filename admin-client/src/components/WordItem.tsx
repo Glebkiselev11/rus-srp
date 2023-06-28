@@ -3,6 +3,7 @@ import { useDeleteMutation } from "../store/words";
 import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { addCropImagaeParamsToUrl } from "../utils/image";
 
 interface WordItemProps {
   word: IWord;
@@ -43,7 +44,16 @@ export function WordItem({ word }: WordItemProps) {
       onClick={handleClick}
       className="flex justify-between border border-gray-200 py-2 px-4 hover:cursor-pointer"
     >
-      <div>{getWordView()}</div>
+      <div className="flex items-center">
+        {word.image &&
+          <img
+            key={word.image}
+            className="mr-4 h-10 w-10"
+            src={addCropImagaeParamsToUrl(word.image, 200)}
+          />
+        }
+        <div>{getWordView()}</div>
+      </div>
 
       <button
         style={{ visibility: showRemoveButton ? "visible" : "hidden" }}

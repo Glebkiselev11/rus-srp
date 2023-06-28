@@ -8,6 +8,7 @@ pub struct NewWordBody {
     pub rus: String,
     pub eng: String,
     pub srp_latin: String,
+    pub image: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Insertable)]
@@ -17,6 +18,7 @@ pub struct NewWord {
     pub srp_latin: String,
     pub srp_cyrillic: String,
     pub eng: String,
+    pub image: Option<String>,
 }
 
 impl From<NewWordBody> for NewWord {
@@ -28,6 +30,7 @@ impl From<NewWordBody> for NewWord {
             srp_latin: format(&body.srp_latin),
             eng: format(&body.eng),
             srp_cyrillic: format(&SerbianCyrillic::from_latin(&body.srp_latin)),
+            image: body.image,
         }
     }
 }
@@ -40,6 +43,7 @@ pub struct DbNewWord {
     pub srp_latin: String,
     pub srp_cyrillic: String,
     pub created_at: chrono::NaiveDateTime,
+    pub image: Option<String>,
 }
 
 impl From<NewWord> for DbNewWord {
@@ -50,6 +54,7 @@ impl From<NewWord> for DbNewWord {
             srp_cyrillic: new_word.srp_cyrillic,
             eng: new_word.eng,
             created_at: chrono::Utc::now().naive_utc(),
+            image: new_word.image,
         }
     }
 }
@@ -61,6 +66,7 @@ pub struct UpdateWordBody {
     pub eng: String,
     pub srp_latin: String,
     pub srp_cyrillic: String,
+    pub image: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Queryable, AsChangeset)]
@@ -73,6 +79,7 @@ pub struct DbWord {
     pub srp_cyrillic: String,
     pub created_at: chrono::NaiveDateTime,
     pub updated_at: Option<chrono::NaiveDateTime>,
+    pub image: Option<String>,
 }
 
 impl DbWord {
@@ -85,6 +92,7 @@ impl DbWord {
             srp_latin: payload.srp_latin,
             srp_cyrillic: payload.srp_cyrillic,
             updated_at: Some(chrono::Utc::now().naive_utc()),
+            image: payload.image,
         }
     }
 }

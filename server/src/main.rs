@@ -65,10 +65,19 @@ async fn main() -> std::io::Result<()> {
                             .route("/{id}", web::put().to(handler::word_categories::update))
                             .route("/{id}", web::delete().to(handler::word_categories::delete)),
                     )
-                    .service(web::scope("/translation-service").route(
-                        "/translate",
-                        web::post().to(handler::translation_service::translate),
-                    )),
+                    .service(
+                        web::scope("/services")
+                            .service(web::scope("/translation").route(
+                                "/translate",
+                                web::post().to(handler::services::translation::translate),
+                            ))
+                            .service(
+                                web::scope("/images").route(
+                                    "/query",
+                                    web::get().to(handler::services::images::query),
+                                ),
+                            ),
+                    ),
             )
     })
     .bind(API_URL)?

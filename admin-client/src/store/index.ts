@@ -1,20 +1,23 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { notificationReducer } from "./notification";
 import { wordsApi } from "./words";
-import { translateApi } from "./translate";
+import { translationApi } from "./translation";
+import { imagesApi } from "./images";
 import { sideMenuReducer } from "./sideMenu";
 
 const store = configureStore({
   reducer: {
     [wordsApi.reducerPath]: wordsApi.reducer,
-    [translateApi.reducerPath]: translateApi.reducer,
+    [translationApi.reducerPath]: translationApi.reducer,
+    [imagesApi.reducerPath]: imagesApi.reducer,
     notification: notificationReducer,
     sideMenu: sideMenuReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(wordsApi.middleware)
-      .concat(translateApi.middleware),
+      .concat(translationApi.middleware)
+      .concat(imagesApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;
