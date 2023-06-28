@@ -78,7 +78,7 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
   }, [isSuccessCreatedWord]);
 
   useEffect(() => {
-    const {eng, rus, srp_latin} = draftWord;
+    const { eng, rus, srp_latin } = draftWord;
     const values = [eng, rus, srp_latin];
     const anyFilled = values.some((x) => x.length);
     const anyEmpty = values.some((x) => x.length === 0);
@@ -143,7 +143,7 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
               <ImageSlider
                 images={imagesData.result}
                 selectedImage={draftWord.image}
-                selectImageHandler={image => setDraftWord({...draftWord, image})}
+                selectImageHandler={image => setDraftWord({ ...draftWord, image })}
               />
             </div>
           )}

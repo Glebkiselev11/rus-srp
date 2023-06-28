@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ITranslateResponse, ITranslateRequest } from "../models/api";
-import { constructUrl} from "../utils/api";
+import { constructUrl } from "../utils/api";
 
 export const translationApi = createApi({
   reducerPath: "translation/api",

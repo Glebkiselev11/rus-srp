@@ -1,6 +1,8 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
+  "plugins": [
+    "@typescript-eslint"
+  ],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -12,13 +14,38 @@
     "es6": true
   },
   "rules": {
-    "quotes": ["error", "double"],
-    "jsx-quotes": ["error", "prefer-double"],
+    "quotes": [
+      "error",
+      "double"
+    ],
+    "jsx-quotes": [
+      "error",
+      "prefer-double"
+    ],
     "react/react-in-jsx-scope": "off",
-    "indent": ["error", 2, { "SwitchCase": 1 }],
-    "semi": ["error", "always"],
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
     "no-trailing-spaces": "error",
-    "no-multiple-empty-lines": ["warn", { "max": 2, "maxEOF": 0 }]
+    "no-multiple-empty-lines": [
+      "warn",
+      {
+        "max": 2,
+        "maxEOF": 0
+      }
+    ],
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ]
   },
   "settings": {
     "react": {
