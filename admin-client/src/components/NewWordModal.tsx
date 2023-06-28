@@ -45,7 +45,9 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
     },
   ] = useTranslateMutation();
 
-  const [queryImages, { data: imagesData, isSuccess: isSuccessImagesLoaded }] = useLazySearchQuery();
+  const [queryImages, { data: imagesData, isSuccess: isSuccessImagesLoaded, isLoading: isImagesLoading }] = useLazySearchQuery();
+
+  const [showImagesSlider, setShowImagesSlider] = useState(false);
 
   const [isAnyInputFilled, setIsAnyInputFilled] = useState(false);
 
@@ -95,6 +97,12 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
     }
   }, [imageQuery]);
 
+  useEffect(() => {
+    setShowImagesSlider(
+      Boolean(isSuccessImagesLoaded && imagesData?.result.length && draftWord.eng.length && !isImagesLoading)
+    );
+  }, [isSuccessImagesLoaded, imagesData, draftWord, isSuccessImagesLoaded, isImagesLoading]);
+
   if (!show) return null;
 
   return (
@@ -138,10 +146,11 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
             />
           )}
 
-          {isSuccessImagesLoaded && imagesData && (
+          {showImagesSlider && (
             <div className="mt-4">
               <ImageSlider
-                images={imagesData.result}
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                images={imagesData!.result}
                 selectedImage={draftWord.image}
                 selectImageHandler={image => setDraftWord({ ...draftWord, image })}
               />
