@@ -6,7 +6,7 @@ interface ImageSliderProps {
   selectImageHandler: (src: string) => void;
 }
 
-export function ImageSlider({images, selectedImage, selectImageHandler }: ImageSliderProps) {
+export function ImageSlider({ images, selectedImage, selectImageHandler }: ImageSliderProps) {
 
   const addCropImagaeParamsToUrl = (src: string): string => {
     const url = new URL(src);
@@ -21,7 +21,7 @@ export function ImageSlider({images, selectedImage, selectImageHandler }: ImageS
 
   return (
     <section className="overflow-x-scroll flex">
-      {images.map(({id, src}) =>
+      {images.map(({ id, src }) =>
         <img
           key={id}
           className={`${imageClasses} ${selectedImage === src ? selectedImageClasses : ""}`}

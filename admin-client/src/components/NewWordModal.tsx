@@ -29,13 +29,16 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
     srp_latin: "",
     rus: "",
     eng: "",
-    image: null
+    image: null,
   };
+
   const [draftWord, setDraftWord] = useState(initWord);
+
   const [
     createWord,
     { isLoading: isLoadingCreatingWord, isSuccess: isSuccessCreatedWord },
   ] = useCreateWordMutation();
+
   const [
     translate,
     {
@@ -45,7 +48,14 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
     },
   ] = useTranslateMutation();
 
-  const [queryImages, { data: imagesData, isSuccess: isSuccessImagesLoaded, isLoading: isImagesLoading }] = useLazySearchQuery();
+  const [
+    queryImages,
+    {
+      data: imagesData,
+      isSuccess: isSuccessImagesLoaded,
+      isLoading: isImagesLoading,
+    },
+  ] = useLazySearchQuery();
 
   const [showImagesSlider, setShowImagesSlider] = useState(false);
 
@@ -92,14 +102,19 @@ export function NewWordModal({ show, closeHander }: NewWordModalProps) {
       queryImages({
         search: imageQuery,
         offset: 1,
-        limit: 15
+        limit: 15,
       });
     }
   }, [imageQuery]);
 
   useEffect(() => {
     setShowImagesSlider(
-      Boolean(isSuccessImagesLoaded && imagesData?.result.length && draftWord.eng.length && !isImagesLoading)
+      Boolean(
+        isSuccessImagesLoaded &&
+        imagesData?.result.length &&
+        draftWord.eng.length &&
+        !isImagesLoading
+      )
     );
   }, [isSuccessImagesLoaded, imagesData, draftWord, isSuccessImagesLoaded, isImagesLoading]);
 
