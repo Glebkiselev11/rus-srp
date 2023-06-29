@@ -63,9 +63,9 @@ pub fn select_all_with_filter(
 
     if query.search.is_none() {
         let result = dsl::words
-            .limit(20)
             .offset(offset.into())
             .order(order_clause)
+            .limit(20)
             .load::<DbWord>(conn)?;
 
         return Ok(DbQueryResult { count, result });
@@ -78,9 +78,9 @@ pub fn select_all_with_filter(
         .or_filter(dsl::srp_latin.like(&search))
         .or_filter(dsl::rus.like(&search))
         .or_filter(dsl::eng.like(&search))
-        .limit(20)
-        .offset(offset.into())
         .order(order_clause)
+        .offset(offset.into())
+        .limit(20)
         .load::<DbWord>(conn)?;
 
     Ok(DbQueryResult { count, result })
