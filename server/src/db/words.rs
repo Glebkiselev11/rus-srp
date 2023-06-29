@@ -1,4 +1,5 @@
 use crate::models::{
+    pagination::DbQueryResult,
     query_options::QueryOptions,
     word::{DbNewWord, DbWord, NewWord, UpdateWordBody},
 };
@@ -34,7 +35,7 @@ pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<Option<DbWor
 pub fn select_all_with_filter(
     conn: &mut SqliteConnection,
     query: QueryOptions,
-) -> Result<Vec<DbWord>, DbError> {
+) -> Result<DbQueryResult<DbWord>, DbError> {
     use crate::db::schema::words::dsl;
 
     let mut order_clause: Box<dyn BoxableExpression<dsl::words, Sqlite, SqlType = NotSelectable>> =
@@ -56,21 +57,23 @@ pub fn select_all_with_filter(
         }
     }
 
+    let count = dsl::words.count().get_result(conn)?;
+
     let offset = query.get_offset();
 
     if query.search.is_none() {
-        let all_words = dsl::words
+        let result = dsl::words
             .limit(20)
             .offset(offset.into())
             .order(order_clause)
             .load::<DbWord>(conn)?;
 
-        return Ok(all_words);
+        return Ok(DbQueryResult { count, result });
     }
 
     let search = query.get_search();
 
-    let all_words = dsl::words
+    let result = dsl::words
         .or_filter(dsl::srp_cyrillic.like(&search))
         .or_filter(dsl::srp_latin.like(&search))
         .or_filter(dsl::rus.like(&search))
@@ -80,7 +83,7 @@ pub fn select_all_with_filter(
         .order(order_clause)
         .load::<DbWord>(conn)?;
 
-    Ok(all_words)
+    Ok(DbQueryResult { count, result })
 }
 
 pub fn update(

@@ -29,7 +29,7 @@ pub async fn get_list_by_query(
     let query = query.into_inner();
     let offset = query.get_offset();
 
-    let words = web::block(move || {
+    let db_query_result = web::block(move || {
         let mut conn = pool.get()?;
         db::words::select_all_with_filter(&mut conn, query)
     })
@@ -37,9 +37,9 @@ pub async fn get_list_by_query(
     .map_err(actix_web::error::ErrorInternalServerError)?;
 
     Ok(HttpResponse::Ok().json(Pagination {
-        count: words.len(),
         offset,
-        result: words,
+        count: db_query_result.count,
+        result: db_query_result.result,
     }))
 }
 

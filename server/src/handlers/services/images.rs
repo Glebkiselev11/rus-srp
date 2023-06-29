@@ -29,9 +29,9 @@ struct ResponsePhoto {
 
 #[derive(Deserialize, Serialize, Debug)]
 struct ResponseData {
-    page: u32,
-    per_page: u32,
-    total_results: usize,
+    page: i64,
+    per_page: i64,
+    total_results: i64,
     photos: Vec<ResponsePhoto>,
 }
 
