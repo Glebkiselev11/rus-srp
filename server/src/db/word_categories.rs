@@ -45,9 +45,9 @@ pub fn select_all_with_filter(
 
     let offset = query.get_offset();
 
-    let count = dsl::word_categories.count().get_result(conn)?;
-
     if query.search.is_none() {
+        let count = dsl::word_categories.count().get_result(conn)?;
+
         let result = dsl::word_categories
             .limit(20)
             .offset(offset.into())
@@ -58,11 +58,18 @@ pub fn select_all_with_filter(
 
     let search = query.get_search();
 
-    let result = dsl::word_categories
+    let db_query = dsl::word_categories
         .or_filter(dsl::name.like(&search))
-        .or_filter(dsl::description.like(&search))
-        .limit(20)
+        .or_filter(dsl::description.like(&search));
+
+    let count = db_query
+        .clone()
+        .select(diesel::dsl::count_star())
+        .first::<i64>(conn)?;
+
+    let result = db_query
         .offset(offset.into())
+        .limit(20)
         .load::<DbWordCategory>(conn)?;
 
     Ok(DbQueryResult { count, result })
