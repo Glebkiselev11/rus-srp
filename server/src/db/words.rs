@@ -57,11 +57,11 @@ pub fn select_all_with_filter(
         }
     }
 
-    let count = dsl::words.count().get_result(conn)?;
-
     let offset = query.get_offset();
 
     if query.search.is_none() {
+        let count = dsl::words.count().get_result(conn)?;
+
         let result = dsl::words
             .offset(offset.into())
             .order(order_clause)
@@ -73,11 +73,18 @@ pub fn select_all_with_filter(
 
     let search = query.get_search();
 
-    let result = dsl::words
+    let db_query = dsl::words
         .or_filter(dsl::srp_cyrillic.like(&search))
         .or_filter(dsl::srp_latin.like(&search))
         .or_filter(dsl::rus.like(&search))
-        .or_filter(dsl::eng.like(&search))
+        .or_filter(dsl::eng.like(&search));
+
+    let count = db_query
+        .clone()
+        .select(diesel::dsl::count_star())
+        .first::<i64>(conn)?;
+
+    let result = db_query
         .order(order_clause)
         .offset(offset.into())
         .limit(20)
