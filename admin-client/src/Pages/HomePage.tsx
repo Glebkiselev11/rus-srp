@@ -2,17 +2,17 @@ import { useGetAllQuery } from "../store/words";
 import { WordItem } from "../components/WordItem";
 import { useState } from "react";
 import { FilterPanel } from "../components/FilterPanel";
-import { IRequestParams } from "../models/api";
 import { useDebounce } from "../hooks/debounce";
 import { AppHeader } from "../components/AppHeader";
 import { useTranslation } from "react-i18next";
 import { AppMain } from "../components/AppMain";
 import { AppButton } from "../components/AppButton";
 import { NewWordModal } from "../components/NewWordModal";
+import { useCustomSearchParams } from "../utils/searchParams";
 
 export default function HomePage() {
   const { t } = useTranslation();
-  const [params, setParams] = useState<IRequestParams>({});
+  const [params, setParams] = useCustomSearchParams();
 
   const debouncedParams = useDebounce(params, 500);
   const { data, isSuccess } = useGetAllQuery(debouncedParams);

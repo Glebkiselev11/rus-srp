@@ -20,9 +20,7 @@ export function FilterPanel({ params, onChange }: FilterPanelProps) {
     { label: t("order.last-updated"), value: "-updated_at" },
   ];
 
-  const [orderState, setOrderState] = useState<Order>(
-    params.order ?? orderOptions[0].value
-  );
+  const [orderState, setOrderState] = useState(params.order);
 
   const handleOrderChange = (x: string) => {
     const order = x as Order;

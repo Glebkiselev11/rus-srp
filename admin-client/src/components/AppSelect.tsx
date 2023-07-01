@@ -4,7 +4,7 @@ export interface OptionItem {
 }
 
 interface AppSelectProps {
-  selected: string;
+  selected: string | undefined;
   options: Array<OptionItem>;
   onChange: (x: OptionItem["value"]) => void;
 }

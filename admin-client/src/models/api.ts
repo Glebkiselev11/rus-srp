@@ -8,8 +8,8 @@ export type Order = "created_at" | "-created_at" | "-updated_at";
 
 export interface IRequestParams {
   search?: string;
-  offset?: number;
-  limit?: number;
+  offset?: string;
+  limit?: string;
   order?: Order;
 }
 
