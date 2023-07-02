@@ -9,6 +9,7 @@ import { AppMain } from "../components/AppMain";
 import { AppButton } from "../components/AppButton";
 import { NewWordModal } from "../components/NewWordModal";
 import { useCustomSearchParams } from "../utils/searchParams";
+import { AppPagination } from "../components/AppPagination";
 
 export default function HomePage() {
   const { t } = useTranslation();
@@ -52,7 +53,20 @@ export default function HomePage() {
               <div key={word.id} className="mb-3">
                 <WordItem word={word} />
               </div>
-            ))}
+            ))
+          }
+
+          {isSuccess &&
+            <div className="my-10">
+              <AppPagination
+                changeOffsetHandler={(offset) => setParams({ ...params, offset })}
+                limit={params.limit}
+                offset={params.offset}
+                count={data.count}
+              />
+            </div>
+          }
+
         </div>
       </AppMain>
 
