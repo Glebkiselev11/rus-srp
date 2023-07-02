@@ -2,20 +2,26 @@ import { useGetAllQuery } from "../store/words";
 import { WordItem } from "../components/WordItem";
 import { useState } from "react";
 import { FilterPanel } from "../components/FilterPanel";
-import { IRequestParams } from "../models/api";
 import { useDebounce } from "../hooks/debounce";
 import { AppHeader } from "../components/AppHeader";
 import { useTranslation } from "react-i18next";
 import { AppMain } from "../components/AppMain";
 import { AppButton } from "../components/AppButton";
 import { NewWordModal } from "../components/NewWordModal";
+import { useCustomSearchParams } from "../utils/searchParams";
+import { AppPagination } from "../components/AppPagination";
 
 export default function HomePage() {
   const { t } = useTranslation();
-  const [params, setParams] = useState<IRequestParams>({});
+  const [params, setParams] = useCustomSearchParams();
 
-  const debouncedParams = useDebounce(params, 500);
-  const { data, isSuccess } = useGetAllQuery(debouncedParams);
+  const debouncedSearch = useDebounce(params.search, 500);
+  const { data, isSuccess } = useGetAllQuery({
+    offset: params.offset,
+    limit: params.limit,
+    order: params.order,
+    search: debouncedSearch,
+  });
 
   const [showNewWordModal, setShowNewWordModal] = useState(false);
   const addWordButtonHandler = () => {
@@ -47,7 +53,20 @@ export default function HomePage() {
               <div key={word.id} className="mb-3">
                 <WordItem word={word} />
               </div>
-            ))}
+            ))
+          }
+
+          {isSuccess &&
+            <div className="my-10">
+              <AppPagination
+                changeOffsetHandler={(offset) => setParams({ ...params, offset })}
+                limit={params.limit}
+                offset={params.offset}
+                count={data.count}
+              />
+            </div>
+          }
+
         </div>
       </AppMain>
 

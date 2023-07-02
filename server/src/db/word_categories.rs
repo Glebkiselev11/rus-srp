@@ -1,6 +1,7 @@
 use diesel::prelude::*;
 
 use crate::models::{
+    pagination::DbQueryResult,
     query_options::QueryOptions,
     word_category::{DbNewWordCategory, DbWordCategory, WordCategoryBody},
 };
@@ -39,30 +40,40 @@ pub fn select_by_id(
 pub fn select_all_with_filter(
     conn: &mut SqliteConnection,
     query: QueryOptions,
-) -> Result<Vec<DbWordCategory>, DbError> {
+) -> Result<DbQueryResult<DbWordCategory>, DbError> {
     use crate::db::schema::word_categories::dsl;
 
     let offset = query.get_offset();
 
     if query.search.is_none() {
-        let categories = dsl::word_categories
+        let count = dsl::word_categories.count().get_result(conn)?;
+
+        let result = dsl::word_categories
             .limit(20)
             .offset(offset.into())
             .load::<DbWordCategory>(conn)?;
 
-        return Ok(categories);
+        return Ok(DbQueryResult { count, result });
     }
 
     let search = query.get_search();
+    let limit = query.get_limit();
 
-    let categories = dsl::word_categories
+    let db_query = dsl::word_categories
         .or_filter(dsl::name.like(&search))
-        .or_filter(dsl::description.like(&search))
-        .limit(20)
+        .or_filter(dsl::description.like(&search));
+
+    let count = db_query
+        .clone()
+        .select(diesel::dsl::count_star())
+        .first::<i64>(conn)?;
+
+    let result = db_query
         .offset(offset.into())
+        .limit(limit)
         .load::<DbWordCategory>(conn)?;
 
-    Ok(categories)
+    Ok(DbQueryResult { count, result })
 }
 
 pub fn update(

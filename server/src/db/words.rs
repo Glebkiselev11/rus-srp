@@ -1,4 +1,5 @@
 use crate::models::{
+    pagination::DbQueryResult,
     query_options::QueryOptions,
     word::{DbNewWord, DbWord, NewWord, UpdateWordBody},
 };
@@ -34,7 +35,7 @@ pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<Option<DbWor
 pub fn select_all_with_filter(
     conn: &mut SqliteConnection,
     query: QueryOptions,
-) -> Result<Vec<DbWord>, DbError> {
+) -> Result<DbQueryResult<DbWord>, DbError> {
     use crate::db::schema::words::dsl;
 
     let mut order_clause: Box<dyn BoxableExpression<dsl::words, Sqlite, SqlType = NotSelectable>> =
@@ -57,30 +58,40 @@ pub fn select_all_with_filter(
     }
 
     let offset = query.get_offset();
+    let limit = query.get_limit();
 
     if query.search.is_none() {
-        let all_words = dsl::words
-            .limit(20)
+        let count = dsl::words.count().get_result(conn)?;
+
+        let result = dsl::words
             .offset(offset.into())
             .order(order_clause)
+            .limit(limit)
             .load::<DbWord>(conn)?;
 
-        return Ok(all_words);
+        return Ok(DbQueryResult { count, result });
     }
 
     let search = query.get_search();
 
-    let all_words = dsl::words
+    let db_query = dsl::words
         .or_filter(dsl::srp_cyrillic.like(&search))
         .or_filter(dsl::srp_latin.like(&search))
         .or_filter(dsl::rus.like(&search))
-        .or_filter(dsl::eng.like(&search))
-        .limit(20)
-        .offset(offset.into())
+        .or_filter(dsl::eng.like(&search));
+
+    let count = db_query
+        .clone()
+        .select(diesel::dsl::count_star())
+        .first::<i64>(conn)?;
+
+    let result = db_query
         .order(order_clause)
+        .offset(offset.into())
+        .limit(limit)
         .load::<DbWord>(conn)?;
 
-    Ok(all_words)
+    Ok(DbQueryResult { count, result })
 }
 
 pub fn update(
