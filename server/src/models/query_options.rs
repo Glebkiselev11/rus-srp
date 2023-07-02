@@ -13,6 +13,10 @@ impl QueryOptions {
         self.offset.unwrap_or(0)
     }
 
+    pub fn get_limit(&self) -> i64 {
+        self.limit.unwrap_or(20)
+    }
+
     pub fn get_search(&self) -> String {
         self.search
             .as_ref()

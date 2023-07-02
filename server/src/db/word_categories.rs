@@ -57,6 +57,7 @@ pub fn select_all_with_filter(
     }
 
     let search = query.get_search();
+    let limit = query.get_limit();
 
     let db_query = dsl::word_categories
         .or_filter(dsl::name.like(&search))
@@ -69,7 +70,7 @@ pub fn select_all_with_filter(
 
     let result = db_query
         .offset(offset.into())
-        .limit(20)
+        .limit(limit)
         .load::<DbWordCategory>(conn)?;
 
     Ok(DbQueryResult { count, result })

@@ -58,6 +58,7 @@ pub fn select_all_with_filter(
     }
 
     let offset = query.get_offset();
+    let limit = query.get_limit();
 
     if query.search.is_none() {
         let count = dsl::words.count().get_result(conn)?;
@@ -65,7 +66,7 @@ pub fn select_all_with_filter(
         let result = dsl::words
             .offset(offset.into())
             .order(order_clause)
-            .limit(20)
+            .limit(limit)
             .load::<DbWord>(conn)?;
 
         return Ok(DbQueryResult { count, result });
@@ -87,7 +88,7 @@ pub fn select_all_with_filter(
     let result = db_query
         .order(order_clause)
         .offset(offset.into())
-        .limit(20)
+        .limit(limit)
         .load::<DbWord>(conn)?;
 
     Ok(DbQueryResult { count, result })
