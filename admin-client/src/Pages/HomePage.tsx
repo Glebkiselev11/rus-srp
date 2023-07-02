@@ -14,8 +14,13 @@ export default function HomePage() {
   const { t } = useTranslation();
   const [params, setParams] = useCustomSearchParams();
 
-  const debouncedParams = useDebounce(params, 500);
-  const { data, isSuccess } = useGetAllQuery(debouncedParams);
+  const debouncedSearch = useDebounce(params.search, 500);
+  const { data, isSuccess } = useGetAllQuery({
+    offset: params.offset,
+    limit: params.limit,
+    order: params.order,
+    search: debouncedSearch,
+  });
 
   const [showNewWordModal, setShowNewWordModal] = useState(false);
   const addWordButtonHandler = () => {
