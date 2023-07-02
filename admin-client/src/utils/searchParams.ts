@@ -15,14 +15,14 @@ export function useCustomSearchParams(): [IRequestParams, (x: IRequestParams) =>
   const isKeyOfIRequestParams = (key: string): key is keyof IRequestParams => key in params;
 
   const setParams = (newParams: IRequestParams) => {
-    // Merge the existing params with the new ones
-    const mergedParams: IRequestParams = { ...params, ...newParams };
-
+    if (newParams.search !== params.search) {
+      newParams.offset = 0;
+    }
     // Remove undefined and empty keys and convert values to string
     const validParams: Record<string, string> = {};
-    for (const key in mergedParams) {
-      if (isKeyOfIRequestParams(key) && mergedParams[key]) {
-        validParams[key] = String(mergedParams[key]);
+    for (const key in newParams) {
+      if (isKeyOfIRequestParams(key) && newParams[key]) {
+        validParams[key] = String(newParams[key]);
       }
     }
 
