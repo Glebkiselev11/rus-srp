@@ -6,9 +6,9 @@ export function useCustomSearchParams(): [IRequestParams, (x: IRequestParams) =>
   const [searchParams, setSearchParams] = useSearchParams();
 
   const params = {
-    search: searchParams.get("search") ?? undefined,
-    offset: searchParams.get("offset") ?? undefined,
-    limit: searchParams.get("limit") ?? undefined,
+    search: searchParams.get("search") ?? "",
+    offset: Number(searchParams.get("offset") ?? "0"),
+    limit: Number(searchParams.get("limit") ?? "20"),
     order: (searchParams.get("order") ?? "-created_at") as Order,
   };
 

@@ -7,9 +7,9 @@ export interface IListResponse<T> {
 export type Order = "created_at" | "-created_at" | "-updated_at";
 
 export interface IRequestParams {
-  search?: string;
-  offset?: string;
-  limit?: string;
+  search: string;
+  offset: number;
+  limit: number;
   order?: Order;
 }
 
