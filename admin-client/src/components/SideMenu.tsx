@@ -26,11 +26,11 @@ export function SideMenu() {
   );
 
   return (
-    <aside className="px-[12px] bg-white h-[100vh] w-[320px]">
-      <div className="pl-2 flex items-center mb-[40px] h-[56px]">
+    <aside className="h-[100vh] w-[320px]">
+      <div className="pl-8 flex items-center bg-white h-[56px]">
         <h6 className="text-xl font-normal">Srpski reć - admin</h6>
       </div>
-      <nav className="flex flex-col">
+      <nav className="mt-4 pl-3 pr-[22px] flex flex-col">
         {navigation.map(({ link, label, className, icon }) => (
           <SideMenuNavButton
             key={link}
