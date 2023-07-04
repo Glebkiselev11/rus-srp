@@ -11,12 +11,12 @@ export default function SettingsPage() {
     <>
       <AppHeader title={t("settings")}></AppHeader>
       <AppMain>
-        <div className="mt-4 ml-[250px] w-[650px] py-3 px-6 bg-white rounded-2xl">
+        <div className="mt-4 mx-auto w-[684px] py-3 px-6 bg-white rounded-2xl">
           <h6 className="text-xl">{t("general")}</h6>
 
           <div className="h-16 flex justify-between items-center">
             <div className="flex">
-              <AppIcon name="translate"/>
+              <AppIcon name="translate" />
               <span className="ml-4">{t("interface-language")}</span>
             </div>
             <LanguageChanger />
