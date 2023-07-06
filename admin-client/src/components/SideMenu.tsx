@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { SideMenuNavButton } from "./SideMenuNavButton";
 import { useMemo } from "react";
 import { IconName } from "./AppIcon/types";
+import { AppIcon } from "./AppIcon";
 interface NavigationItem {
   link: string;
   label: string;
@@ -27,8 +28,12 @@ export function SideMenu() {
 
   return (
     <aside className="h-[100vh] w-[320px]">
-      <div className="pl-8 flex items-center bg-white h-[56px]">
-        <h6 className="text-xl font-normal">Srpski reć - admin</h6>
+      <div className="pl-8 bg-white h-[56px]">
+        <h6 className="text-xl font-normal">Srpski reć</h6>
+        <div className="flex items-center">
+          <AppIcon size="18px" name="admin_panel_settings" />
+          <span className="ml-2 text-sm text-gray-700">Admin</span>
+        </div>
       </div>
       <nav className="mt-4 pl-3 pr-[22px] flex flex-col">
         {navigation.map(({ link, label, className, icon }) => (
