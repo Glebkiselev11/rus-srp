@@ -10,7 +10,7 @@ export default function SettingsPage() {
   return (
     <>
       <AppHeader title={t("settings")}></AppHeader>
-      <AppMain>
+      <AppMain headerPadding>
         <div className="mt-4 mx-auto w-[684px] py-3 px-6 bg-white rounded-2xl">
           <h6 className="text-xl">{t("general")}</h6>
 

@@ -42,7 +42,7 @@ export default function HomePage() {
           onClick={addWordButtonHandler}
         />
       </AppHeader>
-      <AppMain>
+      <AppMain headerPadding>
         <div className="mt-10 mx-40">
           <div className="mb-5">
             <FilterPanel params={params} onChange={(p) => setParams(p)} />
