@@ -66,6 +66,10 @@ export default function HomePage() {
                   />
                 </div>
               )}
+
+              {data.count === 0 && (
+                <div>{t("no-words-were-found")}</div>
+              )}
             </>
           )}
 

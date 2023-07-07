@@ -1,5 +1,6 @@
 {
   "translation": {
+    "no-words-were-found": "Слова по данному запросу не были найдены",
     "general": "Общие",
     "order": {
       "new-words": "Новые слова",
