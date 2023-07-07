@@ -3,7 +3,7 @@ import { WordItem } from "../components/WordItem";
 import { useState } from "react";
 import { FilterPanel } from "../components/FilterPanel";
 import { useDebounce } from "../hooks/debounce";
-import { AppHeader } from "../components/AppHeader";
+import { AppTopBar } from "../components/AppTopBar";
 import { useTranslation } from "react-i18next";
 import { AppMain } from "../components/AppMain";
 import { AppButton } from "../components/AppButton";
@@ -34,15 +34,15 @@ export default function HomePage() {
 
   return (
     <>
-      <AppHeader title={t("all-words")}>
+      <AppTopBar title={t("all-words")}>
         <AppButton
           label={t("add-word")}
           icon="add"
           type="filled"
           onClick={addWordButtonHandler}
         />
-      </AppHeader>
-      <AppMain headerPadding>
+      </AppTopBar>
+      <AppMain>
         <div className="mt-10 mx-40">
           <div className="mb-5">
             <FilterPanel params={params} onChange={(p) => setParams(p)} />
