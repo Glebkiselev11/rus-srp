@@ -48,24 +48,26 @@ export default function HomePage() {
             <FilterPanel params={params} onChange={(p) => setParams(p)} />
           </div>
 
-          {isSuccess &&
-            data.result.map((word) => (
-              <div key={word.id} className="mb-3">
-                <WordItem word={word} />
-              </div>
-            ))
-          }
+          {isSuccess && (
+            <>
+              {data.result.map((word) => (
+                <div key={word.id} className="mb-3">
+                  <WordItem word={word} />
+                </div>
+              ))}
 
-          {isSuccess &&
-            <div className="my-10">
-              <AppPagination
-                changeOffsetHandler={(offset) => setParams({ ...params, offset })}
-                limit={params.limit}
-                offset={params.offset}
-                count={data.count}
-              />
-            </div>
-          }
+              {data.count > params.limit && (
+                <div className="my-10">
+                  <AppPagination
+                    changeOffsetHandler={(offset) => setParams({ ...params, offset })}
+                    limit={params.limit}
+                    offset={params.offset}
+                    count={data.count}
+                  />
+                </div>
+              )}
+            </>
+          )}
 
         </div>
       </AppMain>
