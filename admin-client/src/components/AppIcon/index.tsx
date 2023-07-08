@@ -8,6 +8,7 @@ import { CloseIcon } from "./CloseIcon";
 import { CancelIcon } from "./CancelIcon";
 import { EditNoteIcon } from "./EditNoteIcon";
 import { TranslateIcon } from "./TranslateIcon";
+import { AdminPanelSettingsIcon } from "./AdminPanelSettingsIcon";
 
 interface AppIconProps {
   color?: "black" | "white" | "gray" | "indigo";
@@ -36,7 +37,8 @@ export function AppIcon({
     close: CloseIcon,
     cancel: CancelIcon,
     edit_note: EditNoteIcon,
-    translate: TranslateIcon
+    translate: TranslateIcon,
+    admin_panel_settings: AdminPanelSettingsIcon,
   }[name];
 
   return <Icon color={_color} size={size} />;

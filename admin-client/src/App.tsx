@@ -8,10 +8,10 @@ import SettingsPage from "./Pages/SettingsPage";
 
 function App() {
   return (
-    <div className="flex">
+    <div className="flex bg-gray-100">
       <SideMenu />
 
-      <div className="w-full h-[100vh] overflow-hidden bg-slate-100">
+      <div className="w-full h-[100vh] overflow-hidden">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/settings" element={<SettingsPage />} />

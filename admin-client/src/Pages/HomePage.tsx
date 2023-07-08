@@ -3,7 +3,7 @@ import { WordItem } from "../components/WordItem";
 import { useState } from "react";
 import { FilterPanel } from "../components/FilterPanel";
 import { useDebounce } from "../hooks/debounce";
-import { AppHeader } from "../components/AppHeader";
+import { AppTopBar } from "../components/AppTopBar";
 import { useTranslation } from "react-i18next";
 import { AppMain } from "../components/AppMain";
 import { AppButton } from "../components/AppButton";
@@ -34,38 +34,44 @@ export default function HomePage() {
 
   return (
     <>
-      <AppHeader title={t("all-words")}>
+      <AppTopBar title={t("all-words")}>
         <AppButton
           label={t("add-word")}
           icon="add"
           type="filled"
           onClick={addWordButtonHandler}
         />
-      </AppHeader>
+      </AppTopBar>
       <AppMain>
         <div className="mt-10 mx-40">
           <div className="mb-5">
             <FilterPanel params={params} onChange={(p) => setParams(p)} />
           </div>
 
-          {isSuccess &&
-            data.result.map((word) => (
-              <div key={word.id} className="mb-3">
-                <WordItem word={word} />
-              </div>
-            ))
-          }
+          {isSuccess && (
+            <>
+              {data.result.map((word) => (
+                <div key={word.id} className="mb-3">
+                  <WordItem word={word} />
+                </div>
+              ))}
 
-          {isSuccess &&
-            <div className="my-10">
-              <AppPagination
-                changeOffsetHandler={(offset) => setParams({ ...params, offset })}
-                limit={params.limit}
-                offset={params.offset}
-                count={data.count}
-              />
-            </div>
-          }
+              {data.count > params.limit && (
+                <div className="my-10">
+                  <AppPagination
+                    changeOffsetHandler={(offset) => setParams({ ...params, offset })}
+                    limit={params.limit}
+                    offset={params.offset}
+                    count={data.count}
+                  />
+                </div>
+              )}
+
+              {data.count === 0 && (
+                <div>{t("no-words-were-found")}</div>
+              )}
+            </>
+          )}
 
         </div>
       </AppMain>

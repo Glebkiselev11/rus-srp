@@ -12,6 +12,7 @@ export type IconName =
   | "close"
   | "cancel"
   | "edit_note"
-  | "translate";
+  | "translate"
+  | "admin_panel_settings";
 
-export type IconSize = "20px" | "24px";
+export type IconSize = "18px" | "20px" | "24px";

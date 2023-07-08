@@ -1,5 +1,6 @@
 {
   "translation": {
+    "no-words-were-found": "No words were found for this query",
     "general": "General",
     "order": {
       "new-words": "New words",
