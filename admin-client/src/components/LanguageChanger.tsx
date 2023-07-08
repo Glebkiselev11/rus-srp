@@ -1,8 +1,11 @@
 import { useTranslation } from "react-i18next";
 import { LanguageList } from "../i18n";
 import { AppSelect } from "./AppSelect";
+interface LanguageChangerProps {
+  id: string;
+}
 
-export function LanguageChanger() {
+export function LanguageChanger({ id }: LanguageChangerProps) {
   const { i18n } = useTranslation();
 
   const handleChangeLanguage = (code: string) => {
@@ -20,6 +23,7 @@ export function LanguageChanger() {
       selected={i18n.language}
       onChange={handleChangeLanguage}
       options={languageOptions}
+      id={id}
     />
   );
 }
