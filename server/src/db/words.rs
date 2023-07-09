@@ -5,7 +5,7 @@ use crate::models::{
 };
 use diesel::{expression::expression_types::NotSelectable, prelude::*, sqlite::Sqlite};
 
-type DbError = Box<dyn std::error::Error + Send + Sync>;
+use crate::db::models::DbError;
 
 /// Run query using Diesel to insert a new database row and return the result.
 pub fn insert(new_word: NewWord, conn: &mut SqliteConnection) -> Result<DbWord, DbError> {

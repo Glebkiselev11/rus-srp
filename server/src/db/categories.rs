@@ -1,12 +1,10 @@
-use diesel::prelude::*;
-
+use crate::db::models::DbError;
 use crate::models::{
     category::{CategoryBody, DbCategory, DbNewCategory},
     pagination::DbQueryResult,
     query_options::QueryOptions,
 };
-
-type DbError = Box<dyn std::error::Error + Send + Sync>;
+use diesel::prelude::*;
 
 pub fn insert(
     new_category: CategoryBody,
