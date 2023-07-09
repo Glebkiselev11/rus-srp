@@ -1,37 +1,34 @@
 use diesel::prelude::*;
 
 use crate::models::{
+    category::{CategoryBody, DbCategory, DbNewCategory},
     pagination::DbQueryResult,
     query_options::QueryOptions,
-    word_category::{DbNewWordCategory, DbWordCategory, WordCategoryBody},
 };
 
 type DbError = Box<dyn std::error::Error + Send + Sync>;
 
 pub fn insert(
-    new_category: WordCategoryBody,
+    new_category: CategoryBody,
     conn: &mut SqliteConnection,
-) -> Result<DbWordCategory, DbError> {
-    use crate::db::schema::word_categories::dsl;
+) -> Result<DbCategory, DbError> {
+    use crate::db::schema::categories::dsl;
 
-    let new_category = DbNewWordCategory::from(new_category);
+    let new_category = DbNewCategory::from(new_category);
 
-    let category = diesel::insert_into(dsl::word_categories)
+    let category = diesel::insert_into(dsl::categories)
         .values(&new_category)
-        .get_result::<DbWordCategory>(conn)?;
+        .get_result::<DbCategory>(conn)?;
 
     Ok(category)
 }
 
-pub fn select_by_id(
-    id: i32,
-    conn: &mut SqliteConnection,
-) -> Result<Option<DbWordCategory>, DbError> {
-    use crate::db::schema::word_categories::dsl;
+pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<Option<DbCategory>, DbError> {
+    use crate::db::schema::categories::dsl;
 
-    let category = dsl::word_categories
+    let category = dsl::categories
         .filter(dsl::id.eq(id))
-        .first::<DbWordCategory>(conn)
+        .first::<DbCategory>(conn)
         .optional()?;
 
     Ok(category)
@@ -40,18 +37,18 @@ pub fn select_by_id(
 pub fn select_all_with_filter(
     conn: &mut SqliteConnection,
     query: QueryOptions,
-) -> Result<DbQueryResult<DbWordCategory>, DbError> {
-    use crate::db::schema::word_categories::dsl;
+) -> Result<DbQueryResult<DbCategory>, DbError> {
+    use crate::db::schema::categories::dsl;
 
     let offset = query.get_offset();
 
     if query.search.is_none() {
-        let count = dsl::word_categories.count().get_result(conn)?;
+        let count = dsl::categories.count().get_result(conn)?;
 
-        let result = dsl::word_categories
+        let result = dsl::categories
             .limit(20)
             .offset(offset.into())
-            .load::<DbWordCategory>(conn)?;
+            .load::<DbCategory>(conn)?;
 
         return Ok(DbQueryResult { count, result });
     }
@@ -59,7 +56,7 @@ pub fn select_all_with_filter(
     let search = query.get_search();
     let limit = query.get_limit();
 
-    let db_query = dsl::word_categories
+    let db_query = dsl::categories
         .or_filter(dsl::name.like(&search))
         .or_filter(dsl::description.like(&search));
 
@@ -71,24 +68,24 @@ pub fn select_all_with_filter(
     let result = db_query
         .offset(offset.into())
         .limit(limit)
-        .load::<DbWordCategory>(conn)?;
+        .load::<DbCategory>(conn)?;
 
     Ok(DbQueryResult { count, result })
 }
 
 pub fn update(
-    payload: WordCategoryBody,
+    payload: CategoryBody,
     id: i32,
     conn: &mut SqliteConnection,
-) -> Result<Option<DbWordCategory>, DbError> {
-    use crate::db::schema::word_categories::dsl;
+) -> Result<Option<DbCategory>, DbError> {
+    use crate::db::schema::categories::dsl;
 
-    let category: DbWordCategory = match select_by_id(id, conn)? {
+    let category: DbCategory = match select_by_id(id, conn)? {
         Some(db_category) => db_category.with_update(payload),
         None => return Ok(None),
     };
 
-    diesel::update(dsl::word_categories.find(id))
+    diesel::update(dsl::categories.find(id))
         .set(category.clone())
         .execute(conn)?;
 
@@ -96,9 +93,9 @@ pub fn update(
 }
 
 pub fn delete(id: i32, conn: &mut SqliteConnection) -> Result<(), DbError> {
-    use crate::db::schema::word_categories::dsl;
+    use crate::db::schema::categories::dsl;
 
-    diesel::delete(dsl::word_categories.filter(dsl::id.eq(id))).execute(conn)?;
+    diesel::delete(dsl::categories.filter(dsl::id.eq(id))).execute(conn)?;
 
     Ok(())
 }

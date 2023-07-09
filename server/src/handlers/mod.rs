@@ -1,4 +1,4 @@
 pub mod auth;
+pub mod categories;
 pub mod services;
-pub mod word_categories;
 pub mod words;
