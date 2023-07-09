@@ -1,6 +1,6 @@
-use diesel::prelude::*;
-type DbError = Box<dyn std::error::Error + Send + Sync>;
+use crate::db::models::DbError;
 use crate::db::words_categories::models;
+use diesel::prelude::*;
 
 use super::models::DbWordCategory;
 
