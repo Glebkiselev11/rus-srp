@@ -19,6 +19,15 @@ diesel::table! {
 }
 
 diesel::table! {
+    word_categories_words (id) {
+        id -> Integer,
+        word_id -> Integer,
+        word_category_id -> Integer,
+        created_at -> Timestamp,
+    }
+}
+
+diesel::table! {
     words (id) {
         id -> Integer,
         rus -> Text,
@@ -34,5 +43,6 @@ diesel::table! {
 diesel::allow_tables_to_appear_in_same_query!(
     users,
     word_categories,
+    word_categories_words,
     words,
 );
