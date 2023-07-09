@@ -4,7 +4,6 @@ use crate::models::pagination::Pagination;
 use crate::models::query_options::QueryOptions;
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
-use serde::{Deserialize, Serialize};
 
 pub async fn create(
     pool: web::Data<DbPool>,
@@ -92,4 +91,20 @@ pub async fn delete(
     .map_err(actix_web::error::ErrorInternalServerError)?;
 
     Ok(HttpResponse::Ok().finish())
+}
+
+pub async fn add_word(
+    pool: web::Data<DbPool>,
+    path: web::Path<(i32, i32)>,
+) -> actix_web::Result<impl Responder> {
+    let (category_id, word_id) = path.into_inner();
+
+    let word_category_reation = web::block(move || {
+        let mut conn = pool.get()?;
+        db::words_categories::methods::insert(category_id, word_id, &mut conn)
+    })
+    .await?
+    .map_err(actix_web::error::ErrorInternalServerError)?;
+
+    Ok(HttpResponse::Ok().json(word_category_reation))
 }
