@@ -1,4 +1,4 @@
-use crate::db::models::DbError;
+use crate::db::models::{DbError, RecordNotFoundError};
 use crate::models::{
     category::{CategoryBody, DbCategory, DbNewCategory},
     pagination::DbQueryResult,
@@ -21,13 +21,14 @@ pub fn insert(
     Ok(category)
 }
 
-pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<Option<DbCategory>, DbError> {
+pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<DbCategory, DbError> {
     use crate::db::schema::categories::dsl;
 
     let category = dsl::categories
         .filter(dsl::id.eq(id))
         .first::<DbCategory>(conn)
-        .optional()?;
+        .optional()?
+        .ok_or(RecordNotFoundError::new("Category doesn't exist"))?;
 
     Ok(category)
 }
@@ -78,10 +79,7 @@ pub fn update(
 ) -> Result<Option<DbCategory>, DbError> {
     use crate::db::schema::categories::dsl;
 
-    let category: DbCategory = match select_by_id(id, conn)? {
-        Some(db_category) => db_category.with_update(payload),
-        None => return Ok(None),
-    };
+    let category: DbCategory = select_by_id(id, conn)?.with_update(payload);
 
     diesel::update(dsl::categories.find(id))
         .set(category.clone())

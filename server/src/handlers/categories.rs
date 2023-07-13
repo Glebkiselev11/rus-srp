@@ -32,10 +32,7 @@ pub async fn get_by_id(
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
 
-    match category {
-        Some(x) => Ok(HttpResponse::Ok().json(x)),
-        None => Ok(HttpResponse::NotFound().body("Category not found")),
-    }
+    Ok(HttpResponse::Ok().json(category))
 }
 
 pub async fn get_list_by_query(
@@ -101,6 +98,10 @@ pub async fn add_word(
 
     let word_category_relation = web::block(move || {
         let mut conn = pool.get()?;
+
+        // Check if category exists
+        db::categories::select_by_id(category_id, &mut conn)?;
+
         db::words_categories::methods::insert(category_id, word_id, &mut conn)
     })
     .await?
