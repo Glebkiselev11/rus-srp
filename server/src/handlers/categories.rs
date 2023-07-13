@@ -99,8 +99,9 @@ pub async fn add_word(
     let word_category_relation = web::block(move || {
         let mut conn = pool.get()?;
 
-        // Check if category exists
+        // Check if category & word exists
         db::categories::select_by_id(category_id, &mut conn)?;
+        db::words::select_by_id(word_id, &mut conn)?;
 
         db::words_categories::methods::insert(category_id, word_id, &mut conn)
     })
