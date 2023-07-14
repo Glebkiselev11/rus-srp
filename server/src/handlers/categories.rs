@@ -1,19 +1,19 @@
 use crate::db;
+use crate::models::category::CategoryBody;
 use crate::models::pagination::Pagination;
 use crate::models::query_options::QueryOptions;
-use crate::models::word_category::WordCategoryBody;
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 
 pub async fn create(
     pool: web::Data<DbPool>,
-    body: web::Json<WordCategoryBody>,
+    body: web::Json<CategoryBody>,
 ) -> actix_web::Result<impl Responder> {
     let category = body.into_inner();
 
     let category = web::block(move || {
         let mut conn = pool.get()?;
-        db::word_categories::insert(category, &mut conn)
+        db::categories::insert(category, &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -27,15 +27,12 @@ pub async fn get_by_id(
 ) -> actix_web::Result<impl Responder> {
     let category = web::block(move || {
         let mut conn = pool.get()?;
-        db::word_categories::select_by_id(id.into_inner(), &mut conn)
+        db::categories::select_by_id(id.into_inner(), &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
 
-    match category {
-        Some(x) => Ok(HttpResponse::Ok().json(x)),
-        None => Ok(HttpResponse::NotFound().body("Category not found")),
-    }
+    Ok(HttpResponse::Ok().json(category))
 }
 
 pub async fn get_list_by_query(
@@ -47,7 +44,7 @@ pub async fn get_list_by_query(
 
     let db_guery_result = web::block(move || {
         let mut conn = pool.get()?;
-        db::word_categories::select_all_with_filter(&mut conn, query)
+        db::categories::select_all_with_filter(&mut conn, query)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -62,13 +59,13 @@ pub async fn get_list_by_query(
 pub async fn update(
     pool: web::Data<DbPool>,
     id: web::Path<i32>,
-    body: web::Json<WordCategoryBody>,
+    body: web::Json<CategoryBody>,
 ) -> actix_web::Result<impl Responder> {
     let category = body.into_inner();
 
     let category = web::block(move || {
         let mut conn = pool.get()?;
-        db::word_categories::update(category, id.into_inner(), &mut conn)
+        db::categories::update(category, id.into_inner(), &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -85,7 +82,45 @@ pub async fn delete(
 ) -> actix_web::Result<impl Responder> {
     web::block(move || {
         let mut conn = pool.get()?;
-        db::word_categories::delete(id.into_inner(), &mut conn)
+        db::categories::delete(id.into_inner(), &mut conn)
+    })
+    .await?
+    .map_err(actix_web::error::ErrorInternalServerError)?;
+
+    Ok(HttpResponse::Ok().finish())
+}
+
+pub async fn add_word(
+    pool: web::Data<DbPool>,
+    path: web::Path<(i32, i32)>,
+) -> actix_web::Result<impl Responder> {
+    let (category_id, word_id) = path.into_inner();
+
+    let word_category_relation = web::block(move || {
+        let mut conn = pool.get()?;
+
+        // Check if category & word exists
+        db::categories::select_by_id(category_id, &mut conn)?;
+        db::words::select_by_id(word_id, &mut conn)?;
+
+        db::words_categories::methods::insert(category_id, word_id, &mut conn)
+    })
+    .await?
+    .map_err(actix_web::error::ErrorInternalServerError)?;
+
+    Ok(HttpResponse::Ok().json(word_category_relation))
+}
+
+pub async fn delete_word(
+    pool: web::Data<DbPool>,
+    path: web::Path<(i32, i32)>,
+) -> actix_web::Result<impl Responder> {
+    let (category_id, word_id) = path.into_inner();
+
+    web::block(move || {
+        let mut conn = pool.get()?;
+
+        db::words_categories::methods::delete(category_id, word_id, &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;

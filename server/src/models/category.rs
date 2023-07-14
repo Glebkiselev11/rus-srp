@@ -1,24 +1,24 @@
-use crate::db::schema::word_categories;
+use crate::db::schema::categories;
 use chrono;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct WordCategoryBody {
+pub struct CategoryBody {
     pub name: String,
     pub description: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Queryable, Insertable)]
-#[diesel(table_name = word_categories)]
-pub struct DbNewWordCategory {
+#[diesel(table_name = categories)]
+pub struct DbNewCategory {
     pub name: String,
     pub description: Option<String>,
     pub created_at: chrono::NaiveDateTime,
 }
 
-impl From<WordCategoryBody> for DbNewWordCategory {
-    fn from(category: WordCategoryBody) -> Self {
-        DbNewWordCategory {
+impl From<CategoryBody> for DbNewCategory {
+    fn from(category: CategoryBody) -> Self {
+        DbNewCategory {
             name: category.name,
             description: category.description,
             created_at: chrono::Utc::now().naive_utc(),
@@ -27,8 +27,8 @@ impl From<WordCategoryBody> for DbNewWordCategory {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Queryable, AsChangeset)]
-#[diesel(table_name = word_categories)]
-pub struct DbWordCategory {
+#[diesel(table_name = categories)]
+pub struct DbCategory {
     pub id: i32,
     pub name: String,
     pub description: Option<String>,
@@ -36,9 +36,9 @@ pub struct DbWordCategory {
     pub updated_at: Option<chrono::NaiveDateTime>,
 }
 
-impl DbWordCategory {
-    pub fn with_update(&self, payload: WordCategoryBody) -> DbWordCategory {
-        DbWordCategory {
+impl DbCategory {
+    pub fn with_update(&self, payload: CategoryBody) -> DbCategory {
+        DbCategory {
             id: self.id,
             created_at: self.created_at,
             name: payload.name,

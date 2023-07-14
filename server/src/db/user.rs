@@ -1,7 +1,7 @@
+use crate::db::models::DbError;
 use crate::models::user::{DbNewUser, DbUser};
 use diesel::prelude::*;
 use diesel::SqliteConnection;
-type DbError = Box<dyn std::error::Error + Send + Sync>;
 
 pub fn add(new_user: DbNewUser, conn: &mut SqliteConnection) -> Result<DbUser, DbError> {
     use crate::db::schema::users::dsl;

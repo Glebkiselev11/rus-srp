@@ -5,7 +5,7 @@ use crate::models::{
 };
 use diesel::{expression::expression_types::NotSelectable, prelude::*, sqlite::Sqlite};
 
-type DbError = Box<dyn std::error::Error + Send + Sync>;
+use crate::db::models::{DbError, RecordNotFoundError};
 
 /// Run query using Diesel to insert a new database row and return the result.
 pub fn insert(new_word: NewWord, conn: &mut SqliteConnection) -> Result<DbWord, DbError> {
@@ -21,13 +21,14 @@ pub fn insert(new_word: NewWord, conn: &mut SqliteConnection) -> Result<DbWord, 
 }
 
 /// Run query using Diesel to find word by uid and return it.
-pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<Option<DbWord>, DbError> {
+pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<DbWord, DbError> {
     use crate::db::schema::words::dsl;
 
     let word = dsl::words
         .filter(dsl::id.eq(id))
         .first::<DbWord>(conn)
-        .optional()?;
+        .optional()?
+        .ok_or(RecordNotFoundError::new("Word doesn't exist"))?;
 
     Ok(word)
 }
@@ -101,10 +102,7 @@ pub fn update(
 ) -> Result<Option<DbWord>, DbError> {
     use crate::db::schema::words::dsl;
 
-    let word: DbWord = match select_by_id(id, conn)? {
-        Some(db_word) => db_word.with_update(payload),
-        None => return Ok(None),
-    };
+    let word: DbWord = select_by_id(id, conn)?.with_update(payload);
 
     diesel::update(dsl::words.find(id))
         .set(word.clone())

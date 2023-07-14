@@ -55,15 +55,20 @@ async fn main() -> std::io::Result<()> {
                             .route("/{id}", web::delete().to(handler::words::delete)),
                     )
                     .service(
-                        web::scope("/word-categories")
-                            .route("/create", web::post().to(handler::word_categories::create))
+                        web::scope("/categories")
+                            .route("/create", web::post().to(handler::categories::create))
+                            .route("", web::get().to(handler::categories::get_list_by_query))
+                            .route("/{id}", web::get().to(handler::categories::get_by_id))
+                            .route("/{id}", web::put().to(handler::categories::update))
+                            .route("/{id}", web::delete().to(handler::categories::delete))
                             .route(
-                                "",
-                                web::get().to(handler::word_categories::get_list_by_query),
+                                "/{category_id}/words/{word_id}",
+                                web::put().to(handler::categories::add_word),
                             )
-                            .route("/{id}", web::get().to(handler::word_categories::get_by_id))
-                            .route("/{id}", web::put().to(handler::word_categories::update))
-                            .route("/{id}", web::delete().to(handler::word_categories::delete)),
+                            .route(
+                                "/{category_id}/words/{word_id}",
+                                web::delete().to(handler::categories::delete_word),
+                            ),
                     )
                     .service(
                         web::scope("/services")

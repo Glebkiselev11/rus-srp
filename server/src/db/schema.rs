@@ -1,20 +1,20 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
-    users (id) {
-        id -> Integer,
-        username -> Text,
-        password -> Text,
-    }
-}
-
-diesel::table! {
-    word_categories (id) {
+    categories (id) {
         id -> Integer,
         name -> Text,
         description -> Nullable<Text>,
         created_at -> Timestamp,
         updated_at -> Nullable<Timestamp>,
+    }
+}
+
+diesel::table! {
+    users (id) {
+        id -> Integer,
+        username -> Text,
+        password -> Text,
     }
 }
 
@@ -31,8 +31,18 @@ diesel::table! {
     }
 }
 
+diesel::table! {
+    words_categories (id) {
+        id -> Integer,
+        word_id -> Integer,
+        category_id -> Integer,
+        created_at -> Timestamp,
+    }
+}
+
 diesel::allow_tables_to_appear_in_same_query!(
+    categories,
     users,
-    word_categories,
     words,
+    words_categories,
 );

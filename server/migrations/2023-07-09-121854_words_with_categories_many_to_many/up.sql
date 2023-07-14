@@ -1,0 +1,7 @@
+-- Your SQL goes here
+CREATE TABLE word_categories_words (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  word_id INTEGER NOT NULL,
+  word_category_id INTEGER NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
