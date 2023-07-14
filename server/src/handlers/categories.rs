@@ -110,3 +110,20 @@ pub async fn add_word(
 
     Ok(HttpResponse::Ok().json(word_category_relation))
 }
+
+pub async fn delete_word(
+    pool: web::Data<DbPool>,
+    path: web::Path<(i32, i32)>,
+) -> actix_web::Result<impl Responder> {
+    let (category_id, word_id) = path.into_inner();
+
+    web::block(move || {
+        let mut conn = pool.get()?;
+
+        db::words_categories::methods::delete(category_id, word_id, &mut conn)
+    })
+    .await?
+    .map_err(actix_web::error::ErrorInternalServerError)?;
+
+    Ok(HttpResponse::Ok().finish())
+}

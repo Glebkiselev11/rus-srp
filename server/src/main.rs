@@ -64,6 +64,10 @@ async fn main() -> std::io::Result<()> {
                             .route(
                                 "/{category_id}/words/{word_id}",
                                 web::put().to(handler::categories::add_word),
+                            )
+                            .route(
+                                "/{category_id}/words/{word_id}",
+                                web::delete().to(handler::categories::delete_word),
                             ),
                     )
                     .service(
