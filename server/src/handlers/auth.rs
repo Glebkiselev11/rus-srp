@@ -43,33 +43,30 @@ pub async fn login(
         db::users::methods::select(&body.username, &mut conn)
     })
     .await?
+    // TODO add here unauthorized error if error that user doesn't exist
     .map_err(actix_web::error::ErrorInternalServerError)?;
 
-    let unauthorized = Err(actix_web::error::ErrorUnauthorized("Unauthorized"));
+    let unauthorized = Err(actix_web::error::ErrorUnauthorized("Password is incorrect"));
 
-    if let Some(u) = user {
-        match verify(password, &u.password) {
-            Ok(validated) => {
-                if !validated {
-                    return unauthorized;
-                }
+    match verify(password, &user.password) {
+        Ok(validated) => {
+            if !validated {
+                return unauthorized;
             }
-            Err(e) => return Err(actix_web::error::ErrorInternalServerError(e)),
         }
-
-        let claims = Claims {
-            sub: u.username.clone(),
-            iss: "localhost".into(),
-        };
-        let token = encode(
-            &Header::default(),
-            &claims,
-            &EncodingKey::from_secret("secret".as_ref()),
-        )
-        .unwrap();
-
-        Ok(HttpResponse::Ok().json(Token { token }))
-    } else {
-        unauthorized
+        Err(e) => return Err(actix_web::error::ErrorInternalServerError(e)),
     }
+
+    let claims = Claims {
+        sub: user.username.clone(),
+        iss: "localhost".into(),
+    };
+    let token = encode(
+        &Header::default(),
+        &claims,
+        &EncodingKey::from_secret("secret".as_ref()),
+    )
+    .map_err(actix_web::error::ErrorInternalServerError)?;
+
+    Ok(HttpResponse::Ok().json(Token { token }))
 }
