@@ -1,5 +1,5 @@
+use super::models::{DbNewUser, DbUser};
 use crate::db::models::DbError;
-use crate::models::user::{DbNewUser, DbUser};
 use diesel::prelude::*;
 use diesel::SqliteConnection;
 

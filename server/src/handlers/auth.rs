@@ -1,5 +1,6 @@
 use crate::db;
-use crate::models::user::{DbNewUser, UserBody};
+use crate::db::users::models::DbNewUser;
+use crate::models::user::UserBody;
 use crate::models::{Claims, Token};
 
 use crate::DbPool;
@@ -22,7 +23,7 @@ pub async fn register(
 
     let registered_user = web::block(move || {
         let mut conn = pool.get()?;
-        db::user::add(user, &mut conn)
+        db::users::methods::add(user, &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -38,7 +39,7 @@ pub async fn login(
 
     let user = web::block(move || {
         let mut conn = pool.get()?;
-        db::user::select(&body.username, &mut conn)
+        db::users::methods::select(&body.username, &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
