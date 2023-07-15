@@ -1,5 +1,4 @@
-use crate::utils::hash::hash_password;
-use crate::{db::schema::users, models::user::UserBody};
+use crate::db::schema::users;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, Insertable)]
@@ -7,18 +6,15 @@ use serde::{Deserialize, Serialize};
 pub struct DbNewUser {
     pub username: String,
     pub password: String,
+    pub created_at: chrono::NaiveDateTime,
 }
 
-impl TryFrom<UserBody> for DbNewUser {
-    type Error = bcrypt::BcryptError;
-
-    fn try_from(u: UserBody) -> Result<Self, Self::Error> {
-        match hash_password(&u.password) {
-            Ok(salted_password) => Ok(DbNewUser {
-                username: u.username,
-                password: salted_password,
-            }),
-            Err(e) => Err(e),
+impl DbNewUser {
+    pub fn new(username: String, password: String) -> DbNewUser {
+        DbNewUser {
+            username,
+            password,
+            created_at: chrono::Utc::now().naive_local(),
         }
     }
 }
@@ -29,4 +25,6 @@ pub struct DbUser {
     pub id: i32,
     pub username: String,
     pub password: String,
+    pub created_at: chrono::NaiveDateTime,
+    pub updated_at: Option<chrono::NaiveDateTime>,
 }

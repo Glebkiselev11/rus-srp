@@ -1,7 +1,7 @@
 use crate::db;
-use crate::db::users::models::DbNewUser;
 use crate::models::user::UserBody;
 use crate::models::{Claims, Token};
+use crate::utils::hash::hash_password;
 
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
@@ -12,8 +12,9 @@ pub async fn register(
     pool: web::Data<DbPool>,
     body: web::Json<UserBody>,
 ) -> actix_web::Result<impl Responder> {
-    let user = match DbNewUser::try_from(body.into_inner()) {
-        Ok(u) => u,
+    let username = body.username.clone();
+    let salted_password = match hash_password(body.password.clone()) {
+        Ok(p) => p,
         Err(_) => {
             return Err(actix_web::error::ErrorInternalServerError(
                 "Failed to hash password",
@@ -23,7 +24,7 @@ pub async fn register(
 
     let registered_user = web::block(move || {
         let mut conn = pool.get()?;
-        db::users::methods::add(user, &mut conn)
+        db::users::methods::add(username, salted_password, &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;

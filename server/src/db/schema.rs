@@ -15,6 +15,8 @@ diesel::table! {
         id -> Integer,
         username -> Text,
         password -> Text,
+        created_at -> Timestamp,
+        updated_at -> Nullable<Timestamp>,
     }
 }
 

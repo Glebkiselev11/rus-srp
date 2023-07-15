@@ -3,8 +3,14 @@ use crate::db::models::DbError;
 use diesel::prelude::*;
 use diesel::SqliteConnection;
 
-pub fn add(new_user: DbNewUser, conn: &mut SqliteConnection) -> Result<DbUser, DbError> {
+pub fn add(
+    username: String,
+    salted_password: String,
+    conn: &mut SqliteConnection,
+) -> Result<DbUser, DbError> {
     use crate::db::schema::users::dsl;
+
+    let new_user = DbNewUser::new(username, salted_password);
 
     let user = diesel::insert_into(dsl::users)
         .values(&new_user)

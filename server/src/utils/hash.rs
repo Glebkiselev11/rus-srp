@@ -1,7 +1,7 @@
 extern crate bcrypt;
 use bcrypt::{hash_with_salt, DEFAULT_COST};
 
-pub fn hash_password(password: &str) -> Result<String, bcrypt::BcryptError> {
+pub fn hash_password(password: String) -> Result<String, bcrypt::BcryptError> {
     let chars_salt: Vec<char> = std::env::var("SALT")
         .expect("Password SALT env")
         .chars()
