@@ -101,7 +101,7 @@ pub async fn add_word(
 
         // Check if category & word exists
         db::categories::select_by_id(category_id, &mut conn)?;
-        db::words::select_by_id(word_id, &mut conn)?;
+        db::words::methods::select_by_id(word_id, &mut conn)?;
 
         db::words_categories::methods::insert(category_id, word_id, &mut conn)
     })

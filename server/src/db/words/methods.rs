@@ -1,7 +1,8 @@
+use super::models::{DbNewWord, DbWord};
 use crate::models::{
     pagination::DbQueryResult,
     query_options::QueryOptions,
-    word::{DbNewWord, DbWord, NewWord, UpdateWordBody},
+    word::{NewWord, UpdateWordBody},
 };
 use diesel::{expression::expression_types::NotSelectable, prelude::*, sqlite::Sqlite};
 
