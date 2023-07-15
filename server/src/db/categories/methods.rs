@@ -1,8 +1,7 @@
+use super::models::{DbCategory, DbNewCategory};
 use crate::db::models::{DbError, RecordNotFoundError};
 use crate::models::{
-    category::{CategoryBody, DbCategory, DbNewCategory},
-    pagination::DbQueryResult,
-    query_options::QueryOptions,
+    category::CategoryBody, pagination::DbQueryResult, query_options::QueryOptions,
 };
 use diesel::prelude::*;
 
