@@ -1,4 +1,6 @@
+use super::custom_http_error::{CustomHttpError, ErrorMessagesBuilder};
 use crate::db;
+use crate::db::error_type::DbError;
 use crate::models::pagination::Pagination;
 use crate::models::query_options::QueryOptions;
 use crate::models::word::{NewWord, NewWordBody, UpdateWordBody};
@@ -14,7 +16,7 @@ pub async fn create(
     // use web::block to offload blocking Diesel code without blocking server thread
     let word = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::insert(new_word, &mut conn)
+        db::words::methods::insert(new_word, &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -31,7 +33,7 @@ pub async fn get_list_by_query(
 
     let db_query_result = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::select_all_with_filter(&mut conn, query)
+        db::words::methods::select_all_with_filter(&mut conn, query)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -49,10 +51,10 @@ pub async fn get_by_id(
 ) -> actix_web::Result<impl Responder> {
     let words = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::select_by_id(id.into_inner(), &mut conn)
+        db::words::methods::select_by_id(id.into_inner(), &mut conn)
     })
     .await?
-    .map_err(actix_web::error::ErrorInternalServerError)?;
+    .map_err(_convert_db_error_to_http_error)?;
 
     Ok(HttpResponse::Ok().json(words))
 }
@@ -66,10 +68,10 @@ pub async fn update(
 
     let word = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::update(word, id.into_inner(), &mut conn)
+        db::words::methods::update(word, id.into_inner(), &mut conn)
     })
     .await?
-    .map_err(actix_web::error::ErrorInternalServerError)?;
+    .map_err(_convert_db_error_to_http_error)?;
 
     Ok(HttpResponse::Ok().json(word))
 }
@@ -80,10 +82,18 @@ pub async fn delete(
 ) -> actix_web::Result<impl Responder> {
     web::block(move || {
         let mut conn = pool.get()?;
-        db::words::delete(id.into_inner(), &mut conn)
+        db::words::methods::delete(id.into_inner(), &mut conn)
     })
     .await?
-    .map_err(actix_web::error::ErrorInternalServerError)?;
+    .map_err(_convert_db_error_to_http_error)?;
 
     Ok(HttpResponse::Ok().finish())
+}
+
+fn _convert_db_error_to_http_error(e: DbError) -> actix_web::Error {
+    CustomHttpError::new(ErrorMessagesBuilder {
+        not_found: "Word not found",
+        ..Default::default()
+    })
+    .convert_db_error_to_http_error(e)
 }

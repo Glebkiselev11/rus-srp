@@ -1,11 +1,12 @@
+use super::models::{DbNewWord, DbWord};
 use crate::models::{
     pagination::DbQueryResult,
     query_options::QueryOptions,
-    word::{DbNewWord, DbWord, NewWord, UpdateWordBody},
+    word::{NewWord, UpdateWordBody},
 };
 use diesel::{expression::expression_types::NotSelectable, prelude::*, sqlite::Sqlite};
 
-use crate::db::models::{DbError, RecordNotFoundError};
+use crate::db::error_type::DbError;
 
 /// Run query using Diesel to insert a new database row and return the result.
 pub fn insert(new_word: NewWord, conn: &mut SqliteConnection) -> Result<DbWord, DbError> {
@@ -28,7 +29,7 @@ pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<DbWord, DbEr
         .filter(dsl::id.eq(id))
         .first::<DbWord>(conn)
         .optional()?
-        .ok_or(RecordNotFoundError::new("Word doesn't exist"))?;
+        .ok_or(diesel::result::Error::NotFound)?;
 
     Ok(word)
 }

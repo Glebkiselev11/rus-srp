@@ -5,6 +5,8 @@ use crate::models::query_options::QueryOptions;
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 
+use super::custom_http_error::{CustomHttpError, ErrorMessagesBuilder};
+
 pub async fn create(
     pool: web::Data<DbPool>,
     body: web::Json<CategoryBody>,
@@ -13,7 +15,7 @@ pub async fn create(
 
     let category = web::block(move || {
         let mut conn = pool.get()?;
-        db::categories::insert(category, &mut conn)
+        db::categories::methods::insert(category, &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -27,7 +29,7 @@ pub async fn get_by_id(
 ) -> actix_web::Result<impl Responder> {
     let category = web::block(move || {
         let mut conn = pool.get()?;
-        db::categories::select_by_id(id.into_inner(), &mut conn)
+        db::categories::methods::select_by_id(id.into_inner(), &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -44,7 +46,7 @@ pub async fn get_list_by_query(
 
     let db_guery_result = web::block(move || {
         let mut conn = pool.get()?;
-        db::categories::select_all_with_filter(&mut conn, query)
+        db::categories::methods::select_all_with_filter(&mut conn, query)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -65,7 +67,7 @@ pub async fn update(
 
     let category = web::block(move || {
         let mut conn = pool.get()?;
-        db::categories::update(category, id.into_inner(), &mut conn)
+        db::categories::methods::update(category, id.into_inner(), &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -82,7 +84,7 @@ pub async fn delete(
 ) -> actix_web::Result<impl Responder> {
     web::block(move || {
         let mut conn = pool.get()?;
-        db::categories::delete(id.into_inner(), &mut conn)
+        db::categories::methods::delete(id.into_inner(), &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -100,13 +102,19 @@ pub async fn add_word(
         let mut conn = pool.get()?;
 
         // Check if category & word exists
-        db::categories::select_by_id(category_id, &mut conn)?;
-        db::words::select_by_id(word_id, &mut conn)?;
+        db::categories::methods::select_by_id(category_id, &mut conn)?;
+        db::words::methods::select_by_id(word_id, &mut conn)?;
 
         db::words_categories::methods::insert(category_id, word_id, &mut conn)
     })
     .await?
-    .map_err(actix_web::error::ErrorInternalServerError)?;
+    .map_err(|db_error| {
+        CustomHttpError::new(ErrorMessagesBuilder {
+            not_found: "Category or word not found",
+            unique_violation: "Word already exists in category",
+        })
+        .convert_db_error_to_http_error(db_error)
+    })?;
 
     Ok(HttpResponse::Ok().json(word_category_relation))
 }
@@ -123,7 +131,13 @@ pub async fn delete_word(
         db::words_categories::methods::delete(category_id, word_id, &mut conn)
     })
     .await?
-    .map_err(actix_web::error::ErrorInternalServerError)?;
+    .map_err(|db_error| {
+        CustomHttpError::new(ErrorMessagesBuilder {
+            not_found: "Relationship between category and the word you provided not found",
+            ..Default::default()
+        })
+        .convert_db_error_to_http_error(db_error)
+    })?;
 
     Ok(HttpResponse::Ok().finish())
 }

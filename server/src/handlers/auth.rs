@@ -1,6 +1,9 @@
 use crate::db;
-use crate::models::user::{DbNewUser, UserBody};
+use crate::models::user::UserBody;
 use crate::models::{Claims, Token};
+use crate::utils::hash::hash_password;
+
+use super::custom_http_error::{CustomHttpError, ErrorMessagesBuilder};
 
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
@@ -11,8 +14,9 @@ pub async fn register(
     pool: web::Data<DbPool>,
     body: web::Json<UserBody>,
 ) -> actix_web::Result<impl Responder> {
-    let user = match DbNewUser::try_from(body.into_inner()) {
-        Ok(u) => u,
+    let username = body.username.clone();
+    let salted_password = match hash_password(body.password.clone()) {
+        Ok(p) => p,
         Err(_) => {
             return Err(actix_web::error::ErrorInternalServerError(
                 "Failed to hash password",
@@ -22,10 +26,16 @@ pub async fn register(
 
     let registered_user = web::block(move || {
         let mut conn = pool.get()?;
-        db::user::add(user, &mut conn)
+        db::users::methods::add(username, salted_password, &mut conn)
     })
     .await?
-    .map_err(actix_web::error::ErrorInternalServerError)?;
+    .map_err(|db_error| {
+        CustomHttpError::new(ErrorMessagesBuilder {
+            unique_violation: "User already exists",
+            ..Default::default()
+        })
+        .convert_db_error_to_http_error(db_error)
+    })?;
 
     Ok(HttpResponse::Ok().json(registered_user))
 }
@@ -38,36 +48,36 @@ pub async fn login(
 
     let user = web::block(move || {
         let mut conn = pool.get()?;
-        db::user::select(&body.username, &mut conn)
+        db::users::methods::select(&body.username, &mut conn)
     })
     .await?
+    .map_err(|db_error| {
+        CustomHttpError::new(ErrorMessagesBuilder {
+            not_found: "User with this username that you provided doesn't exist",
+            ..Default::default()
+        })
+        .convert_db_error_to_http_error(db_error)
+    })?;
+
+    match verify(password, &user.password) {
+        Ok(validated) => {
+            if !validated {
+                return Err(actix_web::error::ErrorUnauthorized("Password is incorrect"));
+            }
+        }
+        Err(e) => return Err(actix_web::error::ErrorInternalServerError(e)),
+    }
+
+    let claims = Claims {
+        sub: user.username.clone(),
+        iss: "localhost".into(),
+    };
+    let token = encode(
+        &Header::default(),
+        &claims,
+        &EncodingKey::from_secret("secret".as_ref()),
+    )
     .map_err(actix_web::error::ErrorInternalServerError)?;
 
-    let unauthorized = Err(actix_web::error::ErrorUnauthorized("Unauthorized"));
-
-    if let Some(u) = user {
-        match verify(password, &u.password) {
-            Ok(validated) => {
-                if !validated {
-                    return unauthorized;
-                }
-            }
-            Err(e) => return Err(actix_web::error::ErrorInternalServerError(e)),
-        }
-
-        let claims = Claims {
-            sub: u.username.clone(),
-            iss: "localhost".into(),
-        };
-        let token = encode(
-            &Header::default(),
-            &claims,
-            &EncodingKey::from_secret("secret".as_ref()),
-        )
-        .unwrap();
-
-        Ok(HttpResponse::Ok().json(Token { token }))
-    } else {
-        unauthorized
-    }
+    Ok(HttpResponse::Ok().json(Token { token }))
 }
