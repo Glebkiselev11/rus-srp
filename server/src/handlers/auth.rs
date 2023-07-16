@@ -3,6 +3,8 @@ use crate::models::user::UserBody;
 use crate::models::{Claims, Token};
 use crate::utils::hash::hash_password;
 
+use super::custom_http_error::{CustomHttpError, ErrorMessagesBuilder};
+
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 use bcrypt::verify;
@@ -27,7 +29,13 @@ pub async fn register(
         db::users::methods::add(username, salted_password, &mut conn)
     })
     .await?
-    .map_err(actix_web::error::ErrorInternalServerError)?;
+    .map_err(|db_error| {
+        CustomHttpError::new(ErrorMessagesBuilder {
+            unique_violation: "User already exists",
+            ..Default::default()
+        })
+        .convert_db_to_http(db_error)
+    })?;
 
     Ok(HttpResponse::Ok().json(registered_user))
 }
@@ -43,15 +51,18 @@ pub async fn login(
         db::users::methods::select(&body.username, &mut conn)
     })
     .await?
-    // TODO add here unauthorized error if error that user doesn't exist
-    .map_err(actix_web::error::ErrorInternalServerError)?;
-
-    let unauthorized = Err(actix_web::error::ErrorUnauthorized("Password is incorrect"));
+    .map_err(|db_error| {
+        CustomHttpError::new(ErrorMessagesBuilder {
+            not_found: "User with this username that you provided doesn't exist",
+            ..Default::default()
+        })
+        .convert_db_to_http(db_error)
+    })?;
 
     match verify(password, &user.password) {
         Ok(validated) => {
             if !validated {
-                return unauthorized;
+                return Err(actix_web::error::ErrorUnauthorized("Password is incorrect"));
             }
         }
         Err(e) => return Err(actix_web::error::ErrorInternalServerError(e)),

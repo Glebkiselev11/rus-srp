@@ -1,5 +1,5 @@
 pub mod categories;
-pub mod models;
+pub mod error_type;
 pub mod schema;
 pub mod users;
 pub mod words;

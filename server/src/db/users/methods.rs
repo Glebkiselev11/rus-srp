@@ -1,6 +1,5 @@
 use super::models::{DbNewUser, DbUser};
-use crate::db::models::DbError;
-use crate::db::models::RecordNotFoundError;
+use crate::db::error_type::DbError;
 use diesel::prelude::*;
 use diesel::SqliteConnection;
 
@@ -27,9 +26,7 @@ pub fn select(username: &str, conn: &mut SqliteConnection) -> Result<DbUser, DbE
         .filter(dsl::username.eq(username))
         .first::<DbUser>(conn)
         .optional()?
-        .ok_or(RecordNotFoundError::new(
-            "User with this username doesn't exist",
-        ))?;
+        .ok_or(diesel::result::Error::NotFound)?;
 
     Ok(user)
 }

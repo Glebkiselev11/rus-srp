@@ -1,5 +1,4 @@
-use crate::db::models::{DbError, RecordNotFoundError};
-use crate::db::words_categories::models;
+use crate::db::{error_type::DbError, words_categories::models};
 use diesel::prelude::*;
 
 use super::models::DbWordCategory;
@@ -28,9 +27,7 @@ pub fn delete(category_id: i32, word_id: i32, conn: &mut SqliteConnection) -> Re
         .filter(dsl::word_id.eq(word_id))
         .get_result::<DbWordCategory>(conn)
         .optional()?
-        .ok_or(RecordNotFoundError::new(
-            "Relationship between word and category you provided doesn't exist",
-        ))?;
+        .ok_or(diesel::result::Error::NotFound)?;
 
     diesel::delete(dsl::words_categories.filter(dsl::id.eq(relation.id))).execute(conn)?;
 

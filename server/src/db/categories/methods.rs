@@ -1,5 +1,5 @@
 use super::models::{DbCategory, DbNewCategory};
-use crate::db::models::{DbError, RecordNotFoundError};
+use crate::db::error_type::DbError;
 use crate::models::{
     category::CategoryBody, pagination::DbQueryResult, query_options::QueryOptions,
 };
@@ -27,7 +27,7 @@ pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<DbCategory, 
         .filter(dsl::id.eq(id))
         .first::<DbCategory>(conn)
         .optional()?
-        .ok_or(RecordNotFoundError::new("Category doesn't exist"))?;
+        .ok_or(diesel::result::Error::NotFound)?;
 
     Ok(category)
 }

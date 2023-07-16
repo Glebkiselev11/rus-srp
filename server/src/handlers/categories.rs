@@ -5,6 +5,8 @@ use crate::models::query_options::QueryOptions;
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 
+use super::custom_http_error::{CustomHttpError, ErrorMessagesBuilder};
+
 pub async fn create(
     pool: web::Data<DbPool>,
     body: web::Json<CategoryBody>,
@@ -106,7 +108,13 @@ pub async fn add_word(
         db::words_categories::methods::insert(category_id, word_id, &mut conn)
     })
     .await?
-    .map_err(actix_web::error::ErrorInternalServerError)?;
+    .map_err(|db_error| {
+        CustomHttpError::new(ErrorMessagesBuilder {
+            not_found: "Category or word not found",
+            unique_violation: "Word already exists in category",
+        })
+        .convert_db_to_http(db_error)
+    })?;
 
     Ok(HttpResponse::Ok().json(word_category_relation))
 }
@@ -123,7 +131,13 @@ pub async fn delete_word(
         db::words_categories::methods::delete(category_id, word_id, &mut conn)
     })
     .await?
-    .map_err(actix_web::error::ErrorInternalServerError)?;
+    .map_err(|db_error| {
+        CustomHttpError::new(ErrorMessagesBuilder {
+            not_found: "Relationship between category and the word you provided not found",
+            ..Default::default()
+        })
+        .convert_db_to_http(db_error)
+    })?;
 
     Ok(HttpResponse::Ok().finish())
 }
