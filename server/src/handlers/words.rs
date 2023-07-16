@@ -1,5 +1,6 @@
 use super::custom_http_error::{CustomHttpError, ErrorMessagesBuilder};
 use crate::db;
+use crate::db::error_type::DbError;
 use crate::models::pagination::Pagination;
 use crate::models::query_options::QueryOptions;
 use crate::models::word::{NewWord, NewWordBody, UpdateWordBody};
@@ -53,13 +54,7 @@ pub async fn get_by_id(
         db::words::methods::select_by_id(id.into_inner(), &mut conn)
     })
     .await?
-    .map_err(|db_error| {
-        CustomHttpError::new(ErrorMessagesBuilder {
-            not_found: "Word not found",
-            ..Default::default()
-        })
-        .convert_db_to_http(db_error)
-    })?;
+    .map_err(words_error_converter)?;
 
     Ok(HttpResponse::Ok().json(words))
 }
@@ -76,13 +71,7 @@ pub async fn update(
         db::words::methods::update(word, id.into_inner(), &mut conn)
     })
     .await?
-    .map_err(|db_error| {
-        CustomHttpError::new(ErrorMessagesBuilder {
-            not_found: "Word not found",
-            ..Default::default()
-        })
-        .convert_db_to_http(db_error)
-    })?;
+    .map_err(words_error_converter)?;
 
     Ok(HttpResponse::Ok().json(word))
 }
@@ -96,13 +85,15 @@ pub async fn delete(
         db::words::methods::delete(id.into_inner(), &mut conn)
     })
     .await?
-    .map_err(|db_error| {
-        CustomHttpError::new(ErrorMessagesBuilder {
-            not_found: "Word not found",
-            ..Default::default()
-        })
-        .convert_db_to_http(db_error)
-    })?;
+    .map_err(words_error_converter)?;
 
     Ok(HttpResponse::Ok().finish())
+}
+
+fn words_error_converter(e: DbError) -> actix_web::Error {
+    CustomHttpError::new(ErrorMessagesBuilder {
+        not_found: "Word not found",
+        ..Default::default()
+    })
+    .convert_db_to_http(e)
 }
