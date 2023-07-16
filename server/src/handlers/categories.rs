@@ -113,7 +113,7 @@ pub async fn add_word(
             not_found: "Category or word not found",
             unique_violation: "Word already exists in category",
         })
-        .convert_db_to_http(db_error)
+        .convert_db_error_to_http_error(db_error)
     })?;
 
     Ok(HttpResponse::Ok().json(word_category_relation))
@@ -136,7 +136,7 @@ pub async fn delete_word(
             not_found: "Relationship between category and the word you provided not found",
             ..Default::default()
         })
-        .convert_db_to_http(db_error)
+        .convert_db_error_to_http_error(db_error)
     })?;
 
     Ok(HttpResponse::Ok().finish())

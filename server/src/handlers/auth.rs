@@ -34,7 +34,7 @@ pub async fn register(
             unique_violation: "User already exists",
             ..Default::default()
         })
-        .convert_db_to_http(db_error)
+        .convert_db_error_to_http_error(db_error)
     })?;
 
     Ok(HttpResponse::Ok().json(registered_user))
@@ -56,7 +56,7 @@ pub async fn login(
             not_found: "User with this username that you provided doesn't exist",
             ..Default::default()
         })
-        .convert_db_to_http(db_error)
+        .convert_db_error_to_http_error(db_error)
     })?;
 
     match verify(password, &user.password) {

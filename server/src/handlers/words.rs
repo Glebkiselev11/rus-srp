@@ -54,7 +54,7 @@ pub async fn get_by_id(
         db::words::methods::select_by_id(id.into_inner(), &mut conn)
     })
     .await?
-    .map_err(words_error_converter)?;
+    .map_err(_convert_db_error_to_http_error)?;
 
     Ok(HttpResponse::Ok().json(words))
 }
@@ -71,7 +71,7 @@ pub async fn update(
         db::words::methods::update(word, id.into_inner(), &mut conn)
     })
     .await?
-    .map_err(words_error_converter)?;
+    .map_err(_convert_db_error_to_http_error)?;
 
     Ok(HttpResponse::Ok().json(word))
 }
@@ -85,15 +85,15 @@ pub async fn delete(
         db::words::methods::delete(id.into_inner(), &mut conn)
     })
     .await?
-    .map_err(words_error_converter)?;
+    .map_err(_convert_db_error_to_http_error)?;
 
     Ok(HttpResponse::Ok().finish())
 }
 
-fn words_error_converter(e: DbError) -> actix_web::Error {
+fn _convert_db_error_to_http_error(e: DbError) -> actix_web::Error {
     CustomHttpError::new(ErrorMessagesBuilder {
         not_found: "Word not found",
         ..Default::default()
     })
-    .convert_db_to_http(e)
+    .convert_db_error_to_http_error(e)
 }

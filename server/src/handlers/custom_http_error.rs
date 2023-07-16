@@ -31,7 +31,7 @@ impl CustomHttpError {
         }
     }
 
-    pub fn convert_db_to_http(&self, e: DbError) -> HttpError {
+    pub fn convert_db_error_to_http_error(&self, e: DbError) -> HttpError {
         if let Some(result_error) = e.downcast_ref::<DieselError>() {
             match *result_error {
                 DieselError::NotFound => http::ErrorNotFound(self.not_found),
