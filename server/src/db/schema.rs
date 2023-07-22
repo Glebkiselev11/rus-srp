@@ -41,6 +41,9 @@ diesel::table! {
     }
 }
 
+diesel::joinable!(words_categories -> categories (category_id));
+diesel::joinable!(words_categories -> words (word_id));
+
 diesel::allow_tables_to_appear_in_same_query!(
     categories,
     users,
