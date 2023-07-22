@@ -5,6 +5,7 @@ CREATE TABLE words_categories_new (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(word_id, category_id),
     -- This constrains doesn't work
+    -- without PRAGMA foreign_keys = ON; before executing delete query
     CONSTRAINT fk_words FOREIGN KEY (word_id) REFERENCES words(id) ON DELETE CASCADE,
     CONSTRAINT fk_categories FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
 );
