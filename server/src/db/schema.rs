@@ -34,8 +34,7 @@ diesel::table! {
 }
 
 diesel::table! {
-    words_categories (id) {
-        id -> Integer,
+    words_categories (word_id, category_id) {
         word_id -> Integer,
         category_id -> Integer,
         created_at -> Timestamp,
