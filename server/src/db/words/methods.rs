@@ -114,6 +114,7 @@ pub fn update(
 
 pub fn delete(id: i32, conn: &mut SqliteConnection) -> Result<(), DbError> {
     use crate::db::schema::words::dsl;
+    diesel::sql_query("PRAGMA foreign_keys = ON").execute(conn)?;
 
     diesel::delete(dsl::words.filter(dsl::id.eq(id))).execute(conn)?;
 

@@ -23,7 +23,6 @@ impl DbNewWordCategory {
 #[derive(Debug, Clone, Serialize, Deserialize, Queryable, AsChangeset)]
 #[diesel(table_name = words_categories)]
 pub struct DbWordCategory {
-    pub id: i32,
     pub word_id: i32,
     pub category_id: i32,
     pub created_at: chrono::NaiveDateTime,
