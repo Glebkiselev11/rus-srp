@@ -1,19 +1,31 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
 
 const router = createRouter({
 	history: createWebHistory("/admin"),
 	routes: [
 		{
 			path: "/",
-			name: "home",
-			component: HomeView,
+			component: () => import("../views/HomeView.vue"),
+			children: [
+				{
+					path: "/words",
+					name: "words",
+					component: () => import("../views/WordsView.vue"),
+				},
+				{
+					path: "/settings",
+					name: "settings",
+					component: () => import("../views/SettingsView.vue"),
+				},
+
+			],
 		},
 		{
-			path: "/settings",
-			name: "settings",
-			component: () => import("../views/SettingsView.vue"),
+			path: "/word",
+			name: "edit-word",
+			component: () => import("../views/EditWordView.vue"),
 		},
+
 	],
 });
 

@@ -2,14 +2,12 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-	name: "SettingsView",
+	name: "WordsView",
 });
-
 </script>
 
 <template>
-	<main class="bg-green">
-		settings page
+	<main class="bg-red w-full">
+		edit word 
 	</main>
 </template>
-
