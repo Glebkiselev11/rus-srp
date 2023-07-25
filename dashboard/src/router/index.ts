@@ -5,17 +5,17 @@ const router = createRouter({
 	routes: [
 		{
 			path: "/",
-			component: () => import("../views/HomeView.vue"),
+			component: () => import("../views/Panel/index.vue"),
 			children: [
 				{
 					path: "/words",
 					name: "words",
-					component: () => import("../views/WordsView.vue"),
+					component: () => import("../views/Panel/WordsView.vue"),
 				},
 				{
 					path: "/settings",
 					name: "settings",
-					component: () => import("../views/SettingsView.vue"),
+					component: () => import("../views/Panel/SettingsView.vue"),
 				},
 
 			],

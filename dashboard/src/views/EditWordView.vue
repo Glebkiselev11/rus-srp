@@ -2,12 +2,12 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-	name: "WordsView",
+	name: "EditWordView",
 });
 </script>
 
 <template>
-	<main class="bg-red w-full">
+	<main class="">
 		edit word 
 	</main>
 </template>

@@ -3,7 +3,7 @@ import { defineComponent } from "vue";
 import { RouterView } from "vue-router";
 
 export default defineComponent({
-	name: "HomeView",
+	name: "PanelView",
 	components: {
 		RouterView,
 	},
