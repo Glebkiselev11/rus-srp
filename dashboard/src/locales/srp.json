@@ -1,0 +1,32 @@
+{
+  "no-words-were-found": "Nisu pronađene reči za ovaj upit",
+  "general": "Opšta",
+  "order": {
+    "new-words": "Nove reči",
+    "old-words": "Stare reči",
+    "last-updated": "najnovije ažurirane"
+  },
+  "fill-in-auto": "Popunite automatski",
+  "cancel": "Otkazati",
+  "settings": "Podešavanja",
+  "all-words": "Sve reči",
+  "add-word": "Dodajte reč",
+  "adding-word": {
+    "title": "Dodavanje reči",
+    "description": "Unesite reč na odgovarajućem jeziku"
+  },
+  "search": "Pretraga",
+  "save": "Sačuvaj",
+  "delete": "Izbriši",
+  "wait": "Čekati",
+  "word-added": "Riječ je uspešno dodat",
+  "word-updated": "Riječ je uspešno ažurirana",
+  "are-you-sure-delete": "Da li želite izbrisati {{word}}?",
+  "interface-language": "Jezik interfejsa",
+  "lang": {
+    "russian": "ruska",
+    "english": "engleski",
+    "serbian-cyrilic": "Srpski (ćirilica)",
+    "serbian-latin": "Srpski (latinica)"
+  }
+}
