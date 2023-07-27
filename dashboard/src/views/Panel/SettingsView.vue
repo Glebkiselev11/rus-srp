@@ -8,8 +8,18 @@ export default defineComponent({
 </script>
 
 <template>
-	<main class="bg-green">
+	<main class="settings-view">
 		settings page
 	</main>
 </template>
 
+
+<style scoped lang="scss">
+@import "@/styles/colors.scss";
+.settings-view {
+	background: $color-background;
+	width: 100%;
+	height: 100%;
+}
+
+</style>
