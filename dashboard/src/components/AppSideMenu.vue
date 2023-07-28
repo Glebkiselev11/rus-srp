@@ -22,13 +22,15 @@ export default defineComponent({
 
 <template>
 	<aside class="app-side-menu">
-		<div>
+		<div class="app-side-menu--header">
 			<AppIcon
 				name="admin_panel_settings"
 			/>
 			<div>
-				<h3>Srpski rec</h3>
-				<span class="body-2">Admin</span>
+				<h3 class="title">
+					Srpski rec
+				</h3>
+				<span class="body-2 description">Admin</span>
 			</div>
 		</div>
 
@@ -45,10 +47,25 @@ export default defineComponent({
 
 
 <style scoped lang="scss">
+@import "@/styles/colors.scss";
 
 .app-side-menu {
   width: 256px;
   height: 100%;
+
+	&--header {
+		display: flex;
+		gap: 12px;
+		align-items: center;
+		padding: 12px 20px;
+
+		.title {
+			color: $color-text-primary;
+		}
+		.description {
+			color: $color-text-secondary;
+		}
+	}
 }
 
 </style>
