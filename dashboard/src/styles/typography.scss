@@ -29,44 +29,46 @@ h4 {
   line-height: 24px;
 }
 
-.subtitle-1 {
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px;
-  letter-spacing: 0.1px;
-}
+.text {
+  &-subtitle-1 {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+  }
 
-.subtitle-2 {
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 20px;
-  letter-spacing: 0.2px;
-}
+  &-subtitle-2 {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.2px;
+  }
 
-.body-1 {
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 24px;
-  letter-spacing: 0.1px;
-}
+  &-body-1 {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+  }
 
-.body-2 {
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20px; 
-  letter-spacing: 0.2px;
-}
+  &-body-2 {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px; 
+    letter-spacing: 0.2px;
+  }
 
-.caption-1 {
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 16px;
-  letter-spacing: 0.3px;
-}
+  &-caption-1 {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0.3px;
+  }
 
-.caption-2 {
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 16px;
-  letter-spacing: 0.2px;
+  &-caption-2 {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0.2px;
+  }
 }

@@ -30,7 +30,7 @@ export default defineComponent({
 				<h3 class="title">
 					Srpski rec
 				</h3>
-				<span class="body-2 description">Admin</span>
+				<span class="description">Admin</span>
 			</div>
 		</div>
 
@@ -47,7 +47,7 @@ export default defineComponent({
 
 
 <style scoped lang="scss">
-@import "@/styles/colors.scss";
+@import "@/styles/main.scss";
 
 .app-side-menu {
   width: 256px;
@@ -63,6 +63,7 @@ export default defineComponent({
 			color: $color-text-primary;
 		}
 		.description {
+			@extend .text-body-2;
 			color: $color-text-secondary;
 		}
 	}
