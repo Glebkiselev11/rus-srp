@@ -1,8 +1,12 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
+import AppIcon from "@/components/AppIcon/index.vue";
 
 export default defineComponent({
 	name: "AppSideMenu",
+	components: {
+		AppIcon,
+	},
 	props: {
 		items: {
 			type: Array as PropType<string[]>,
@@ -18,7 +22,16 @@ export default defineComponent({
 
 <template>
 	<aside class="app-side-menu">
-		side menu
+		<div>
+			<AppIcon
+				name="admin_panel_settings"
+			/>
+			<div>
+				<h3>Srpski rec</h3>
+				<span class="body-2">Admin</span>
+			</div>
+		</div>
+
 		<nav>
 			<div
 				v-for="i in items"

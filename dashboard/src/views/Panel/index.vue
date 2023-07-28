@@ -24,7 +24,6 @@ export default defineComponent({
 	display: flex;
 	width: 100%;
 	height: 100vh;
-	background: yellow;
 }
 
 </style>
