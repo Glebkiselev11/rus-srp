@@ -54,11 +54,13 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
+@import "@/styles/main.scss";
+
 .panel-view {
 	display: flex;
 	width: 100%;
 	height: 100vh;
+	background-color: $color-background;
 }
-
 </style>
 

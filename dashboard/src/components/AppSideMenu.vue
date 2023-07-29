@@ -66,6 +66,7 @@ export default defineComponent({
 .app-side-menu {
   width: 256px;
   height: 100%;
+	background-color: $color-background-content-primary;
 	border-inline-end: 1px solid $color-separator-primary;
 
 	&--header {

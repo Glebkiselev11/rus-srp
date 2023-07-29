@@ -34,7 +34,6 @@ export default defineComponent({
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	background: $color-background;
 }
 
 </style>
