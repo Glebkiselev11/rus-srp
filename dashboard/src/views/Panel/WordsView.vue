@@ -1,11 +1,18 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import AppTopBar from "@/components/AppTopBar.vue";
+import AppInput from "@/components/AppInput.vue";
 
 export default defineComponent({
 	name: "WordsView",
 	components: {
 		AppTopBar,
+		AppInput,
+	},
+	data() {
+		return {
+			search: "",
+		};
 	},
 });
 </script>
@@ -14,7 +21,11 @@ export default defineComponent({
 	<div class="words-view">
 		<AppTopBar>
 			<template #left>
-				left
+				<AppInput
+					v-model="search"
+					type="text"
+					:placeholder="$t('find-word')"
+				/>	
 			</template>
 			<template #right>
 				right
