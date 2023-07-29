@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import type { IconSize } from "./types";
+import type { IconSize } from "../../types/icons";
 
 export default defineComponent({
 	name: "AdminPanelSettingsIcon",

@@ -2,6 +2,7 @@
 import { defineComponent } from "vue";
 import AppSideMenu from "@/components/AppSideMenu.vue";
 import { RouterView } from "vue-router";
+import type { NavItem } from "../../types";
 
 export default defineComponent({
 	name: "PanelView",
@@ -9,12 +10,45 @@ export default defineComponent({
 		RouterView,
 		AppSideMenu,
 	},
+	data() {
+		return {
+		};
+	},
+	computed: {
+		panelPages() {
+			return [
+				{
+					label: this.$t("all-words"),
+					name: "words",
+					icon: "list",
+					active: false,
+				},
+				{
+					label: this.$t("settings"),
+					name: "settings",
+					icon: "settings",
+					active: false,
+				},
+			].map((x: NavItem) => ({
+				...x,
+				active: x.name === this.$route.name,
+			}));
+		},
+	},
+	methods: {
+		changePage(item: NavItem) {
+			this.$router.push({ name: item.name });
+		},
+	},
 });
 </script>
 
 <template>
 	<div class="panel-view">
-		<AppSideMenu :items="['first', 'second']" />
+		<AppSideMenu
+			:items="panelPages"
+			@click-on-item="changePage"
+		/>
 		<RouterView />
 	</div>
 </template>

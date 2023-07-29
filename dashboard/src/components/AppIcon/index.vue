@@ -1,7 +1,9 @@
 <script lang="ts">
 import { defineComponent, type PropType, type Component } from "vue";
-import AdminPanelSettings from "./AdminPanelSettingsIcon.vue";
-import type { IconColor, IconName, IconSize } from "./types";
+import AdminPanelSettingsIcon from "./AdminPanelSettingsIcon.vue";
+import ListIcon from "./ListIcon.vue";
+import SettingsIcon from "./SettingsIcon.vue";
+import type { IconColor, IconName, IconSize } from "../../types/icons";
 
 
 export default defineComponent({
@@ -23,7 +25,9 @@ export default defineComponent({
 	computed: {
 		icon(): Component {
 			return {
-				"admin_panel_settings": AdminPanelSettings,
+				"admin_panel_settings": AdminPanelSettingsIcon,
+				"list": ListIcon,
+				"settings": SettingsIcon,
 			}[this.name];
 		},
 	},

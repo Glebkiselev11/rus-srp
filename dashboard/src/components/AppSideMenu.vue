@@ -1,20 +1,32 @@
+
+
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 import AppIcon from "@/components/AppIcon/index.vue";
+import AppNavbarItem from "./AppNavbarItem.vue";
+import type { NavItem } from "../types";
+
 
 export default defineComponent({
 	name: "AppSideMenu",
 	components: {
 		AppIcon,
+		AppNavbarItem,
 	},
 	props: {
 		items: {
-			type: Array as PropType<string[]>,
+			type: Array as PropType<NavItem[]>,
 			required: true,
 		},
 	},
+	emits: ["clickOnItem"],
 	data() {
 		return {};
+	},
+	methods: {
+		handleClick(item: NavItem) {
+			this.$emit("clickOnItem", item);
+		},
 	},
 });
 </script>
@@ -35,12 +47,14 @@ export default defineComponent({
 		</div>
 
 		<nav>
-			<div
-				v-for="i in items"
-				:key="i"
-			>
-				{{ i }}	
-			</div>
+			<AppNavbarItem 
+				v-for="item in items"
+				:key="item.name"
+				:label="item.label"
+				:active="item.active"
+				:icon-name="item.icon"
+				@click="handleClick(item)"
+			/>
 		</nav>
 	</aside>
 </template>
@@ -52,6 +66,7 @@ export default defineComponent({
 .app-side-menu {
   width: 256px;
   height: 100%;
+	border-inline-end: 1px solid $color-separator-primary;
 
 	&--header {
 		display: flex;
