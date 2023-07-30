@@ -2,6 +2,9 @@
 import { defineComponent } from "vue";
 import AppTopBar from "@/components/AppTopBar.vue";
 import AppInput from "@/components/AppInput.vue";
+import type { Order, RequestParams } from "@/types/api";
+import { mapActions, mapState } from "pinia";
+import { useWordsStore } from "@/stores/words";
 
 export default defineComponent({
 	name: "WordsView",
@@ -9,10 +12,40 @@ export default defineComponent({
 		AppTopBar,
 		AppInput,
 	},
-	data() {
-		return {
-			search: "",
-		};
+	computed: {
+		...mapState(useWordsStore, ["words"]),
+		filter: {
+			get(): RequestParams {
+				return {
+					search: this.$route.query.search as string || "",
+					offset: Number(this.$route.query.offset) || 0,
+					limit: Number(this.$route.query.limit) || 20,
+					order: (this.$route.query.order as string || "-created_at") as Order,
+				};
+			},
+			set(params: RequestParams) {
+				this.$router.push({
+					query: {
+						...params,
+					},
+				});
+				this.fetchWords(this.filter);
+			},
+		},
+		search: {
+			get(): string {
+				return this.filter.search;
+			},
+			set(search: string) {
+				this.filter = { ...this.filter, search };
+			},
+		},
+	},
+	mounted() {
+		this.fetchWords(this.filter);
+	},
+	methods: {
+		...mapActions(useWordsStore, ["fetchWords"]),
 	},
 });
 </script>
@@ -21,6 +54,7 @@ export default defineComponent({
 	<div class="words-view">
 		<AppTopBar>
 			<template #left>
+				<!-- TODO: Add debounce inside that input -->
 				<AppInput
 					v-model="search"
 					type="text"
@@ -34,7 +68,13 @@ export default defineComponent({
 		</AppTopBar>
 
 		<div class="words-view--content">
-			words
+			<div
+				v-for="word in words"
+				:key="word.id"
+				class="word-item"
+			>
+				{{ `${word.eng} - ${word.rus} - ${word.srp_latin} - ${word.srp_cyrillic}` }}
+			</div>
 		</div>
 	</div>
 </template>
@@ -48,6 +88,12 @@ export default defineComponent({
 	&--content {
 		padding: 20px;
 	}
+}
+
+.word-item {
+	padding: 12px;
+	border: 1px solid grey;
+	margin-block-end: 10px;
 }
 
 </style>
