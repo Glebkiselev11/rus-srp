@@ -55,12 +55,12 @@ export default defineComponent({
 	<div class="words-view">
 		<AppTopBar>
 			<template #left>
-				<!-- TODO: Add debounce inside that input -->
 				<AppInput
 					v-model="search"
 					type="text"
 					:placeholder="$t('find-word')"
 					left-icon="search"
+					debounce
 				/>	
 			</template>
 			<template #right>

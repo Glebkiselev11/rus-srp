@@ -1,7 +1,7 @@
 <script lang="ts">
+import { debounce } from "lodash";
 import { type PropType, defineComponent } from "vue";
 import type { IconName } from "../types/icons";
-
 import AppIcon from "./AppIcon/index.vue";
 
 export default defineComponent({
@@ -34,12 +34,23 @@ export default defineComponent({
 			type: String as PropType<IconName>,
 			default: null,
 		},
+		debounce: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	emits: ["update:modelValue"],
 	methods: {
-		emitValue(event: Event) {
-			const target = event.target as HTMLInputElement;
-			this.$emit("update:modelValue", target.value);
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		debounceEmit: debounce(function(this: any, value: unknown) {
+			this.emitValue(value);
+		}, 500),
+		emitValue(value: unknown) {
+			this.$emit("update:modelValue", value);
+		},
+		handleInput(event: Event) {
+			const value = (event.target as HTMLInputElement).value;
+			this.debounce ? this.debounceEmit(value) : this.emitValue(value);
 		},
 	},
 });
@@ -63,7 +74,7 @@ export default defineComponent({
 			:placeholder="placeholder"
 			:disabled="disabled"
 			:warning="error"
-			@input="emitValue"
+			@input="handleInput"
 		>
 	</div>
 </template>
