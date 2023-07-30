@@ -28,8 +28,9 @@ export default defineComponent({
 					query: {
 						...params,
 					},
+				}).then(() => {
+					this.fetchWords(params);
 				});
-				this.fetchWords(this.filter);
 			},
 		},
 		search: {
