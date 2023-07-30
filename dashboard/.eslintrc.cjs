@@ -9,7 +9,7 @@ module.exports = {
 	],
 	rules: {
 		"max-len": ["error", {
-			code: 90,
+			code: 100,
 		}],
 		indent: ["error", "tab"],
 		"quotes": ["error", "double"],
