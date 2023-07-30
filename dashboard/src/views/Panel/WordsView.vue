@@ -25,6 +25,7 @@ export default defineComponent({
 					v-model="search"
 					type="text"
 					:placeholder="$t('find-word')"
+					left-icon="search"
 				/>	
 			</template>
 			<template #right>

@@ -1,9 +1,11 @@
 <script lang="ts">
 import { defineComponent, type PropType, type Component } from "vue";
+import type { IconColor, IconName, IconSize } from "../../types/icons";
+
 import AdminPanelSettingsIcon from "./AdminPanelSettingsIcon.vue";
 import ListIcon from "./ListIcon.vue";
 import SettingsIcon from "./SettingsIcon.vue";
-import type { IconColor, IconName, IconSize } from "../../types/icons";
+import SearchIcon from "./SearchIcon.vue";
 
 
 export default defineComponent({
@@ -28,6 +30,7 @@ export default defineComponent({
 				"admin_panel_settings": AdminPanelSettingsIcon,
 				"list": ListIcon,
 				"settings": SettingsIcon,
+				"search": SearchIcon,
 			}[this.name];
 		},
 	},

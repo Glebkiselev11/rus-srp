@@ -1,8 +1,14 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { type PropType, defineComponent } from "vue";
+import type { IconName } from "../types/icons";
+
+import AppIcon from "./AppIcon/index.vue";
 
 export default defineComponent({
 	name: "AppInput",
+	components: {
+		AppIcon,
+	},
 	props: {
 		type: {
 			type: String,
@@ -24,6 +30,10 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
+		leftIcon: {
+			type: String as PropType<IconName>,
+			default: null,
+		},
 	},
 	emits: ["update:modelValue"],
 	methods: {
@@ -37,45 +47,74 @@ export default defineComponent({
 </script>
 
 <template>
-	<input
-		class="app-input"
-		:type="type"
-		:value="modelValue"
-		:placeholder="placeholder"
-		:disabled="disabled"
-		:warning="error"
-		@input="emitValue"
-	>
+	<div class="app-input">
+		<AppIcon
+			v-if="leftIcon"
+			class="app-input--left-icon"
+			:name="leftIcon"
+			size="24px"
+			color="tertiary"
+		/>
+
+		<input
+			class="app-input--input"
+			:type="type"
+			:value="modelValue"
+			:placeholder="placeholder"
+			:disabled="disabled"
+			:warning="error"
+			@input="emitValue"
+		>
+	</div>
 </template>
 
 <style scoped lang="scss">
 @import "@/styles/main.scss";
 
 .app-input {
-	border-radius: 8px;
-	height: 40px;
-	min-width: 280px;
-	border: 1px solid $color-separator-primary;
-	background: $color-field-background;
-	padding: 0 16px;
+	position: relative;
 
-	&::placeholder {
-		@extend .text-body-1;
-		color: $color-text-tertiary;
+	&:has(.app-input--left-icon) .app-input--input {
+		padding-left: 40px;
 	}
 
-	&:focus {
-		outline: 1px solid $color-stroke-accent;
+	&--left-icon {
+		position: absolute;
+		top: 50%;
+		left: 8px;
+		transform: translateY(-50%);
 	}
 
-	&:disabled {
-		&::placeholder {
-			color: $color-text-disabled;
+	&--input {
+		border-radius: 8px;
+		height: 40px;
+		min-width: 280px;
+		border: 1px solid $color-separator-primary;
+		background: $color-field-background;
+		padding: 0 8px;
+
+		&:has(.app-input--left-icon) {
+			padding-left: 48px;
 		}
-	}
 
-	&[warning="true"] {
-		outline: 1px solid $color-stroke-negative;
+		&::placeholder {
+			@extend .text-body-1;
+			color: $color-text-tertiary;
+		}
+
+		&:focus {
+			outline: 1px solid $color-stroke-accent;
+		}
+
+		&:disabled {
+			&::placeholder {
+				color: $color-text-disabled;
+			}
+		}
+
+		&[warning="true"] {
+			outline: 1px solid $color-stroke-negative;
+		}
 	}
 }
 

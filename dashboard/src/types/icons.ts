@@ -12,4 +12,8 @@ export type IconColor =
   "warning" |
   "link";
 
-export type IconName = "admin_panel_settings" | "list";
+export type IconName = 
+  "admin_panel_settings" | 
+  "list" | 
+  "settings" |
+  "search" ;
