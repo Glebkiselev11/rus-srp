@@ -15,18 +15,18 @@ export default defineComponent({
 		};
 	},
 	computed: {
-		panelPages() {
+		panelPages(): NavItem[] {
 			return [
 				{
 					label: this.$t("all-words"),
 					name: "words",
-					icon: "list",
+					icon: "list" as const,
 					active: false,
 				},
 				{
 					label: this.$t("settings"),
 					name: "settings",
-					icon: "settings",
+					icon: "settings" as const,
 					active: false,
 				},
 			].map((x: NavItem) => ({
