@@ -7,13 +7,13 @@ export interface ListResponse<T> {
 export type Order = "created_at" | "-created_at" | "-updated_at";
 
 export interface RequestParams {
-  search?: string;
-  offset?: number;
-  limit?: number;
-  order?: Order;
+  search: string;
+  offset: number;
+  limit: number;
+  order: Order;
 }
 
-export type CompleteRequestParams = Required<RequestParams>;
+export type OptionalRequestParams = Partial<RequestParams>;
 
 export type TranslationTarget = "RU" | "EN" | "SR";
 

@@ -1,11 +1,11 @@
-import type { ListResponse, RequestParams } from "@/types/api";
+import type { ListResponse, OptionalRequestParams } from "@/types/api";
 import type { DraftWord, Word } from "@/types/words";
 import axios from "axios";
 
 export const WordsApi = {
 	ENDPOINT: "/api/v1/words",
 
-	query(params: RequestParams): Promise<ListResponse<Word>> {
+	query(params: OptionalRequestParams): Promise<ListResponse<Word>> {
 		return axios.get(this.ENDPOINT, { params }); 
 	},
 	getById(id: string): Promise<Word> {
