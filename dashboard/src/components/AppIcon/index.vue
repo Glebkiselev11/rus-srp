@@ -6,6 +6,7 @@ import AdminPanelSettingsIcon from "./AdminPanelSettingsIcon.vue";
 import ListIcon from "./ListIcon.vue";
 import SettingsIcon from "./SettingsIcon.vue";
 import SearchIcon from "./SearchIcon.vue";
+import TranslateIcon from "./TranslateIcon.vue";
 
 
 export default defineComponent({
@@ -31,6 +32,7 @@ export default defineComponent({
 				"list": ListIcon,
 				"settings": SettingsIcon,
 				"search": SearchIcon,
+				"translate": TranslateIcon,
 			}[this.name];
 		},
 	},

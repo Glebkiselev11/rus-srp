@@ -16,4 +16,6 @@ export type IconName =
   "admin_panel_settings" | 
   "list" | 
   "settings" |
-  "search" ;
+  "search" |
+  "translate";
+
