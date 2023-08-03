@@ -1,0 +1,9 @@
+@import './colors.scss';
+@import './typography.scss';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}

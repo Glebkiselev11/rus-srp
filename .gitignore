@@ -2,3 +2,13 @@ node_modules
 server/target
 .env
 dist
+
+
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
