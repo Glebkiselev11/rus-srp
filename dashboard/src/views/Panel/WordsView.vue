@@ -1,16 +1,32 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import AppTopBar from "@/components/AppTopBar.vue";
-import AppInput from "@/components/AppInput.vue";
-import type { Order, RequestParams } from "@/types/api";
 import { mapActions, mapState } from "pinia";
 import { useWordsStore } from "@/stores/words";
+import type { Order, RequestParams } from "@/types/api";
+
+import AppTopBar from "@/components/AppTopBar.vue";
+import AppInput from "@/components/AppInput.vue";
+import AppTable from "@/components/AppTable.vue";
+import AppTableRow from "@/components/AppTableRow.vue";
+
 
 export default defineComponent({
 	name: "WordsView",
 	components: {
 		AppTopBar,
 		AppInput,
+		AppTable,
+		AppTableRow,
+	},
+	data() {
+		return {
+			columns: [
+				{ label: "Русский", sortobale: true }, 
+				{ label: "English", sortobale: true }, 
+				{ label: "Srpski", sortobale: true }, 
+				{ label: "Српски", sortobale: true },
+			],
+		};
 	},
 	computed: {
 		...mapState(useWordsStore, ["words"]),
@@ -69,13 +85,30 @@ export default defineComponent({
 		</AppTopBar>
 
 		<div class="words-view--content">
-			<div
-				v-for="word in words"
-				:key="word.id"
-				class="word-item"
+			<AppTable
+				:columns="columns"
+				checkable
 			>
-				{{ `${word.eng} - ${word.rus} - ${word.srp_latin} - ${word.srp_cyrillic}` }}
-			</div>
+				<AppTableRow
+					v-for="word in words"
+					:id="word.id"
+					:key="word.id"
+					checkable
+				>
+					<td>
+						{{ word.rus }}
+					</td>
+					<td>
+						{{ word.eng }}
+					</td>
+					<td>
+						{{ word.srp_latin }}
+					</td>
+					<td>
+						{{ word.srp_cyrillic }}
+					</td>
+				</AppTableRow>	
+			</AppTable>
 		</div>
 	</div>
 </template>
@@ -89,12 +122,6 @@ export default defineComponent({
 	&--content {
 		padding: 20px;
 	}
-}
-
-.word-item {
-	padding: 12px;
-	border: 1px solid grey;
-	margin-block-end: 10px;
 }
 
 </style>
