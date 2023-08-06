@@ -3,7 +3,7 @@ import { defineComponent, type PropType } from "vue";
 
 interface Column {
   label: string;
-	sortobale: boolean;
+	sortable: boolean;
 	width?: string;
 }
 

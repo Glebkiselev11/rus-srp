@@ -21,10 +21,10 @@ export default defineComponent({
 	data() {
 		return {
 			columns: [
-				{ label: "Русский", sortobale: true }, 
-				{ label: "English", sortobale: true }, 
-				{ label: "Srpski", sortobale: true }, 
-				{ label: "Српски", sortobale: true },
+				{ label: "Русский", sortable: true }, 
+				{ label: "English", sortable: true }, 
+				{ label: "Srpski", sortable: true }, 
+				{ label: "Српски", sortable: true },
 			],
 		};
 	},
