@@ -17,5 +17,5 @@ export type IconName =
   "list" | 
   "settings" |
   "search" |
-  "translate";
-
+  "translate" |
+  "image" ;
