@@ -6,8 +6,8 @@ import type { Order, RequestParams } from "@/types/api";
 
 import AppTopBar from "@/components/AppTopBar.vue";
 import AppInput from "@/components/AppInput.vue";
-import AppTable from "@/components/AppTable.vue";
-import AppTableRow from "@/components/AppTableRow.vue";
+import AppTable from "@/components/AppTable/index.vue";
+import AppTableRow from "@/components/AppTable/AppTableRow.vue";
 
 
 export default defineComponent({
@@ -21,10 +21,15 @@ export default defineComponent({
 	data() {
 		return {
 			columns: [
-				{ label: "Русский", sortable: true }, 
-				{ label: "English", sortable: true }, 
-				{ label: "Srpski", sortable: true }, 
-				{ label: "Српски", sortable: true },
+				{ sortable: true, key: "image", 
+					icon: { 
+						name: "image", 
+						color: "tertiary", 
+					} as const },
+				{ label: "Русский", sortable: true, key: "rus" }, 
+				{ label: "English", sortable: true, key: "eng" }, 
+				{ label: "Srpski", sortable: true, key: "srp_latin" }, 
+				{ label: "Српски", sortable: true, key: "srp_cyrillic" },
 			],
 		};
 	},
@@ -95,6 +100,16 @@ export default defineComponent({
 					:key="word.id"
 					checkable
 				>
+					<td>
+						<!-- TODO: Add image component -->
+						<img
+							v-if="word.image"
+							:src="word.image"
+							alt="word"
+							width="48"
+							height="48"
+						>
+					</td>
 					<td>
 						{{ word.rus }}
 					</td>

@@ -1,14 +1,24 @@
 <script lang="ts">
+import type { IconColor, IconName } from "@/types/icons";
 import { defineComponent, type PropType } from "vue";
+import AppTableColumnTitle from "./AppTableColumnTitle.vue";
 
 interface Column {
-  label: string;
+	key: string;
 	sortable: boolean;
 	width?: string;
+  label?: string;
+	icon?: {
+		name: IconName;
+		color: IconColor;
+	};
 }
 
 export default defineComponent({
 	name: "AppTable",
+	components: {
+		AppTableColumnTitle,
+	},
 	props: {
 		columns: {
 			type: Array as PropType<Column[]>,
@@ -18,7 +28,6 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
-
 	},
 	emits: ["checked", "unchecked"],
 	data() {
@@ -53,13 +62,15 @@ export default defineComponent({
 							type="checkbox"
 						>
 					</th>
-					<th
+					<AppTableColumnTitle
 						v-for="col in columns"
 						:key="col.label"
 						:style="{ width: col.width ?? 'auto' }"
-					>
-						{{ col.label }}
-					</th>
+						:label="col.label"
+						:icon="col.icon"
+						:width="col.width"
+						:sortable="col.sortable"
+					/>
 				</tr>
 			</thead>
 			<tbody class="app-table--body">
