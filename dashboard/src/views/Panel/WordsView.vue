@@ -35,7 +35,7 @@ export default defineComponent({
 				return {
 					search: this.$route.query.search as string || "",
 					offset: Number(this.$route.query.offset) || 0,
-					limit: Number(this.$route.query.limit) || 20,
+					limit: Number(this.$route.query.limit) || 10,
 					order: (this.$route.query.order as string || "-created_at") as Order,
 				};
 			},
