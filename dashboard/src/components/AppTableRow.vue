@@ -35,7 +35,7 @@ export default defineComponent({
 </script>
 
 <template>
-	<tr>
+	<tr class="app-table-row">
 		<td v-if="checkable">
 			<input
 				v-model="checked"
@@ -45,3 +45,14 @@ export default defineComponent({
 		<slot />
 	</tr>
 </template>
+
+<style lang="scss">
+.app-table-row {
+  height: 72px;
+
+  td {
+    padding-inline: 16px;
+  }
+}
+
+</style>
