@@ -8,6 +8,7 @@ import SettingsIcon from "./SettingsIcon.vue";
 import SearchIcon from "./SearchIcon.vue";
 import TranslateIcon from "./TranslateIcon.vue";
 import ImageIcon from "./ImageIcon.vue";
+import ExpandAllIcon from "./ExpandAllIcon.vue";
 
 
 export default defineComponent({
@@ -35,6 +36,7 @@ export default defineComponent({
 				"search": SearchIcon,
 				"translate": TranslateIcon,
 				"image": ImageIcon,
+				"expand_all": ExpandAllIcon,
 			}[this.name];
 		},
 	},
