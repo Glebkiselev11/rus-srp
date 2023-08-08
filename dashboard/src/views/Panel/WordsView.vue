@@ -8,6 +8,7 @@ import AppTopBar from "@/components/AppTopBar.vue";
 import AppInput from "@/components/AppInput.vue";
 import AppTable from "@/components/AppTable/index.vue";
 import AppTableRow from "@/components/AppTable/AppTableRow.vue";
+import AppImagePreview from "@/components/AppImagePreview.vue";
 
 
 export default defineComponent({
@@ -17,6 +18,7 @@ export default defineComponent({
 		AppInput,
 		AppTable,
 		AppTableRow,
+		AppImagePreview,
 	},
 	data() {
 		return {
@@ -101,14 +103,9 @@ export default defineComponent({
 					checkable
 				>
 					<td>
-						<!-- TODO: Add image component -->
-						<img
-							v-if="word.image"
+						<AppImagePreview
 							:src="word.image"
-							alt="word"
-							width="48"
-							height="48"
-						>
+						/>
 					</td>
 					<td>
 						{{ word.rus }}
