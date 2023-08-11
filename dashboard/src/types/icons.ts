@@ -19,4 +19,5 @@ export type IconName =
   "search" |
   "translate" |
   "image" |
-  "expand_all";
+  "expand_all" |
+  "filter_hdr";

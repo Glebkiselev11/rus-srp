@@ -9,6 +9,7 @@ import SearchIcon from "./SearchIcon.vue";
 import TranslateIcon from "./TranslateIcon.vue";
 import ImageIcon from "./ImageIcon.vue";
 import ExpandAllIcon from "./ExpandAllIcon.vue";
+import FilterHdrIcon from "./FilterHdrIcon.vue";
 
 
 export default defineComponent({
@@ -37,6 +38,7 @@ export default defineComponent({
 				"translate": TranslateIcon,
 				"image": ImageIcon,
 				"expand_all": ExpandAllIcon,
+				"filter_hdr": FilterHdrIcon,
 			}[this.name];
 		},
 	},
