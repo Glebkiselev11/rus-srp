@@ -20,4 +20,6 @@ export type IconName =
   "translate" |
   "image" |
   "expand_all" |
-  "filter_hdr";
+  "filter_hdr" |
+  "arrow_upward_alt" |
+  "arrow_downward_alt"; 

@@ -10,6 +10,8 @@ import TranslateIcon from "./TranslateIcon.vue";
 import ImageIcon from "./ImageIcon.vue";
 import ExpandAllIcon from "./ExpandAllIcon.vue";
 import FilterHdrIcon from "./FilterHdrIcon.vue";
+import ArrowDownwardAltIcon from "./ArrowDownwardAltIcon.vue";
+import ArrowUpwardAltIcon from "./ArrowUpwardAltIcon.vue";
 
 
 export default defineComponent({
@@ -39,6 +41,8 @@ export default defineComponent({
 				"image": ImageIcon,
 				"expand_all": ExpandAllIcon,
 				"filter_hdr": FilterHdrIcon,
+				"arrow_downward_alt": ArrowDownwardAltIcon,
+				"arrow_upward_alt": ArrowUpwardAltIcon,
 			}[this.name];
 		},
 	},
