@@ -9,8 +9,8 @@ export default defineComponent({
 	}, 
 	props: {
 		src: {
-			type: Object as PropType<string | null>,
-			default: null,
+			type: [String, null] as PropType<string | null>,
+			required: true,
 		},
 	},
 	computed: {
