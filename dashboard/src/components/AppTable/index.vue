@@ -2,9 +2,10 @@
 import type { IconColor, IconName } from "@/types/icons";
 import { defineComponent, type PropType } from "vue";
 import AppTableColumnTitle from "./AppTableColumnTitle.vue";
+import type { Order } from "@/types/api";
 
 interface Column {
-	key: string;
+	sort_key: string;
 	sortable: boolean;
 	width?: string;
   label?: string;
@@ -28,8 +29,12 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
+		order: {
+			type: String as PropType<Order>,
+			default: null,
+		},
 	},
-	emits: ["checked", "unchecked"],
+	emits: ["checked", "unchecked", "update:order"],
 	data() {
 		return {
 			checked: false,
@@ -64,12 +69,15 @@ export default defineComponent({
 					</th>
 					<AppTableColumnTitle
 						v-for="col in columns"
-						:key="col.label"
+						:key="col.sort_key"
+						:sort-key="col.sort_key"
 						:style="{ width: col.width ?? 'auto' }"
 						:label="col.label"
 						:icon="col.icon"
 						:width="col.width"
 						:sortable="col.sortable"
+						:order="order"
+						@update:order="x => $emit('update:order', x)"
 					/>
 				</tr>
 			</thead>

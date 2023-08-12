@@ -23,15 +23,15 @@ export default defineComponent({
 	data() {
 		return {
 			columns: [
-				{ sortable: true, key: "image", 
+				{ sortable: true, sort_key: "image", 
 					icon: { 
 						name: "image", 
 						color: "tertiary", 
 					} as const },
-				{ label: "Русский", sortable: true, key: "rus" }, 
-				{ label: "English", sortable: true, key: "eng" }, 
-				{ label: "Srpski", sortable: true, key: "srp_latin" }, 
-				{ label: "Српски", sortable: true, key: "srp_cyrillic" },
+				{ label: "Русский", sortable: true, sort_key: "rus" }, 
+				{ label: "English", sortable: true, sort_key: "eng" }, 
+				{ label: "Srpski", sortable: true, sort_key: "srp_latin" }, 
+				{ label: "Српски", sortable: true, sort_key: "srp_cyrillic" },
 			],
 		};
 	},
@@ -70,6 +70,9 @@ export default defineComponent({
 	},
 	methods: {
 		...mapActions(useWordsStore, ["fetchWords"]),
+		updateOrder(order: Order) {
+			this.filter = { ...this.filter, order };
+		},
 	},
 });
 </script>
@@ -94,13 +97,13 @@ export default defineComponent({
 		<div class="words-view--content">
 			<AppTable
 				:columns="columns"
-				checkable
+				:order="filter.order"
+				@update:order="updateOrder"
 			>
 				<AppTableRow
 					v-for="word in words"
 					:id="word.id"
 					:key="word.id"
-					checkable
 				>
 					<td>
 						<AppImagePreview
