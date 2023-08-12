@@ -14,7 +14,11 @@ export type Order =
   "eng" | 
   "-eng" | 
   "srp_latin" | 
-  "-srp_latin";
+  "-srp_latin" |
+  "srp_cyrillic" |
+  "-srp_cyrillic" |
+  "image" |
+  "-image"; 
 
 export interface RequestParams {
   search: string;
