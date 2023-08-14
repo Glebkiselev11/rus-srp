@@ -63,7 +63,6 @@ export default defineComponent({
 			v-if="leftIcon"
 			class="app-input--left-icon"
 			:name="leftIcon"
-			size="24px"
 			color="tertiary"
 		/>
 

@@ -23,7 +23,7 @@ export default defineComponent({
 		},
 		size: {
 			type: String as PropType<IconSize>,
-			default: "24px",
+			default: "regular",
 		},
 		color: {
 			type: String as PropType<IconColor>,
@@ -45,6 +45,12 @@ export default defineComponent({
 				"arrow_upward_alt": ArrowUpwardAltIcon,
 			}[this.name];
 		},
+		convertedSize(): string {
+			return {
+				"regular": "24px",
+				"compact": "20px",
+			}[this.size];
+		},
 	},
 },
 );
@@ -55,7 +61,7 @@ export default defineComponent({
 	<component
 		:is="icon"
 		:class="[`app-icon--${color}`]"
-		:size="size"
+		:size="convertedSize"
 		:color="color"
 	/>
 </template>

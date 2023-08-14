@@ -1,12 +1,11 @@
 <script lang="ts">
-import { defineComponent, type PropType } from "vue";
-import type { IconSize } from "../../types/icons";
+import { defineComponent } from "vue";
 
 export default defineComponent({
 	name: "ArrowUpwardAltIcon",
 	props: {
 		size: {
-			type: String as PropType<IconSize>,
+			type: String,
 			required: true,
 		},
 	},

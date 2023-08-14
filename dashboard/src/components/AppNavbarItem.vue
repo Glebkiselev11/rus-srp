@@ -31,7 +31,6 @@ export default defineComponent({
 	<div class="app-navbar-item">
 		<AppIcon
 			:name="iconName"
-			size="24px"
 			:color="active ? 'accent-primary' : 'primary'"
 		/>
 

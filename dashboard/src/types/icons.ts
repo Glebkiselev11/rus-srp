@@ -1,4 +1,4 @@
-export type IconSize = "24px" | "20px";
+export type IconSize = "regular" | "compact";
 
 export type IconColor = 
   "primary" |

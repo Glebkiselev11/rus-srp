@@ -90,7 +90,7 @@ export default defineComponent({
 					v-if="sortable"
 					:name="sortIcon"
 					:color="sortIconColor"
-					size="20px"
+					size="compact"
 				/>
 			</div>
 		</div>
