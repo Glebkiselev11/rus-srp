@@ -35,6 +35,19 @@ export default defineComponent({
 			default: false,
 		},
 	},
+	computed: {
+		iconColor() {
+			if (this.color === "neutral") {
+				return "primary";
+			}
+
+			if (this.type === "primary") {
+				return "contrast";
+			}
+
+			return this.color;	
+		},
+	},
 });
 </script>
 
@@ -47,6 +60,8 @@ export default defineComponent({
 		<AppIcon 
 			v-if="icon"
 			:name="icon"
+			:color="iconColor"
+			size="compact"
 		/>
 		<span
 			v-if="label"
@@ -60,6 +75,9 @@ export default defineComponent({
 @import "@/styles/main.scss";
 
 .app-button {
+	display: flex;
+	align-items: center;
+	gap: 8px;
 	padding: 0;
 	padding-inline: 12px;
 	border: none;

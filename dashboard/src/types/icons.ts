@@ -22,4 +22,5 @@ export type IconName =
   "expand_all" |
   "filter_hdr" |
   "arrow_upward_alt" |
-  "arrow_downward_alt"; 
+  "arrow_downward_alt" |
+  "add";
