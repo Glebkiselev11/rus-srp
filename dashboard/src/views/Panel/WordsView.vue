@@ -9,6 +9,7 @@ import AppInput from "@/components/AppInput.vue";
 import AppTable from "@/components/AppTable/index.vue";
 import AppTableRow from "@/components/AppTable/AppTableRow.vue";
 import AppImagePreview from "@/components/AppImagePreview.vue";
+import AppButton from "@/components/AppButton.vue";
 
 
 export default defineComponent({
@@ -19,6 +20,7 @@ export default defineComponent({
 		AppTable,
 		AppTableRow,
 		AppImagePreview,
+		AppButton,
 	},
 	data() {
 		return {
@@ -73,6 +75,9 @@ export default defineComponent({
 		updateOrder(order: Order) {
 			this.filter = { ...this.filter, order };
 		},
+		openNewWordPage() {
+			console.log("openNewWordPage");
+		},
 	},
 });
 </script>
@@ -90,7 +95,10 @@ export default defineComponent({
 				/>	
 			</template>
 			<template #right>
-				right
+				<AppButton
+					:label="$t('add-word')"
+					@click="openNewWordPage"
+				/>
 			</template>
 		</AppTopBar>
 
