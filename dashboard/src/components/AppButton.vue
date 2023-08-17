@@ -189,6 +189,34 @@ export default defineComponent({
 
 	}
 
+	&:active {
+		&.app-button-type-primary {
+			&.app-button-color-accent-primary {
+				background-color: $color-background-accent-primary-active;
+			}
+
+			&.app-button-color-accent-secondary {
+				background-color: $color-background-accent-secondary-active;
+			}
+
+			&.app-button-color-negative {
+				background-color: $color-background-negative-active;
+			}
+
+			&.app-button-color-neutral {
+				background-color: $color-background-secondary-active;
+			}
+		}
+
+		&.app-button-type-secondary {
+			background-color: $color-background-tertiary-active;
+		}
+
+		&.app-button-type-inline {
+			background-color: $color-background-content-primary-active;
+		}
+	}
+
 	&:disabled {
 		cursor: not-allowed;
 		opacity: 0.5;
