@@ -160,6 +160,35 @@ export default defineComponent({
 		@extend .text-subtitle-2
 	}
 
+	&:hover {
+		&.app-button-type-primary {
+			&.app-button-color-accent-primary {
+				background-color: $color-background-accent-primary-hovered;
+			}
+
+			&.app-button-color-accent-secondary {
+				background-color: $color-background-accent-secondary-hovered;
+			}
+
+			&.app-button-color-negative {
+				background-color: $color-background-negative-hovered;
+			}
+
+			&.app-button-color-neutral {
+				background-color: $color-background-secondary-hovered;
+			}
+		}
+
+		&.app-button-type-secondary {
+			background-color: $color-background-tertiary-hovered;
+		}
+
+		&.app-button-type-inline {
+			background-color: $color-background-content-primary-hovered;
+		}
+
+	}
+
 	&:disabled {
 		cursor: not-allowed;
 		opacity: 0.5;
