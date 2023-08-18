@@ -32,7 +32,7 @@ export default defineComponent({
 		},
 		sortKey: {
 			type: String as PropType<string>,
-			required: true,
+			default: null,
 		},
 	},
 	emits: ["update:order"],
@@ -53,7 +53,7 @@ export default defineComponent({
 	},
 	methods: {
 		handlerSort() {
-			if (!this.sortable) return;
+			if (!this.sortable || !this.sortKey) return;
 			
 			if (this.order === this.sortKey) {
 				this.$emit("update:order", `-${this.sortKey}`);

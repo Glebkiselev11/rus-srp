@@ -5,7 +5,7 @@ import AppTableColumnTitle from "./AppTableColumnTitle.vue";
 import type { Order } from "@/types/api";
 
 interface Column {
-	sort_key: string;
+	sort_key?: string;
 	sortable: boolean;
 	width?: string;
   label?: string;
