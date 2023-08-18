@@ -13,6 +13,7 @@ import FilterHdrIcon from "./FilterHdrIcon.vue";
 import ArrowDownwardAltIcon from "./ArrowDownwardAltIcon.vue";
 import ArrowUpwardAltIcon from "./ArrowUpwardAltIcon.vue";
 import AddIcon from "./AddIcon.vue";
+import MoreVertIcon from "./MoreVertIcon.vue";
 
 
 export default defineComponent({
@@ -45,6 +46,7 @@ export default defineComponent({
 				"arrow_downward_alt": ArrowDownwardAltIcon,
 				"arrow_upward_alt": ArrowUpwardAltIcon,
 				"add": AddIcon,
+				"more_vert": MoreVertIcon,
 			}[this.name];
 		},
 		convertedSize(): string {

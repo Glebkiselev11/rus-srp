@@ -23,4 +23,5 @@ export type IconName =
   "filter_hdr" |
   "arrow_upward_alt" |
   "arrow_downward_alt" |
-  "add";
+  "add" |
+  "more_vert";
