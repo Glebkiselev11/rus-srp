@@ -40,8 +40,8 @@ export default defineComponent({
 
 .app-list-item {
   width: 100%;
-  height: 64px;
   padding-inline: 16px;
+	padding-block: 12px;
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -61,7 +61,7 @@ export default defineComponent({
   }
 
   &--compact {
-    height: 56px;
+		padding-block: 8px;
   }
 }
 </style>
