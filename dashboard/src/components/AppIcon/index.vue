@@ -15,6 +15,7 @@ import ArrowUpwardAltIcon from "./ArrowUpwardAltIcon.vue";
 import AddIcon from "./AddIcon.vue";
 import MoreVertIcon from "./MoreVertIcon.vue";
 import EditIcon from "./EditIcon.vue";
+import DeleteIcon from "./DeleteIcon.vue";
 
 
 export default defineComponent({
@@ -49,6 +50,7 @@ export default defineComponent({
 				"add": AddIcon,
 				"more_vert": MoreVertIcon,
 				"edit": EditIcon,
+				"delete": DeleteIcon,
 			}[this.name];
 		},
 		convertedSize(): string {

@@ -25,4 +25,5 @@ export type IconName =
   "arrow_downward_alt" |
   "add" |
   "more_vert" |
-  "edit"; 
+  "edit" |
+  "delete";
