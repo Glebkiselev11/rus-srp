@@ -72,3 +72,46 @@ h4 {
     letter-spacing: 0.2px;
   }
 }
+
+.text-color {
+
+  &-primary {
+    color: $color-text-primary;
+  }
+
+  &-secondary {
+    color: $color-text-secondary;
+  }
+
+  &-tertiary {
+    color: $color-text-tertiary;
+  }
+
+  &-subhead {
+    color: $color-text-subhead;
+  }
+
+  &-contrast {
+    color: $color-text-contrast;
+  }
+
+  &-accent-primary {
+    color: $color-text-accent-primary;
+  }
+
+  &-accent-secondary {
+    color: $color-text-accent-secondary;
+  }
+
+  &-positive {
+    color: $color-text-positive;
+  }
+
+  &-negative {
+    color: $color-text-negative;
+  }
+
+  &-warning {
+    color: $color-text-warning;
+  }
+}
