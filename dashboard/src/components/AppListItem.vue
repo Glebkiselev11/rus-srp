@@ -1,5 +1,7 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
+
+type Size = "regular" | "compact";
 
 export default defineComponent({
 	name: "AppListItem",
@@ -8,9 +10,9 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
-		compact: {
-			type: Boolean,
-			default: false,
+		size: {
+			type: String as PropType<Size>,
+			default: "regular",
 		},
 	},
 });
@@ -23,7 +25,7 @@ export default defineComponent({
 		class="app-list-item"
 		:class="{
 			'app-list-item--clickable': clickable,
-			'app-list-item--compact': compact,
+			'app-list-item--compact': size === 'compact',
 		}"
 	>
 		<div class="app-list-item--left">
@@ -43,7 +45,6 @@ export default defineComponent({
   border-radius: 8px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
 
   &--left {
     display: flex;
