@@ -10,6 +10,7 @@ import AppTable from "@/components/AppTable/index.vue";
 import AppTableRow from "@/components/AppTable/AppTableRow.vue";
 import AppImagePreview from "@/components/AppImagePreview.vue";
 import AppButton from "@/components/AppButton.vue";
+import AppDropdownMenu from "@/components/AppDropdownMenu.vue";
 
 
 export default defineComponent({
@@ -21,6 +22,7 @@ export default defineComponent({
 		AppTableRow,
 		AppImagePreview,
 		AppButton,
+		AppDropdownMenu,
 	},
 	data() {
 		return {
@@ -29,12 +31,14 @@ export default defineComponent({
 					icon: { 
 						name: "image", 
 						color: "tertiary", 
-					} as const },
-				{ label: "Русский", sortable: true, sort_key: "rus" }, 
-				{ label: "English", sortable: true, sort_key: "eng" }, 
-				{ label: "Srpski", sortable: true, sort_key: "srp_latin" }, 
+					} as const, width: "40px" },
+				{ label: "Русский", sortable: true, sort_key: "rus", width: "200px" }, 
+				{ label: "English", sortable: true, sort_key: "eng", width: "200px" }, 
+				{ label: "Srpski", sortable: true, sort_key: "srp_latin", width: "200px" }, 
 				{ label: "Српски", sortable: true, sort_key: "srp_cyrillic" },
+				{ sortable: false, width: "50px" },
 			],
+			
 		};
 	},
 	computed: {
@@ -78,6 +82,9 @@ export default defineComponent({
 		openNewWordPage() {
 			console.log("openNewWordPage");
 		},
+		removeWord(id: number) {
+			console.log("removeWord", id);
+		},
 	},
 });
 </script>
@@ -96,6 +103,7 @@ export default defineComponent({
 			</template>
 			<template #right>
 				<AppButton
+					icon="add"
 					:label="$t('add-word')"
 					@click="openNewWordPage"
 				/>
@@ -129,6 +137,26 @@ export default defineComponent({
 					</td>
 					<td>
 						{{ word.srp_cyrillic }}
+					</td>
+					<td>
+						<AppDropdownMenu 
+							:items="[
+								{ label: $t('edit'), icon: 'edit', handler: () => {} },
+								'separator',
+								{ 
+									label: $t('delete'), 
+									icon: 'delete', 
+									color: 'negative', 
+									handler: () => removeWord(word.id)
+								},
+							]"		
+						>
+							<AppButton
+								icon="more_vert"
+								type="inline"
+								color="neutral"
+							/>
+						</AppDropdownMenu>
 					</td>
 				</AppTableRow>	
 			</AppTable>
