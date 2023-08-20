@@ -2,6 +2,7 @@
 import type { IconColor, IconName } from "@/types/icons";
 import { defineComponent, type PropType } from "vue"; 
 import AppListItem from "./AppListItem.vue";
+import { vOnClickOutside } from "@vueuse/components";
 import AppIcon from "@/components/AppIcon/index.vue";
 
 interface MenuItem {
@@ -15,6 +16,9 @@ type Separator = "separator";
 
 export default defineComponent({
 	name: "AppDropdownMenu",
+	directives: {
+		onClickOutside: vOnClickOutside,
+	},
 	components: {
 		AppListItem,
 		AppIcon,
@@ -32,15 +36,20 @@ export default defineComponent({
 	},
 	methods: {
 		toggleMenu() {
-			console.log("toggleMenu");
 			this.isMenuOpen = !this.isMenuOpen;
+		},
+		closeMenu() {
+			this.isMenuOpen = false;
 		},
 	},
 });
 </script>
 
 <template>
-	<div class="app-dropdown">
+	<div
+		v-on-click-outside="closeMenu"
+		class="app-dropdown"
+	>
 		<div @click="toggleMenu">
 			<slot />
 		</div>
