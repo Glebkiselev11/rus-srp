@@ -77,14 +77,14 @@ export default defineComponent({
 		this.fetchWords(this.filter);
 	},
 	methods: {
-		...mapActions(useWordsStore, ["fetchWords"]),
+		...mapActions(useWordsStore, ["fetchWords", "deleteWord"]),
 		updateOrder(order: Order) {
 			this.filter = { ...this.filter, order };
 		},
 		openNewWordPage() {
 			console.log("openNewWordPage");
 		},
-		removeWord(word: Word) {
+		async removeWord(word: Word) {
 			const localeToKeyMap: Record<LanguageCode, keyof Word> = {
 				"en": "eng",
 				"ru": "rus",
@@ -95,7 +95,7 @@ export default defineComponent({
 			const key = localeToKeyMap[this.$i18n.locale as LanguageCode];
 
 			if (confirm(this.$t("are-you-sure-delete", { word: word[key] }))) {
-				console.log("removeWord", word.id);
+				this.deleteWord(word.id);
 			}
 		},
 		editWord(id: number) {
