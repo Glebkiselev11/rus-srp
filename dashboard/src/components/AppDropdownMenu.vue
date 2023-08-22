@@ -2,7 +2,8 @@
 import type { IconColor, IconName } from "@/types/icons";
 import { defineComponent, type PropType } from "vue"; 
 import AppListItem from "./AppListItem.vue";
-import { vOnClickOutside } from "@vueuse/components";
+import { vOnClickOutside, vElementVisibility } from "@vueuse/components";
+import { watchDebounced } from "@vueuse/core";
 import AppIcon from "@/components/AppIcon/index.vue";
 
 interface MenuItem {
@@ -18,6 +19,7 @@ export default defineComponent({
 	name: "AppDropdownMenu",
 	directives: {
 		onClickOutside: vOnClickOutside,
+		elementVisibility: vElementVisibility,
 	},
 	components: {
 		AppListItem,
@@ -32,7 +34,21 @@ export default defineComponent({
 	data() {
 		return {
 			isMenuOpen: false,
+			isBottomMenuVisible: null as boolean | null,
+			menuPosition: null as "bottom" | "top" | null,
 		};
+	},
+	mounted() {
+		/* here we set correct position once */
+		watchDebounced(
+			() => this.isBottomMenuVisible,
+			(visible) => {
+				if (!this.menuPosition) {
+					this.menuPosition = visible ? "bottom" : "top";
+				}
+			},
+			{ debounce: 10 },
+		);
 	},
 	methods: {
 		toggleMenu() {
@@ -40,6 +56,9 @@ export default defineComponent({
 		},
 		closeMenu() {
 			this.isMenuOpen = false;
+		},
+		setBottomMenuAngleVisibility(state: boolean) {
+			this.isBottomMenuVisible = state;
 		},
 	},
 });
@@ -57,6 +76,7 @@ export default defineComponent({
 		<div
 			v-if="isMenuOpen"
 			class="app-dropdown--menu"
+			:class="[`app-dropdown--menu-position-${menuPosition}`]"
 		>
 			<template
 				v-for="(item, i) in items"
@@ -85,6 +105,11 @@ export default defineComponent({
 					</template>
 				</AppListItem>
 			</template>
+
+			<div
+				v-element-visibility="setBottomMenuAngleVisibility"
+				class="app-dropdown--mark-bottom"
+			/>
 		</div>
 	</div>
 </template>
@@ -98,13 +123,26 @@ export default defineComponent({
 	&--menu {
 		padding-block: 8px;
 		position: absolute;
-		top: 100%;
 		right: 0;
 		background-color: $color-background-content-primary;
 		border-radius: 12px;
-		z-index: 1;
+		z-index: 9999;
 		border: 1px solid $color-separator-primary;
 		box-shadow: 0px 0px 4px 0px rgba(2, 18, 38, 0.08), 0px 4px 8px 0px rgba(2, 18, 38, 0.04);
+
+		&-position-top {
+			bottom: 100%;
+		}
+
+		&-position-bottom {
+			top: 100%;
+		}
+	}
+
+	&--mark-bottom {
+		position: absolute;
+		bottom: 0;
+		left: 0;
 	}
 }
 
