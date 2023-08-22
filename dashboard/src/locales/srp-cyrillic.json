@@ -22,7 +22,7 @@
   "wait": "Чекати",
   "word-added": "Реч је успешно додата",
   "word-updated": "Реч је успешно ажурирана",
-  "are-you-sure-delete": "Да ли желите избрисати {{word}}?",
+  "are-you-sure-delete": "Да ли желите избрисати реч '{word}'?",
   "interface-language": "Језик интерфејса",
   "lang": {
     "russian": "руска",

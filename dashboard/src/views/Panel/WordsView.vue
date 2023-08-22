@@ -11,6 +11,8 @@ import AppTableRow from "@/components/AppTable/AppTableRow.vue";
 import AppImagePreview from "@/components/AppImagePreview.vue";
 import AppButton from "@/components/AppButton.vue";
 import AppDropdownMenu from "@/components/AppDropdownMenu.vue";
+import type { Word } from "@/types/words";
+import type { LanguageCode } from "@/i18n";
 
 
 export default defineComponent({
@@ -82,8 +84,19 @@ export default defineComponent({
 		openNewWordPage() {
 			console.log("openNewWordPage");
 		},
-		removeWord(id: number) {
-			console.log("removeWord", id);
+		removeWord(word: Word) {
+			const localeToKeyMap: Record<LanguageCode, keyof Word> = {
+				"en": "eng",
+				"ru": "rus",
+				"srp-latin": "srp_latin",
+				"srp-cyrillic": "srp_cyrillic",
+			};
+
+			const key = localeToKeyMap[this.$i18n.locale as LanguageCode];
+
+			if (confirm(this.$t("are-you-sure-delete", { word: word[key] }))) {
+				console.log("removeWord", word.id);
+			}
 		},
 		editWord(id: number) {
 			console.log("editWord", id);
@@ -154,7 +167,7 @@ export default defineComponent({
 									label: $t('delete'), 
 									icon: 'delete', 
 									color: 'negative', 
-									handler: () => removeWord(word.id)
+									handler: () => removeWord(word)
 								},
 							]"		
 						>
