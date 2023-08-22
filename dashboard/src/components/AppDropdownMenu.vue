@@ -15,6 +15,8 @@ interface MenuItem {
 
 type Separator = "separator";
 
+type MenuPosition = "bottom" | "top";
+
 export default defineComponent({
 	name: "AppDropdownMenu",
 	directives: {
@@ -35,16 +37,15 @@ export default defineComponent({
 		return {
 			isMenuOpen: false,
 			isBottomMenuVisible: null as boolean | null,
-			menuPosition: null as "bottom" | "top" | null,
+			menuPosition: "bottom" as MenuPosition,
 		};
 	},
 	mounted() {
-		/* here we set correct position once */
 		watchDebounced(
 			() => this.isBottomMenuVisible,
 			(visible) => {
-				if (!this.menuPosition) {
-					this.menuPosition = visible ? "bottom" : "top";
+				if (!visible && this.isMenuOpen) {
+					this.menuPosition = "top";
 				}
 			},
 			{ debounce: 10 },
@@ -55,7 +56,9 @@ export default defineComponent({
 			this.isMenuOpen = !this.isMenuOpen;
 		},
 		closeMenu() {
+			if (!this.isMenuOpen) return;
 			this.isMenuOpen = false;
+			this.menuPosition = "bottom";
 		},
 		setBottomMenuAngleVisibility(state: boolean) {
 			this.isBottomMenuVisible = state;
