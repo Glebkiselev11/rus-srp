@@ -85,6 +85,9 @@ export default defineComponent({
 		removeWord(id: number) {
 			console.log("removeWord", id);
 		},
+		editWord(id: number) {
+			console.log("editWord", id);
+		},
 	},
 });
 </script>
@@ -141,7 +144,11 @@ export default defineComponent({
 					<td>
 						<AppDropdownMenu 
 							:items="[
-								{ label: $t('edit'), icon: 'edit', handler: () => {} },
+								{ 
+									label: $t('edit'),
+									icon: 'edit',
+									handler: () => editWord(word.id)
+								},
 								'separator',
 								{ 
 									label: $t('delete'), 
