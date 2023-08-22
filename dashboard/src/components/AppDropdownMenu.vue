@@ -63,6 +63,10 @@ export default defineComponent({
 		setBottomMenuAngleVisibility(state: boolean) {
 			this.isBottomMenuVisible = state;
 		},
+		handdleClickOnItem(handler: () => void) {
+			handler();
+			this.closeMenu();
+		},
 	},
 });
 </script>
