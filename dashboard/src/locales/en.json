@@ -22,12 +22,13 @@
   "wait": "Wait",
   "word-added": "Word was added",
   "word-updated": "Word was updated",
-  "are-you-sure-delete": "Are you sure that you want to delete {{word}}?",
+  "are-you-sure-delete": "Are you sure that you want to delete the word: '{word}'?",
   "interface-language": "Interface language",
   "lang": {
     "russian": "russian",
     "english": "english",
-    "serbian-cyrilic": "serbian (cyrilic)",
+    "serbian-cyrillic": "serbian (cyrillic)",
     "serbian-latin": "serbian (latin)"
-  }
+  },
+  "edit": "Edit"
 }

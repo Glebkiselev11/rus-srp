@@ -7,3 +7,10 @@
   box-sizing: border-box;
   margin: 0;
 }
+
+hr {
+  height: 1px;
+  background: $color-separator-primary;
+  border: none;
+  margin-block: 6px;
+}

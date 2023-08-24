@@ -2,7 +2,7 @@
 $color-background: #FAFAFB;
 $color-background-content-primary: #FFFFFF;
 $color-background-content-secondary: #EBECEE;
-$color-background-content-tertiary: #FAFAFB;
+$color-background-content-tertiary: #F5F5F6;
 $color-background-accent-primary: #0B6DE3;
 $color-background-accent-primary-tint: #E7F0FC;
 $color-background-accent-secondary: #067D3B;
@@ -13,9 +13,21 @@ $color-background-negative: #E3150B;
 $color-background-negative-tint: #FCE7E7;
 $color-background-warning: #E3810B;
 $color-background-warning-tint: #FCEFE7;
+$color-image-placeholder: #EBECEE;
 
 // Background states
 $color-background-content-primary-hovered: #F5F5F6;
+$color-background-accent-primary-hovered: #0A63CF;
+$color-background-accent-secondary-hovered: #08A14C;
+$color-background-negative-hovered: #CF130A;
+$color-background-secondary-hovered: #DEE0E3;
+$color-background-tertiary-hovered: #EBECEE;
+$color-background-accent-primary-active: #084DA1;
+$color-background-accent-secondary-active: #055F2D;
+$color-background-negative-active: #A10F08;
+$color-background-secondary-active: #C0C4C9;
+$color-background-tertiary-active: #DEE0E3;
+$color-background-content-primary-active: #EBECEE;
 
 // Text
 $color-text-primary: #021226;

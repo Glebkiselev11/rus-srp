@@ -22,12 +22,13 @@
   "wait": "Подождите",
   "word-added": "Слово успешно добавлено",
   "word-updated": "Слово успешно обновлено",
-  "are-you-sure-delete": "Вы уверены, что хотите удалить {{word}}?",
+  "are-you-sure-delete": "Вы уверены, что хотите удалить слово '{word}'?",
   "interface-language": "Язык интерфейса",
   "lang": {
     "russian": "русское",
     "english": "английский",
-    "serbian-cyrilic": "сербское (кириллица)",
+    "serbian-cyrillic": "сербское (кириллица)",
     "serbian-latin": "сербское (латиница)"
-  }
+  },
+  "edit": "Изменить"
 }

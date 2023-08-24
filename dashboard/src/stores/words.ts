@@ -19,5 +19,14 @@ export const useWordsStore = defineStore("words", {
 				alert(error);
 			}
 		},
+		async deleteWord(id: number) {
+			try {
+				await WordsApi.delete(id);
+				this.words = this.words.filter((word) => word.id !== id);
+			} catch (error) {
+				console.error(error);
+				alert(error);
+			}
+		},
 	},
 });

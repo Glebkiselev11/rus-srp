@@ -1,15 +1,19 @@
 import { createI18n } from "vue-i18n";
 import en from "@/locales/en.json";
 import ru from "@/locales/ru.json";
-import srp from "@/locales/srp.json";
+import srpLatin from "@/locales/srp-latin.json";
+import srpCyrillic from "@/locales/srp-cyrillic.json";
 
 export const STORAGE_KEY = "languageKey";
 
 export const LanguageList = [
 	{ value: "en", label: "English" },
 	{ value: "ru", label: "Русский" },
-	{ value: "srp", label: "Srpski" },
+	{ value: "srp-latin", label: "Srpski" },
+	{ value: "srp-cyrillic", label: "Српски" },
 ];
+
+export type LanguageCode = "en" | "ru" | "srp-latin" | "srp-cyrillic";
 
 
 export default createI18n({
@@ -17,6 +21,7 @@ export default createI18n({
 	messages: {
 		en,
 		ru,
-		srp,
+		"srp-latin": srpLatin,
+		"srp-cyrillic": srpCyrillic,
 	},
 });

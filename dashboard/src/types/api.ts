@@ -4,7 +4,21 @@ export interface ListResponse<T> {
   result: Array<T>;
 }
 
-export type Order = "created_at" | "-created_at" | "-updated_at";
+export type Order = 
+  "created_at" | 
+  "-created_at" | 
+  "-updated_at" | 
+  "updated_at" | 
+  "rus" | 
+  "-rus" | 
+  "eng" | 
+  "-eng" | 
+  "srp_latin" | 
+  "-srp_latin" |
+  "srp_cyrillic" |
+  "-srp_cyrillic" |
+  "image" |
+  "-image"; 
 
 export interface RequestParams {
   search: string;

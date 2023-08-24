@@ -1,4 +1,4 @@
-export type IconSize = "24px" | "20px";
+export type IconSize = "regular" | "compact";
 
 export type IconColor = 
   "primary" |
@@ -17,5 +17,13 @@ export type IconName =
   "list" | 
   "settings" |
   "search" |
-  "translate";
-
+  "translate" |
+  "image" |
+  "expand_all" |
+  "filter_hdr" |
+  "arrow_upward_alt" |
+  "arrow_downward_alt" |
+  "add" |
+  "more_vert" |
+  "edit" |
+  "delete";

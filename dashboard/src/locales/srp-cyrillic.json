@@ -1,0 +1,34 @@
+{
+  "no-words-were-found": "Нису пронађене речи за овај упит",
+  "general": "Општа",
+  "order": {
+    "new-words": "Нове речи",
+    "old-words": "Старе речи",
+    "last-updated": "Најновије ажуриране"
+  },
+  "fill-in-auto": "Попуните аутоматски",
+  "cancel": "Отказати",
+  "settings": "Подешавања",
+  "all-words": "Све речи",
+  "add-word": "Додајте реч",
+  "adding-word": {
+    "title": "Додавање речи",
+    "description": "Унесите реч на одговарајућем језику"
+  },
+  "search": "Претрага",
+  "find-word": "Нађи реч",
+  "save": "Сачувај",
+  "delete": "Избриши",
+  "wait": "Чекати",
+  "word-added": "Реч је успешно додата",
+  "word-updated": "Реч је успешно ажурирана",
+  "are-you-sure-delete": "Да ли желите избрисати реч '{word}'?",
+  "interface-language": "Језик интерфејса",
+  "lang": {
+    "russian": "руска",
+    "english": "енглески",
+    "serbian-cyrillic": "Српски (ћирилица)",
+    "serbian-latin": "Српски (латиница)"
+  },
+  "edit": "Уредити"
+}

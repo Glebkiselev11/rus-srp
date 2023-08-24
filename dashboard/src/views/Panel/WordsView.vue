@@ -1,16 +1,47 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import AppTopBar from "@/components/AppTopBar.vue";
-import AppInput from "@/components/AppInput.vue";
-import type { Order, RequestParams } from "@/types/api";
 import { mapActions, mapState } from "pinia";
 import { useWordsStore } from "@/stores/words";
+import type { Order, RequestParams } from "@/types/api";
+
+import AppTopBar from "@/components/AppTopBar.vue";
+import AppInput from "@/components/AppInput.vue";
+import AppTable from "@/components/AppTable/index.vue";
+import AppTableRow from "@/components/AppTable/AppTableRow.vue";
+import AppImagePreview from "@/components/AppImagePreview.vue";
+import AppButton from "@/components/AppButton.vue";
+import AppDropdownMenu from "@/components/AppDropdownMenu.vue";
+import type { Word } from "@/types/words";
+import type { LanguageCode } from "@/i18n";
+
 
 export default defineComponent({
 	name: "WordsView",
 	components: {
 		AppTopBar,
 		AppInput,
+		AppTable,
+		AppTableRow,
+		AppImagePreview,
+		AppButton,
+		AppDropdownMenu,
+	},
+	data() {
+		return {
+			columns: [
+				{ sortable: true, sort_key: "image", 
+					icon: { 
+						name: "image", 
+						color: "tertiary", 
+					} as const, width: "40px" },
+				{ label: "Русский", sortable: true, sort_key: "rus", width: "200px" }, 
+				{ label: "English", sortable: true, sort_key: "eng", width: "200px" }, 
+				{ label: "Srpski", sortable: true, sort_key: "srp_latin", width: "200px" }, 
+				{ label: "Српски", sortable: true, sort_key: "srp_cyrillic" },
+				{ sortable: false, width: "50px" },
+			],
+			
+		};
 	},
 	computed: {
 		...mapState(useWordsStore, ["words"]),
@@ -19,7 +50,7 @@ export default defineComponent({
 				return {
 					search: this.$route.query.search as string || "",
 					offset: Number(this.$route.query.offset) || 0,
-					limit: Number(this.$route.query.limit) || 20,
+					limit: Number(this.$route.query.limit) || 10,
 					order: (this.$route.query.order as string || "-created_at") as Order,
 				};
 			},
@@ -46,7 +77,30 @@ export default defineComponent({
 		this.fetchWords(this.filter);
 	},
 	methods: {
-		...mapActions(useWordsStore, ["fetchWords"]),
+		...mapActions(useWordsStore, ["fetchWords", "deleteWord"]),
+		updateOrder(order: Order) {
+			this.filter = { ...this.filter, order };
+		},
+		openNewWordPage() {
+			console.log("openNewWordPage");
+		},
+		async removeWord(word: Word) {
+			const localeToKeyMap: Record<LanguageCode, keyof Word> = {
+				"en": "eng",
+				"ru": "rus",
+				"srp-latin": "srp_latin",
+				"srp-cyrillic": "srp_cyrillic",
+			};
+
+			const key = localeToKeyMap[this.$i18n.locale as LanguageCode];
+
+			if (confirm(this.$t("are-you-sure-delete", { word: word[key] }))) {
+				this.deleteWord(word.id);
+			}
+		},
+		editWord(id: number) {
+			console.log("editWord", id);
+		},
 	},
 });
 </script>
@@ -64,18 +118,68 @@ export default defineComponent({
 				/>	
 			</template>
 			<template #right>
-				right
+				<AppButton
+					icon="add"
+					:label="$t('add-word')"
+					@click="openNewWordPage"
+				/>
 			</template>
 		</AppTopBar>
 
 		<div class="words-view--content">
-			<div
-				v-for="word in words"
-				:key="word.id"
-				class="word-item"
+			<AppTable
+				:columns="columns"
+				:order="filter.order"
+				@update:order="updateOrder"
 			>
-				{{ `${word.eng} - ${word.rus} - ${word.srp_latin} - ${word.srp_cyrillic}` }}
-			</div>
+				<AppTableRow
+					v-for="word in words"
+					:id="word.id"
+					:key="word.id"
+				>
+					<td>
+						<AppImagePreview
+							:src="word.image"
+						/>
+					</td>
+					<td>
+						{{ word.rus }}
+					</td>
+					<td>
+						{{ word.eng }}
+					</td>
+					<td>
+						{{ word.srp_latin }}
+					</td>
+					<td>
+						{{ word.srp_cyrillic }}
+					</td>
+					<td>
+						<AppDropdownMenu 
+							:items="[
+								{ 
+									label: $t('edit'),
+									icon: 'edit',
+									handler: () => editWord(word.id)
+								},
+								'separator',
+								{ 
+									label: $t('delete'), 
+									icon: 'delete', 
+									color: 'negative', 
+									handler: () => removeWord(word)
+								},
+							]"		
+						>
+							<AppButton
+								icon="more_vert"
+								type="inline"
+								color="neutral"
+							/>
+						</AppDropdownMenu>
+					</td>
+				</AppTableRow>	
+			</AppTable>
 		</div>
 	</div>
 </template>
@@ -89,12 +193,6 @@ export default defineComponent({
 	&--content {
 		padding: 20px;
 	}
-}
-
-.word-item {
-	padding: 12px;
-	border: 1px solid grey;
-	margin-block-end: 10px;
 }
 
 </style>

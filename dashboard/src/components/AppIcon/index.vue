@@ -7,6 +7,15 @@ import ListIcon from "./ListIcon.vue";
 import SettingsIcon from "./SettingsIcon.vue";
 import SearchIcon from "./SearchIcon.vue";
 import TranslateIcon from "./TranslateIcon.vue";
+import ImageIcon from "./ImageIcon.vue";
+import ExpandAllIcon from "./ExpandAllIcon.vue";
+import FilterHdrIcon from "./FilterHdrIcon.vue";
+import ArrowDownwardAltIcon from "./ArrowDownwardAltIcon.vue";
+import ArrowUpwardAltIcon from "./ArrowUpwardAltIcon.vue";
+import AddIcon from "./AddIcon.vue";
+import MoreVertIcon from "./MoreVertIcon.vue";
+import EditIcon from "./EditIcon.vue";
+import DeleteIcon from "./DeleteIcon.vue";
 
 
 export default defineComponent({
@@ -18,7 +27,7 @@ export default defineComponent({
 		},
 		size: {
 			type: String as PropType<IconSize>,
-			default: "24px",
+			default: "regular",
 		},
 		color: {
 			type: String as PropType<IconColor>,
@@ -33,7 +42,22 @@ export default defineComponent({
 				"settings": SettingsIcon,
 				"search": SearchIcon,
 				"translate": TranslateIcon,
+				"image": ImageIcon,
+				"expand_all": ExpandAllIcon,
+				"filter_hdr": FilterHdrIcon,
+				"arrow_downward_alt": ArrowDownwardAltIcon,
+				"arrow_upward_alt": ArrowUpwardAltIcon,
+				"add": AddIcon,
+				"more_vert": MoreVertIcon,
+				"edit": EditIcon,
+				"delete": DeleteIcon,
 			}[this.name];
+		},
+		convertedSize(): string {
+			return {
+				"regular": "24px",
+				"compact": "20px",
+			}[this.size];
 		},
 	},
 },
@@ -45,7 +69,7 @@ export default defineComponent({
 	<component
 		:is="icon"
 		:class="[`app-icon--${color}`]"
-		:size="size"
+		:size="convertedSize"
 		:color="color"
 	/>
 </template>

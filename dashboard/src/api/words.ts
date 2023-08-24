@@ -17,7 +17,7 @@ export const WordsApi = {
 	update(id: string, data: Word): Promise<AxiosResponse<Word>> {
 		return axios.put(`${this.ENDPOINT}/${id}`, data);
 	},
-	delete(id: string): Promise<AxiosResponse<void>> {
+	delete(id: number): Promise<AxiosResponse<void>> {
 		return axios.delete(`${this.ENDPOINT}/${id}`);
 	},
 };
