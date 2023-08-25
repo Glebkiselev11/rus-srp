@@ -154,7 +154,7 @@ export default defineComponent({
 					<td>
 						{{ word.srp_cyrillic }}
 					</td>
-					<td>
+					<td style="margin-inline-start: auto">
 						<AppDropdownMenu 
 							:items="[
 								{ 
