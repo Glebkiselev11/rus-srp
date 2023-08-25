@@ -14,3 +14,15 @@ hr {
   border: none;
   margin-block: 6px;
 }
+
+
+*::-webkit-scrollbar {
+  width: 4px;
+  background: $color-background;
+}
+
+*::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 100px;
+  background: $color-background-secondary-active;
+}
