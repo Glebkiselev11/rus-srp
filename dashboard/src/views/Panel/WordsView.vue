@@ -11,6 +11,8 @@ import AppTableRow from "@/components/AppTable/AppTableRow.vue";
 import AppImagePreview from "@/components/AppImagePreview.vue";
 import AppButton from "@/components/AppButton.vue";
 import AppDropdownMenu from "@/components/AppDropdownMenu.vue";
+import AppPagination from "@/components/AppPagination.vue";
+
 import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/i18n";
 
@@ -25,6 +27,7 @@ export default defineComponent({
 		AppImagePreview,
 		AppButton,
 		AppDropdownMenu,
+		AppPagination,
 	},
 	data() {
 		return {
@@ -44,7 +47,7 @@ export default defineComponent({
 		};
 	},
 	computed: {
-		...mapState(useWordsStore, ["words"]),
+		...mapState(useWordsStore, ["words", "count"]),
 		filter: {
 			get(): RequestParams {
 				return {
@@ -128,57 +131,68 @@ export default defineComponent({
 
 		<div class="words-view--content">
 			<AppTable
+				:count="count"
 				:columns="columns"
 				:order="filter.order"
 				@update:order="updateOrder"
 			>
-				<AppTableRow
-					v-for="word in words"
-					:id="word.id"
-					:key="word.id"
-				>
-					<td>
-						<AppImagePreview
-							:src="word.image"
-						/>
-					</td>
-					<td>
-						{{ word.rus }}
-					</td>
-					<td>
-						{{ word.eng }}
-					</td>
-					<td>
-						{{ word.srp_latin }}
-					</td>
-					<td>
-						{{ word.srp_cyrillic }}
-					</td>
-					<td style="margin-inline-start: auto">
-						<AppDropdownMenu 
-							:items="[
-								{ 
-									label: $t('edit'),
-									icon: 'edit',
-									handler: () => editWord(word.id)
-								},
-								'separator',
-								{ 
-									label: $t('delete'), 
-									icon: 'delete', 
-									color: 'negative', 
-									handler: () => removeWord(word)
-								},
-							]"		
-						>
-							<AppButton
-								icon="more_vert"
-								type="inline"
-								color="neutral"
+				<template #body>
+					<AppTableRow
+						v-for="word in words"
+						:id="word.id"
+						:key="word.id"
+					>
+						<td>
+							<AppImagePreview
+								:src="word.image"
 							/>
-						</AppDropdownMenu>
-					</td>
-				</AppTableRow>	
+						</td>
+						<td>
+							{{ word.rus }}
+						</td>
+						<td>
+							{{ word.eng }}
+						</td>
+						<td>
+							{{ word.srp_latin }}
+						</td>
+						<td>
+							{{ word.srp_cyrillic }}
+						</td>
+						<td style="margin-inline-start: auto">
+							<AppDropdownMenu 
+								:items="[
+									{ 
+										label: $t('edit'),
+										icon: 'edit',
+										handler: () => editWord(word.id)
+									},
+									'separator',
+									{ 
+										label: $t('delete'), 
+										icon: 'delete', 
+										color: 'negative', 
+										handler: () => removeWord(word)
+									},
+								]"		
+							>
+								<AppButton
+									icon="more_vert"
+									type="inline"
+									color="neutral"
+								/>
+							</AppDropdownMenu>
+						</td>
+					</AppTableRow>
+				</template>
+
+				<template #pagination>
+					<AppPagination
+						:count="count"
+						:offset="filter.offset"
+						:limit="filter.limit"
+					/>
+				</template>
 			</AppTable>
 		</div>
 	</div>

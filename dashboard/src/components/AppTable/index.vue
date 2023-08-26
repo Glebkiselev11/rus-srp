@@ -2,7 +2,6 @@
 import type { IconColor, IconName } from "@/types/icons";
 import { defineComponent, type PropType } from "vue";
 import AppTableColumnTitle from "./AppTableColumnTitle.vue";
-import AppTablePagination from "./AppTablePagination.vue";
 import type { Order } from "@/types/api";
 
 interface Column {
@@ -20,7 +19,6 @@ export default defineComponent({
 	name: "AppTable",
 	components: {
 		AppTableColumnTitle,
-		AppTablePagination,
 	},
 	props: {
 		columns: {
@@ -107,11 +105,11 @@ export default defineComponent({
 				ref="tableBody"
 				class="app-table--body"
 			>
-				<slot />
+				<slot name="body" />
 			</tbody>
 		</table>
 
-		<AppTablePagination />
+		<slot name="pagination" />
 	</div>
 </template>
 
