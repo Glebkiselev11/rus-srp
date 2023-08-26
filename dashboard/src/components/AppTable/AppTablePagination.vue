@@ -14,13 +14,17 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
+@import "@/styles/main.scss";
 
 .app-table-pagination {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 0 1rem;
-  height: 3rem;
+  height: 64px;
+  padding-inline: 24px;
+  border-block-start: 1px solid $color-separator-primary;
+  background-color: $color-background-content-primary;
+
 }
 
 </style>
