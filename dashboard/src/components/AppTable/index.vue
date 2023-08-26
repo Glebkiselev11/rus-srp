@@ -118,6 +118,7 @@ export default defineComponent({
 <style  lang="scss">
 @import "@/styles/main.scss";
 $column-template: repeat(auto-fit, minmax(100px, 1fr));
+$extra-space: 220px;
 
 .app-table-wrap {
 	border: 1px solid $color-separator-primary;
@@ -154,7 +155,7 @@ $column-template: repeat(auto-fit, minmax(100px, 1fr));
 	&--body {
 		display: block;
 		overflow-y: auto;
-		height: calc(100vh - 205px);
+		height: calc(100vh - $extra-space);
 		position: relative;
 
 		tr {
