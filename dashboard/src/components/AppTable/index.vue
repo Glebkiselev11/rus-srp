@@ -117,7 +117,6 @@ export default defineComponent({
 
 <style  lang="scss">
 @import "@/styles/main.scss";
-
 $column-template: repeat(auto-fit, minmax(100px, 1fr));
 
 .app-table-wrap {
@@ -133,9 +132,9 @@ $column-template: repeat(auto-fit, minmax(100px, 1fr));
 
 	&--header {
 		display: block;
-
 		height: 48px;
 		border-block-end: 1px solid $color-separator-primary;
+
 		tr {
 			display: grid;
 			align-items: center;
