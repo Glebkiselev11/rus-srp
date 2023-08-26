@@ -19,7 +19,7 @@ export default defineComponent({
 	},
 	computed: {
 		currentRange(): string {
-			return `${this.offset + 1} - ${this.offset + this.limit}`;
+			return `${this.offset + 1}-${this.offset + this.limit}`;
 		},
 	},
 });
@@ -49,6 +49,12 @@ export default defineComponent({
   padding-inline: 24px;
   border-block-start: 1px solid $color-separator-primary;
   background-color: $color-background-content-primary;
+
+
+	.count-info {
+		@extend .text-body-2;
+		color: $color-text-secondary;
+	}
 }
 
 </style>
