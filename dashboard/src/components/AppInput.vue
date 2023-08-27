@@ -46,6 +46,10 @@ export default defineComponent({
 			type: Number,
 			default: null,
 		},
+		width: {
+			type: String,
+			default: "280px",
+		},
 	},
 	emits: ["update:modelValue"],
 	methods: {
@@ -84,6 +88,7 @@ export default defineComponent({
 
 		<input
 			class="app-input--input"
+			:style="{ width }"
 			:type="type"
 			:value="modelValue"
 			:placeholder="placeholder"
@@ -116,7 +121,6 @@ export default defineComponent({
 	&--input {
 		border-radius: 8px;
 		height: 40px;
-		min-width: 280px;
 		border: 1px solid $color-separator-primary;
 		background: $color-field-background;
 		padding: 0 8px;
