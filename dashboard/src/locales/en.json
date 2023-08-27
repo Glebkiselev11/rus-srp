@@ -32,6 +32,7 @@
   },
   "edit": "Edit",
   "pagination": {
-    "info": "{currentRange} of {count}"
+    "info": "{currentRange} of {count}",
+    "show": "Show"
   }
 }

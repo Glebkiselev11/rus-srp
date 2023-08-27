@@ -1,8 +1,12 @@
 <script lang="ts">
 import { defineComponent } from "vue"; 
+import AppSelect from "./AppSelect.vue";
 
 export default defineComponent({
 	name: "AppTablePagination",
+	components: {
+		AppSelect,
+	},
 	props: {
 		count: {
 			type: Number,
@@ -17,20 +21,43 @@ export default defineComponent({
 			required: true,
 		},
 	},
+	emits: ["update:limit"],
+	data() {
+		return {
+			limitOptions: [
+				{ value: 10, label: "10" },
+				{ value: 20, label: "20" },
+				{ value: 30, label: "30" },
+			],
+		};
+	},
 	computed: {
 		currentRange(): string {
 			return `${this.offset + 1}-${this.offset + this.limit}`;
 		},
 	},
+	methods: {
+		updateLimit(value: number) {
+			this.$emit("update:limit", value);
+		},
+	},
 });
-
 </script>
 
 <template>
 	<div class="app-table-pagination">
-		<div>
+		<div class="app-table-pagination--section">
 			<div class="count-info">
 				{{ $t("pagination.info", { currentRange, count }) }}
+			</div>
+
+			<div class="limit-controller">
+				<span class="limit-controller--text">{{ $t("pagination.show") }}</span>
+				<AppSelect
+					:model-value="limit"
+					:options="limitOptions"
+					@update:model-value="updateLimit"
+				/>
 			</div>
 		</div>
 
@@ -51,10 +78,27 @@ export default defineComponent({
   background-color: $color-background-content-primary;
 
 
+	&--section {
+		display: flex;
+		align-items: center;
+	}
+
+
 	.count-info {
-		@extend .text-body-2;
+		@extend .text-subtitle-2;
 		color: $color-text-secondary;
+		margin-inline-end: 24px;
+	}
+
+	.limit-controller {
+		display: flex;
+
+		&--text {
+			@extend .text-body-2;
+			color: $color-text-secondary;
+			margin-inline-end: 8px;
+		}
 	}
 }
 
-</style>
+</style> 

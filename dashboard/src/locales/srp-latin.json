@@ -32,6 +32,7 @@
   },
   "edit": "Urediti",
   "pagination": {
-    "info": "{currentRange} od {count}"
+    "info": "{currentRange} od {count}",
+    "show": "Prikaži"
   }
 }

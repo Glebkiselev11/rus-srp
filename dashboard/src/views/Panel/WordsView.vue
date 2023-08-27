@@ -75,6 +75,14 @@ export default defineComponent({
 				this.filter = { ...this.filter, search };
 			},
 		},
+		limit: {
+			get(): number {
+				return this.filter.limit;
+			},
+			set(limit: number) {
+				this.filter = { ...this.filter, limit, offset: 0 };
+			},
+		},
 	},
 	mounted() {
 		this.fetchWords(this.filter);
@@ -190,7 +198,8 @@ export default defineComponent({
 					<AppPagination
 						:count="count"
 						:offset="filter.offset"
-						:limit="filter.limit"
+						:limit="limit"
+						@update:limit="limit = $event"
 					/>
 				</template>
 			</AppTable>

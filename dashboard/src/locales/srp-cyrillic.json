@@ -32,7 +32,7 @@
   },
   "edit": "Уредити",
   "pagination": {
-    "info": "{currentRange} од {count}"
+    "info": "{currentRange} од {count}",
+    "show": "Прикажи"
   }
-
 }
