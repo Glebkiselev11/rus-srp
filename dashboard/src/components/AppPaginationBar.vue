@@ -1,10 +1,10 @@
 <script lang="ts">
 import { defineComponent } from "vue"; 
-import AppSelect from "./AppSelect.vue";
-import AppInput from "./AppInput.vue";
+import AppSelect from "@/components/AppSelect.vue";
+import AppInput from "@/components/AppInput.vue";
 
 export default defineComponent({
-	name: "AppTablePagination",
+	name: "AppPaginationBar",
 	components: {
 		AppSelect,
 		AppInput,
@@ -56,8 +56,8 @@ export default defineComponent({
 </script>
 
 <template>
-	<div class="app-table-pagination">
-		<div class="app-table-pagination--section">
+	<div class="app-pagination-bar">
+		<div class="app-pagination-bar--section">
 			<div class="count-info">
 				{{ $t("pagination.info", { currentRange, count }) }}
 			</div>
@@ -72,7 +72,7 @@ export default defineComponent({
 			</div>
 		</div>
 
-		<div class="app-table-pagination--section">
+		<div class="app-pagination-bar--section">
 			<div class="select-page-controller">
 				<span class="select-page-controller--text">
 					{{ $t("pagination.select-page") }}
@@ -96,7 +96,7 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "@/styles/main.scss";
 
-.app-table-pagination {
+.app-pagination-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -11,7 +11,7 @@ import AppTableRow from "@/components/AppTable/AppTableRow.vue";
 import AppImagePreview from "@/components/AppImagePreview.vue";
 import AppButton from "@/components/AppButton.vue";
 import AppDropdownMenu from "@/components/AppDropdownMenu.vue";
-import AppPagination from "@/components/AppPagination.vue";
+import AppPaginationBar from "@/components/AppPaginationBar.vue";
 
 import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/i18n";
@@ -27,7 +27,7 @@ export default defineComponent({
 		AppImagePreview,
 		AppButton,
 		AppDropdownMenu,
-		AppPagination,
+		AppPaginationBar,
 	},
 	data() {
 		return {
@@ -203,7 +203,7 @@ export default defineComponent({
 				</template>
 
 				<template #pagination>
-					<AppPagination
+					<AppPaginationBar
 						:count="count"
 						:offset="offset"
 						:limit="limit"
