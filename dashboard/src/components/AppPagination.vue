@@ -84,7 +84,8 @@ export default defineComponent({
 					:min="1"
 					:max="lastPage"
 					:debounce="true"
-					width="56px"
+					width="56px" 
+					size="compact"
 					@update:model-value="changePage"
 				/>
 			</div>

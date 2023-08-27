@@ -4,6 +4,8 @@ import { type PropType, defineComponent } from "vue";
 import type { IconName } from "../types/icons";
 import AppIcon from "./AppIcon/index.vue";
 
+type InputSize = "regular" | "compact";
+
 export default defineComponent({
 	name: "AppInput",
 	components: {
@@ -50,6 +52,10 @@ export default defineComponent({
 			type: String,
 			default: "280px",
 		},
+		size: {
+			type: String as PropType<InputSize>,
+			default: "regular",
+		},
 	},
 	emits: ["update:modelValue"],
 	methods: {
@@ -88,6 +94,7 @@ export default defineComponent({
 
 		<input
 			class="app-input--input"
+			:class="['app-input--input--' + size]"
 			:style="{ width }"
 			:type="type"
 			:value="modelValue"
@@ -120,10 +127,19 @@ export default defineComponent({
 
 	&--input {
 		border-radius: 8px;
-		height: 40px;
 		border: 1px solid $color-separator-primary;
 		background: $color-field-background;
 		padding: 0 8px;
+
+		&--regular {
+			@extend .text-body-1;
+			height: 40px;
+		}
+
+		&--compact {
+			@extend .text-body-2;
+			height: 32px;
+		}
 
 		&:has(.app-input--left-icon) {
 			padding-left: 48px;
