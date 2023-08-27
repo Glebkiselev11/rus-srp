@@ -33,6 +33,7 @@
   "edit": "Edit",
   "pagination": {
     "info": "{currentRange} of {count}",
-    "show": "Show"
+    "show": "Show",
+    "select-page": "Go to page"
   }
 }

@@ -33,6 +33,7 @@
   "edit": "Urediti",
   "pagination": {
     "info": "{currentRange} od {count}",
-    "show": "Prikaži"
+    "show": "Prikaži",
+    "select-page": "Idi na stranicu"
   }
 }

@@ -33,6 +33,7 @@
   "edit": "Изменить",
   "pagination": {
     "info": "{currentRange} из {count}",
-    "show": "Показывать"
+    "show": "Показывать",
+    "select-page": "Перейти к странице"
   }
 }
