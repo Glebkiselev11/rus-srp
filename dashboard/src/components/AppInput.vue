@@ -15,7 +15,7 @@ export default defineComponent({
 			default: "text",
 		},
 		modelValue: {
-			type: String,
+			type: [String, Number],
 			required: true,
 		},
 		placeholder: {
@@ -38,6 +38,14 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
+		max: {
+			type: Number,
+			default: null,
+		},
+		min: {
+			type: Number,
+			default: null,
+		},
 	},
 	emits: ["update:modelValue"],
 	methods: {
@@ -50,6 +58,14 @@ export default defineComponent({
 		},
 		handleInput(event: Event) {
 			const value = (event.target as HTMLInputElement).value;
+
+			if (
+				this.max && Number(value) > this.max || 
+				this.min && Number(value) < this.min
+			) {
+				return;
+			}
+
 			this.debounce ? this.debounceEmit(value) : this.emitValue(value);
 		},
 	},
@@ -73,6 +89,8 @@ export default defineComponent({
 			:placeholder="placeholder"
 			:disabled="disabled"
 			:warning="error"
+			:max="max"
+			:min="min"
 			@input="handleInput"
 		>
 	</div>
