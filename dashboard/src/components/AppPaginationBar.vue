@@ -35,7 +35,10 @@ export default defineComponent({
 	},
 	computed: {
 		currentRange(): string {
-			return `${this.offset + 1}-${this.offset + this.limit}`;
+			const last = this.offset + this.limit;
+			if (last > this.count) return `${this.offset + 1}-${this.count}`;
+
+			return `${this.offset + 1}-${last}`;
 		},
 		currentPage(): number {
 			return Math.ceil(this.offset / this.limit) + 1;
