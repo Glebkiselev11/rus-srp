@@ -107,13 +107,12 @@ export default defineComponent({
 	&--section {
 		display: flex;
 		align-items: center;
+		column-gap: 24px;
 	}
-
 
 	.count-info {
 		@extend .text-subtitle-2;
 		color: $color-text-secondary;
-		margin-inline-end: 24px;
 	}
 
 	.limit-controller {
