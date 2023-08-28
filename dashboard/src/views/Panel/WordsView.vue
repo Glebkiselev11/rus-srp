@@ -16,6 +16,7 @@ import AppPaginationBar from "@/components/AppPaginationBar.vue";
 import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/i18n";
 
+const LIMIT_DEFAULT = 25;
 
 export default defineComponent({
 	name: "WordsView",
@@ -43,7 +44,11 @@ export default defineComponent({
 				{ label: "Српски", sortable: true, sort_key: "srp_cyrillic" },
 				{ sortable: false, width: "50px" },
 			],
-			
+			limitOptions: [
+				{ value: LIMIT_DEFAULT, label: String(LIMIT_DEFAULT) },
+				{ value: 50, label: "50" },
+				{ value: 100, label: "100" },
+			],
 		};
 	},
 	computed: {
@@ -53,7 +58,7 @@ export default defineComponent({
 				return {
 					search: this.$route.query.search as string || "",
 					offset: Number(this.$route.query.offset) || 0,
-					limit: Number(this.$route.query.limit) || 10,
+					limit: Number(this.$route.query.limit) || LIMIT_DEFAULT,
 					order: (this.$route.query.order as string || "-created_at") as Order,
 				};
 			},
@@ -207,6 +212,7 @@ export default defineComponent({
 						:count="count"
 						:offset="offset"
 						:limit="limit"
+						:limit-options="limitOptions"
 						@update:limit="limit = $event"
 						@update:offset="offset = $event"
 					/>

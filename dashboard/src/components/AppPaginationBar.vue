@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue"; 
+import { defineComponent, type PropType } from "vue"; 
 import AppSelect from "@/components/AppSelect.vue";
 import AppInput from "@/components/AppInput.vue";
 
@@ -22,17 +22,12 @@ export default defineComponent({
 			type: Number,
 			required: true,
 		},
+		limitOptions: {
+			type: Array as PropType<{ value: number, label: string }[]>,
+			required: true,
+		},
 	},
 	emits: ["update:limit", "update:offset"],
-	data() {
-		return {
-			limitOptions: [
-				{ value: 25, label: "25" },
-				{ value: 50, label: "50" },
-				{ value: 100, label: "100" },
-			],
-		};
-	},
 	computed: {
 		currentRange(): string {
 			const last = this.offset + this.limit;
