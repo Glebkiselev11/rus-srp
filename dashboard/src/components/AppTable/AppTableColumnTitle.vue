@@ -54,11 +54,13 @@ export default defineComponent({
 	methods: {
 		handlerSort() {
 			if (!this.sortable || !this.sortKey) return;
-			
-			if (this.order === this.sortKey) {
+
+			if (this.order !== this.sortKey && this.order !== `-${this.sortKey}`) {
+				this.$emit("update:order", this.sortKey);
+			} else if (this.order === this.sortKey) {
 				this.$emit("update:order", `-${this.sortKey}`);
 			} else {
-				this.$emit("update:order", this.sortKey);
+				this.$emit("update:order", undefined);
 			}
 		},
 	},
