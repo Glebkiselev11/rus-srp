@@ -77,6 +77,7 @@ export default defineComponent({
 .app-button {
 	display: flex;
 	align-items: center;
+	justify-content: center;
 	gap: 8px;
 	padding: 0;
 	padding-inline: 12px;
@@ -86,9 +87,13 @@ export default defineComponent({
 
 	&-size {
 		&-regular {
+			min-block-size: 40px;
+			min-inline-size: 40px;
 			padding-block: 10px;
 		}
 		&-compact {
+			min-block-size: 32px;
+			min-inline-size: 32px;
 			padding-block: 6px;
 		}
 	}
