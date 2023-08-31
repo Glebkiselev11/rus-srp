@@ -16,6 +16,8 @@ import AddIcon from "./AddIcon.vue";
 import MoreVertIcon from "./MoreVertIcon.vue";
 import EditIcon from "./EditIcon.vue";
 import DeleteIcon from "./DeleteIcon.vue";
+import NavigateBeforeIcon from "./NavigateBeforeIcon.vue";
+import NavigateNextIcon from "./NavigateNextIcon.vue";
 
 
 export default defineComponent({
@@ -51,6 +53,8 @@ export default defineComponent({
 				"more_vert": MoreVertIcon,
 				"edit": EditIcon,
 				"delete": DeleteIcon,
+				"navigate_before": NavigateBeforeIcon,
+				"navigate_next": NavigateNextIcon,
 			}[this.name];
 		},
 		convertedSize(): string {

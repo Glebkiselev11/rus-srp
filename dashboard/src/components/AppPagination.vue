@@ -55,12 +55,28 @@ export default defineComponent({
 <template>
 	<div class="app-pagination">
 		<AppButton
+			icon="navigate_before"
+			:disabled="currentPage === 1"
+			type="inline"
+			color="neutral"
+			@click="changePage(currentPage - 1)"
+		/>
+
+		<AppButton
 			v-for="page in pageCounts"
 			:key="page"
 			:label="page.toString()"
 			:type="isCurrentPage(page) ? 'secondary' : 'inline'"
 			:color="isCurrentPage(page) ? 'accent-primary' : 'neutral'"
 			@click="changePage(page)"
+		/>
+
+		<AppButton
+			icon="navigate_next"
+			:disabled="currentPage === lastPage"
+			type="inline"
+			color="neutral"
+			@click="changePage(currentPage + 1)"
 		/>
 	</div>
 </template>
