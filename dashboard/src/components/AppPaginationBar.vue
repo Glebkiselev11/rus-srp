@@ -2,12 +2,14 @@
 import { defineComponent, type PropType } from "vue"; 
 import AppSelect from "@/components/AppSelect.vue";
 import AppInput from "@/components/AppInput.vue";
+import AppPagination from "./AppPagination.vue";
 
 export default defineComponent({
 	name: "AppPaginationBar",
 	components: {
 		AppSelect,
 		AppInput,
+		AppPagination,
 	},
 	props: {
 		count: {
@@ -47,7 +49,10 @@ export default defineComponent({
 			this.$emit("update:limit", value);
 		},
 		changePage(value: number) {
-			this.$emit("update:offset", (value - 1) * this.limit);
+			this.updateOffset((value - 1) * this.limit);
+		},
+		updateOffset(value: number) {
+			this.$emit("update:offset", value);
 		},
 	},
 });
@@ -87,6 +92,13 @@ export default defineComponent({
 					@update:model-value="changePage"
 				/>
 			</div>
+
+			<AppPagination
+				:limit="limit"
+				:offset="offset"
+				:count="count"
+				@update:offset="updateOffset"
+			/>
 		</div>
 	</div>
 </template>
