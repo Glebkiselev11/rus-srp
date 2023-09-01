@@ -207,7 +207,10 @@ export default defineComponent({
 					</AppTableRow>
 				</template>
 
-				<template #pagination>
+				<template
+					v-if="count > limit"
+					#pagination
+				>
 					<AppPaginationBar
 						:count="count"
 						:offset="offset"
