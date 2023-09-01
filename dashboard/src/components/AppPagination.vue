@@ -1,11 +1,13 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import AppButton from "./AppButton.vue";
+import AppPaginationButton from "./AppPaginationButton.vue";
 
 export default defineComponent({
 	name: "AppPagination",
 	components: {
 		AppButton,
+		AppPaginationButton,
 	},
 	props: {
 		limit: {
@@ -62,12 +64,11 @@ export default defineComponent({
 			@click="changePage(currentPage - 1)"
 		/>
 
-		<AppButton
+		<AppPaginationButton 
 			v-for="page in pageCounts"
 			:key="page"
 			:label="page.toString()"
-			:type="isCurrentPage(page) ? 'secondary' : 'inline'"
-			:color="isCurrentPage(page) ? 'accent-primary' : 'neutral'"
+			:active="isCurrentPage(page)"
 			@click="changePage(page)"
 		/>
 
