@@ -63,11 +63,9 @@ export default defineComponent({
 			:color="iconColor"
 			size="compact"
 		/>
-		<span
-			v-if="label"
-			class="app-button--label"
-			v-text="label"
-		/>
+		<template v-if="label">
+			{{ label }}
+		</template>
 	</button>
 </template>
 
@@ -84,6 +82,7 @@ export default defineComponent({
 	border: none;
 	cursor: pointer;
 	border-radius: 8px;
+	@extend .text-subtitle-2;
 
 	&-size {
 		&-regular {
@@ -159,10 +158,6 @@ export default defineComponent({
 				color: $color-text-primary;
 			}
 		}
-	}
-
-	&--label {
-		@extend .text-subtitle-2
 	}
 
 	&:hover {
