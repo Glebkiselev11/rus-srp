@@ -30,11 +30,7 @@ export default defineComponent({
 		:class="{ 'app-pagination-button--active': active }"
 		@click="click"
 	>
-		<span
-			class="app-pagination-button--label"
-		>
-			{{ label }}
-		</span>
+		{{ label }}
 	</button>
 </template>
 
@@ -50,14 +46,11 @@ export default defineComponent({
 	border-radius: 8px;
 	border: none;
 	background: transparent;
+	@extend .text-body-2;
 
 	&:hover {
 		cursor: pointer;
 		background: $color-background-content-primary-hovered;
-	}
-
-	&--label {
-		@extend .text-body-2;
 	}
 
 	&--active {
