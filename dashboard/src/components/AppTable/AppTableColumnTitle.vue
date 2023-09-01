@@ -71,7 +71,7 @@ export default defineComponent({
 <template>
 	<th :style="{ width }">
 		<div class="app-table-column-title--outer">
-			<div 
+			<button 
 				class="app-table-column-title"
 				:class="{ 'app-table-column-title--sortable': sortable }"
 				@click="handlerSort"
@@ -94,7 +94,7 @@ export default defineComponent({
 					:color="sortIconColor"
 					size="compact"
 				/>
-			</div>
+			</button>
 		</div>
 	</th>
 </template>
@@ -116,6 +116,8 @@ $padding: 8px;
   column-gap: 4px;
 	border-radius: 8px;
 	padding: $padding;
+	border: none;
+	background: transparent;
 
 	&:hover {
 		background-color: $color-background-content-primary-hovered;
