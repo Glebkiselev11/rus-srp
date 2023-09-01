@@ -8,6 +8,7 @@
   margin: 0;
 }
 
+/* Separator */
 hr {
   height: 1px;
   background: $color-separator-primary;
@@ -16,13 +17,18 @@ hr {
 }
 
 
+/* Scrollbar */
 *::-webkit-scrollbar {
   width: 4px;
   background: $color-background;
 }
-
 *::-webkit-scrollbar-thumb {
   border: 2px solid transparent;
   border-radius: 100px;
   background: $color-background-secondary-active;
+}
+
+/* Focus */
+*:focus-visible {
+  outline: 2px solid $color-stroke-accent;
 }

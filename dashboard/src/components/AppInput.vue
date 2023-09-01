@@ -150,10 +150,6 @@ export default defineComponent({
 			color: $color-text-tertiary;
 		}
 
-		&:focus {
-			outline: 1px solid $color-stroke-accent;
-		}
-
 		&:disabled {
 			&::placeholder {
 				color: $color-text-disabled;
