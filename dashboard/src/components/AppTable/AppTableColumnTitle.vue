@@ -74,6 +74,7 @@ export default defineComponent({
 			<button 
 				class="app-table-column-title"
 				:class="{ 'app-table-column-title--sortable': sortable }"
+				:disabled="!sortable"
 				@click="handlerSort"
 			>
 				<AppIcon
@@ -119,13 +120,13 @@ $padding: 8px;
 	border: none;
 	background: transparent;
 
-	&:hover {
-		background-color: $color-background-content-primary-hovered;
-	}
-
   &--sortable {
     cursor: pointer;
+		&:hover {
+			background-color: $color-background-content-primary-hovered;
+		}
   }
+
   &--label {
     color: $color-text-secondary;
 
