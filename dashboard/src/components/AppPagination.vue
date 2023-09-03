@@ -66,22 +66,26 @@ export default defineComponent({
 			icon="navigate_before"
 			:disabled="currentPage === 1"
 			type="inline"
+			size="compact"
 			color="neutral"
 			@click="prevPage"
 		/>
 
-		<AppPaginationButton 
-			v-for="page in pageCounts"
-			:key="page"
-			:label="page.toString()"
-			:active="isCurrentPage(page)"
-			@click="changePage(page)"
-		/>
+		<div class="app-pagination--pages">
+			<AppPaginationButton 
+				v-for="page in pageCounts"
+				:key="page"
+				:label="page.toString()"
+				:active="isCurrentPage(page)"
+				@click="changePage(page)"
+			/>
+		</div>
 
 		<AppButton
 			icon="navigate_next"
 			:disabled="currentPage === lastPage"
 			type="inline"
+			size="compact"
 			color="neutral"
 			@click="nextPage"
 		/>
@@ -92,8 +96,11 @@ export default defineComponent({
 
 .app-pagination {
 	display: flex;
-	justify-content: center;
-	align-items: center;
+	column-gap: 8px;
+
+	&--pages {
+		display: inherit;
+	}
 }
 
 </style>
