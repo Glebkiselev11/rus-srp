@@ -49,6 +49,12 @@ export default defineComponent({
 		updateOffset(value: number) {
 			this.$emit("update:offset", value);
 		},
+		prevPage() {
+			this.changePage(this.currentPage - 1);
+		},
+		nextPage() {
+			this.changePage(this.currentPage + 1);
+		},
 	},
 });
 
@@ -61,7 +67,7 @@ export default defineComponent({
 			:disabled="currentPage === 1"
 			type="inline"
 			color="neutral"
-			@click="changePage(currentPage - 1)"
+			@click="prevPage"
 		/>
 
 		<AppPaginationButton 
@@ -77,7 +83,7 @@ export default defineComponent({
 			:disabled="currentPage === lastPage"
 			type="inline"
 			color="neutral"
-			@click="changePage(currentPage + 1)"
+			@click="nextPage"
 		/>
 	</div>
 </template>
