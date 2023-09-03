@@ -72,12 +72,32 @@ export default defineComponent({
 		/>
 
 		<div class="app-pagination--pages">
+			<AppPaginationButton
+				label="1"
+				:active="isCurrentPage(1)"
+				@click="changePage(1)"
+			/>
+
+			<span class="app-pagination--ellipses">
+				...
+			</span>
+
 			<AppPaginationButton 
 				v-for="page in pageCounts"
 				:key="page"
 				:label="page.toString()"
 				:active="isCurrentPage(page)"
 				@click="changePage(page)"
+			/>
+
+			<span class="app-pagination--ellipses">
+				...
+			</span>
+
+			<AppPaginationButton
+				:label="lastPage.toString()"
+				:active="isCurrentPage(lastPage)"
+				@click="changePage(lastPage)"
 			/>
 		</div>
 
@@ -100,6 +120,14 @@ export default defineComponent({
 
 	&--pages {
 		display: inherit;
+		align-items: flex-end;
+	}
+
+	&--ellipses {
+		width: 32px;
+		text-align: center;
+		padding-block-end: 6px;
+		pointer-events: none;
 	}
 }
 
