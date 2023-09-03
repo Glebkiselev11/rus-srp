@@ -54,7 +54,14 @@ export default defineComponent({
 <template>
 	<button
 		class="app-button" 
-		:class="[`app-button-size-${size}`, `app-button-type-${type}`, `app-button-color-${color}`]"
+		:class="[
+			`app-button-size-${size}`, 
+			`app-button-type-${type}`, 
+			`app-button-color-${color}`,
+			{ 'app-button--icon-and-label' : icon && label},
+			{ 'app-button--only-icon' : icon && !label},
+			{ 'app-button--only-label': label && !icon},
+		]"
 		:disabled="disabled"
 	>
 		<AppIcon 
@@ -77,23 +84,53 @@ export default defineComponent({
 	align-items: center;
 	justify-content: center;
 	gap: 8px;
-	padding: 0;
-	padding-inline: 12px;
 	border: none;
 	cursor: pointer;
 	border-radius: 8px;
 	@extend .text-subtitle-2;
 
+	/* Paggings for Icon and label case */
+	&--icon-and-label {
+		padding-inline-start: 12px;
+		padding-inline-end: 16px;
+
+		&.app-button-size-regular {
+			padding-block: 10px;
+		}
+		&.app-button-size-compact {
+			padding-block: 6px;
+		}
+	}
+
+	/* Paddings for Only icon case */
+	&--only-icon {
+		&.app-button-size-regular {
+			padding: 8px;
+		}
+		&.app-button-size-compact {
+			padding: 6px;
+		}
+	}
+
+	/* Paddings for Only label case */
+	&--only-label {
+		padding-inline: 16px;
+		&.app-button-size-regular {
+			padding-block: 10px;
+		}
+		&.app-button-size-compact {
+			padding-block: 6px;
+		}
+	}
+
 	&-size {
 		&-regular {
 			min-block-size: 40px;
 			min-inline-size: 40px;
-			padding-block: 10px;
 		}
 		&-compact {
 			min-block-size: 32px;
 			min-inline-size: 32px;
-			padding-block: 6px;
 		}
 	}
 
