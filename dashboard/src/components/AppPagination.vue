@@ -3,6 +3,8 @@ import { defineComponent } from "vue";
 import AppButton from "./AppButton.vue";
 import AppPaginationButton from "./AppPaginationButton.vue";
 
+const BEFORE_AND_AFTER_ELLIPSIS = 2;
+
 export default defineComponent({
 	name: "AppPagination",
 	components: {
@@ -31,12 +33,25 @@ export default defineComponent({
 		lastPage(): number {
 			return Math.ceil(this.count / this.limit);
 		},
-		pageCounts(): number[] {
-			const pages = [];
-			for (let i = 1; i <= this.lastPage; i++) {
-				pages.push(i);
-			}
-			return pages;
+		isSmallList() {
+			return this.lastPage <= 3 + BEFORE_AND_AFTER_ELLIPSIS * 2;
+		},
+		middleNumbers(): number[] {
+			// Here we establish buttons near current button.
+			// For example current is 15 and last page is 20:
+			// it will looks like [1]...[13][14][15][16][17]...[20]
+			return this.isSmallList
+				? this.getRange(2, this.lastPage - 2)
+				: this.getRange(
+					this.currentPage - BEFORE_AND_AFTER_ELLIPSIS,
+					1 + BEFORE_AND_AFTER_ELLIPSIS * 2,
+				).filter(page => page > 1 && page < this.lastPage);
+		},
+		ellipsisBeforeMiddle() {
+			return this.currentPage > 4 && !this.isSmallList;
+		},
+		ellipsisAfterMiddle() {
+			return this.currentPage < this.lastPage - 3 && !this.isSmallList;
 		},
 	},
 	methods: {
@@ -54,6 +69,11 @@ export default defineComponent({
 		},
 		nextPage() {
 			this.changePage(this.currentPage + 1);
+		},
+		getRange(start: number, length: number) {
+			return length > 0
+				? [...Array(length).keys()].map(val => val + start)
+				: [];
 		},
 	},
 });
@@ -78,19 +98,25 @@ export default defineComponent({
 				@click="changePage(1)"
 			/>
 
-			<span class="app-pagination--ellipses">
+			<span
+				v-show="ellipsisBeforeMiddle"
+				class="app-pagination--ellipses"
+			>
 				...
 			</span>
 
 			<AppPaginationButton 
-				v-for="page in pageCounts"
+				v-for="page in middleNumbers"
 				:key="page"
 				:label="page.toString()"
 				:active="isCurrentPage(page)"
 				@click="changePage(page)"
 			/>
 
-			<span class="app-pagination--ellipses">
+			<span
+				v-show="ellipsisAfterMiddle"
+				class="app-pagination--ellipses"
+			>
 				...
 			</span>
 
