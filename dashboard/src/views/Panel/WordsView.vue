@@ -11,9 +11,12 @@ import AppTableRow from "@/components/AppTable/AppTableRow.vue";
 import AppImagePreview from "@/components/AppImagePreview.vue";
 import AppButton from "@/components/AppButton.vue";
 import AppDropdownMenu from "@/components/AppDropdownMenu.vue";
+import AppPaginationBar from "@/components/AppPaginationBar.vue";
+
 import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/i18n";
 
+const LIMIT_DEFAULT = 25;
 
 export default defineComponent({
 	name: "WordsView",
@@ -25,6 +28,7 @@ export default defineComponent({
 		AppImagePreview,
 		AppButton,
 		AppDropdownMenu,
+		AppPaginationBar,
 	},
 	data() {
 		return {
@@ -40,17 +44,21 @@ export default defineComponent({
 				{ label: "Српски", sortable: true, sort_key: "srp_cyrillic" },
 				{ sortable: false, width: "50px" },
 			],
-			
+			limitOptions: [
+				{ value: LIMIT_DEFAULT, label: String(LIMIT_DEFAULT) },
+				{ value: 50, label: "50" },
+				{ value: 100, label: "100" },
+			],
 		};
 	},
 	computed: {
-		...mapState(useWordsStore, ["words"]),
+		...mapState(useWordsStore, ["words", "count"]),
 		filter: {
 			get(): RequestParams {
 				return {
 					search: this.$route.query.search as string || "",
 					offset: Number(this.$route.query.offset) || 0,
-					limit: Number(this.$route.query.limit) || 10,
+					limit: Number(this.$route.query.limit) || LIMIT_DEFAULT,
 					order: (this.$route.query.order as string || "-created_at") as Order,
 				};
 			},
@@ -70,6 +78,22 @@ export default defineComponent({
 			},
 			set(search: string) {
 				this.filter = { ...this.filter, search };
+			},
+		},
+		limit: {
+			get(): number {
+				return this.filter.limit;
+			},
+			set(limit: number) {
+				this.filter = { ...this.filter, limit, offset: 0 };
+			},
+		},
+		offset: {
+			get(): number {
+				return this.filter.offset;
+			},
+			set(offset: number) {
+				this.filter = { ...this.filter, offset };
 			},
 		},
 	},
@@ -128,57 +152,74 @@ export default defineComponent({
 
 		<div class="words-view--content">
 			<AppTable
+				:count="count"
 				:columns="columns"
 				:order="filter.order"
 				@update:order="updateOrder"
 			>
-				<AppTableRow
-					v-for="word in words"
-					:id="word.id"
-					:key="word.id"
-				>
-					<td>
-						<AppImagePreview
-							:src="word.image"
-						/>
-					</td>
-					<td>
-						{{ word.rus }}
-					</td>
-					<td>
-						{{ word.eng }}
-					</td>
-					<td>
-						{{ word.srp_latin }}
-					</td>
-					<td>
-						{{ word.srp_cyrillic }}
-					</td>
-					<td>
-						<AppDropdownMenu 
-							:items="[
-								{ 
-									label: $t('edit'),
-									icon: 'edit',
-									handler: () => editWord(word.id)
-								},
-								'separator',
-								{ 
-									label: $t('delete'), 
-									icon: 'delete', 
-									color: 'negative', 
-									handler: () => removeWord(word)
-								},
-							]"		
-						>
-							<AppButton
-								icon="more_vert"
-								type="inline"
-								color="neutral"
+				<template #body>
+					<AppTableRow
+						v-for="word in words"
+						:id="word.id"
+						:key="word.id"
+					>
+						<td>
+							<AppImagePreview
+								:src="word.image"
 							/>
-						</AppDropdownMenu>
-					</td>
-				</AppTableRow>	
+						</td>
+						<td>
+							{{ word.rus }}
+						</td>
+						<td>
+							{{ word.eng }}
+						</td>
+						<td>
+							{{ word.srp_latin }}
+						</td>
+						<td>
+							{{ word.srp_cyrillic }}
+						</td>
+						<td style="margin-inline-start: auto">
+							<AppDropdownMenu 
+								:items="[
+									{ 
+										label: $t('edit'),
+										icon: 'edit',
+										handler: () => editWord(word.id)
+									},
+									'separator',
+									{ 
+										label: $t('delete'), 
+										icon: 'delete', 
+										color: 'negative', 
+										handler: () => removeWord(word)
+									},
+								]"		
+							>
+								<AppButton
+									icon="more_vert"
+									type="inline"
+									color="neutral"
+								/>
+							</AppDropdownMenu>
+						</td>
+					</AppTableRow>
+				</template>
+
+				<template
+					v-if="count > limit"
+					#pagination
+				>
+					<AppPaginationBar
+						:count="count"
+						:offset="offset"
+						:limit="limit"
+						:limit-options="limitOptions"
+						@update:limit="limit = $event"
+						@update:offset="offset = $event"
+					/>
+				</template>
 			</AppTable>
 		</div>
 	</div>

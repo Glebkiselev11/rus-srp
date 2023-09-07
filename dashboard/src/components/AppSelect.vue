@@ -13,11 +13,11 @@ export default defineComponent({
 			default: null,
 		},
 		modelValue: {
-			type: String,
+			type: [String, Number],
 			default: null,
 		},
 		options: {
-			type: Array as PropType<{ value: string; label: string }[]>,
+			type: Array as PropType<{ value: string | number; label: string }[]>,
 			required: true,
 		},
 	},

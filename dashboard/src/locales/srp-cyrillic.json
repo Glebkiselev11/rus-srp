@@ -30,5 +30,10 @@
     "serbian-cyrillic": "Српски (ћирилица)",
     "serbian-latin": "Српски (латиница)"
   },
-  "edit": "Уредити"
+  "edit": "Уредити",
+  "pagination": {
+    "info": "{currentRange} од {count}",
+    "show": "Прикажи",
+    "select-page": "Иди на страницу"
+  }
 }

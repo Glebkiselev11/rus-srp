@@ -30,5 +30,10 @@
     "serbian-cyrillic": "serbian (cyrillic)",
     "serbian-latin": "serbian (latin)"
   },
-  "edit": "Edit"
+  "edit": "Edit",
+  "pagination": {
+    "info": "{currentRange} of {count}",
+    "show": "Show",
+    "select-page": "Go to page"
+  }
 }

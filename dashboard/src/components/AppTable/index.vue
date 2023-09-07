@@ -34,10 +34,12 @@ export default defineComponent({
 			default: null,
 		},
 	},
+
 	emits: ["checked", "unchecked", "update:order"],
 	data() {
 		return {
 			checked: false,
+			isContentBodyScrollable: null as boolean | null,
 		};
 	},
 	watch: {
@@ -49,16 +51,34 @@ export default defineComponent({
 			}
 		},
 	},
+	updated() {
+		this.setStateForTableBody();
+	},
+	methods: {
+		setStateForTableBody() {
+			const tableBody = this.$refs.tableBody as HTMLElement;
+
+			if (!tableBody) {
+				this.isContentBodyScrollable = false;
+			}
+
+			this.isContentBodyScrollable = tableBody.scrollHeight > tableBody.clientHeight;
+		},
+	},
 });
 </script>
 
 <template>
-	<div class="app-table-wrap">
-		<table class="app-table">
+	<div
+		class="app-table-wrap"
+	>
+		<table
+			class="app-table" 
+		>
 			<thead
 				v-if="columns.length"
-				align="left"
 				class="app-table--header"
+				:class="{ 'app-table--header-scrollable-body': isContentBodyScrollable }"	
 			>
 				<tr>
 					<th v-if="checkable">
@@ -81,15 +101,22 @@ export default defineComponent({
 					/>
 				</tr>
 			</thead>
-			<tbody class="app-table--body">
-				<slot />
+			<tbody
+				ref="tableBody"
+				class="app-table--body"
+			>
+				<slot name="body" />
 			</tbody>
 		</table>
+
+		<slot name="pagination" />
 	</div>
 </template>
 
 <style  lang="scss">
 @import "@/styles/main.scss";
+$column-template: repeat(auto-fit, minmax(100px, 1fr));
+$extra-space: 220px;
 
 .app-table-wrap {
 	border: 1px solid $color-separator-primary;
@@ -99,20 +126,40 @@ export default defineComponent({
 
 .app-table {
 	width: 100%;
-	padding-inline: 16px;
 	background: $color-background-content-primary;
 	border-collapse: collapse;
 
 	&--header {
+		display: block;
 		height: 48px;
 		border-block-end: 1px solid $color-separator-primary;
-		th {
-			padding-inline: 16px;
+
+		tr {
+			display: grid;
+			align-items: center;
+			grid-template-columns: $column-template;
+			height: inherit;
+
+			th {
+				padding-inline: 16px;
+			}
+		}
+
+		&-scrollable-body {
+			padding-inline-end: 4px;
 		}
 	}
 
 	&--body {
+		display: block;
+		overflow-y: auto;
+		height: calc(100vh - $extra-space);
+		position: relative;
+
 		tr {
+			display: grid;
+			align-items: center;
+			grid-template-columns: $column-template;
 			border-block-end: 1px solid $color-separator-primary;
 		}
 
@@ -120,5 +167,6 @@ export default defineComponent({
 			border-block-end: none;
 		}
 	}
+
 }
 </style>

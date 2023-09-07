@@ -26,4 +26,6 @@ export type IconName =
   "add" |
   "more_vert" |
   "edit" |
-  "delete";
+  "delete" |
+  "navigate_next" |
+  "navigate_before";

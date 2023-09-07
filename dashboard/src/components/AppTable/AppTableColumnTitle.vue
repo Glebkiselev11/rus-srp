@@ -54,11 +54,13 @@ export default defineComponent({
 	methods: {
 		handlerSort() {
 			if (!this.sortable || !this.sortKey) return;
-			
-			if (this.order === this.sortKey) {
+
+			if (this.order !== this.sortKey && this.order !== `-${this.sortKey}`) {
+				this.$emit("update:order", this.sortKey);
+			} else if (this.order === this.sortKey) {
 				this.$emit("update:order", `-${this.sortKey}`);
 			} else {
-				this.$emit("update:order", this.sortKey);
+				this.$emit("update:order", undefined);
 			}
 		},
 	},
@@ -69,9 +71,10 @@ export default defineComponent({
 <template>
 	<th :style="{ width }">
 		<div class="app-table-column-title--outer">
-			<div 
+			<button 
 				class="app-table-column-title"
 				:class="{ 'app-table-column-title--sortable': sortable }"
+				:disabled="!sortable"
 				@click="handlerSort"
 			>
 				<AppIcon
@@ -92,7 +95,7 @@ export default defineComponent({
 					:color="sortIconColor"
 					size="compact"
 				/>
-			</div>
+			</button>
 		</div>
 	</th>
 </template>
@@ -114,14 +117,16 @@ $padding: 8px;
   column-gap: 4px;
 	border-radius: 8px;
 	padding: $padding;
-
-	&:hover {
-		background-color: $color-background-content-primary-hovered;
-	}
+	border: none;
+	background: transparent;
 
   &--sortable {
     cursor: pointer;
+		&:hover {
+			background-color: $color-background-content-primary-hovered;
+		}
   }
+
   &--label {
     color: $color-text-secondary;
 
