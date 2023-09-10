@@ -29,13 +29,23 @@ export default defineComponent({
 			url.searchParams.append("w", size.toString());
 			return url.toString();
 		},
+		handleClick(): void {
+			if (this.src) {
+				console.log("edit image");
+			} else {
+				console.log("add image");
+			}
+		},
 	},
 });
 
 </script>
 
 <template>
-	<div class="app-image-preview">
+	<button
+		class="app-image-preview"
+		@click="handleClick"
+	>
 		<img
 			v-if="src"
 			:src="srcWithParams"
@@ -45,13 +55,30 @@ export default defineComponent({
 			name="filter_hdr"
 			color="tertiary"
 		/>
-	</div>
+
+		<div class="app-image-preview--overlay">
+			<app-icon
+				v-if="src"
+				name="edit"
+				color="contrast"
+				size="compact"
+			/>
+
+			<app-icon
+				v-else
+				name="add_photo_alternate"
+				color="contrast"
+				size="compact"
+			/>
+		</div>
+	</button>
 </template>
 
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
 
 .app-image-preview {
+	border: none;
 	width: 40px;
 	height: 40px;
 	border-radius: 8px;
@@ -60,10 +87,31 @@ export default defineComponent({
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	position: relative;
 
 	img {
 		width: inherit;
 		height: inherit;
+	}
+
+	&--overlay {
+		visibility: hidden;
+		position: absolute;
+		inset-block-start: 0;
+		inset-inline-start: 0;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: $color-avatar-overlay-alpha;
+	}
+
+	&:hover {
+		.app-image-preview--overlay {
+			visibility: visible;
+			cursor: pointer;
+		}
 	}
 }
 
