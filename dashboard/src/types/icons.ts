@@ -28,4 +28,5 @@ export type IconName =
   "edit" |
   "delete" |
   "navigate_next" |
-  "navigate_before";
+  "navigate_before" |
+  "add_photo_alternate";
