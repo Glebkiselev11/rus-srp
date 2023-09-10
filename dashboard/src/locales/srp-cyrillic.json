@@ -35,5 +35,7 @@
     "info": "{currentRange} од {count}",
     "show": "Прикажи",
     "select-page": "Иди на страницу"
-  }
+  },
+  "not-found": "Ништа није пронађено за „{search}”",
+  "not-found-description": "Покушајте да промените упит или промените филтере"
 }

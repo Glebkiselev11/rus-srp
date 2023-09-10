@@ -12,6 +12,8 @@ import AppImagePreview from "@/components/AppImagePreview.vue";
 import AppButton from "@/components/AppButton.vue";
 import AppDropdownMenu from "@/components/AppDropdownMenu.vue";
 import AppPaginationBar from "@/components/AppPaginationBar.vue";
+import AppZeroState from "@/components/AppZeroState.vue";
+import { highlighTextByQuery } from "@/utils";
 
 import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/i18n";
@@ -29,6 +31,7 @@ export default defineComponent({
 		AppButton,
 		AppDropdownMenu,
 		AppPaginationBar,
+		AppZeroState,
 	},
 	data() {
 		return {
@@ -96,12 +99,16 @@ export default defineComponent({
 				this.filter = { ...this.filter, offset };
 			},
 		},
+		notFoundTitle(): string {
+			return this.$t("not-found", { search: this.search });
+		},
 	},
 	mounted() {
 		this.fetchWords(this.filter);
 	},
 	methods: {
 		...mapActions(useWordsStore, ["fetchWords", "deleteWord"]),
+		highlighTextByQuery,
 		updateOrder(order: Order) {
 			this.filter = { ...this.filter, order };
 		},
@@ -157,7 +164,10 @@ export default defineComponent({
 				:order="filter.order"
 				@update:order="updateOrder"
 			>
-				<template #body>
+				<template
+					v-if="words.length"
+					#body
+				>
 					<AppTableRow
 						v-for="word in words"
 						:id="word.id"
@@ -168,18 +178,10 @@ export default defineComponent({
 								:src="word.image"
 							/>
 						</td>
-						<td>
-							{{ word.rus }}
-						</td>
-						<td>
-							{{ word.eng }}
-						</td>
-						<td>
-							{{ word.srp_latin }}
-						</td>
-						<td>
-							{{ word.srp_cyrillic }}
-						</td>
+						<td v-html="highlighTextByQuery(word.rus, search)" />
+						<td v-html="highlighTextByQuery(word.eng, search)" />
+						<td v-html="highlighTextByQuery(word.srp_latin, search)" />
+						<td v-html="highlighTextByQuery(word.srp_cyrillic, search)" />
 						<td style="margin-inline-start: auto">
 							<AppDropdownMenu 
 								:items="[
@@ -205,6 +207,17 @@ export default defineComponent({
 							</AppDropdownMenu>
 						</td>
 					</AppTableRow>
+				</template>
+
+				<template
+					v-else
+					#body
+				>
+					<AppZeroState
+						icon="search"
+						:title="notFoundTitle"
+						:description="$t('not-found-description')"
+					/>
 				</template>
 
 				<template

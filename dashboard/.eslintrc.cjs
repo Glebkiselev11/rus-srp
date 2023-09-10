@@ -15,6 +15,7 @@ module.exports = {
 		"quotes": ["error", "double"],
 		"semi": ["error", "always"],
 		"comma-dangle": ["error", "always-multiline"],
+		"vue/no-v-html": "off",
 		"vue/html-indent": ["error", "tab", {
 			"attribute": 1,
 			"baseIndent": 1,
