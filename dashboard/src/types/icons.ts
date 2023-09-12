@@ -29,4 +29,5 @@ export type IconName =
   "delete" |
   "navigate_next" |
   "navigate_before" |
-  "add_photo_alternate";
+  "add_photo_alternate" |
+  "close";

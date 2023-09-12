@@ -19,6 +19,7 @@ import DeleteIcon from "./DeleteIcon.vue";
 import NavigateBeforeIcon from "./NavigateBeforeIcon.vue";
 import NavigateNextIcon from "./NavigateNextIcon.vue";
 import AddPhotoAlternateIcon from "./AddPhotoAlternateIcon.vue";
+import CloseIcon from "./CloseIcon.vue";
 
 export default defineComponent({
 	name: "AppIcon",
@@ -56,6 +57,7 @@ export default defineComponent({
 				"navigate_before": NavigateBeforeIcon,
 				"navigate_next": NavigateNextIcon,
 				"add_photo_alternate": AddPhotoAlternateIcon,
+				"close": CloseIcon,
 			}[this.name];
 		},
 		convertedSize(): string {
