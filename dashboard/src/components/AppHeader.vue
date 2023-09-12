@@ -58,6 +58,7 @@ export default defineComponent({
 .app-header {
   width: 100%;
   min-height: 48px;
+	padding-block: 12px;
   padding-inline: 16px;
   display: flex;
   align-items: center;
