@@ -132,6 +132,9 @@ export default defineComponent({
 		editWord(id: number) {
 			console.log("editWord", id);
 		},
+		extractWordPreview(word: Word): string {
+			return `${word.rus} — ${word.eng} — ${word.srp_latin} — ${word.srp_cyrillic}`;
+		},
 	},
 });
 </script>
@@ -176,6 +179,8 @@ export default defineComponent({
 						<td>
 							<AppImagePreview
 								:src="word.image"
+								:image-search-modal-subtitle="extractWordPreview(word)"
+								:default-image-search-query="word.eng"
 							/>
 						</td>
 						<td v-html="highlighTextByQuery(word.rus, search)" />

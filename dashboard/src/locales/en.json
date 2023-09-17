@@ -37,5 +37,7 @@
     "select-page": "Go to page"
   },
   "not-found": "Notning found for ”{search}”",
-  "not-found-description": "Check if the query was entered correctly, or enter it differently"
+  "not-found-description": "Check if the query was entered correctly, or enter it differently",
+  "edit-image": "Editing an image",
+  "add-image": "Adding an image"
 }

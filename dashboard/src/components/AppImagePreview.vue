@@ -1,40 +1,48 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 import AppIcon from "@/components/AppIcon/index.vue";
+import AppModal from "@/components/AppModal.vue";
+import AppImagesSearch from "./AppImagesSearch.vue";
+import { addCropImagaeParamsToUrl } from "@/utils";
 
 export default defineComponent({
 	name: "AppImagePreview",
 	components: {
 		AppIcon,
+		AppModal,
+		AppImagesSearch,
 	}, 
 	props: {
 		src: {
 			type: [String, null] as PropType<string | null>,
 			required: true,
 		},
+		imageSearchModalSubtitle: {
+			type: String,
+			default: null,
+		},
+		defaultImageSearchQuery: {
+			type: String,
+			default: null,
+		},
+	},
+	data() {
+		return {
+			isModalVisible: false,
+		};
 	},
 	computed: {
 		srcWithParams(): string {
-			if (!this.src) {
-				return "";
-			}
-			return this.addCropImagaeParamsToUrl(this.src, 200);
+			return this.src ? this.addCropImagaeParamsToUrl(this.src, 200) : "";
+		},
+		imagesSearchModalTitle(): string {
+			return this.src ? this.$t("edit-image") : this.$t("add-image");
 		},
 	},
 	methods: {
-		addCropImagaeParamsToUrl(src: string, size: number): string {
-			const url = new URL(src);
-			url.searchParams.append("fit", "crop");
-			url.searchParams.append("h", size.toString());
-			url.searchParams.append("w", size.toString());
-			return url.toString();
-		},
+		addCropImagaeParamsToUrl,
 		handleClick(): void {
-			if (this.src) {
-				console.log("edit image");
-			} else {
-				console.log("add image");
-			}
+			this.isModalVisible = true;
 		},
 	},
 });
@@ -72,6 +80,18 @@ export default defineComponent({
 			/>
 		</div>
 	</button>
+
+	<AppModal 
+		:visible="isModalVisible"
+		:title="imagesSearchModalTitle"
+		:subtitle="imageSearchModalSubtitle"
+		@update:visible="isModalVisible = $event"
+	>
+		<AppImagesSearch
+			:default-search-query="defaultImageSearchQuery"
+			:saved-link="src"
+		/>
+	</AppModal>
 </template>
 
 <style lang="scss" scoped>

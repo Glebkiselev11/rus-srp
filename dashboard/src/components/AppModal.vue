@@ -37,7 +37,7 @@ export default defineComponent({
 
 <template>
 	<div
-		v-show="visible"
+		v-if="visible"
 		class="app-modal-screen"
 	>
 		<div class="app-modal">
