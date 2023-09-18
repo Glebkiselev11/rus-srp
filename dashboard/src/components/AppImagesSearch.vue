@@ -3,6 +3,9 @@ import { defineComponent, type PropType } from "vue";
 import AppInput from "./AppInput.vue";
 import AppIcon from "./AppIcon/index.vue";
 import { addCropImagaeParamsToUrl } from "@/utils";
+import { useImagesStore } from "@/stores/images";
+import { mapActions, mapState } from "pinia";
+import type { RequestParams } from "@/types/api";
 
 export default defineComponent({
 	name: "AppImagesSearch",
@@ -20,14 +23,38 @@ export default defineComponent({
 			default: "",
 		},
 	},
-
 	data() {
 		return {
 			searchQuery: this.defaultSearchQuery,
+			offset: 0,
+			limit: 50,
 		};
 	},
+	computed: {
+		...mapState(useImagesStore, ["images", "count"]),
+		requestParams(): RequestParams {
+			return {
+				search: this.searchQuery,
+				offset: this.offset,
+				limit: this.limit,
+			};
+		},
+		filteredImages() {
+			return this.images.filter(({ src }) => src !== this.savedLink);
+		},
+	},
+	created() {
+		this.fetchImages(this.requestParams);
+	},
+	beforeUnmount() {
+		this.clearImages();
+	},
 	methods: {
+		...mapActions(useImagesStore, ["fetchImages", "clearImages"]),
 		addCropImagaeParamsToUrl,
+		selectImage(src: string) {
+			console.log(src);
+		},
 	},
 });
 </script>
@@ -39,9 +66,9 @@ export default defineComponent({
 			width="100%"
 			type="text"
 			left-icon="search"
+			class="app-image-search--input"
 			debounce
 		/>
-
 
 		<section class="app-image-search-list">
 			<div 
@@ -61,6 +88,14 @@ export default defineComponent({
 					{{ $t('selected') }}
 				</div>
 			</div>
+
+			<img
+				v-for="image in filteredImages"
+				:key="image.id"
+				class="app-image-search-list--image"
+				:src="addCropImagaeParamsToUrl(image.src, 300)"
+				@click="selectImage(image.src)"
+			>
 		</section>
 	</div>
 </template>
@@ -70,9 +105,11 @@ export default defineComponent({
 
 .app-image-search {
 	inline-size: 946px;
-	block-size: 733px;
-	max-block-size: 80vh;
-	padding: 12px;
+	padding-inline-start: 12px;
+
+	&--input {
+		margin-inline-end: 12px;
+	}
 }
 
 .app-image-search-list {
@@ -80,6 +117,9 @@ export default defineComponent({
 	flex-wrap: wrap;
 	gap: 16px;
 	margin-block-start: 20px;
+	block-size: 70vh;
+	overflow: auto;
+
 
 	&--image {
 		width: 218px;
