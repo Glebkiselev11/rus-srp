@@ -1,12 +1,14 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 import AppInput from "./AppInput.vue";
+import AppIcon from "./AppIcon/index.vue";
 import { addCropImagaeParamsToUrl } from "@/utils";
 
 export default defineComponent({
 	name: "AppImagesSearch",
 	components: {
 		AppInput,
+		AppIcon,
 	},
 	props: {
 		savedLink: {
@@ -42,16 +44,29 @@ export default defineComponent({
 
 
 		<section class="app-image-search-list">
-			<img
+			<div 
 				v-if="savedLink"
-				class="app-image-search-list--image"
-				:src="addCropImagaeParamsToUrl(savedLink, 300)"
+				class="selected-image"
 			>
+				<img
+					class="app-image-search-list--image"
+					:src="addCropImagaeParamsToUrl(savedLink, 300)"
+				>
+
+				<div class="selected-image--badge">
+					<AppIcon
+						name="check_circle"
+						color="accent-primary"
+					/>
+					{{ $t('selected') }}
+				</div>
+			</div>
 		</section>
 	</div>
 </template>
 
 <style lang="scss" scoped>
+@import "@/styles/main.scss";
 
 .app-image-search {
 	inline-size: 946px;
@@ -72,6 +87,30 @@ export default defineComponent({
 		object-fit: cover;
 		border-radius: 12px;
 		cursor: pointer;
+	}
+}
+
+.selected-image {
+	position: relative;
+
+	&--badge {
+		@extend .text-caption-2;
+
+		position: absolute;
+		height: 28px;
+		inset-block-start: 8px;
+		inset-inline-end: 8px;
+		border-radius: 8px;
+		padding-inline-start: 8px;
+		padding-inline-end: 12px;
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		background: $color-background-content-primary;
+	}
+
+	img {
+		border: 2px solid $color-stroke-accent;
 	}
 }
 </style>

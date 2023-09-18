@@ -39,5 +39,6 @@
   "not-found": "Ništa nije pronađeno za „{search}”",
   "not-found-description": "Pokušajte da promenite upit ili promenite filtere",
   "edit-image": "Uređivanje slike",
-  "add-image": "Dodavanje slike"
+  "add-image": "Dodavanje slike",
+  "selected": "Izabrano"
 }
