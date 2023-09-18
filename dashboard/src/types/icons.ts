@@ -30,4 +30,5 @@ export type IconName =
   "navigate_next" |
   "navigate_before" |
   "add_photo_alternate" |
-  "close";
+  "close" |
+  "check_circle";
