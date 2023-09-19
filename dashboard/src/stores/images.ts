@@ -7,16 +7,21 @@ export const useImagesStore = defineStore("images", {
 	state: () => ({
 		images: [] as Array<Image>,
 		count: 0,
+		loading: false,
 	}),
 	actions: {
 		async fetchImages(params: RequestParams) {
 			try {
+				this.loading = true;
+
 				const { data } = await ImagesApi.query(params);
 				this.images = data.result;
 				this.count = data.count;
 			} catch (error) {
 				console.error(error);
 				alert(error);
+			} finally {	
+				this.loading = false;
 			}
 		},
 

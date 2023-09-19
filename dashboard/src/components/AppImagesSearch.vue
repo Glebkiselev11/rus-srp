@@ -31,7 +31,7 @@ export default defineComponent({
 		};
 	},
 	computed: {
-		...mapState(useImagesStore, ["images", "count"]),
+		...mapState(useImagesStore, ["images", "count", "loading"]),
 		requestParams(): RequestParams {
 			return {
 				search: this.searchQuery,
@@ -96,6 +96,14 @@ export default defineComponent({
 				:src="addCropImagaeParamsToUrl(image.src, 300)"
 				@click="selectImage(image.src)"
 			>
+
+			<template v-if="loading">
+				<div
+					v-for="i in limit"
+					:key="i"
+					class="app-image-search-list--image app-image-search-list--skeleton-item"
+				/>
+			</template>
 		</section>
 	</div>
 </template>
@@ -127,6 +135,10 @@ export default defineComponent({
 		object-fit: cover;
 		border-radius: 12px;
 		cursor: pointer;
+	}
+
+	&--skeleton-item {
+		background: $color-background-content-tertiary;
 	}
 }
 
