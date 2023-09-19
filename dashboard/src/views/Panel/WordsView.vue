@@ -107,7 +107,7 @@ export default defineComponent({
 		this.fetchWords(this.filter);
 	},
 	methods: {
-		...mapActions(useWordsStore, ["fetchWords", "deleteWord"]),
+		...mapActions(useWordsStore, ["fetchWords", "deleteWord", "updateWord"]),
 		highlighTextByQuery,
 		updateOrder(order: Order) {
 			this.filter = { ...this.filter, order };
@@ -134,6 +134,9 @@ export default defineComponent({
 		},
 		extractWordPreview(word: Word): string {
 			return `${word.rus} — ${word.eng} — ${word.srp_latin} — ${word.srp_cyrillic}`;
+		},
+		updateWordImage(word: Word, src: string) {
+			this.updateWord({ ...word, image: src });
 		},
 	},
 });
@@ -181,6 +184,7 @@ export default defineComponent({
 								:src="word.image"
 								:image-search-modal-subtitle="extractWordPreview(word)"
 								:default-image-search-query="word.eng"
+								@update:src="src => updateWordImage(word, src)"
 							/>
 						</td>
 						<td v-html="highlighTextByQuery(word.rus, search)" />

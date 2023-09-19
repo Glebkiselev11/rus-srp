@@ -23,6 +23,7 @@ export default defineComponent({
 			default: "",
 		},
 	},
+	emits: ["select"],
 	data() {
 		return {
 			searchQuery: this.defaultSearchQuery,
@@ -53,7 +54,7 @@ export default defineComponent({
 		...mapActions(useImagesStore, ["fetchImages", "clearImages"]),
 		addCropImagaeParamsToUrl,
 		selectImage(src: string) {
-			console.log(src);
+			this.$emit("select", src);
 		},
 	},
 });

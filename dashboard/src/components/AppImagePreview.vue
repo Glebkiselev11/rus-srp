@@ -26,6 +26,7 @@ export default defineComponent({
 			default: null,
 		},
 	},
+	emits: ["update:src"],
 	data() {
 		return {
 			isModalVisible: false,
@@ -43,6 +44,10 @@ export default defineComponent({
 		addCropImagaeParamsToUrl,
 		handleClick(): void {
 			this.isModalVisible = true;
+		},
+		handleSelectImage(src: string): void {
+			this.$emit("update:src", src);
+			this.isModalVisible = false;
 		},
 	},
 });
@@ -90,6 +95,7 @@ export default defineComponent({
 		<AppImagesSearch
 			:default-search-query="defaultImageSearchQuery"
 			:saved-link="src"
+			@select="handleSelectImage"
 		/>
 	</AppModal>
 </template>
