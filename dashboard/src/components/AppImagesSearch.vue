@@ -6,12 +6,16 @@ import { addCropImagaeParamsToUrl } from "@/utils";
 import { useImagesStore } from "@/stores/images";
 import { mapActions, mapState } from "pinia";
 import type { RequestParams } from "@/types/api";
+import { vInfiniteScroll } from "@vueuse/components";
 
 export default defineComponent({
 	name: "AppImagesSearch",
 	components: {
 		AppInput,
 		AppIcon,
+	},
+	directives: {
+		infiniteScroll: vInfiniteScroll,
 	},
 	props: {
 		savedLink: {
@@ -43,6 +47,13 @@ export default defineComponent({
 		filteredImages() {
 			return this.images.filter(({ src }) => src !== this.savedLink);
 		},
+	}, 
+	watch: {
+		searchQuery() {
+			this.offset = 0;
+			this.clearImages();
+			this.fetchImages(this.requestParams);
+		},
 	},
 	created() {
 		this.fetchImages(this.requestParams);
@@ -55,6 +66,12 @@ export default defineComponent({
 		addCropImagaeParamsToUrl,
 		selectImage(src: string) {
 			this.$emit("select", src);
+		},
+		loadMore() {
+			if (this.loading) return;
+
+			this.offset += this.limit;
+			this.fetchImages(this.requestParams);
 		},
 	},
 });
@@ -71,7 +88,11 @@ export default defineComponent({
 			debounce
 		/>
 
-		<section class="app-image-search-list">
+		<section
+			ref="container"
+			v-infinite-scroll="[loadMore, { 'distance' : 10 }]"
+			class="app-image-search-list"
+		>
 			<div 
 				v-if="savedLink"
 				class="selected-image"

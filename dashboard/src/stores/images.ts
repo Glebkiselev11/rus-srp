@@ -15,7 +15,7 @@ export const useImagesStore = defineStore("images", {
 				this.loading = true;
 
 				const { data } = await ImagesApi.query(params);
-				this.images = data.result;
+				this.images = [...this.images, ...data.result];
 				this.count = data.count;
 			} catch (error) {
 				console.error(error);
