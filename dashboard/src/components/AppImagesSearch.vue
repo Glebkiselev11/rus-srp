@@ -69,8 +69,9 @@ export default defineComponent({
 		},
 		loadMore() {
 			if (this.loading) return;
-
 			this.offset += this.limit;
+
+			if (this.offset >= this.count) return;
 			this.fetchImages(this.requestParams);
 		},
 	},
