@@ -40,5 +40,6 @@
   "not-found-description": "Check if the query was entered correctly, or enter it differently",
   "edit-image": "Editing an image",
   "add-image": "Adding an image",
-  "selected": "Selected"
+  "selected": "Selected",
+  "search-by-query": "Search for “{query}”"
 }

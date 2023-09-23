@@ -40,5 +40,6 @@
   "not-found-description": "Pokušajte da promenite upit ili promenite filtere",
   "edit-image": "Uređivanje slike",
   "add-image": "Dodavanje slike",
-  "selected": "Izabrano"
+  "selected": "Izabrano",
+  "search-by-query": "Traži “{query}”"
 }

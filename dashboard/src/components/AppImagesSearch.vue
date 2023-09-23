@@ -7,12 +7,16 @@ import { useImagesStore } from "@/stores/images";
 import { mapActions, mapState } from "pinia";
 import type { RequestParams } from "@/types/api";
 import { vInfiniteScroll } from "@vueuse/components";
+import AppButton from "./AppButton.vue";
+import AppZeroState from "./AppZeroState.vue";
 
 export default defineComponent({
 	name: "AppImagesSearch",
 	components: {
 		AppInput,
 		AppIcon,
+		AppButton,
+		AppZeroState,
 	},
 	directives: {
 		infiniteScroll: vInfiniteScroll,
@@ -100,6 +104,22 @@ export default defineComponent({
 			v-infinite-scroll="[loadMore, { 'distance' : 10 }]"
 			class="app-image-search-list"
 		>
+			<!-- Nothing were found -->
+			<AppZeroState 
+				v-if="!loading && !images.length"
+				icon="search"
+				:title="$t('not-found', { search: searchQuery })"
+				:description="$t('not-found-description')"
+			>
+				<AppButton
+					icon="search"
+					:label="$t('search-by-query', { query: defaultSearchQuery})"
+					@click="searchQuery = defaultSearchQuery"
+				/>
+			</AppZeroState>
+
+
+
 			<div 
 				v-if="savedLink && imagesContainSavedLink"
 				class="selected-image"
