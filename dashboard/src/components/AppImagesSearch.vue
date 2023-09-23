@@ -100,10 +100,18 @@ export default defineComponent({
 		/>
 
 		<section
-			ref="container"
 			v-infinite-scroll="[loadMore, { 'distance' : 10 }]"
 			class="app-image-search-list"
 		>
+			<!-- Search query is empty -->
+			<AppZeroState 
+				v-if="!loading && !searchQuery"
+				icon="manage_search"
+				:title="$t('image-search-title')"
+				:description="$t('image-search-description')"
+			/>
+
+
 			<!-- Nothing were found -->
 			<AppZeroState 
 				v-if="!loading && !images.length"

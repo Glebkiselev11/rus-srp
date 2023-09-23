@@ -41,5 +41,7 @@
   "edit-image": "Уређивање слике",
   "add-image": "Додавање слике",
   "selected": "Изабрано",
-  "search-by-query": "Тражи “{query}”"
+  "search-by-query": "Тражи “{query}”",
+  "image-search-title": "Да бисте пронашли слику, унесите упит на енглеском",
+  "image-search-description": "Ово може бити директан превод или синоним додане речи"
 }
