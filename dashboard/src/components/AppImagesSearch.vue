@@ -47,6 +47,9 @@ export default defineComponent({
 		filteredImages() {
 			return this.images.filter(({ src }) => src !== this.savedLink);
 		},
+		imagesContainSavedLink(): boolean {
+			return this.images.some(({ src }) => src === this.savedLink);
+		},
 	}, 
 	watch: {
 		searchQuery() {
@@ -97,7 +100,7 @@ export default defineComponent({
 			class="app-image-search-list"
 		>
 			<div 
-				v-if="savedLink"
+				v-if="savedLink && imagesContainSavedLink"
 				class="selected-image"
 			>
 				<img
