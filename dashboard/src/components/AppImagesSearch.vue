@@ -92,6 +92,7 @@ export default defineComponent({
 			left-icon="search"
 			class="app-image-search--input"
 			debounce
+			clear-button
 		/>
 
 		<section

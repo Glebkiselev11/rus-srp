@@ -34,6 +34,10 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
+		round: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	computed: {
 		iconColor() {
@@ -58,6 +62,7 @@ export default defineComponent({
 			`app-button-size-${size}`, 
 			`app-button-type-${type}`, 
 			`app-button-color-${color}`,
+			{ 'app-button--round': round},
 			{ 'app-button--icon-and-label' : icon && label},
 			{ 'app-button--only-icon' : icon && !label},
 			{ 'app-button--only-label': label && !icon},
@@ -88,6 +93,10 @@ export default defineComponent({
 	cursor: pointer;
 	border-radius: 8px;
 	@extend .text-subtitle-2;
+
+	&--round {
+		border-radius: 50%;
+	}
 
 	/* Paggings for Icon and label case */
 	&--icon-and-label {
