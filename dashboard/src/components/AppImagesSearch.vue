@@ -52,6 +52,8 @@ export default defineComponent({
 		searchQuery() {
 			this.offset = 0;
 			this.clearImages();
+			if (!this.searchQuery) return;
+
 			this.fetchImages(this.requestParams);
 		},
 	},
