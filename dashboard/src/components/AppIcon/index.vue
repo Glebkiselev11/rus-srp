@@ -21,6 +21,7 @@ import NavigateNextIcon from "./NavigateNextIcon.vue";
 import AddPhotoAlternateIcon from "./AddPhotoAlternateIcon.vue";
 import CloseIcon from "./CloseIcon.vue";
 import CheckCircleIcon from "./CheckCircleIcon.vue";
+import ManageSearchIcon from "./ManageSearchIcon.vue";
 
 export default defineComponent({
 	name: "AppIcon",
@@ -60,6 +61,7 @@ export default defineComponent({
 				"add_photo_alternate": AddPhotoAlternateIcon,
 				"close": CloseIcon,
 				"check_circle": CheckCircleIcon,
+				"manage_search": ManageSearchIcon,
 			}[this.name];
 		},
 		convertedSize(): string {
