@@ -46,8 +46,12 @@ export default defineComponent({
 				:subtitle="subtitle"
 				close-button
 				@close="handleClose"
-			/>
-			<slot />
+			>
+				<template #left>
+					<slot name="header-left" />
+				</template>
+			</AppHeader>
+			<slot name="content" />
 		</div>
 	</div>
 </template>

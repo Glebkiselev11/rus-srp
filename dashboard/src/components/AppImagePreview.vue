@@ -92,11 +92,24 @@ export default defineComponent({
 		:subtitle="imageSearchModalSubtitle"
 		@update:visible="isModalVisible = $event"
 	>
-		<AppImagesSearch
-			:default-search-query="defaultImageSearchQuery"
-			:saved-link="src"
-			@select="handleSelectImage"
-		/>
+		<template
+			v-if="src"
+			#header-left
+		>
+			<div class="app-image-preview">
+				<img
+					:src="srcWithParams"
+				>
+			</div>
+		</template>
+
+		<template #content>
+			<AppImagesSearch
+				:default-search-query="defaultImageSearchQuery"
+				:saved-link="src"
+				@select="handleSelectImage"
+			/>
+		</template>
 	</AppModal>
 </template>
 
