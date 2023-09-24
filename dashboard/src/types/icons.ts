@@ -32,4 +32,5 @@ export type IconName =
   "add_photo_alternate" |
   "close" |
   "check_circle" |
-  "manage_search"; 
+  "manage_search" | 
+  "cancel";
