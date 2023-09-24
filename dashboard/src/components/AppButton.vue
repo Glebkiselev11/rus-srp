@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { IconName } from "@/types/icons";
+import type { IconColor, IconName } from "@/types/icons";
 import AppIcon from "@/components/AppIcon/index.vue";
 import { defineComponent, type PropType } from "vue";
 import type { ButtonColor, ButtonSize, ButtonType } from "@/types/buttons";
@@ -34,9 +34,17 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
+		iconColor: {
+			type: String as PropType<IconColor>,
+			default: null,
+		},
 	},
 	computed: {
-		iconColor() {
+		_iconColor(): IconColor {
+			if (this.iconColor) {
+				return this.iconColor;
+			}
+
 			if (this.color === "neutral") {
 				return "primary";
 			}
@@ -67,7 +75,7 @@ export default defineComponent({
 		<AppIcon 
 			v-if="icon"
 			:name="icon"
-			:color="iconColor"
+			:color="_iconColor"
 			size="compact"
 		/>
 		<template v-if="label">

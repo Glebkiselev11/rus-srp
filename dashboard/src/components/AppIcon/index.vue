@@ -18,7 +18,11 @@ import EditIcon from "./EditIcon.vue";
 import DeleteIcon from "./DeleteIcon.vue";
 import NavigateBeforeIcon from "./NavigateBeforeIcon.vue";
 import NavigateNextIcon from "./NavigateNextIcon.vue";
-
+import AddPhotoAlternateIcon from "./AddPhotoAlternateIcon.vue";
+import CloseIcon from "./CloseIcon.vue";
+import CheckCircleIcon from "./CheckCircleIcon.vue";
+import ManageSearchIcon from "./ManageSearchIcon.vue";
+import CancelIcon from "./CancelIcon.vue";
 
 export default defineComponent({
 	name: "AppIcon",
@@ -55,6 +59,11 @@ export default defineComponent({
 				"delete": DeleteIcon,
 				"navigate_before": NavigateBeforeIcon,
 				"navigate_next": NavigateNextIcon,
+				"add_photo_alternate": AddPhotoAlternateIcon,
+				"close": CloseIcon,
+				"check_circle": CheckCircleIcon,
+				"manage_search": ManageSearchIcon,
+				"cancel": CancelIcon,
 			}[this.name];
 		},
 		convertedSize(): string {

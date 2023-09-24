@@ -28,5 +28,14 @@ export const useWordsStore = defineStore("words", {
 				alert(error);
 			}
 		},
+		async updateWord(word: Word) {
+			try {
+				await WordsApi.update(word);
+				this.words = this.words.map((w) => (w.id === word.id ? word : w));
+			} catch (error) {
+				console.error(error);
+				alert(error);
+			}
+		},
 	},
 });

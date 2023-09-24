@@ -37,5 +37,11 @@
     "select-page": "Idi na stranicu"
   },
   "not-found": "Ništa nije pronađeno za „{search}”",
-  "not-found-description": "Pokušajte da promenite upit ili promenite filtere"
+  "not-found-description": "Pokušajte da promenite upit ili promenite filtere",
+  "edit-image": "Uređivanje slike",
+  "add-image": "Dodavanje slike",
+  "selected": "Izabrano",
+  "search-by-query": "Traži “{query}”",
+  "image-search-title": "Da biste pronašli sliku, unesite upit na engleskom",
+  "image-search-description": "Ovo može biti direktan prevod ili sinonim dodane reči"
 }

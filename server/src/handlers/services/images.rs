@@ -29,7 +29,7 @@ struct ResponsePhoto {
 
 #[derive(Deserialize, Serialize, Debug)]
 struct ResponseData {
-    page: i64,
+    page: u32,
     per_page: i64,
     total_results: i64,
     photos: Vec<ResponsePhoto>,
@@ -56,6 +56,15 @@ impl From<ResponsePhoto> for Photo {
     }
 }
 
+
+fn offset_to_page(offset: u32, limit: u32) -> u32 {
+    (offset + limit - 1) / limit + 1
+}
+
+fn page_to_offset(page: u32, limit: u32) -> i64 {
+    ((page - 1) * limit) as i64
+}
+
 pub async fn query(params: web::Query<ImagesQueryParams>) -> actix_web::Result<impl Responder> {
     let params = params.into_inner();
 
@@ -67,7 +76,7 @@ pub async fn query(params: web::Query<ImagesQueryParams>) -> actix_web::Result<i
         .query(&[
             ("query", params.search),
             ("per_page", params.limit.to_string()),
-            ("page", params.offset.to_string()),
+            ("page", offset_to_page(params.offset, params.limit).to_string()),
         ])
         .send()
         .await;
@@ -76,7 +85,7 @@ pub async fn query(params: web::Query<ImagesQueryParams>) -> actix_web::Result<i
         Ok(resp) => {
             let data: ResponseData = resp.json().await.unwrap();
             Ok(HttpResponse::Ok().json(Pagination {
-                offset: data.page,
+                offset: page_to_offset(data.page, params.limit),
                 count: data.total_results,
                 result: data
                     .photos

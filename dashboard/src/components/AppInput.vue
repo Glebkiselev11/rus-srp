@@ -3,6 +3,7 @@ import { debounce } from "lodash";
 import { type PropType, defineComponent } from "vue";
 import type { IconName } from "../types/icons";
 import AppIcon from "./AppIcon/index.vue";
+import AppButton from "./AppButton.vue";
 
 type InputSize = "regular" | "compact";
 
@@ -10,6 +11,7 @@ export default defineComponent({
 	name: "AppInput",
 	components: {
 		AppIcon,
+		AppButton,
 	},
 	props: {
 		type: {
@@ -55,6 +57,10 @@ export default defineComponent({
 		size: {
 			type: String as PropType<InputSize>,
 			default: "regular",
+		},
+		clearButton: {
+			type: Boolean,
+			default: false,
 		},
 	},
 	emits: ["update:modelValue"],
@@ -105,6 +111,17 @@ export default defineComponent({
 			:min="min"
 			@input="handleInput"
 		>
+
+		<AppButton
+			v-if="clearButton && modelValue"
+			icon="cancel"
+			color="neutral"
+			size="compact"
+			type="inline"
+			icon-color="tertiary"
+			class="app-input--clear-button"
+			@click="emitValue('')"
+		/>
 	</div>
 </template>
 
@@ -159,6 +176,12 @@ export default defineComponent({
 		&[warning="true"] {
 			outline: 1px solid $color-stroke-negative;
 		}
+	}
+
+	&--clear-button {
+		position: absolute;
+		right: 8px;
+		top: 4px;
 	}
 }
 
