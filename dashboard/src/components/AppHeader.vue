@@ -59,13 +59,13 @@ export default defineComponent({
 @import "@/styles/main.scss";
 
 .app-header {
-  width: 100%;
-  min-height: 48px;
+	width: 100%;
+	min-height: 48px;
 	padding-block: 12px;
-  padding-inline: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+	padding-inline: 16px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 
 
 	&--left-container {
