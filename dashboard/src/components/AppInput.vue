@@ -114,11 +114,12 @@ export default defineComponent({
 
 		<AppButton
 			v-if="clearButton && modelValue"
-			icon="close"
+			icon="cancel"
 			color="neutral"
 			size="compact"
+			type="inline"
+			icon-color="tertiary"
 			class="app-input--clear-button"
-			round
 			@click="emitValue('')"
 		/>
 	</div>

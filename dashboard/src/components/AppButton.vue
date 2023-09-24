@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { IconName } from "@/types/icons";
+import type { IconColor, IconName } from "@/types/icons";
 import AppIcon from "@/components/AppIcon/index.vue";
 import { defineComponent, type PropType } from "vue";
 import type { ButtonColor, ButtonSize, ButtonType } from "@/types/buttons";
@@ -34,13 +34,17 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
-		round: {
-			type: Boolean,
-			default: false,
+		iconColor: {
+			type: String as PropType<IconColor>,
+			default: null,
 		},
 	},
 	computed: {
-		iconColor() {
+		_iconColor(): IconColor {
+			if (this.iconColor) {
+				return this.iconColor;
+			}
+
 			if (this.color === "neutral") {
 				return "primary";
 			}
@@ -62,7 +66,6 @@ export default defineComponent({
 			`app-button-size-${size}`, 
 			`app-button-type-${type}`, 
 			`app-button-color-${color}`,
-			{ 'app-button--round': round},
 			{ 'app-button--icon-and-label' : icon && label},
 			{ 'app-button--only-icon' : icon && !label},
 			{ 'app-button--only-label': label && !icon},
@@ -72,7 +75,7 @@ export default defineComponent({
 		<AppIcon 
 			v-if="icon"
 			:name="icon"
-			:color="iconColor"
+			:color="_iconColor"
 			size="compact"
 		/>
 		<template v-if="label">
@@ -93,10 +96,6 @@ export default defineComponent({
 	cursor: pointer;
 	border-radius: 8px;
 	@extend .text-subtitle-2;
-
-	&--round {
-		border-radius: 50%;
-	}
 
 	/* Paggings for Icon and label case */
 	&--icon-and-label {
