@@ -146,13 +146,9 @@ export default defineComponent({
 	<div class="words-view">
 		<AppTopBar>
 			<template #left>
-				<AppInput
-					v-model="search"
-					type="text"
-					:placeholder="$t('find-word')"
-					left-icon="search"
-					debounce
-				/>	
+				<h3>
+					{{ $t("all-words") }}
+				</h3>
 			</template>
 			<template #right>
 				<AppButton
@@ -164,6 +160,15 @@ export default defineComponent({
 		</AppTopBar>
 
 		<div class="words-view--content">
+			<div class="words-view--filter-panel">
+				<AppInput
+					v-model="search"
+					type="text"
+					:placeholder="$t('find-word')"
+					left-icon="search"
+					debounce
+				/>	
+			</div>
 			<AppTable
 				:count="count"
 				:columns="columns"
@@ -252,10 +257,16 @@ export default defineComponent({
 .words-view {
 	width: 100%;
 	height: 100%;
+
+	&--filter-panel {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-block-end: 16px;
+	}
 	
 	&--content {
-		padding: 20px;
+		padding-inline: 32px;
 	}
 }
-
 </style>

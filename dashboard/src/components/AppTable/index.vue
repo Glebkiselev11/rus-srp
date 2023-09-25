@@ -116,7 +116,7 @@ export default defineComponent({
 <style  lang="scss">
 @import "@/styles/main.scss";
 $column-template: repeat(auto-fit, minmax(100px, 1fr));
-$extra-space: 220px;
+$extra-space: 250px;
 
 .app-table-wrap {
 	border: 1px solid $color-separator-primary;
