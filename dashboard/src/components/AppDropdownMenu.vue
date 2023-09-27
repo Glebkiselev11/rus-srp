@@ -96,7 +96,7 @@ export default defineComponent({
 				<AppListItem
 					v-else
 					clickable
-					@click="item.handler"
+					@click="handdleClickOnItem(item.handler)"
 				>
 					<template #left>
 						<AppIcon
