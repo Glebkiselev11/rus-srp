@@ -56,9 +56,7 @@ export default defineComponent({
 			this.isMenuOpen = !this.isMenuOpen;
 		},
 		closeMenu() {
-			if (!this.isMenuOpen) return;
 			this.isMenuOpen = false;
-			this.menuPosition = "bottom";
 		},
 		setBottomMenuAngleVisibility(state: boolean) {
 			this.isBottomMenuVisible = state;
