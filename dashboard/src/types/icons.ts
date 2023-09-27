@@ -33,4 +33,6 @@ export type IconName =
   "close" |
   "check_circle" |
   "manage_search" | 
-  "cancel";
+  "cancel" |
+  "expand_more_down" |
+  "expand_more_up";
