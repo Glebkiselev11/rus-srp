@@ -75,7 +75,7 @@ export default defineComponent({
 		class="app-dropdown"
 	>
 		<div @click="toggleMenu">
-			<slot />
+			<slot :is-menu-open="isMenuOpen" />
 		</div>
 
 		<div

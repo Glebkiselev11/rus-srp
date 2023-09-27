@@ -1,13 +1,26 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 import AppInputWrapper from "./AppInputWrapper.vue";
+import AppDropdownMenu from "./AppDropdownMenu.vue";
+import AppIcon from "./AppIcon/index.vue";
+import type { SelectSize, SelectType } from "@/types/select";
 
 export default defineComponent({
 	name: "AppSelect",
 	components: {
 		AppInputWrapper,
+		AppDropdownMenu,
+		AppIcon,
 	},
 	props: {
+		type: {
+			type: String as PropType<SelectType>,
+			default: "default",
+		},
+		size: {
+			type: String as PropType<SelectSize>,
+			default: "regular",
+		},
 		label: {
 			type: String,
 			default: null,
@@ -22,6 +35,20 @@ export default defineComponent({
 		},
 	},
 	emits: ["update:modelValue"],
+	computed: {
+		items() {
+			return this.options.map((item) => ({
+				...item,
+				handler: () => {
+					this.$emit("update:modelValue", item.value);
+				},
+			}));
+		},
+		selectedItem() {
+			const item = this.options.find((item) => item.value === this.modelValue);
+			return item ? item.label : null;
+		},
+	},
 	methods: {
 		handleSelect(event: Event) {
 			const target = event.target as HTMLSelectElement;
@@ -36,18 +63,73 @@ export default defineComponent({
 		v-slot="wrapper"
 		:label="label"
 	>
-		<select
-			:id="wrapper.id"
-			:value="modelValue"
-			@input="handleSelect"
+		<AppDropdownMenu
+			v-slot="{isMenuOpen}"
+			:items="items"
 		>
-			<option
-				v-for="item in options"
-				:key="item.value"
-				:value="item.value"
+			<button 
+				:id="wrapper.id"
+				class="app-select"
+				:class="[
+					`app-select--type-${type}`,
+					`app-select--size-${size}`
+					
+				]"
 			>
-				{{ item.label }}
-			</option>
-		</select>
+				{{ selectedItem }}
+
+				<AppIcon
+					:name="isMenuOpen ? 'expand_more_up' : 'expand_more_down'"
+					size="compact"
+					color="tertiary"
+				/>
+			</button>
+		</AppDropdownMenu>
 	</AppInputWrapper>
 </template>
+
+<style lang="scss" scoped>
+@import "@/styles/main.scss";
+
+.app-select {
+	border-radius: 8px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+
+	&--type {
+		&-default {
+			border: 1px solid $color-separator-primary; 
+		}
+
+		&-inline {
+			background: transparent;
+		}
+
+		&-inline, &-filled {
+			border: none;
+		}
+
+		&-filled {
+			background: $color-background-content-tertiary;
+		}
+
+	}
+
+	&--size {
+		&-regular {
+			height: 40px;
+			padding-inline-start: 16px;
+			column-gap: 8px;
+		}
+
+		&-compact {
+			height: 32px;
+			column-gap: 6px;
+			padding-inline-start: 8px;
+		}
+	}
+
+}
+
+</style>
