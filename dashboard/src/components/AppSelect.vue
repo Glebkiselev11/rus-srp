@@ -72,8 +72,8 @@ export default defineComponent({
 				class="app-select"
 				:class="[
 					`app-select--type-${type}`,
-					`app-select--size-${size}`
-					
+					`app-select--size-${size}`,
+					{ 'app-select--menu-open': isMenuOpen }
 				]"
 			>
 				{{ selectedItem }}
@@ -127,6 +127,15 @@ export default defineComponent({
 			height: 32px;
 			column-gap: 6px;
 			padding-inline-start: 8px;
+		}
+	}
+
+	&:active, &.app-select--menu-open {
+		&.app-select--type-default, &.app-select--type-inline {
+			background-color: $color-background-content-primary-active;
+		}
+		&.app-select--type-filled {
+			background-color: $color-background-tertiary-active;
 		}
 	}
 
