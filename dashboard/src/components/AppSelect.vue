@@ -142,12 +142,14 @@ export default defineComponent({
 
 	&--size {
 		&-regular {
+			@extend .text-body-1;
 			height: 40px;
 			padding-inline: 16px;
 			column-gap: 8px;
 		}
 
 		&-compact {
+			@extend .text-body-2;
 			height: 32px;
 			column-gap: 6px;
 			padding-inline: 8px;
