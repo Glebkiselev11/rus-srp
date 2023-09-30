@@ -4,6 +4,7 @@ import AppInputWrapper from "./AppInputWrapper.vue";
 import AppDropdownMenu from "./AppDropdownMenu.vue";
 import AppIcon from "./AppIcon/index.vue";
 import type { SelectSize, SelectType } from "@/types/select";
+import type { IconName } from "@/types/icons";
 
 export default defineComponent({
 	name: "AppSelect",
@@ -40,6 +41,10 @@ export default defineComponent({
 		disabled: {
 			type: Boolean,
 			default: false,
+		},
+		icon: {
+			type: String as PropType<IconName>,
+			default: null,
 		},
 	},
 	emits: ["update:modelValue"],
@@ -83,9 +88,17 @@ export default defineComponent({
 				:class="[
 					`app-select--type-${type}`,
 					`app-select--size-${size}`,
-					{ 'app-select--menu-open': isMenuOpen }
+					{ 'app-select--menu-open': isMenuOpen },
+					{ 'app-select--with-icon': icon }
 				]"
 			>
+				<AppIcon
+					v-if="icon"
+					:name="icon"
+					size="compact"
+					color="secondary"
+				/>
+
 				{{ selectedItem }}
 
 				<AppIcon
@@ -103,6 +116,7 @@ export default defineComponent({
 
 .app-select {
 	border-radius: 8px;
+	padding-block: 0px;
 	cursor: pointer;
 	display: flex;
 	align-items: center;
@@ -129,14 +143,25 @@ export default defineComponent({
 	&--size {
 		&-regular {
 			height: 40px;
-			padding-inline-start: 16px;
+			padding-inline: 16px;
 			column-gap: 8px;
 		}
 
 		&-compact {
 			height: 32px;
 			column-gap: 6px;
-			padding-inline-start: 8px;
+			padding-inline: 8px;
+		}
+	}
+
+	&--with-icon {
+		&.app-select--size-regular {
+			padding-inline: 8px;
+			column-gap: 8px;
+		}
+
+		&.app-select--size-compact {
+			padding-inline: 6px;
 		}
 	}
 

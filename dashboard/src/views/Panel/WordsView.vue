@@ -187,6 +187,8 @@ export default defineComponent({
 					v-model="order"
 					:options="orderOptions"
 					type="inline"
+					icon="sort"
+					size="compact"
 					:placeholder="$t('to-sort')"
 					compact
 				/>
