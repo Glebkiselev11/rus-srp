@@ -35,4 +35,5 @@ export type IconName =
   "manage_search" | 
   "cancel" |
   "expand_more_down" |
-  "expand_more_up";
+  "expand_more_up" |
+  "sort";
