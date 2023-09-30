@@ -43,5 +43,6 @@
   "selected": "Selected",
   "search-by-query": "Search for “{query}”",
   "image-search-title": "To find an image, enter a query in English",
-  "image-search-description": "This can be a direct translation or a synonym of the added word"
+  "image-search-description": "This can be a direct translation or a synonym of the added word",
+  "to-sort": "Sort"
 }

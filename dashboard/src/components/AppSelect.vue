@@ -25,6 +25,10 @@ export default defineComponent({
 			type: String,
 			default: null,
 		},
+		placeholder: {
+			type: String,
+			default: null,
+		},
 		modelValue: {
 			type: [String, Number],
 			default: null,
@@ -46,7 +50,7 @@ export default defineComponent({
 		},
 		selectedItem() {
 			const item = this.options.find((item) => item.value === this.modelValue);
-			return item ? item.label : null;
+			return item ? item.label : this.placeholder;
 		},
 	},
 	methods: {

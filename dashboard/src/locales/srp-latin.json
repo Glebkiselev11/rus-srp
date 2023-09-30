@@ -43,5 +43,6 @@
   "selected": "Izabrano",
   "search-by-query": "Traži “{query}”",
   "image-search-title": "Da biste pronašli sliku, unesite upit na engleskom",
-  "image-search-description": "Ovo može biti direktan prevod ili sinonim dodane reči"
+  "image-search-description": "Ovo može biti direktan prevod ili sinonim dodane reči",
+  "to-sort": "Sortirati"
 }
