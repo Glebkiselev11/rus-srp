@@ -6,6 +6,7 @@ import type { Order, RequestParams } from "@/types/api";
 
 import AppTopBar from "@/components/AppTopBar.vue";
 import AppInput from "@/components/AppInput.vue";
+import AppSelect from "@/components/AppSelect.vue";
 import AppTable from "@/components/AppTable/index.vue";
 import AppTableRow from "@/components/AppTable/AppTableRow.vue";
 import AppImagePreview from "@/components/AppImagePreview.vue";
@@ -25,6 +26,7 @@ export default defineComponent({
 	components: {
 		AppTopBar,
 		AppInput,
+		AppSelect,
 		AppTable,
 		AppTableRow,
 		AppImagePreview,
@@ -51,6 +53,10 @@ export default defineComponent({
 				{ value: LIMIT_DEFAULT, label: String(LIMIT_DEFAULT) },
 				{ value: 50, label: "50" },
 				{ value: 100, label: "100" },
+			],
+			orderOptions: [
+				{ value: "-created_at", label: this.$t("order.new-words") },
+				{ value: "-updated_at", label: this.$t("order.last-updated") },
 			],
 		};
 	},
@@ -97,6 +103,14 @@ export default defineComponent({
 			},
 			set(offset: number) {
 				this.filter = { ...this.filter, offset };
+			},
+		},
+		order: {
+			get(): Order {
+				return this.filter.order;
+			},
+			set(order: Order) {
+				this.filter = { ...this.filter, order };
 			},
 		},
 		notFoundTitle(): string {
@@ -146,13 +160,9 @@ export default defineComponent({
 	<div class="words-view">
 		<AppTopBar>
 			<template #left>
-				<AppInput
-					v-model="search"
-					type="text"
-					:placeholder="$t('find-word')"
-					left-icon="search"
-					debounce
-				/>	
+				<h3>
+					{{ $t("all-words") }}
+				</h3>
 			</template>
 			<template #right>
 				<AppButton
@@ -164,6 +174,25 @@ export default defineComponent({
 		</AppTopBar>
 
 		<div class="words-view--content">
+			<div class="words-view--filter-panel">
+				<AppInput
+					v-model="search"
+					type="text"
+					:placeholder="$t('find-word')"
+					left-icon="search"
+					debounce
+				/>	
+
+				<AppSelect
+					v-model="order"
+					:options="orderOptions"
+					type="inline"
+					icon="sort"
+					size="compact"
+					:placeholder="$t('to-sort')"
+					compact
+				/>
+			</div>
 			<AppTable
 				:count="count"
 				:columns="columns"
@@ -252,10 +281,16 @@ export default defineComponent({
 .words-view {
 	width: 100%;
 	height: 100%;
+
+	&--filter-panel {
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+		margin-block-end: 16px;
+	}
 	
 	&--content {
-		padding: 20px;
+		padding-inline: 32px;
 	}
 }
-
 </style>

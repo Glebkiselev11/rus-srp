@@ -32,6 +32,10 @@ export default defineComponent({
 			type: Array as PropType<Array<MenuItem | Separator>>,
 			required: true,
 		},
+		disabled: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	data() {
 		return {
@@ -53,12 +57,11 @@ export default defineComponent({
 	},
 	methods: {
 		toggleMenu() {
+			if (this.disabled) return;
 			this.isMenuOpen = !this.isMenuOpen;
 		},
 		closeMenu() {
-			if (!this.isMenuOpen) return;
 			this.isMenuOpen = false;
-			this.menuPosition = "bottom";
 		},
 		setBottomMenuAngleVisibility(state: boolean) {
 			this.isBottomMenuVisible = state;
@@ -77,7 +80,7 @@ export default defineComponent({
 		class="app-dropdown"
 	>
 		<div @click="toggleMenu">
-			<slot />
+			<slot :is-menu-open="isMenuOpen" />
 		</div>
 
 		<div
@@ -96,7 +99,7 @@ export default defineComponent({
 				<AppListItem
 					v-else
 					clickable
-					@click="item.handler"
+					@click="handdleClickOnItem(item.handler)"
 				>
 					<template #left>
 						<AppIcon

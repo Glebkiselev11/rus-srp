@@ -70,6 +70,8 @@ export default defineComponent({
 				<AppSelect
 					:model-value="limit"
 					:options="limitOptions"
+					size="compact"
+					type="filled"
 					@update:model-value="updateLimit"
 				/>
 			</div>
@@ -129,6 +131,7 @@ export default defineComponent({
 
 	.limit-controller {
 		display: flex;
+		align-items: center;
 
 		&--text {
 			@extend .text-body-2;

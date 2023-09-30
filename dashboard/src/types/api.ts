@@ -24,7 +24,7 @@ export interface RequestParams {
   search: string;
   offset: number;
   limit: number;
-  order?: Order;
+  order: Order;
 }
 
 export type OptionalRequestParams = Partial<RequestParams>;
