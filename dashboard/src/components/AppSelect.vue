@@ -134,6 +134,15 @@ export default defineComponent({
 		}
 	}
 
+	&:hover {
+		&.app-select--type-default, &.app-select--type-inline {
+			background-color: $color-background-content-primary-hovered;
+		}
+		&.app-select--type-filled {
+			background-color: $color-background-tertiary-hovered;
+		}
+	}
+
 	&:active, &.app-select--menu-open {
 		&.app-select--type-default, &.app-select--type-inline {
 			background-color: $color-background-content-primary-active;
