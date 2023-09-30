@@ -55,8 +55,8 @@ export default defineComponent({
 				{ value: 100, label: "100" },
 			],
 			orderOptions: [
-				{ value: "-created_at", label: "created" },
-				{ value: "-updated_at", label: "updated" },
+				{ value: "-created_at", label: this.$t("order.new-words") },
+				{ value: "-updated_at", label: this.$t("order.last-updated") },
 			],
 		};
 	},

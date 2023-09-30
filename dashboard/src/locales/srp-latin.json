@@ -2,9 +2,9 @@
   "no-words-were-found": "Nisu pronađene reči za ovaj upit",
   "general": "Opšta",
   "order": {
-    "new-words": "Nove reči",
+    "new-words": "Poslednje dodato",
     "old-words": "Stare reči",
-    "last-updated": "najnovije ažurirane"
+    "last-updated": "Najnovije ažurirane"
   },
   "fill-in-auto": "Popunite automatski",
   "cancel": "Otkazati",

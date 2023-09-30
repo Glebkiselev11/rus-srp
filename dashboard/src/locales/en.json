@@ -2,7 +2,7 @@
   "no-words-were-found": "No words were found for this query",
   "general": "General",
   "order": {
-    "new-words": "New words",
+    "new-words": "Last added",
     "old-words": "Old words",
     "last-updated": "Last updated"
   },
