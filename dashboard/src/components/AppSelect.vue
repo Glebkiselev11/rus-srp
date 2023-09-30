@@ -37,6 +37,10 @@ export default defineComponent({
 			type: Array as PropType<{ value: string | number; label: string }[]>,
 			required: true,
 		},
+		disabled: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	emits: ["update:modelValue"],
 	computed: {
@@ -70,10 +74,12 @@ export default defineComponent({
 		<AppDropdownMenu
 			v-slot="{isMenuOpen}"
 			:items="items"
+			:disabled="disabled"
 		>
 			<button 
 				:id="wrapper.id"
 				class="app-select"
+				:disabled="disabled"
 				:class="[
 					`app-select--type-${type}`,
 					`app-select--size-${size}`,
@@ -150,6 +156,11 @@ export default defineComponent({
 		&.app-select--type-filled {
 			background-color: $color-background-tertiary-active;
 		}
+	}
+
+	&:disabled {
+		opacity: 0.5;
+		pointer-events: none;
 	}
 
 }

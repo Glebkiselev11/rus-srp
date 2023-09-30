@@ -32,6 +32,10 @@ export default defineComponent({
 			type: Array as PropType<Array<MenuItem | Separator>>,
 			required: true,
 		},
+		disabled: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	data() {
 		return {
@@ -53,6 +57,7 @@ export default defineComponent({
 	},
 	methods: {
 		toggleMenu() {
+			if (this.disabled) return;
 			this.isMenuOpen = !this.isMenuOpen;
 		},
 		closeMenu() {
