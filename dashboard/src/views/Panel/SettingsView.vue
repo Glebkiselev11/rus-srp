@@ -30,11 +30,9 @@ export default defineComponent({
 		<div class="settings-view--content">
 			<AppPageSection :title="$t('general')">
 				<AppListItem>
-					<template #left>
-						<AppIcon name="translate" />
+					<AppIcon name="translate" />
 
-						<AppLanguageSelect />
-					</template>
+					<AppLanguageSelect />
 				</AppListItem>
 			</AppPageSection>
 		</div>

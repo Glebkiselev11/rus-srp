@@ -101,18 +101,16 @@ export default defineComponent({
 					clickable
 					@click="handdleClickOnItem(item.handler)"
 				>
-					<template #left>
-						<AppIcon
-							v-if="item.icon"
-							:name="item.icon"
-							:color="item.color"
-						/>
+					<AppIcon
+						v-if="item.icon"
+						:name="item.icon"
+						:color="item.color"
+					/>
 
-						<span
-							:class="[`text-color-${item.color}`]"
-							v-text="item.label"
-						/>
-					</template>
+					<span
+						:class="[`text-color-${item.color}`]"
+						v-text="item.label"
+					/>
 				</AppListItem>
 			</template>
 

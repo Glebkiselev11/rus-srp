@@ -28,10 +28,7 @@ export default defineComponent({
 			'app-list-item--compact': size === 'compact',
 		}"
 	>
-		<div class="app-list-item--left">
-			<slot name="left" />
-		</div>		
-		<slot name="right" />
+		<slot />
 	</div>
 </template>
 
@@ -39,29 +36,26 @@ export default defineComponent({
 @import "@/styles/main.scss";
 
 .app-list-item {
-  width: 100%;
-  padding-inline: 16px;
+	padding-inline: 16px;
 	padding-block: 12px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
+	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	column-gap: 16px;
+	white-space: nowrap;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
 
-  &--left {
-    display: flex;
-    align-items: center;
-    column-gap: 16px;
-  }
+	&--clickable {
+		cursor: pointer;
 
-  &--clickable {
-    cursor: pointer;
+		&:hover {
+			background-color: $color-background-content-primary-hovered;
+		}
+	}
 
-    &:hover {
-      background-color: $color-background-content-primary-hovered;
-    }
-  }
-
-  &--compact {
+	&--compact {
 		padding-block: 8px;
-  }
+	}
 }
 </style>
