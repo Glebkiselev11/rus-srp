@@ -131,6 +131,7 @@ export default defineComponent({
 	position: relative;
 
 	&--menu {
+		min-inline-size: 148px;
 		padding-block: 8px;
 		position: absolute;
 		right: 0;
