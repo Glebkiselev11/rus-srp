@@ -17,7 +17,9 @@ export default defineComponent({
 	},
 	emits: ["clickOnItem"],
 	data() {
-		return {};
+		return {
+			isExpanded: false,
+		};
 	},
 	methods: {
 		handleClick(item: NavItem) {
@@ -27,9 +29,11 @@ export default defineComponent({
 });
 </script>
 
-
 <template>
-	<aside class="app-navbar">
+	<aside
+		class="app-navbar"
+		:class="{ 'app-navbar--expanded': isExpanded}"
+	>
 		<nav>
 			<AppNavbarItem 
 				v-for="item in items"
@@ -37,21 +41,25 @@ export default defineComponent({
 				:label="item.label"
 				:active="item.active"
 				:icon-name="item.icon"
+				:show-labels="isExpanded"
 				@click="handleClick(item)"
 			/>
 		</nav>
 	</aside>
 </template>
 
-
 <style scoped lang="scss">
 @import "@/styles/main.scss";
 
 .app-navbar {
-  width: 256px;
+	width: 72px;
   height: 100%;
 	background-color: $color-background-content-primary;
 	border-inline-end: 1px solid $color-separator-primary;
+
+	&--expanded {
+  	width: 256px;
+	}
 }
 
 </style>

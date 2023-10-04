@@ -19,7 +19,11 @@ export default defineComponent({
 		},
 		label: {
 			type: String,
-			required: true,
+			default: "",
+		},
+		showLabels: {
+			type: Boolean,
+			default: false,
 		},
 	},
 });
@@ -35,6 +39,7 @@ export default defineComponent({
 		/>
 
 		<span 
+			v-if="showLabels"
 			class="app-navbar-item--label"
 			:class="{ 'app-navbar-item--label-active': active }"
 		>
@@ -49,6 +54,7 @@ export default defineComponent({
 .app-navbar-item {
 	display: flex;	
 	align-items: center;
+	column-gap: 12px;
 	padding: 12px 20px;
 
 	&:hover {
@@ -57,7 +63,6 @@ export default defineComponent({
 
 	&--label {
 		@extend .text-body-2;
-		margin-left: 12px;
 		color: $color-text-primary;
 
 		&-active {
