@@ -1,16 +1,12 @@
-
-
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import AppIcon from "@/components/AppIcon/index.vue";
 import AppNavbarItem from "./AppNavbarItem.vue";
 import type { NavItem } from "../types";
 
 
 export default defineComponent({
-	name: "AppSideMenu",
+	name: "AppNavbar",
 	components: {
-		AppIcon,
 		AppNavbarItem,
 	},
 	props: {
@@ -33,19 +29,7 @@ export default defineComponent({
 
 
 <template>
-	<aside class="app-side-menu">
-		<div class="app-side-menu--header">
-			<AppIcon
-				name="admin_panel_settings"
-			/>
-			<div>
-				<h3 class="title">
-					Srpski rec
-				</h3>
-				<span class="description">Admin</span>
-			</div>
-		</div>
-
+	<aside class="app-navbar">
 		<nav>
 			<AppNavbarItem 
 				v-for="item in items"
@@ -63,26 +47,11 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "@/styles/main.scss";
 
-.app-side-menu {
+.app-navbar {
   width: 256px;
   height: 100%;
 	background-color: $color-background-content-primary;
 	border-inline-end: 1px solid $color-separator-primary;
-
-	&--header {
-		display: flex;
-		gap: 12px;
-		align-items: center;
-		padding: 12px 20px;
-
-		.title {
-			color: $color-text-primary;
-		}
-		.description {
-			@extend .text-body-2;
-			color: $color-text-secondary;
-		}
-	}
 }
 
 </style>
