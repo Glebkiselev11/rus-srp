@@ -70,7 +70,7 @@ export default defineComponent({
 					search: this.$route.query.search as string || "",
 					offset: Number(this.$route.query.offset) || 0,
 					limit: Number(this.$route.query.limit) || LIMIT_DEFAULT,
-					order: (this.$route.query.order as string || "-created_at") as Order,
+					order: (this.$route.query.order) as Order,
 				};
 			},
 			set(params: RequestParams) {
@@ -109,7 +109,7 @@ export default defineComponent({
 		},
 		order: {
 			get(): Order {
-				return this.filter.order;
+				return this.filter.order || "-created_at";
 			},
 			set(order: Order) {
 				this.filter = { ...this.filter, order };
