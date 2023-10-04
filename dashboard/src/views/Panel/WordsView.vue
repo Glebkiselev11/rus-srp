@@ -4,6 +4,7 @@ import { mapActions, mapState } from "pinia";
 import { useWordsStore } from "@/stores/words";
 import type { Order, RequestParams } from "@/types/api";
 
+import AppCategories from "@/components/AppCategories/index.vue";
 import AppTopBar from "@/components/AppTopBar.vue";
 import AppInput from "@/components/AppInput.vue";
 import AppSelect from "@/components/AppSelect.vue";
@@ -34,6 +35,7 @@ export default defineComponent({
 		AppDropdownMenu,
 		AppPaginationBar,
 		AppZeroState,
+		AppCategories,
 	},
 	data() {
 		return {
@@ -158,120 +160,124 @@ export default defineComponent({
 
 <template>
 	<div class="words-view">
-		<AppTopBar>
-			<template #left>
-				<h3>
-					{{ $t("all-words") }}
-				</h3>
-			</template>
-			<template #right>
-				<AppButton
-					icon="add"
-					:label="$t('add-word')"
-					@click="openNewWordPage"
-				/>
-			</template>
-		</AppTopBar>
+		<AppCategories />
 
-		<div class="words-view--content">
-			<div class="words-view--filter-panel">
-				<AppInput
-					v-model="search"
-					type="text"
-					:placeholder="$t('find-word')"
-					left-icon="search"
-					debounce
-				/>	
+		<div>
+			<AppTopBar>
+				<template #left>
+					<h3>
+						{{ $t("all-words") }}
+					</h3>
+				</template>
+				<template #right>
+					<AppButton
+						icon="add"
+						:label="$t('add-word')"
+						@click="openNewWordPage"
+					/>
+				</template>
+			</AppTopBar>
 
-				<AppSelect
-					v-model="order"
-					:options="orderOptions"
-					type="inline"
-					icon="sort"
-					size="compact"
-					:placeholder="$t('to-sort')"
-					compact
-				/>
-			</div>
-			<AppTable
-				:count="count"
-				:columns="columns"
-				:order="filter.order"
-				@update:order="updateOrder"
-			>
-				<template
-					v-if="words.length"
-					#body
+			<div class="words-view--content">
+				<div class="words-view--filter-panel">
+					<AppInput
+						v-model="search"
+						type="text"
+						:placeholder="$t('find-word')"
+						left-icon="search"
+						debounce
+					/>	
+
+					<AppSelect
+						v-model="order"
+						:options="orderOptions"
+						type="inline"
+						icon="sort"
+						size="compact"
+						:placeholder="$t('to-sort')"
+						compact
+					/>
+				</div>
+				<AppTable
+					:count="count"
+					:columns="columns"
+					:order="filter.order"
+					@update:order="updateOrder"
 				>
-					<AppTableRow
-						v-for="word in words"
-						:id="word.id"
-						:key="word.id"
+					<template
+						v-if="words.length"
+						#body
 					>
-						<td>
-							<AppImagePreview
-								:src="word.image"
-								:image-search-modal-subtitle="extractWordPreview(word)"
-								:default-image-search-query="word.eng"
-								@update:src="src => updateWordImage(word, src)"
-							/>
-						</td>
-						<td v-html="highlighTextByQuery(word.rus, search)" />
-						<td v-html="highlighTextByQuery(word.eng, search)" />
-						<td v-html="highlighTextByQuery(word.srp_latin, search)" />
-						<td v-html="highlighTextByQuery(word.srp_cyrillic, search)" />
-						<td style="margin-inline-start: auto">
-							<AppDropdownMenu 
-								:items="[
-									{ 
-										label: $t('edit'),
-										icon: 'edit',
-										handler: () => editWord(word.id)
-									},
-									'separator',
-									{ 
-										label: $t('delete'), 
-										icon: 'delete', 
-										color: 'negative', 
-										handler: () => removeWord(word)
-									},
-								]"		
-							>
-								<AppButton
-									icon="more_vert"
-									type="inline"
-									color="neutral"
+						<AppTableRow
+							v-for="word in words"
+							:id="word.id"
+							:key="word.id"
+						>
+							<td>
+								<AppImagePreview
+									:src="word.image"
+									:image-search-modal-subtitle="extractWordPreview(word)"
+									:default-image-search-query="word.eng"
+									@update:src="src => updateWordImage(word, src)"
 								/>
-							</AppDropdownMenu>
-						</td>
-					</AppTableRow>
-				</template>
+							</td>
+							<td v-html="highlighTextByQuery(word.rus, search)" />
+							<td v-html="highlighTextByQuery(word.eng, search)" />
+							<td v-html="highlighTextByQuery(word.srp_latin, search)" />
+							<td v-html="highlighTextByQuery(word.srp_cyrillic, search)" />
+							<td style="margin-inline-start: auto">
+								<AppDropdownMenu 
+									:items="[
+										{ 
+											label: $t('edit'),
+											icon: 'edit',
+											handler: () => editWord(word.id)
+										},
+										'separator',
+										{ 
+											label: $t('delete'), 
+											icon: 'delete', 
+											color: 'negative', 
+											handler: () => removeWord(word)
+										},
+									]"		
+								>
+									<AppButton
+										icon="more_vert"
+										type="inline"
+										color="neutral"
+									/>
+								</AppDropdownMenu>
+							</td>
+						</AppTableRow>
+					</template>
 
-				<template
-					v-else
-					#body
-				>
-					<AppZeroState
-						icon="search"
-						:title="notFoundTitle"
-						:description="$t('not-found-description')"
-					/>
-				</template>
+					<template
+						v-else
+						#body
+					>
+						<AppZeroState
+							icon="search"
+							:title="notFoundTitle"
+							:description="$t('not-found-description')"
+						/>
+					</template>
 
-				<template
-					v-if="count > limit"
-					#pagination
-				>
-					<AppPaginationBar
-						:count="count"
-						:offset="offset"
-						:limit="limit"
-						:limit-options="limitOptions"
-						@update:limit="limit = $event"
-						@update:offset="offset = $event"
-					/>
-				</template>
-			</AppTable>
+					<template
+						v-if="count > limit"
+						#pagination
+					>
+						<AppPaginationBar
+							:count="count"
+							:offset="offset"
+							:limit="limit"
+							:limit-options="limitOptions"
+							@update:limit="limit = $event"
+							@update:offset="offset = $event"
+						/>
+					</template>
+				</AppTable>
+			</div>
 		</div>
 	</div>
 </template>
@@ -279,6 +285,8 @@ export default defineComponent({
 <style scoped lang="scss">
 
 .words-view {
+	display: grid;
+	grid-template-columns: 280px 1fr;
 	width: 100%;
 	height: 100%;
 
@@ -290,7 +298,7 @@ export default defineComponent({
 	}
 	
 	&--content {
-		padding-inline: 32px;
+		padding-inline: 16px;
 	}
 }
 </style>
