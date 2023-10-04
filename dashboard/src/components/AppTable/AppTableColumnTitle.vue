@@ -70,7 +70,7 @@ export default defineComponent({
 
 <template>
 	<th :style="{ width }">
-		<div class="app-table-column-title--outer">
+		<div class="app-table-column-title__outer">
 			<button 
 				class="app-table-column-title"
 				:class="{ 'app-table-column-title--sortable': sortable }"
@@ -84,8 +84,8 @@ export default defineComponent({
 				/>
 				<span
 					v-if="label"
-					class="app-table-column-title--label text-subtitle-2"
-					:class="{ 'app-table-column-title--label-active-sort': sortActive }"
+					class="app-table-column-title__label text-subtitle-2"
+					:class="{ 'app-table-column-title__label--active-sort': sortActive }"
 					v-text="label"
 				/>
 
@@ -105,7 +105,7 @@ export default defineComponent({
 
 $padding: 8px;
 
-.app-table-column-title--outer {
+.app-table-column-title__outer {
 	display: flex;
 	justify-content: flex-start;
 	margin-inline-start: -$padding;
@@ -127,10 +127,10 @@ $padding: 8px;
 		}
   }
 
-  &--label {
+  &__label {
     color: $color-text-secondary;
 
-		&-active-sort {
+		&--active-sort {
 			color: $color-text-accent-primary;
 		}
   }

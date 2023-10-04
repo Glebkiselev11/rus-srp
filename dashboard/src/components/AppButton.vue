@@ -63,9 +63,9 @@ export default defineComponent({
 	<button
 		class="app-button" 
 		:class="[
-			`app-button-size-${size}`, 
-			`app-button-type-${type}`, 
-			`app-button-color-${color}`,
+			`app-button--size-${size}`, 
+			`app-button--type-${type}`, 
+			`app-button--color-${color}`,
 			{ 'app-button--icon-and-label' : icon && label},
 			{ 'app-button--only-icon' : icon && !label},
 			{ 'app-button--only-label': label && !icon},
@@ -102,20 +102,20 @@ export default defineComponent({
 		padding-inline-start: 12px;
 		padding-inline-end: 16px;
 
-		&.app-button-size-regular {
+		&.app-button--size-regular {
 			padding-block: 10px;
 		}
-		&.app-button-size-compact {
+		&.app-button--size-compact {
 			padding-block: 6px;
 		}
 	}
 
 	/* Paddings for Only icon case */
 	&--only-icon {
-		&.app-button-size-regular {
+		&.app-button--size-regular {
 			padding: 8px;
 		}
-		&.app-button-size-compact {
+		&.app-button--size-compact {
 			padding: 6px;
 		}
 	}
@@ -123,15 +123,15 @@ export default defineComponent({
 	/* Paddings for Only label case */
 	&--only-label {
 		padding-inline: 16px;
-		&.app-button-size-regular {
+		&.app-button--size-regular {
 			padding-block: 10px;
 		}
-		&.app-button-size-compact {
+		&.app-button--size-compact {
 			padding-block: 6px;
 		}
 	}
 
-	&-size {
+	&--size {
 		&-regular {
 			min-block-size: 40px;
 			min-inline-size: 40px;
@@ -142,24 +142,24 @@ export default defineComponent({
 		}
 	}
 
-	&-type {
+	&--type {
 		&-primary {
-			&.app-button-color-accent-primary {
+			&.app-button--color-accent-primary {
 				background-color: $color-text-accent-primary;
 				color: $color-text-contrast;
 			}
 
-			&.app-button-color-accent-secondary {
+			&.app-button--color-accent-secondary {
 				background-color: $color-text-accent-secondary;
 				color: $color-text-contrast;
 			}
 
-			&.app-button-color-negative {
+			&.app-button--color-negative {
 				background-color: $color-background-negative;
 				color: $color-text-contrast;
 			}
 
-			&.app-button-color-neutral {
+			&.app-button--color-neutral {
 				background-color: $color-background-content-secondary;
 				color: $color-text-primary;
 			}
@@ -167,19 +167,19 @@ export default defineComponent({
 
 		&-secondary {
 			background-color: $color-background-content-tertiary;
-			&.app-button-color-accent-primary {
+			&.app-button--color-accent-primary {
 				color: $color-text-accent-primary;
 			}
 
-			&.app-button-color-accent-secondary {
+			&.app-button--color-accent-secondary {
 				color: $color-text-accent-secondary;
 			}
 
-			&.app-button-color-negative {
+			&.app-button--color-negative {
 				color: $color-text-negative;
 			}
 
-			&.app-button-color-neutral {
+			&.app-button--color-neutral {
 				color: $color-text-primary;
 			}
 
@@ -187,77 +187,77 @@ export default defineComponent({
 
 		&-inline {
 			background: none;
-			&.app-button-color-accent-primary {
+			&.app-button--color-accent-primary {
 				color: $color-text-accent-primary;
 			}
 
-			&.app-button-color-accent-secondary {
+			&.app-button--color-accent-secondary {
 				color: $color-text-accent-secondary;
 			}
 
-			&.app-button-color-negative {
+			&.app-button--color-negative {
 				color: $color-text-negative;
 			}
 
-			&.app-button-color-neutral {
+			&.app-button--color-neutral {
 				color: $color-text-primary;
 			}
 		}
 	}
 
 	&:hover {
-		&.app-button-type-primary {
-			&.app-button-color-accent-primary {
+		&.app-button--type-primary {
+			&.app-button--color-accent-primary {
 				background-color: $color-background-accent-primary-hovered;
 			}
 
-			&.app-button-color-accent-secondary {
+			&.app-button--color-accent-secondary {
 				background-color: $color-background-accent-secondary-hovered;
 			}
 
-			&.app-button-color-negative {
+			&.app-button--color-negative {
 				background-color: $color-background-negative-hovered;
 			}
 
-			&.app-button-color-neutral {
+			&.app-button--color-neutral {
 				background-color: $color-background-secondary-hovered;
 			}
 		}
 
-		&.app-button-type-secondary {
+		&.app-button--type-secondary {
 			background-color: $color-background-tertiary-hovered;
 		}
 
-		&.app-button-type-inline {
+		&.app-button--type-inline {
 			background-color: $color-background-content-primary-hovered;
 		}
 
 	}
 
 	&:active {
-		&.app-button-type-primary {
-			&.app-button-color-accent-primary {
+		&.app-button--type-primary {
+			&.app-button--color-accent-primary {
 				background-color: $color-background-accent-primary-active;
 			}
 
-			&.app-button-color-accent-secondary {
+			&.app-button--color-accent-secondary {
 				background-color: $color-background-accent-secondary-active;
 			}
 
-			&.app-button-color-negative {
+			&.app-button--color-negative {
 				background-color: $color-background-negative-active;
 			}
 
-			&.app-button-color-neutral {
+			&.app-button--color-neutral {
 				background-color: $color-background-secondary-active;
 			}
 		}
 
-		&.app-button-type-secondary {
+		&.app-button--type-secondary {
 			background-color: $color-background-tertiary-active;
 		}
 
-		&.app-button-type-inline {
+		&.app-button--type-inline {
 			background-color: $color-background-content-primary-active;
 		}
 	}

@@ -43,8 +43,8 @@ export default defineComponent({
 
 		<span 
 			v-if="showLabels"
-			class="app-navbar-item--label"
-			:class="{ 'app-navbar-item--label-active': active }"
+			class="app-navbar-item__label"
+			:class="{ 'app-navbar-item__label--active': active }"
 		>
 			{{ label }}
 		</span>
@@ -75,11 +75,11 @@ export default defineComponent({
 		}
 	}
 
-	&--label {
+	&__label {
 		@extend .text-body-2;
 		color: $color-text-primary;
 
-		&-active {
+		&--active {
 			color: $color-text-accent-primary;
 		}
 	}

@@ -77,8 +77,8 @@ export default defineComponent({
 		>
 			<thead
 				v-if="columns.length"
-				class="app-table--header"
-				:class="{ 'app-table--header-scrollable-body': isContentBodyScrollable }"	
+				class="app-table__header"
+				:class="{ 'app-table__header--scrollable-body': isContentBodyScrollable }"	
 			>
 				<tr>
 					<th v-if="checkable">
@@ -103,7 +103,7 @@ export default defineComponent({
 			</thead>
 			<tbody
 				ref="tableBody"
-				class="app-table--body"
+				class="app-table__body"
 			>
 				<slot name="body" />
 			</tbody>
@@ -129,7 +129,7 @@ $extra-space: 250px;
 	background: $color-background-content-primary;
 	border-collapse: collapse;
 
-	&--header {
+	&__header {
 		display: block;
 		height: 48px;
 		border-block-end: 1px solid $color-separator-primary;
@@ -145,12 +145,12 @@ $extra-space: 250px;
 			}
 		}
 
-		&-scrollable-body {
+		&--scrollable-body {
 			padding-inline-end: 4px;
 		}
 	}
 
-	&--body {
+	&__body {
 		display: block;
 		overflow-y: auto;
 		height: calc(100vh - $extra-space);

@@ -91,7 +91,7 @@ export default defineComponent({
 			@click="prevPage"
 		/>
 
-		<div class="app-pagination--pages">
+		<div class="app-pagination__pages">
 			<AppPaginationButton
 				label="1"
 				:active="isCurrentPage(1)"
@@ -100,7 +100,7 @@ export default defineComponent({
 
 			<span
 				v-show="ellipsisBeforeMiddle"
-				class="app-pagination--ellipses"
+				class="app-pagination__ellipses"
 			>
 				...
 			</span>
@@ -115,7 +115,7 @@ export default defineComponent({
 
 			<span
 				v-show="ellipsisAfterMiddle"
-				class="app-pagination--ellipses"
+				class="app-pagination__ellipses"
 			>
 				...
 			</span>
@@ -144,12 +144,12 @@ export default defineComponent({
 	display: flex;
 	column-gap: 8px;
 
-	&--pages {
+	&__pages {
 		display: inherit;
 		align-items: flex-end;
 	}
 
-	&--ellipses {
+	&__ellipses {
 		width: 32px;
 		text-align: center;
 		padding-block-end: 6px;

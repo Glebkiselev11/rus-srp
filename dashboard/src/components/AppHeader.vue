@@ -32,13 +32,13 @@ export default defineComponent({
 
 <template>
 	<header class="app-header">
-		<div class="app-header--left-container">
+		<div class="app-header__left-container">
 			<slot name="left" />
 			<div>
 				<h3>{{ title }}</h3>
 				<span
 					v-if="subtitle"
-					class="app-header--subtitle"
+					class="app-header__subtitle"
 					v-text="subtitle"
 				/>
 			</div>
@@ -49,7 +49,7 @@ export default defineComponent({
 			icon="close"
 			type="inline"
 			color="neutral"
-			class="app-header--close-button"
+			class="app-header__close-button"
 			@click="handleClose"
 		/>
 	</header>
@@ -68,17 +68,17 @@ export default defineComponent({
 	justify-content: space-between;
 
 
-	&--left-container {
+	&__left-container {
 		display: flex;
 		align-items: center;
 		column-gap: 16px;
 	}
 
-	&--close-button {
+	&__close-button {
 		margin-inline-start: 16px;
 	}
 
-	&--subtitle {
+	&__subtitle {
 		@extend .text-body-2;
 		color: $color-text-secondary;
 	}

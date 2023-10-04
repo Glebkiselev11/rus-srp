@@ -28,7 +28,7 @@ export default defineComponent({
 
 <template>
 	<div class="app-zero-state">
-		<div class="app-zero-state--container">
+		<div class="app-zero-state__container">
 			<AppIcon
 				v-if="icon"
 				:name="icon"
@@ -40,7 +40,7 @@ export default defineComponent({
 
 			<span
 				v-if="description"
-				class="app-zero-state--description"
+				class="app-zero-state__description"
 			>
 				{{ description }}
 			</span>
@@ -61,7 +61,7 @@ export default defineComponent({
 	width: 100%;
 	height: 100%;
 
-	&--container {
+	&__container {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -70,7 +70,7 @@ export default defineComponent({
 		width: 280px;
 	}
 
-	&--description {
+	&__description {
 		@extend .text-color-secondary, .text-body-2;
 	}
 }

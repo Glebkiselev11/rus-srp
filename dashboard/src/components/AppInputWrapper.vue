@@ -23,7 +23,6 @@ export default defineComponent({
 		<label
 			v-if="label"
 			:for="uniqueId"
-			class="app-input-wrapper--label"
 		>
 			{{ label }}
 		</label>

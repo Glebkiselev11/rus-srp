@@ -27,7 +27,7 @@ export default defineComponent({
 			</template>
 		</AppTopBar>
 
-		<div class="settings-view--content">
+		<div class="settings-view__content">
 			<AppPageSection :title="$t('general')">
 				<AppListItem>
 					<AppIcon name="translate" />
@@ -46,7 +46,7 @@ export default defineComponent({
 	width: 100%;
 	height: 100%;
 
-	&--content {
+	&__content {
 		display: flex;
 		align-items: center;
 		flex-direction: column;

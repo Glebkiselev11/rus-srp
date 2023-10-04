@@ -85,8 +85,8 @@ export default defineComponent({
 
 		<div
 			v-if="isMenuOpen"
-			class="app-dropdown--menu"
-			:class="[`app-dropdown--menu-position-${menuPosition}`]"
+			class="app-dropdown__menu"
+			:class="[`app-dropdown__menu-position-${menuPosition}`]"
 		>
 			<template
 				v-for="(item, i) in items"
@@ -116,7 +116,7 @@ export default defineComponent({
 
 			<div
 				v-element-visibility="setBottomMenuAngleVisibility"
-				class="app-dropdown--mark-bottom"
+				class="app-dropdown__mark-bottom"
 			/>
 		</div>
 	</div>
@@ -128,7 +128,7 @@ export default defineComponent({
 .app-dropdown {
 	position: relative;
 
-	&--menu {
+	&__menu {
 		min-inline-size: 148px;
 		padding-block: 8px;
 		position: absolute;
@@ -148,7 +148,7 @@ export default defineComponent({
 		}
 	}
 
-	&--mark-bottom {
+	&__mark-bottom {
 		position: absolute;
 		bottom: 0;
 		left: 0;

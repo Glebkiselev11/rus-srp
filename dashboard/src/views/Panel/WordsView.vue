@@ -178,8 +178,8 @@ export default defineComponent({
 				</template>
 			</AppTopBar>
 
-			<div class="words-view--content">
-				<div class="words-view--filter-panel">
+			<div class="words-view__content">
+				<div class="words-view__filter-panel">
 					<AppInput
 						v-model="search"
 						type="text"
@@ -290,14 +290,14 @@ export default defineComponent({
 	width: 100%;
 	height: 100%;
 
-	&--filter-panel {
+	&__filter-panel {
 		display: flex;
 		align-items: flex-end;
 		justify-content: space-between;
 		margin-block-end: 16px;
 	}
 	
-	&--content {
+	&__content {
 		padding-inline: 16px;
 	}
 }

@@ -99,8 +99,8 @@ export default defineComponent({
 		/>
 
 		<input
-			class="app-input--input"
-			:class="['app-input--input--' + size]"
+			class="app-input__field"
+			:class="['app-input__field--' + size]"
 			:style="{ width }"
 			:type="type"
 			:value="modelValue"
@@ -119,7 +119,7 @@ export default defineComponent({
 			size="compact"
 			type="inline"
 			icon-color="tertiary"
-			class="app-input--clear-button"
+			class="app-input__clear-button"
 			@click="emitValue('')"
 		/>
 	</div>
@@ -131,7 +131,7 @@ export default defineComponent({
 .app-input {
 	position: relative;
 
-	&:has(.app-input--left-icon) .app-input--input {
+	&:has(.app-input--left-icon) .app-input__field {
 		padding-left: 40px;
 	}
 
@@ -142,7 +142,7 @@ export default defineComponent({
 		transform: translateY(-50%);
 	}
 
-	&--input {
+	&__field {
 		border-radius: 8px;
 		border: 1px solid $color-separator-primary;
 		background: $color-field-background;
@@ -178,7 +178,7 @@ export default defineComponent({
 		}
 	}
 
-	&--clear-button {
+	&__clear-button {
 		position: absolute;
 		right: 8px;
 		top: 4px;
