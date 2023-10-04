@@ -52,7 +52,7 @@ export default defineComponent({
 		},
 		width: {
 			type: String,
-			default: "280px",
+			default: "100%",
 		},
 		size: {
 			type: String as PropType<InputSize>,
