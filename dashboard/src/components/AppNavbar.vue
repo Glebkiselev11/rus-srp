@@ -34,17 +34,15 @@ export default defineComponent({
 		class="app-navbar"
 		:class="{ 'app-navbar--expanded': isExpanded}"
 	>
-		<nav>
-			<AppNavbarItem 
-				v-for="item in items"
-				:key="item.name"
-				:label="item.label"
-				:active="item.active"
-				:icon-name="item.icon"
-				:show-labels="isExpanded"
-				@click="handleClick(item)"
-			/>
-		</nav>
+		<AppNavbarItem
+			v-for="item in items"
+			:key="item.name"
+			:label="item.label"
+			:active="item.active"
+			:icon-name="item.icon"
+			:show-labels="isExpanded"
+			@click="handleClick(item)"
+		/>
 	</aside>
 </template>
 
@@ -52,13 +50,18 @@ export default defineComponent({
 @import "@/styles/main.scss";
 
 .app-navbar {
+	margin-block-start: 10px;
 	width: 72px;
-  height: 100%;
+	height: 100%;
 	background-color: $color-background-content-primary;
 	border-inline-end: 1px solid $color-separator-primary;
+	display: flex;
+	flex-direction: column;
+	row-gap: 4px;
+	padding-inline: 12px;
 
 	&--expanded {
-  	width: 256px;
+		width: 256px;
 	}
 }
 

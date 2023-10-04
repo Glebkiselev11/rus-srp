@@ -32,7 +32,10 @@ export default defineComponent({
 
 
 <template>
-	<div class="app-navbar-item">
+	<div
+		class="app-navbar-item"
+		:class="{'app-navbar-item--active': active}"
+	>
 		<AppIcon
 			:name="iconName"
 			:color="active ? 'accent-primary' : 'primary'"
@@ -55,10 +58,21 @@ export default defineComponent({
 	display: flex;	
 	align-items: center;
 	column-gap: 12px;
-	padding: 12px 20px;
+	min-block-size: 48px;
+	min-inline-size: 48px;
+	padding: 12px;
+	border-radius: 12px;
 
 	&:hover {
 		cursor: pointer;
+		background-color: $color-background-content-primary-hovered;
+	}
+
+	&--active {
+		background-color: $color-background-accent-primary-tint;
+		&:hover {
+			@extend .app-navbar-item--active;
+		}
 	}
 
 	&--label {
