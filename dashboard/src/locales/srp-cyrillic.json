@@ -1,6 +1,7 @@
 {
   "no-words-were-found": "Нису пронађене речи за овај упит",
   "general": "Општа",
+  "categories": "Категорије",
   "order": {
     "new-words": "Последње додато",
     "old-words": "Старе речи",

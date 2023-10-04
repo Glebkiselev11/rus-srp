@@ -1,6 +1,7 @@
 {
   "no-words-were-found": "No words were found for this query",
   "general": "General",
+  "categories": "Categories",
   "order": {
     "new-words": "Last added",
     "old-words": "Old words",
