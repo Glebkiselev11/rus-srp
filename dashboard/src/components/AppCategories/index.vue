@@ -1,18 +1,32 @@
 <!-- The side bar with categories -->
 <script lang="ts">
 import { defineComponent } from "vue";
+import AppInput from "@/components/AppInput.vue";
+
 
 export default defineComponent({
 	name: "AppCategories",
+	components: {
+		AppInput,
+	},
+	data() {
+		return {
+			search: "",
+		};
+	},
 });
 
 </script>
 
 <template>
 	<div class="app-categories">
-		<h5>
-			AppCategories
-		</h5>
+		<div class="app-categories--header">
+			<AppInput
+				v-model="search"
+				:placeholder="$t('find-category')"
+				left-icon="search"
+			/>
+		</div>
 	</div>
 </template>
 
