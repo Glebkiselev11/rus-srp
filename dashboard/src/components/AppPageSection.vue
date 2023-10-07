@@ -17,7 +17,6 @@ export default defineComponent({
 
 </script>
 
-
 <template>
 	<div class="app-page-section">
 		<AppHeader

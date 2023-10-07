@@ -67,7 +67,6 @@ export default defineComponent({
 	align-items: center;
 	justify-content: space-between;
 
-
 	&__left-container {
 		display: flex;
 		align-items: center;

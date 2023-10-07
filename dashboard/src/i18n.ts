@@ -15,7 +15,6 @@ export const LanguageList = [
 
 export type LanguageCode = "en" | "ru" | "srp-latin" | "srp-cyrillic";
 
-
 export default createI18n({
 	locale: localStorage.getItem(STORAGE_KEY) || "en",
 	messages: {

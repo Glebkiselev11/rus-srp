@@ -1,7 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-
 export default defineComponent({
 	name: "AppPaginationButton",
 	props: {
@@ -65,5 +64,4 @@ export default defineComponent({
 }
 
 </style>
-
 

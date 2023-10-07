@@ -72,7 +72,6 @@ export default defineComponent({
 	align-items: center;
 }
 
-
 .app-modal {
 	border-radius: 16px;
 	padding: 8px;

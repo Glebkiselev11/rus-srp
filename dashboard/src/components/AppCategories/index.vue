@@ -4,7 +4,6 @@ import { defineComponent } from "vue";
 import AppButton from "@/components/AppButton.vue";
 import AppInput from "@/components/AppInput.vue";
 
-
 export default defineComponent({
 	name: "AppCategories",
 	components: {

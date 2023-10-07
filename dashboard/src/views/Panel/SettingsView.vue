@@ -39,7 +39,6 @@ export default defineComponent({
 	</main>
 </template>
 
-
 <style scoped lang="scss">
 @import "@/styles/colors.scss";
 .settings-view {

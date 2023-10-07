@@ -19,7 +19,6 @@ export default defineComponent({
 
 </script>
 
-
 <template>
 	<div 
 		class="app-list-item"

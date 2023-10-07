@@ -111,7 +111,6 @@ export default defineComponent({
 				:description="$t('image-search-description')"
 			/>
 
-
 			<!-- Nothing were found -->
 			<AppZeroState 
 				v-if="!loading && !images.length"
@@ -125,8 +124,6 @@ export default defineComponent({
 					@click="searchQuery = defaultSearchQuery"
 				/>
 			</AppZeroState>
-
-
 
 			<div 
 				v-if="savedLink && areImagesContainSavedLink"
@@ -184,7 +181,6 @@ export default defineComponent({
 	margin-block-start: 20px;
 	block-size: 70vh;
 	overflow: auto;
-
 
 	&--image {
 		width: 218px;

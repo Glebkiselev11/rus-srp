@@ -3,7 +3,6 @@ import { defineComponent, type PropType } from "vue";
 import AppNavbarItem from "./AppNavbarItem.vue";
 import type { NavItem } from "../types";
 
-
 export default defineComponent({
 	name: "AppNavbar",
 	components: {

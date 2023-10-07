@@ -93,7 +93,6 @@ export default defineComponent({
 	/>
 </template>
 
-
 <style lang="scss">
 @import "@/styles/colors.scss";
 
@@ -139,6 +138,5 @@ export default defineComponent({
 		fill: $color-icon-link;
 	}
 }
-
 
 </style>

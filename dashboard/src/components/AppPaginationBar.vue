@@ -117,7 +117,6 @@ export default defineComponent({
   border-block-start: 1px solid $color-separator-primary;
   background-color: $color-background-content-primary;
 
-
 	&__section {
 		display: flex;
 		align-items: center;
