@@ -62,15 +62,16 @@ export default defineComponent({
 	min-inline-size: 48px;
 	padding: 12px;
 	border-radius: 12px;
+	cursor: pointer;
 
 	&:hover {
-		cursor: pointer;
 		background-color: $color-background-content-primary-hovered;
 	}
 
 	&--active {
 		background-color: $color-background-accent-primary-tint;
 		&:hover {
+			cursor: default;
 			@extend .app-navbar-item--active;
 		}
 	}
