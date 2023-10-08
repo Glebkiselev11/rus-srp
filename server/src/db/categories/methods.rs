@@ -55,8 +55,10 @@ pub fn select_all_with_filter(
     let limit = query.get_limit();
 
     let db_query = dsl::categories
-        .or_filter(dsl::name.like(&search))
-        .or_filter(dsl::description.like(&search));
+        .or_filter(dsl::eng.like(&search))
+        .or_filter(dsl::rus.like(&search))
+        .or_filter(dsl::srp_cyrillic.like(&search))
+        .or_filter(dsl::srp_latin.like(&search));
 
     let count = db_query
         .clone()
