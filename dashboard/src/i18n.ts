@@ -1,26 +1,26 @@
 import { createI18n } from "vue-i18n";
-import en from "@/locales/en.json";
-import ru from "@/locales/ru.json";
-import srpLatin from "@/locales/srp-latin.json";
-import srpCyrillic from "@/locales/srp-cyrillic.json";
+import eng from "@/locales/eng.json";
+import rus from "@/locales/rus.json";
+import srpLatin from "@/locales/srp_latin.json";
+import srpCyrillic from "@/locales/srp_cyrillic.json";
 
 export const STORAGE_KEY = "languageKey";
 
 export const LanguageList = [
-	{ value: "en", label: "English" },
-	{ value: "ru", label: "Русский" },
-	{ value: "srp-latin", label: "Srpski" },
-	{ value: "srp-cyrillic", label: "Српски" },
+	{ value: "eng", label: "English" },
+	{ value: "rus", label: "Русский" },
+	{ value: "srp_latin", label: "Srpski" },
+	{ value: "srp_cyrillic", label: "Српски" },
 ];
 
-export type LanguageCode = "en" | "ru" | "srp-latin" | "srp-cyrillic";
+export type LanguageCode = "eng" | "rus" | "srp_latin" | "srp_cyrillic";
 
 export default createI18n({
-	locale: localStorage.getItem(STORAGE_KEY) || "en",
+	locale: localStorage.getItem(STORAGE_KEY) || "eng",
 	messages: {
-		en,
-		ru,
-		"srp-latin": srpLatin,
-		"srp-cyrillic": srpCyrillic,
+		eng,
+		rus,
+		"srp_latin": srpLatin,
+		"srp_cyrillic": srpCyrillic,
 	},
 });

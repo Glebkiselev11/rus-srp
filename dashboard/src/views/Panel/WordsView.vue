@@ -132,14 +132,7 @@ export default defineComponent({
 			console.log("openNewWordPage");
 		},
 		async removeWord(word: Word) {
-			const localeToKeyMap: Record<LanguageCode, keyof Word> = {
-				"en": "eng",
-				"ru": "rus",
-				"srp-latin": "srp_latin",
-				"srp-cyrillic": "srp_cyrillic",
-			};
-
-			const key = localeToKeyMap[this.$i18n.locale as LanguageCode];
+			const key = this.$i18n.locale as LanguageCode;
 
 			if (confirm(this.$t("are-you-sure-delete", { word: word[key] }))) {
 				this.deleteWord(word.id);
