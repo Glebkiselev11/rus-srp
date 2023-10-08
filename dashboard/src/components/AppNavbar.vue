@@ -49,7 +49,7 @@ export default defineComponent({
 @import "@/styles/main.scss";
 
 .app-navbar {
-	margin-block-start: 10px;
+	padding-block-start: 10px;
 	width: 72px;
 	height: 100%;
 	background-color: $color-background-content-primary;
