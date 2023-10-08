@@ -10,6 +10,7 @@ pub struct DbNewCategory {
     pub srp_latin: Option<String>,
     pub srp_cyrillic: Option<String>,
     pub created_at: chrono::NaiveDateTime,
+    pub image: Option<String>,
 }
 
 impl From<CategoryBody> for DbNewCategory {
@@ -19,6 +20,7 @@ impl From<CategoryBody> for DbNewCategory {
             rus: category.rus,
             srp_cyrillic: category.srp_cyrillic,
             srp_latin: category.srp_latin,
+            image: category.image,
             created_at: chrono::Utc::now().naive_utc(),
         }
     }
@@ -34,6 +36,7 @@ pub struct DbCategory {
     pub srp_cyrillic: Option<String>,
     pub created_at: chrono::NaiveDateTime,
     pub updated_at: Option<chrono::NaiveDateTime>,
+    pub image: Option<String>,
 }
 
 impl DbCategory {
@@ -45,6 +48,7 @@ impl DbCategory {
             rus: payload.rus,
             srp_cyrillic: payload.srp_cyrillic,
             srp_latin: payload.srp_latin,
+            image: payload.image,
             updated_at: Some(chrono::Utc::now().naive_utc()),
         }
     }

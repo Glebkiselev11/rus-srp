@@ -6,4 +6,5 @@ pub struct CategoryBody {
     pub rus: Option<String>,
     pub srp_latin: Option<String>,
     pub srp_cyrillic: Option<String>,
+    pub image: Option<String>,
 }
