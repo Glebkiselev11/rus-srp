@@ -42,7 +42,6 @@ export default defineComponent({
 	align-items: center;
 	column-gap: 16px;
 	white-space: nowrap;
-	overflow-x: hidden;
 	text-overflow: ellipsis;
 
 	&--clickable {
