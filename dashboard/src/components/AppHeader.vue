@@ -1,6 +1,8 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import AppButton from "./AppButton.vue";
+
+type TitleTag = "h1" | "h2" | "h3" | "h4" | "h5";
 
 export default defineComponent({
 	name: "AppHeader",
@@ -11,6 +13,10 @@ export default defineComponent({
 		title: {
 			type: String,
 			default: null,
+		},
+		titleTag: {
+			type: String as PropType<TitleTag>,
+			default: "h3",
 		},
 		subtitle: {
 			type: String,
@@ -32,10 +38,16 @@ export default defineComponent({
 
 <template>
 	<header class="app-header">
-		<div class="app-header__left-container">
+		<div class="app-header__part-container">
 			<slot name="left" />
 			<div>
-				<h3>{{ title }}</h3>
+				<component
+					:is="titleTag"
+					v-if="title"
+				>
+					{{ title }}
+				</component>
+
 				<span
 					v-if="subtitle"
 					class="app-header__subtitle"
@@ -44,14 +56,18 @@ export default defineComponent({
 			</div>
 		</div>
 
-		<AppButton
-			v-if="closeButton"
-			icon="close"
-			type="inline"
-			color="neutral"
-			class="app-header__close-button"
-			@click="handleClose"
-		/>
+		<div class="app-header__part-container">
+			<slot name="right" />
+
+			<AppButton
+				v-if="closeButton"
+				icon="close"
+				type="inline"
+				color="neutral"
+				class="app-header__close-button"
+				@click="handleClose"
+			/>
+		</div>
 	</header>
 </template>
 
@@ -67,7 +83,7 @@ export default defineComponent({
 	align-items: center;
 	justify-content: space-between;
 
-	&__left-container {
+	&__part-container {
 		display: flex;
 		align-items: center;
 		column-gap: 16px;
