@@ -29,7 +29,8 @@ export default defineComponent({
 	},
 	emits: ["close"],
 	methods: {
-		handleClose(): void {
+		handleClose(e: Event): void {
+			e.stopPropagation();
 			this.$emit("close");
 		},
 	},
