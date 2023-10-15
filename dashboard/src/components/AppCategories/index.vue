@@ -2,20 +2,40 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import AppButton from "@/components/AppButton.vue";
+import { mapActions, mapState } from "pinia";
+import { useCategoriesStore } from "@/stores/categories";
 import AppInput from "@/components/AppInput.vue";
+import AppCategoriesList from "@/components/AppCategories/AppCategoriesList.vue";
+import AppHeader from "@/components/AppHeader.vue";
 
 export default defineComponent({
 	name: "AppCategories",
 	components: {
 		AppInput,
 		AppButton,
+		AppCategoriesList,
+		AppHeader,
 	},
 	data() {
 		return {
 			search: "",
 		};
 	},
+	computed: {
+		...mapState(useCategoriesStore, ["categories"]),
+		filter() {
+			return {
+				search: this.search,
+				offset: 0,
+				limit: 20,
+			};
+		},
+	},
+	mounted() {
+		this.fetchCategories(this.filter);
+	},
 	methods: {
+		...mapActions(useCategoriesStore, ["fetchCategories"]),
 		addCategory() {
 			console.log("add category");
 		},
@@ -26,26 +46,29 @@ export default defineComponent({
 
 <template>
 	<div class="app-categories">
-		<div class="app-categories__header">
-			<AppInput
-				v-model="search"
-				:placeholder="$t('find-category')"
-				left-icon="search"
-			/>
+		<AppHeader
+			:title="$t('categories')"
+			title-tag="h4"
+		>
+			<template #right>
+				<AppButton
+					icon="add"
+					size="compact"
+					type="inline"
+					color="neutral"
+					@click="addCategory"
+				/>
+			</template>
+		</AppHeader>
 
-			<div class="app-categories__row">
-				<span class="text-subtitle-1">{{ $t('categories') }}</span>
+		<AppInput
+			v-model="search"
+			:placeholder="$t('find-category')"
+			left-icon="search"
+			class="app-categories__search"
+		/>
 
-				<div>
-					<AppButton
-						icon="add"
-						type="inline"
-						color="neutral"
-						@click="addCategory"
-					/>
-				</div>
-			</div>
-		</div>
+		<AppCategoriesList :categories="categories" />
 	</div>
 </template>
 
@@ -56,18 +79,10 @@ export default defineComponent({
   background-color: $color-background-content-primary;
   border-inline-end: 1px solid $color-separator-primary;
 
-  &__header {
-		display: flex;
-		flex-direction: column;
-    padding: 12px;
-		row-gap: 12px;
-  }
-
-  &__row {
-    display: flex;
-    justify-content: space-between;
-		align-items: center;
-  }
+	&__search {
+		margin-inline: 12px;
+		margin-block-end: 12px;
+	}
 }
 
 </style>

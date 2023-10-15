@@ -4,6 +4,9 @@ import AppIcon from "@/components/AppIcon/index.vue";
 import AppModal from "@/components/AppModal.vue";
 import AppImagesSearch from "./AppImagesSearch.vue";
 import { addCropImagaeParamsToUrl } from "@/utils";
+import type { IconSize } from "@/types/icons";
+
+type PreviewSize = "24px" | "32px" | "40px" | "48px" | "56px" | "64px";
 
 export default defineComponent({
 	name: "AppImagePreview",
@@ -25,6 +28,10 @@ export default defineComponent({
 			type: String,
 			default: null,
 		},
+		size: {
+			type: String as PropType<PreviewSize>,
+			default: "40px",
+		},
 	},
 	emits: ["update:src"],
 	data() {
@@ -39,10 +46,22 @@ export default defineComponent({
 		imagesSearchModalTitle(): string {
 			return this.src ? this.$t("edit-image") : this.$t("add-image");
 		},
+		iconSize(): IconSize {
+			switch (this.size) {
+			case "24px":
+				return "small";
+			case "32px":
+			case "40px":
+				return "compact";
+			default:
+				return "regular";
+			}
+		},
 	},
 	methods: {
 		addCropImagaeParamsToUrl,
-		handleClick(): void {
+		handleClick(e: Event): void {
+			e.stopPropagation();
 			this.isModalVisible = true;
 		},
 		handleSelectImage(src: string): void {
@@ -57,6 +76,7 @@ export default defineComponent({
 <template>
 	<button
 		class="app-image-preview"
+		:style="{ width: size, height: size }"
 		@click="handleClick"
 	>
 		<img
@@ -66,6 +86,7 @@ export default defineComponent({
 		<app-icon
 			v-else
 			name="filter_hdr"
+			:size="iconSize"
 			color="tertiary"
 		/>
 
@@ -74,14 +95,14 @@ export default defineComponent({
 				v-if="src"
 				name="edit"
 				color="contrast"
-				size="compact"
+				:size="iconSize"
 			/>
 
 			<app-icon
 				v-else
 				name="add_photo_alternate"
 				color="contrast"
-				size="compact"
+				:size="iconSize"
 			/>
 		</div>
 	</button>
@@ -96,7 +117,10 @@ export default defineComponent({
 			v-if="src"
 			#header-left
 		>
-			<div class="app-image-preview">
+			<div
+				class="app-image-preview"
+				:style="{width: size}"
+			>
 				<img
 					:src="srcWithParams"
 				>
@@ -118,8 +142,6 @@ export default defineComponent({
 
 .app-image-preview {
 	border: none;
-	width: 40px;
-	height: 40px;
 	border-radius: 8px;
 	overflow: hidden;
 	background-color: $color-image-placeholder;
