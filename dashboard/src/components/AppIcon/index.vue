@@ -26,6 +26,7 @@ import CancelIcon from "./CancelIcon.vue";
 import ExpandMoreDownIcon from "./ExpandMoreDownIcon.vue";
 import ExpandMoreUpIcon from "./ExpandMoreUpIcon.vue";
 import SortIcon from "./SortIcon.vue";
+import WidgetsIcon from "./WidgetsIcon.vue";
 
 export default defineComponent({
 	name: "AppIcon",
@@ -70,6 +71,7 @@ export default defineComponent({
 				"expand_more_down": ExpandMoreDownIcon,
 				"expand_more_up": ExpandMoreUpIcon,
 				"sort": SortIcon,
+				"widgets": WidgetsIcon,
 			}[this.name];
 		},
 		convertedSize(): string {

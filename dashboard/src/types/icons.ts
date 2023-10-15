@@ -36,4 +36,5 @@ export type IconName =
   "cancel" |
   "expand_more_down" |
   "expand_more_up" |
-  "sort";
+  "sort" |
+  "widgets";
