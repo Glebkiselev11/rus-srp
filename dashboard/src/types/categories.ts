@@ -1,11 +1,9 @@
 export interface DraftCategory {
-  // TODO: add those fields
-  // rus: string;
-  // eng: string;
-  // srp_latin: string;
-  // srp_cyrillic: string;
-  // image: string | null;
-  name: string;
+  rus: string;
+  eng: string;
+  srp_latin: string;
+  srp_cyrillic: string;
+  image: string | null;
 }
 
 export interface Category extends DraftCategory {
