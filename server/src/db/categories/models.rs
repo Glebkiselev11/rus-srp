@@ -6,9 +6,9 @@ use serde::{Deserialize, Serialize};
 #[diesel(table_name = categories)]
 pub struct DbNewCategory {
     pub eng: String,
-    pub rus: Option<String>,
-    pub srp_latin: Option<String>,
-    pub srp_cyrillic: Option<String>,
+    pub rus: String,
+    pub srp_latin: String,
+    pub srp_cyrillic: String,
     pub created_at: chrono::NaiveDateTime,
     pub image: Option<String>,
 }
@@ -33,9 +33,9 @@ impl From<CategoryBody> for DbNewCategory {
 pub struct DbCategory {
     pub id: i32,
     pub eng: String,
-    pub rus: Option<String>,
-    pub srp_latin: Option<String>,
-    pub srp_cyrillic: Option<String>,
+    pub rus: String,
+    pub srp_latin: String,
+    pub srp_cyrillic: String,
     pub created_at: chrono::NaiveDateTime,
     pub updated_at: Option<chrono::NaiveDateTime>,
     pub image: Option<String>,

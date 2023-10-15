@@ -4,9 +4,9 @@ diesel::table! {
     categories (id) {
         id -> Integer,
         eng -> Text,
-        rus -> Nullable<Text>,
-        srp_latin -> Nullable<Text>,
-        srp_cyrillic -> Nullable<Text>,
+        rus -> Text,
+        srp_latin -> Text,
+        srp_cyrillic -> Text,
         created_at -> Timestamp,
         updated_at -> Nullable<Timestamp>,
         image -> Nullable<Text>,
