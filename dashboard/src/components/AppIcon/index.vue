@@ -74,6 +74,7 @@ export default defineComponent({
 		},
 		convertedSize(): string {
 			return {
+				"small": "16px",
 				"regular": "24px",
 				"compact": "20px",
 			}[this.size];
