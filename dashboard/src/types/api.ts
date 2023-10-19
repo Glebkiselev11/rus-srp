@@ -25,6 +25,7 @@ export interface RequestParams {
   offset: number;
   limit: number;
   order?: Order;
+  category_id?: number;
 }
 
 export type OptionalRequestParams = Partial<RequestParams>;
