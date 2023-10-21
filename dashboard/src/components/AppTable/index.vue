@@ -4,7 +4,7 @@ import { defineComponent, type PropType } from "vue";
 import AppTableColumnTitle from "./AppTableColumnTitle.vue";
 import type { Order } from "@/types/api";
 
-interface Column {
+type Column = {
 	sort_key?: string;
 	sortable: boolean;
 	width?: string;

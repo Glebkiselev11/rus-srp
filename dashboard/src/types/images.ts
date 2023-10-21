@@ -1,4 +1,4 @@
-export interface Image {
+export type Image = {
   id: number;
   width: number;
   height: number;

@@ -6,7 +6,7 @@ import { vOnClickOutside, vElementVisibility } from "@vueuse/components";
 import { watchDebounced } from "@vueuse/core";
 import AppIcon from "@/components/AppIcon/index.vue";
 
-interface MenuItem {
+type MenuItem = {
 	label: string;
 	icon?: IconName;
 	color?: IconColor;

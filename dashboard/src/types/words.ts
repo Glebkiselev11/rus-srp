@@ -1,4 +1,4 @@
-export interface DraftWord {
+export type DraftWord = {
   rus: string;
   eng: string;
   srp_latin: string;
@@ -6,8 +6,8 @@ export interface DraftWord {
   image: string | null;
 }
 
-export interface Word extends DraftWord {
+export type Word = {
   id: number;
   created_at: string;
   updated_at: string;
-}
+} & DraftWord;

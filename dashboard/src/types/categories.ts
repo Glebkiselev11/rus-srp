@@ -1,4 +1,4 @@
-export interface DraftCategory {
+export type DraftCategory = {
   rus: string;
   eng: string;
   srp_latin: string;
@@ -6,8 +6,8 @@ export interface DraftCategory {
   image: string | null;
 }
 
-export interface Category extends DraftCategory {
+export type Category = {
   id: number;
   created_at: string;
   updated_at: string;
-}
+} & DraftCategory;

@@ -1,6 +1,6 @@
 import type { IconName } from "./icons";
 
-export interface NavItem {
+export type NavItem = {
 	label: string;
 	name: string;
 	icon: IconName;

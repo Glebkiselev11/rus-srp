@@ -1,4 +1,4 @@
-export interface ListResponse<T> {
+export type ListResponse<T> = {
   offset: number;
   count: number;
   result: Array<T>;
@@ -20,7 +20,7 @@ export type Order =
   "image" |
   "-image"; 
 
-export interface RequestParams {
+export type RequestParams = {
   search: string;
   offset: number;
   limit: number;
@@ -32,12 +32,12 @@ export type OptionalRequestParams = Partial<RequestParams>;
 
 export type TranslationTarget = "RU" | "EN" | "SR";
 
-export interface TranslateRequest {
+export type TranslateRequest = {
   from: string;
   targets: Array<TranslationTarget>;
   text: string;
 }
 
-export interface TranslateResponse {
+export type TranslateResponse = {
   translations: Array<{ text: string; to: "bs" | "ru" | "en" }>;
 }
