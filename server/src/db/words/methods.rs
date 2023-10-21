@@ -40,28 +40,29 @@ pub fn select_all_with_filter(
 ) -> Result<DbQueryResult<DbWord>, DbError> {
     use crate::db::schema::words::dsl;
 
-    let mut order_clause: Box<dyn BoxableExpression<dsl::words, Sqlite, SqlType = NotSelectable>> =
-        Box::new(dsl::created_at.desc());
-
+    let order_by = || -> Box<dyn BoxableExpression<dsl::words, Sqlite, SqlType = NotSelectable>> {
     if let Some(o) = &query.order {
         match o.as_str() {
-            "rus" => order_clause = Box::new(dsl::rus.asc()),
-            "-rus" => order_clause = Box::new(dsl::rus.desc()),
-            "eng" => order_clause = Box::new(dsl::eng.asc()),
-            "-eng" => order_clause = Box::new(dsl::eng.desc()),
-            "srp_latin" => order_clause = Box::new(dsl::srp_latin.asc()),
-            "-srp_latin" => order_clause = Box::new(dsl::srp_latin.desc()),
-            "srp_cyrillic" => order_clause = Box::new(dsl::srp_cyrillic.asc()),
-            "-srp_cyrillic" => order_clause = Box::new(dsl::srp_cyrillic.desc()),
-            "image" => order_clause = Box::new(dsl::image.asc()),
-            "-image" => order_clause = Box::new(dsl::image.desc()),
-            "created_at" => order_clause = Box::new(dsl::created_at.asc()),
-            "-created_at" => order_clause = Box::new(dsl::created_at.desc()),
-            "updated_at" => order_clause = Box::new(dsl::updated_at.asc()),
-            "-updated_at" => order_clause = Box::new(dsl::updated_at.desc()),
-            _ => {}
+                "rus" => Box::new(dsl::rus.asc()),
+                "-rus" => Box::new(dsl::rus.desc()),
+                "eng" => Box::new(dsl::eng.asc()),
+                "-eng" => Box::new(dsl::eng.desc()),
+                "srp_latin" => Box::new(dsl::srp_latin.asc()),
+                "-srp_latin" => Box::new(dsl::srp_latin.desc()),
+                "srp_cyrillic" => Box::new(dsl::srp_cyrillic.asc()),
+                "-srp_cyrillic" => Box::new(dsl::srp_cyrillic.desc()),
+                "image" => Box::new(dsl::image.asc()),
+                "-image" => Box::new(dsl::image.desc()),
+                "created_at" => Box::new(dsl::created_at.asc()),
+                "-created_at" => Box::new(dsl::created_at.desc()),
+                "updated_at" => Box::new(dsl::updated_at.asc()),
+                "-updated_at" => Box::new(dsl::updated_at.desc()),
+                _ => Box::new(dsl::created_at.desc()),
+            }
+        } else {
+            Box::new(dsl::created_at.desc())
         }
-    }
+    };
 
     let offset = query.get_offset();
     let limit = query.get_limit();
@@ -71,7 +72,7 @@ pub fn select_all_with_filter(
 
         let result = dsl::words
             .offset(offset.into())
-            .order(order_clause)
+            .order(order_by())
             .limit(limit)
             .load::<DbWord>(conn)?;
 
@@ -92,7 +93,7 @@ pub fn select_all_with_filter(
         .first::<i64>(conn)?;
 
     let result = db_query
-        .order(order_clause)
+        .order(order_by())
         .offset(offset.into())
         .limit(limit)
         .load::<DbWord>(conn)?;
