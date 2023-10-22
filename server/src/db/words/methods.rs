@@ -95,8 +95,8 @@ pub fn select_all_with_filter(
 
         result = db_query
             .order(order_by())
-            .offset(offset.into())
-            .limit(limit.into())
+            .offset(offset)
+            .limit(limit)
             .load::<DbWord>(conn)?;
     } else {
         count = base_query
@@ -106,8 +106,8 @@ pub fn select_all_with_filter(
 
         result = base_query
             .order(order_by())
-            .offset(offset.into())
-            .limit(limit.into())
+            .offset(offset)
+            .limit(limit)
             .load::<DbWord>(conn)?;
     }
 
