@@ -31,7 +31,10 @@ export default defineComponent({
 </script>
 
 <template>
-	<div class="app-all-words-category-image">
+	<div 
+		class="app-all-words-category-image"
+		:class="[`app-all-words-category-image--${size}`]"
+	>
 		<AppIcon
 			name="widgets"
 			:size="iconSize"
@@ -43,13 +46,21 @@ export default defineComponent({
 <style scoped lang="scss">
 
 .app-all-words-category-image {
-  width: 24px;
-  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
   background: linear-gradient(135deg, #e6ff8a, #9facff);
+
+	&--24px {
+		width: 24px;
+		height: 24px;
+	}
+
+	&--56px {
+		width: 56px;
+		height: 56px;
+	}
 }
 
 </style>
