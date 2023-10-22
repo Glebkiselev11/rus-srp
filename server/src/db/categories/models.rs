@@ -28,7 +28,17 @@ impl From<CategoryBody> for DbNewCategory {
 
 // When you add new fields to the DbCategory struct,
 // make sure they are in the same order as in the diesel::table scheme.
-#[derive(Debug, Clone, Serialize, Deserialize, Queryable, AsChangeset)]
+#[derive(
+    Debug,
+    Clone,
+    Serialize,
+    Deserialize,
+    Queryable,
+    AsChangeset,
+    Selectable,
+    PartialEq,
+    Identifiable,
+)]
 #[diesel(table_name = categories)]
 pub struct DbCategory {
     pub id: i32,

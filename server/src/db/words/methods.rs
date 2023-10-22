@@ -1,8 +1,12 @@
 use super::models::{DbNewWord, DbWord};
-use crate::models::{
-    pagination::DbQueryResult,
-    query_options::QueryOptions,
-    word::{NewWord, UpdateWordBody},
+use crate::{
+    db,
+    // db::words_categories::models::DbWordCategory,
+    models::{
+        pagination::DbQueryResult,
+        query_options::QueryOptions,
+        word::{NewWord, UpdateWordBody},
+    },
 };
 use diesel::{expression::expression_types::NotSelectable, prelude::*, sqlite::Sqlite};
 
@@ -41,8 +45,8 @@ pub fn select_all_with_filter(
     use crate::db::schema::words::dsl;
 
     let order_by = || -> Box<dyn BoxableExpression<dsl::words, Sqlite, SqlType = NotSelectable>> {
-    if let Some(o) = &query.order {
-        match o.as_str() {
+        if let Some(o) = &query.order {
+            match o.as_str() {
                 "rus" => Box::new(dsl::rus.asc()),
                 "-rus" => Box::new(dsl::rus.desc()),
                 "eng" => Box::new(dsl::eng.asc()),
@@ -67,38 +71,47 @@ pub fn select_all_with_filter(
     let offset = query.get_offset();
     let limit = query.get_limit();
 
-    if query.search.is_none() {
-        let count = dsl::words.count().get_result(conn)?;
-
-        let result = dsl::words
-            .offset(offset.into())
-            .order(order_by())
-            .limit(limit)
-            .load::<DbWord>(conn)?;
-
-        return Ok(DbQueryResult { count, result });
-    }
-
     let search = query.get_search();
 
-    let db_query = dsl::words
-        .or_filter(dsl::srp_cyrillic.like(&search))
-        .or_filter(dsl::srp_latin.like(&search))
-        .or_filter(dsl::rus.like(&search))
-        .or_filter(dsl::eng.like(&search));
+    let base_query = dsl::words.filter(
+        dsl::srp_cyrillic
+            .like(&search)
+            .or(dsl::srp_latin.like(&search))
+            .or(dsl::rus.like(&search))
+            .or(dsl::eng.like(&search)),
+    );
 
-    let count = db_query
-        .clone()
-        .select(diesel::dsl::count_star())
-        .first::<i64>(conn)?;
+    let mut count = 0;
+    let mut result: Vec<DbWord> = Vec::new();
 
-    let result = db_query
-        .order(order_by())
-        .offset(offset.into())
-        .limit(limit)
-        .load::<DbWord>(conn)?;
+    if let Some(cid) = query.category_id {
+        let words_ids = db::words_categories::methods::get_words_ids_by_category_id(cid, conn)?;
+        let db_query = base_query.filter(dsl::id.eq_any(words_ids));
 
-    Ok(DbQueryResult { count, result })
+        count = db_query
+            .clone()
+            .select(diesel::dsl::count_star())
+            .first::<i64>(conn)?;
+
+        result = db_query
+            .order(order_by())
+            .offset(offset.into())
+            .limit(limit.into())
+            .load::<DbWord>(conn)?;
+    } else {
+        count = base_query
+            .clone()
+            .select(diesel::dsl::count_star())
+            .first::<i64>(conn)?;
+
+        result = base_query
+            .order(order_by())
+            .offset(offset.into())
+            .limit(limit.into())
+            .load::<DbWord>(conn)?;
+    }
+
+    return Ok(DbQueryResult { count, result });
 }
 
 pub fn update(

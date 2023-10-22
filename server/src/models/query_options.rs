@@ -6,6 +6,7 @@ pub struct QueryOptions {
     pub search: Option<String>,
     pub limit: Option<i64>,
     pub order: Option<String>,
+    pub category_id: Option<i32>,
 }
 
 impl QueryOptions {

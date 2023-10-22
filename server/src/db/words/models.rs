@@ -26,7 +26,17 @@ impl From<NewWord> for DbNewWord {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, Queryable, AsChangeset)]
+#[derive(
+    Debug,
+    Clone,
+    Serialize,
+    Deserialize,
+    Queryable,
+    AsChangeset,
+    Identifiable,
+    Selectable,
+    PartialEq,
+)]
 #[diesel(table_name = words)]
 pub struct DbWord {
     pub id: i32,

@@ -35,3 +35,16 @@ pub fn delete(category_id: i32, word_id: i32, conn: &mut SqliteConnection) -> Re
 
     Ok(())
 }
+
+pub fn get_words_ids_by_category_id(
+    category_id: i32,
+    conn: &mut SqliteConnection,
+) -> Result<Vec<i32>, DbError> {
+    use crate::db::schema::words_categories::dsl;
+
+    let relations: Vec<DbWordCategory> = dsl::words_categories
+        .filter(dsl::category_id.eq(category_id))
+        .load::<DbWordCategory>(conn)?;
+
+    Ok(relations.iter().map(|r| r.word_id).collect())
+}
