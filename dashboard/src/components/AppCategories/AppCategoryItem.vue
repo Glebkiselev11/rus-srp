@@ -5,6 +5,8 @@ import type { LanguageCode } from "@/i18n";
 
 import AppImagePreview from "@/components/AppImagePreview.vue";
 import AppListItem from "@/components/AppListItem.vue";
+import { useCategoriesStore } from "@/stores/categories";
+import { mapActions } from "pinia";
 
 export default defineComponent({
 	name: "AppCategoryItem",
@@ -24,13 +26,18 @@ export default defineComponent({
 	},
 	emits: ["selectCateogry"],
 	methods: {
+		...mapActions(useCategoriesStore, ["updateCategory"]),
 		extractCategoryPreview(category: Category) {
 			return category[this.$i18n.locale as LanguageCode];
 		},
 		updateCategoryImage(category: Category, src: string) {
-			console.log(category, src);
+			this.updateCategory({
+				...category,
+				image: src,
+			});
 		},
 		selectCategory() {
+			if (this.selected) return;
 			this.$emit("selectCateogry", this.category.id);
 		},
 	},

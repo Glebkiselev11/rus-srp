@@ -25,6 +25,7 @@ export default defineComponent({
 	emits: ["selectCateogry"],
 	methods: {
 		selectCategory(categoryId: number) {
+			if (categoryId === this.selectedCategoryId) return;
 			this.$emit("selectCateogry", categoryId);
 		},
 	},

@@ -16,7 +16,15 @@ export const useCategoriesStore = defineStore("categories", {
 				this.count = data.count;
 			} catch (error) {
 				console.error(error);
-				alert(error);
+			}
+		},
+
+		async updateCategory(category: Category) {
+			try {
+				await CategoriesApi.update(category);
+				this.categories = this.categories.map((c) => (c.id === category.id ? category : c));
+			} catch (error) {
+				console.error(error);
 			}
 		},
 	}, 

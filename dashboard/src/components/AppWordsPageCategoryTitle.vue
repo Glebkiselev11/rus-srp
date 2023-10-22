@@ -2,7 +2,7 @@
 import { defineComponent } from "vue";
 import AppAllWordsCategoryImage from "./AppCategories/AppAllWordsCategoryImage.vue";
 import { useCategoriesStore } from "@/stores/categories";
-import { mapState } from "pinia";
+import { mapActions, mapState } from "pinia";
 import type { Category } from "@/types/categories";
 import type { LanguageCode } from "@/i18n";
 import AppImagePreview from "./AppImagePreview.vue";
@@ -26,11 +26,17 @@ export default defineComponent({
 		},	
 	},
 	methods: {
+		...mapActions(useCategoriesStore, ["updateCategory"]),
 		getCategoryName(category: Category) {
 			return category[this.$i18n.locale as LanguageCode];
 		},
 		updateCategoryImage(src: string) {
-			console.log(this.category, src);
+			if (this.category && src) {
+				this.updateCategory({
+					...this.category,
+					image: src,
+				});
+			}
 		},	
 	},
 });

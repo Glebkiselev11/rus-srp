@@ -77,7 +77,7 @@ export default defineComponent({
 	<button
 		class="app-image-preview"
 		:style="{ width: size, height: size }"
-		@click="handleClick"
+		@click.stop="handleClick"
 	>
 		<img
 			v-if="src"

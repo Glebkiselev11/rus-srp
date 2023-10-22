@@ -9,4 +9,7 @@ export const CategoriesApi = {
 		return axios.get(this.ENDPOINT, { params }); 
 	},
 
+	update(data: Category): Promise<AxiosResponse<Category>> {
+		return axios.put(`${this.ENDPOINT}/${data.id}`, data);
+	},
 };
