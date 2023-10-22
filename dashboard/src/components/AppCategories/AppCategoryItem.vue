@@ -17,7 +17,12 @@ export default defineComponent({
 			type: Object as PropType<Category>,
 			required: true,
 		},
+		selected: {
+			type: Boolean,
+			default: false,
+		},
 	},
+	emits: ["selectCateogry"],
 	methods: {
 		extractCategoryPreview(category: Category) {
 			return category[this.$i18n.locale as LanguageCode];
@@ -26,7 +31,7 @@ export default defineComponent({
 			console.log(category, src);
 		},
 		selectCategory() {
-			console.log(this.category.id);
+			this.$emit("selectCateogry", this.category.id);
 		},
 	},
 });

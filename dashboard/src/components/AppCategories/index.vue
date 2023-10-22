@@ -16,6 +16,13 @@ export default defineComponent({
 		AppCategoriesList,
 		AppHeader,
 	},
+	props: {
+		selectedCategoryId: {
+			type: Number,
+			default: undefined,
+		},
+	},
+	emits: ["update:selected-category-id"],
 	data() {
 		return {
 			search: "",
@@ -38,6 +45,9 @@ export default defineComponent({
 		...mapActions(useCategoriesStore, ["fetchCategories"]),
 		addCategory() {
 			console.log("add category");
+		},
+		selectCategory(categoryId: number) {
+			this.$emit("update:selected-category-id", categoryId || undefined);
 		},
 	},
 });
@@ -68,7 +78,11 @@ export default defineComponent({
 			class="app-categories__search"
 		/>
 
-		<AppCategoriesList :categories="categories" />
+		<AppCategoriesList
+			:categories="categories"
+			:selected-category-id="selectedCategoryId"
+			@select-cateogry="selectCategory"
+		/>
 	</div>
 </template>
 

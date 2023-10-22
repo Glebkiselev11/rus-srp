@@ -15,6 +15,7 @@ import AppButton from "@/components/AppButton.vue";
 import AppDropdownMenu from "@/components/AppDropdownMenu.vue";
 import AppPaginationBar from "@/components/AppPaginationBar.vue";
 import AppZeroState from "@/components/AppZeroState.vue";
+import AppWordsPageCategoryTitle from "@/components/AppWordsPageCategoryTitle.vue";
 import { highlighTextByQuery } from "@/utils";
 
 import type { Word } from "@/types/words";
@@ -36,6 +37,7 @@ export default defineComponent({
 		AppPaginationBar,
 		AppZeroState,
 		AppCategories,
+		AppWordsPageCategoryTitle,
 	},
 	data() {
 		return {
@@ -71,6 +73,7 @@ export default defineComponent({
 					offset: Number(this.$route.query.offset) || 0,
 					limit: Number(this.$route.query.limit) || LIMIT_DEFAULT,
 					order: (this.$route.query.order) as Order,
+					category_id: Number(this.$route.query.category_id) || undefined,
 				};
 			},
 			set(params: RequestParams) {
@@ -115,6 +118,14 @@ export default defineComponent({
 				this.filter = { ...this.filter, order };
 			},
 		},
+		category_id: {
+			get(): number | undefined {
+				return this.filter.category_id;
+			},
+			set(category_id: number | undefined) {
+				this.filter = { ...this.filter, category_id };
+			},
+		},
 		notFoundTitle(): string {
 			return this.$t("not-found", { search: this.search });
 		},
@@ -153,14 +164,15 @@ export default defineComponent({
 
 <template>
 	<div class="words-view">
-		<AppCategories />
+		<AppCategories 
+			:selected-category-id="filter.category_id"
+			@update:selected-category-id="category_id = $event"
+		/>
 
 		<div>
 			<AppTopBar>
 				<template #left>
-					<h3>
-						{{ $t("all-words") }}
-					</h3>
+					<AppWordsPageCategoryTitle :category-id="filter.category_id" />
 				</template>
 				<template #right>
 					<AppButton

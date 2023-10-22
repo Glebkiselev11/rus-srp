@@ -17,10 +17,15 @@ export default defineComponent({
 			type: Array as PropType<Array<Category>>,
 			required: true,
 		},
+		selectedCategoryId: {
+			type: Number,
+			default: undefined,
+		},
 	},
+	emits: ["selectCateogry"],
 	methods: {
 		selectCategory(categoryId: number) {
-			console.log(categoryId);
+			this.$emit("selectCateogry", categoryId);
 		},
 	},
 });
@@ -47,6 +52,8 @@ export default defineComponent({
 				v-for="category in categories"
 				:key="category.id"
 				:category="category"
+				:selected="category.id === selectedCategoryId"
+				@select-cateogry="selectCategory"
 			/>
 		</div>
 	</div>
