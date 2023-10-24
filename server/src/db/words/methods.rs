@@ -44,6 +44,9 @@ pub fn select_all_with_filter(
 ) -> Result<DbQueryResult<DbWord>, DbError> {
     use crate::db::schema::words::dsl;
 
+    // To prevent database from locking (maybe move it to migrations)
+    diesel::sql_query("PRAGMA journal_mode=WAL;").execute(conn)?;
+
     let order_by = || -> Box<dyn BoxableExpression<dsl::words, Sqlite, SqlType = NotSelectable>> {
         if let Some(o) = &query.order {
             match o.as_str() {
