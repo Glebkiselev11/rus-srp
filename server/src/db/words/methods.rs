@@ -81,19 +81,19 @@ pub fn select_all_with_filter(
             .or(dsl::eng.like(&search)),
     );
 
-    let mut count = 0;
-    let mut result: Vec<DbWord> = vec![];
+    let count;
+    let result: Vec<DbWord>;
 
     if let Some(cid) = query.category_id {
         let words_ids = db::words_categories::methods::get_words_ids_by_category_id(cid, conn)?;
-        let db_query = base_query.filter(dsl::id.eq_any(words_ids));
+        let base_query = base_query.filter(dsl::id.eq_any(words_ids));
 
-        count = db_query
+        count = base_query
             .clone()
             .select(diesel::dsl::count_star())
             .first::<i64>(conn)?;
 
-        result = db_query
+        result = base_query
             .order(order_by())
             .offset(offset)
             .limit(limit)
