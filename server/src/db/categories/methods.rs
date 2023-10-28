@@ -1,12 +1,14 @@
 use super::models::{DbCategory, DbNewCategory};
 use crate::db::error_type::DbError;
+use crate::db::schema;
+use crate::models::category::NewCategory;
 use crate::models::{
     category::CategoryBody, pagination::DbQueryResult, query_options::QueryOptions,
 };
 use diesel::prelude::*;
 
 pub fn insert(
-    new_category: CategoryBody,
+    new_category: NewCategory,
     conn: &mut SqliteConnection,
 ) -> Result<DbCategory, DbError> {
     use crate::db::schema::categories::dsl;
@@ -39,34 +41,24 @@ pub fn select_all_with_filter(
     use crate::db::schema::categories::dsl;
 
     let offset = query.get_offset();
-
-    if query.search.is_none() {
-        let count = dsl::categories.count().get_result(conn)?;
-
-        let result = dsl::categories
-            .limit(20)
-            .offset(offset.into())
-            .load::<DbCategory>(conn)?;
-
-        return Ok(DbQueryResult { count, result });
-    }
-
     let search = query.get_search();
     let limit = query.get_limit();
 
-    let db_query = dsl::categories
-        .or_filter(dsl::eng.like(&search))
-        .or_filter(dsl::rus.like(&search))
-        .or_filter(dsl::srp_cyrillic.like(&search))
-        .or_filter(dsl::srp_latin.like(&search));
+    let base_query = schema::categories::table.filter(
+        dsl::srp_cyrillic
+            .like(&search)
+            .or(dsl::srp_latin.like(&search))
+            .or(dsl::rus.like(&search))
+            .or(dsl::eng.like(&search)),
+    );
 
-    let count = db_query
+    let count = base_query
         .clone()
         .select(diesel::dsl::count_star())
         .first::<i64>(conn)?;
 
-    let result = db_query
-        .offset(offset.into())
+    let result = base_query
+        .offset(offset)
         .limit(limit)
         .load::<DbCategory>(conn)?;
 

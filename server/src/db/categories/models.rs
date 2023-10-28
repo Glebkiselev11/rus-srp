@@ -1,4 +1,7 @@
-use crate::{db::schema::categories, models::category::CategoryBody};
+use crate::{
+    db::schema::categories,
+    models::category::{CategoryBody, NewCategory},
+};
 use chrono;
 use serde::{Deserialize, Serialize};
 
@@ -13,8 +16,8 @@ pub struct DbNewCategory {
     pub image: Option<String>,
 }
 
-impl From<CategoryBody> for DbNewCategory {
-    fn from(category: CategoryBody) -> Self {
+impl From<NewCategory> for DbNewCategory {
+    fn from(category: NewCategory) -> Self {
         DbNewCategory {
             eng: category.eng,
             rus: category.rus,
