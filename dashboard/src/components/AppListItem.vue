@@ -14,6 +14,10 @@ export default defineComponent({
 			type: String as PropType<Size>,
 			default: "regular",
 		},
+		selected: {
+			type: Boolean,
+			default: false,
+		},
 	},
 });
 
@@ -24,6 +28,7 @@ export default defineComponent({
 		class="app-list-item"
 		:class="{
 			'app-list-item--clickable': clickable,
+			'app-list-item--selected': selected,
 			'app-list-item--compact': size === 'compact',
 		}"
 	>
@@ -49,6 +54,15 @@ export default defineComponent({
 
 		&:hover {
 			background-color: $color-background-content-primary-hovered;
+		}
+	}
+
+	&--selected {
+		cursor: default;
+		background-color: $color-background-content-secondary;
+
+		&:hover {
+			@extend .app-list-item--selected;
 		}
 	}
 
