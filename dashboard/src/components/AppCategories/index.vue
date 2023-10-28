@@ -7,6 +7,7 @@ import { useCategoriesStore } from "@/stores/categories";
 import AppInput from "@/components/AppInput.vue";
 import AppCategoriesList from "@/components/AppCategories/AppCategoriesList.vue";
 import AppHeader from "@/components/AppHeader.vue";
+import type { RequestParams } from "@/types/api";
 
 export default defineComponent({
 	name: "AppCategories",
@@ -23,20 +24,36 @@ export default defineComponent({
 		},
 	},
 	emits: ["update:selected-category-id"],
-	data() {
-		return {
-			search: "",
-		};
-	},
 	computed: {
 		...mapState(useCategoriesStore, ["categories"]),
-		filter() {
-			return {
-				search: this.search,
-				offset: 0,
-				limit: 20,
-			};
+		filter: {
+			get() {
+				return {
+					search: this.$route.query.search_category as string || "",
+					offset: 0,
+					limit: 20,
+				};
+			},
+			set(params: RequestParams) {
+				this.$router.push({
+					query: {
+						...this.$route.query,
+						search_category: params.search,
+					},
+				}).then(() => {
+					this.fetchCategories(params);
+				});
+			},
 		},
+		search: {
+			get() {
+				return this.filter.search;
+			},
+			set(search: string) {
+				this.filter = { ...this.filter, search };
+			},
+		},
+
 	},
 	mounted() {
 		this.fetchCategories(this.filter);
@@ -75,6 +92,7 @@ export default defineComponent({
 			v-model="search"
 			:placeholder="$t('find-category')"
 			left-icon="search"
+			debounce
 			class="app-categories__search"
 		/>
 
