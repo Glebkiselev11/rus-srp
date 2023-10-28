@@ -48,6 +48,8 @@ export default defineComponent({
 <template>
 	<AppListItem
 		clickable
+		:selected="selected"
+		size="compact"
 		@click="selectCategory"
 	>
 		<AppImagePreview

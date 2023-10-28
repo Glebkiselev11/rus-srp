@@ -35,9 +35,11 @@ export default defineComponent({
 
 <template>
 	<div class="app-categories-list">
-		<div class="app-categories-list__item">
+		<div class="app-categories-list__items">
 			<AppListItem
 				clickable
+				size="compact"
+				:selected="!selectedCategoryId"
 				@click="selectCategory(0)"
 			>
 				<AppAllWordsCategoryImage size="24px" />
@@ -48,7 +50,7 @@ export default defineComponent({
 
 		<hr>
 
-		<div class="app-categories-list__item">
+		<div class="app-categories-list__items">
 			<AppCategoryItem
 				v-for="category in categories"
 				:key="category.id"
@@ -63,8 +65,12 @@ export default defineComponent({
 <style scoped lang="scss">
 
 .app-categories-list {
-	&__item {
+	&__items {
 		margin-inline: 12px;
+		margin-block: 12px;
+		display: flex;
+		flex-direction: column;
+		row-gap: 4px;
 	}
 }
 
