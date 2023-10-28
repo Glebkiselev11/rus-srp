@@ -69,7 +69,7 @@ export default defineComponent({
 		filter: {
 			get(): RequestParams {
 				return {
-					search: this.$route.query.search as string || "",
+					search: this.$route.query.search_word as string || "",
 					offset: Number(this.$route.query.offset) || 0,
 					limit: Number(this.$route.query.limit) || LIMIT_DEFAULT,
 					order: (this.$route.query.order) as Order,
@@ -79,7 +79,12 @@ export default defineComponent({
 			set(params: RequestParams) {
 				this.$router.push({
 					query: {
-						...params,
+						...this.$route.query,
+						search_word: params.search,
+						offset: params.offset,
+						limit: params.limit,
+						order: params.order,
+						category_id: params.category_id,
 					},
 				}).then(() => {
 					this.fetchWords(params);
