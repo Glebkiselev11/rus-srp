@@ -37,4 +37,5 @@ export type IconName =
   "expand_more_down" |
   "expand_more_up" |
   "sort" |
-  "widgets";
+  "widgets" |
+  "done";
