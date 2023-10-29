@@ -237,6 +237,7 @@ export default defineComponent({
 							<td v-html="highlighTextByQuery(word.srp_cyrillic, search)" />
 							<td style="margin-inline-start: auto">
 								<AppDropdownMenu 
+									v-slot="{ isMenuOpen }"
 									:items="[
 										{ 
 											label: $t('edit'),
@@ -256,6 +257,7 @@ export default defineComponent({
 										icon="more_vert"
 										type="inline"
 										color="neutral"
+										:pressed="isMenuOpen"
 									/>
 								</AppDropdownMenu>
 							</td>

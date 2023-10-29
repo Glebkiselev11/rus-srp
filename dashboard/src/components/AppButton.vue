@@ -38,6 +38,10 @@ export default defineComponent({
 			type: String as PropType<IconColor>,
 			default: null,
 		},
+		pressed: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	computed: {
 		_iconColor(): IconColor {
@@ -69,6 +73,7 @@ export default defineComponent({
 			{ 'app-button--icon-and-label' : icon && label},
 			{ 'app-button--only-icon' : icon && !label},
 			{ 'app-button--only-label': label && !icon},
+			{ 'app-button--pressed': pressed }
 		]"
 		:disabled="disabled"
 	>
@@ -234,7 +239,7 @@ export default defineComponent({
 
 	}
 
-	&:active {
+	&--pressed {
 		&.app-button--type-primary {
 			&.app-button--color-accent-primary {
 				background-color: $color-background-accent-primary-active;
@@ -260,6 +265,10 @@ export default defineComponent({
 		&.app-button--type-inline {
 			background-color: $color-background-content-primary-active;
 		}
+	}
+
+	&:active {
+		@extend .app-button--pressed;
 	}
 
 	&:disabled {

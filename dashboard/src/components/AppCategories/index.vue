@@ -124,13 +124,15 @@ export default defineComponent({
 			<template #right>
 				<div class="app-categories__controls">
 					<AppDropdownMenu 
-						:items="orderOptions"		
+						v-slot="{ isMenuOpen }"		
+						:items="orderOptions"
 					>
 						<AppButton 
 							icon="sort"
 							size="compact"
 							type="inline"
 							color="neutral"
+							:pressed="isMenuOpen"
 						/>
 					</AppDropdownMenu>
 
