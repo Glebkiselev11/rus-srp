@@ -81,7 +81,7 @@ export default defineComponent({
   column-gap: 4px;
 
 	&__label::first-letter {
-		text-transform: capitalize;
+		text-transform: uppercase;
 	}
 }
 

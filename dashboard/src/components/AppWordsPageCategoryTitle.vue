@@ -77,6 +77,10 @@ export default defineComponent({
 	display: flex;
 	align-items: center;
 	gap: 12px;
+
+	& > h2::first-letter {
+		text-transform: uppercase;
+	}
 }
 
 </style>
