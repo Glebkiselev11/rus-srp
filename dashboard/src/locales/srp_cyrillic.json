@@ -3,8 +3,7 @@
   "general": "Општа",
   "categories": "Категорије",
   "order": {
-    "new-words": "Последње додато",
-    "old-words": "Старе речи",
+    "last-added": "Последње додато",
     "last-updated": "Најновије ажуриране"
   },
   "fill-in-auto": "Попуните аутоматски",

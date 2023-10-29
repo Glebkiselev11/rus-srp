@@ -3,8 +3,7 @@
   "general": "General",
   "categories": "Categories",
   "order": {
-    "new-words": "Last added",
-    "old-words": "Old words",
+    "last-added": "Last added",
     "last-updated": "Last updated"
   },
   "fill-in-auto": "Fill in automatically",

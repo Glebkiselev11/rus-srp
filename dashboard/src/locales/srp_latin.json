@@ -3,8 +3,7 @@
   "general": "Opšta",
   "categories": "Kategorije",
   "order": {
-    "new-words": "Poslednje dodato",
-    "old-words": "Stare reči",
+    "last-added": "Poslednje dodato",
     "last-updated": "Najnovije ažurirane"
   },
   "fill-in-auto": "Popunite automatski",
