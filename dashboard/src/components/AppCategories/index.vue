@@ -93,12 +93,14 @@ export default defineComponent({
 			:placeholder="$t('find-category')"
 			left-icon="search"
 			debounce
+			clear-button
 			class="app-categories__search"
 		/>
 
 		<AppCategoriesList
 			:categories="categories"
 			:selected-category-id="selectedCategoryId"
+			:search-quary="search"
 			@select-cateogry="selectCategory"
 		/>
 	</div>

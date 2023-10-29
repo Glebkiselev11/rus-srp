@@ -21,6 +21,10 @@ export default defineComponent({
 			type: Number,
 			default: undefined,
 		},
+		searchQuary: {
+			type: String,
+			default: "",
+		},
 	},
 	emits: ["selectCateogry"],
 	methods: {
@@ -56,6 +60,7 @@ export default defineComponent({
 				:key="category.id"
 				:category="category"
 				:selected="category.id === selectedCategoryId"
+				:query="searchQuary"
 				@select-cateogry="selectCategory"
 			/>
 		</div>

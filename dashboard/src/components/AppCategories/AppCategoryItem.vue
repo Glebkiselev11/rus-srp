@@ -7,6 +7,7 @@ import AppImagePreview from "@/components/AppImagePreview.vue";
 import AppListItem from "@/components/AppListItem.vue";
 import { useCategoriesStore } from "@/stores/categories";
 import { mapActions } from "pinia";
+import { highlighTextByQuery } from "@/utils";
 
 export default defineComponent({
 	name: "AppCategoryItem",
@@ -23,10 +24,15 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
+		query: {
+			type: String,
+			default: "",
+		},
 	},
 	emits: ["selectCateogry"],
 	methods: {
 		...mapActions(useCategoriesStore, ["updateCategory"]),
+		highlighTextByQuery,
 		extractCategoryPreview(category: Category) {
 			return category[this.$i18n.locale as LanguageCode];
 		},
@@ -60,9 +66,10 @@ export default defineComponent({
 			@update:src="src => updateCategoryImage(category, src)"
 		/>
 
-		<span class="app-category-item__label">
-			{{ extractCategoryPreview(category) }}
-		</span>
+		<span
+			class="app-category-item__label"
+			v-html="highlighTextByQuery(extractCategoryPreview(category), query)"
+		/>
 	</AppListItem>
 </template>
 
