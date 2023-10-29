@@ -142,6 +142,10 @@ export default defineComponent({
 	&--link {
 		fill: $color-icon-link;
 	}
+
+	&--transparent {
+		fill: transparent;
+	}
 }
 
 </style>

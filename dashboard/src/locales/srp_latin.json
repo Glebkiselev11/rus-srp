@@ -4,7 +4,9 @@
   "categories": "Kategorije",
   "order": {
     "last-added": "Poslednje dodato",
-    "last-updated": "Najnovije ažurirane"
+    "last-updated": "Najnovije ažurirane",
+    "alphabetical-asc": "Sortiranje od A do Ž",
+    "alphabetical-desc": "Sortiranje od Ž do A"
   },
   "fill-in-auto": "Popunite automatski",
   "cancel": "Otkazati",

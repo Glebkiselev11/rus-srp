@@ -4,7 +4,9 @@
   "categories": "Categories",
   "order": {
     "last-added": "Last added",
-    "last-updated": "Last updated"
+    "last-updated": "Last updated",
+    "alphabetical-asc": "Sort from A to Z",
+    "alphabetical-desc": "Sort from Z to A"
   },
   "fill-in-auto": "Fill in automatically",
   "cancel": "Cancel",

@@ -4,7 +4,9 @@
   "categories": "Категории",
   "order": {
     "last-added": "Последние добавленные",
-    "last-updated": "Последние изменения"
+    "last-updated": "Последние изменения",
+    "alphabetical-asc": "Сортивовка от А до Я",
+    "alphabetical-desc": "Сортировка от Я до А"
   },
   "fill-in-auto": "Заполнить автоматически",
   "cancel": "Отмена",

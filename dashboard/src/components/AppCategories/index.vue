@@ -7,7 +7,9 @@ import { useCategoriesStore } from "@/stores/categories";
 import AppInput from "@/components/AppInput.vue";
 import AppCategoriesList from "@/components/AppCategories/AppCategoriesList.vue";
 import AppHeader from "@/components/AppHeader.vue";
-import type { RequestParams } from "@/types/api";
+import AppDropdownMenu from "../AppDropdownMenu.vue";
+import type { Order, RequestParams } from "@/types/api";
+import type { LanguageCode } from "@/i18n";
 
 export default defineComponent({
 	name: "AppCategories",
@@ -16,6 +18,7 @@ export default defineComponent({
 		AppButton,
 		AppCategoriesList,
 		AppHeader,
+		AppDropdownMenu,
 	},
 	props: {
 		selectedCategoryId: {
@@ -30,6 +33,7 @@ export default defineComponent({
 			get() {
 				return {
 					search: this.$route.query.search_category as string || "",
+					order: this.$route.query.order_category as Order || "-created_at",
 					offset: 0,
 					limit: 20,
 				};
@@ -39,6 +43,7 @@ export default defineComponent({
 					query: {
 						...this.$route.query,
 						search_category: params.search,
+						order_category: params.order,
 					},
 				}).then(() => {
 					this.fetchCategories(params);
@@ -53,7 +58,43 @@ export default defineComponent({
 				this.filter = { ...this.filter, search };
 			},
 		},
-
+		order: {
+			get(): Order {
+				return this.filter.order;
+			},
+			set(order: Order) {
+				this.filter = { ...this.filter, order };
+			},
+		},
+		orderOptions() {
+			return [
+				{ 
+					label: this.$t("order.last-added"), 
+					icon: "done", 
+					color: this.getOrderColor("-created_at"),
+					handler: () => this.order = "-created_at", 
+				} as const,
+				{ 
+					label: this.$t("order.last-updated"), 
+					color: this.getOrderColor("-updated_at"),
+					icon: "done", 
+					handler: () => this.order = "-updated_at", 
+				} as const,
+				"separator" as const,
+				{ 
+					label: this.$t("order.alphabetical-asc"), 
+					color: this.getOrderColor(`${this.$i18n.locale as LanguageCode}`),
+					icon: "done", 
+					handler: () => this.order = `${this.$i18n.locale as LanguageCode}`, 
+				} as const,
+				{ 
+					label: this.$t("order.alphabetical-desc"), 
+					color: this.getOrderColor(`-${this.$i18n.locale as LanguageCode}`),
+					icon: "done", 
+					handler: () => this.order = `-${this.$i18n.locale as LanguageCode}`, 
+				} as const,
+			];
+		},
 	},
 	mounted() {
 		this.fetchCategories(this.filter);
@@ -65,6 +106,9 @@ export default defineComponent({
 		},
 		selectCategory(categoryId: number) {
 			this.$emit("update:selected-category-id", categoryId || undefined);
+		},
+		getOrderColor(key: Order) {
+			return key === this.order ? "accent-primary" : "transparent";
 		},
 	},
 });
@@ -78,13 +122,26 @@ export default defineComponent({
 			title-tag="h4"
 		>
 			<template #right>
-				<AppButton
-					icon="add"
-					size="compact"
-					type="inline"
-					color="neutral"
-					@click="addCategory"
-				/>
+				<div class="app-categories__controls">
+					<AppDropdownMenu 
+						:items="orderOptions"		
+					>
+						<AppButton 
+							icon="sort"
+							size="compact"
+							type="inline"
+							color="neutral"
+						/>
+					</AppDropdownMenu>
+
+					<AppButton
+						icon="add"
+						size="compact"
+						type="inline"
+						color="neutral"
+						@click="addCategory"
+					/>
+				</div>
 			</template>
 		</AppHeader>
 
@@ -112,6 +169,10 @@ export default defineComponent({
 .app-categories {
   background-color: $color-background-content-primary;
   border-inline-end: 1px solid $color-separator-primary;
+
+	&__controls {
+		display: flex;
+	}
 
 	&__search {
 		margin-inline: 12px;

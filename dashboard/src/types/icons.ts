@@ -10,7 +10,8 @@ export type IconColor =
   "positive" |
   "negative" |
   "warning" |
-  "link";
+  "link" |
+  "transparent";
 
 export type IconName = 
   "admin_panel_settings" | 

@@ -4,7 +4,9 @@
   "categories": "Категорије",
   "order": {
     "last-added": "Последње додато",
-    "last-updated": "Најновије ажуриране"
+    "last-updated": "Најновије ажуриране",
+    "alphabetical-asc": "Сортирање од А до Ш",
+    "alphabetical-desc": "Сортирање од Ш до А"
   },
   "fill-in-auto": "Попуните аутоматски",
   "cancel": "Отказати",
