@@ -5,7 +5,9 @@ use crate::models::category::NewCategory;
 use crate::models::{
     category::CategoryBody, pagination::DbQueryResult, query_options::QueryOptions,
 };
+use diesel::expression::expression_types::NotSelectable;
 use diesel::prelude::*;
+use diesel::sqlite::Sqlite;
 
 pub fn insert(
     new_category: NewCategory,
@@ -40,6 +42,29 @@ pub fn select_all_with_filter(
 ) -> Result<DbQueryResult<DbCategory>, DbError> {
     use crate::db::schema::categories::dsl;
 
+    let order_by =
+        || -> Box<dyn BoxableExpression<dsl::categories, Sqlite, SqlType = NotSelectable>> {
+            if let Some(o) = &query.order {
+                match o.as_str() {
+                    "rus" => Box::new(dsl::rus.asc()),
+                    "-rus" => Box::new(dsl::rus.desc()),
+                    "eng" => Box::new(dsl::eng.asc()),
+                    "-eng" => Box::new(dsl::eng.desc()),
+                    "srp_latin" => Box::new(dsl::srp_latin.asc()),
+                    "-srp_latin" => Box::new(dsl::srp_latin.desc()),
+                    "srp_cyrillic" => Box::new(dsl::srp_cyrillic.asc()),
+                    "-srp_cyrillic" => Box::new(dsl::srp_cyrillic.desc()),
+                    "created_at" => Box::new(dsl::created_at.asc()),
+                    "-created_at" => Box::new(dsl::created_at.desc()),
+                    "updated_at" => Box::new(dsl::updated_at.asc()),
+                    "-updated_at" => Box::new(dsl::updated_at.desc()),
+                    _ => Box::new(dsl::created_at.desc()),
+                }
+            } else {
+                Box::new(dsl::created_at.desc())
+            }
+        };
+
     let offset = query.get_offset();
     let search = query.get_search();
     let limit = query.get_limit();
@@ -58,6 +83,7 @@ pub fn select_all_with_filter(
         .first::<i64>(conn)?;
 
     let result = base_query
+        .order_by(order_by())
         .offset(offset)
         .limit(limit)
         .load::<DbCategory>(conn)?;
