@@ -20,6 +20,6 @@ impl QueryOptions {
 
     pub fn get_search(&self) -> String {
         let s = self.search.clone().unwrap_or_else(String::new);
-        format!("%{}%", s.to_lowercase())
+        format!("%{}%", s.to_lowercase().trim())
     }
 }
