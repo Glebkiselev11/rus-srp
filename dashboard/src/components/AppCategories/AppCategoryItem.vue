@@ -72,6 +72,10 @@ export default defineComponent({
   display: flex;
   align-items: center;
   column-gap: 4px;
+
+	&__label::first-letter {
+		text-transform: capitalize;
+	}
 }
 
 </style>
