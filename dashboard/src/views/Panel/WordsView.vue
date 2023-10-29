@@ -72,7 +72,7 @@ export default defineComponent({
 					search: this.$route.query.search_word as string || "",
 					offset: Number(this.$route.query.offset) || 0,
 					limit: Number(this.$route.query.limit) || LIMIT_DEFAULT,
-					order: (this.$route.query.order) as Order,
+					order: (this.$route.query.order_word) as Order,
 					category_id: Number(this.$route.query.category_id) || undefined,
 				};
 			},
@@ -83,7 +83,7 @@ export default defineComponent({
 						search_word: params.search,
 						offset: params.offset,
 						limit: params.limit,
-						order: params.order,
+						order_word: params.order,
 						category_id: params.category_id,
 					},
 				}).then(() => {
