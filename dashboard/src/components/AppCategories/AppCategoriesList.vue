@@ -1,9 +1,11 @@
 <script lang="ts">
-import type { Category } from "@/types/categories";
-import { defineComponent, type PropType } from "vue";
+import { defineComponent } from "vue";
 import AppCategoryItem from "./AppCategoryItem.vue";
 import AppListItem from "@/components/AppListItem.vue";
 import AppAllWordsCategoryImage from "./AppAllWordsCategoryImage.vue";
+import { useCategoriesStore } from "@/stores/categories";
+import { mapState } from "pinia";
+import AppZeroState from "../AppZeroState.vue";
 
 export default defineComponent({
 	name: "AppCategoriesList",
@@ -11,12 +13,9 @@ export default defineComponent({
 		AppCategoryItem,
 		AppListItem,
 		AppAllWordsCategoryImage,
+		AppZeroState,
 	},
 	props: {
-		categories: {
-			type: Array as PropType<Array<Category>>,
-			required: true,
-		},
 		selectedCategoryId: {
 			type: Number,
 			default: undefined,
@@ -27,6 +26,12 @@ export default defineComponent({
 		},
 	},
 	emits: ["selectCateogry"],
+	computed: {
+		...mapState(useCategoriesStore, ["categories", "loadState", "count"]),
+		notFoundTitle(): string {
+			return this.$t("not-found", { search: this.searchQuary });
+		},
+	},
 	methods: {
 		selectCategory(categoryId: number) {
 			if (categoryId === this.selectedCategoryId) return;
@@ -54,7 +59,10 @@ export default defineComponent({
 
 		<hr>
 
-		<div class="app-categories-list__items">
+		<div
+			v-if="loadState === 'loaded' && count > 0"
+			class="app-categories-list__items"
+		>
 			<AppCategoryItem
 				v-for="category in categories"
 				:key="category.id"
@@ -62,6 +70,17 @@ export default defineComponent({
 				:selected="category.id === selectedCategoryId"
 				:query="searchQuary"
 				@select-cateogry="selectCategory"
+			/>
+		</div>
+
+		<div
+			v-if="loadState === 'loaded' && count === 0"
+			class="app-categories-list__zero-state"
+		>
+			<AppZeroState
+				icon="search"
+				:title="notFoundTitle"
+				:description="$t('not-found-description')"
 			/>
 		</div>
 	</div>
@@ -76,6 +95,11 @@ export default defineComponent({
 		display: flex;
 		flex-direction: column;
 		row-gap: 4px;
+	}
+
+	&__zero-state {
+		@extend .app-categories-list__items;	
+		margin-block: 75%;
 	}
 }
 

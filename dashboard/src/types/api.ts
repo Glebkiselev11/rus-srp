@@ -41,3 +41,5 @@ export type TranslateRequest = {
 export type TranslateResponse = {
   translations: Array<{ text: string; to: "bs" | "ru" | "en" }>;
 }
+
+export type Load = "initial" | "loading" | "loaded" | "error";

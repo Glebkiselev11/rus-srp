@@ -2,7 +2,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import AppButton from "@/components/AppButton.vue";
-import { mapActions, mapState } from "pinia";
+import { mapActions } from "pinia";
 import { useCategoriesStore } from "@/stores/categories";
 import AppInput from "@/components/AppInput.vue";
 import AppCategoriesList from "@/components/AppCategories/AppCategoriesList.vue";
@@ -30,7 +30,6 @@ export default defineComponent({
 	},
 	emits: ["update:selected-category-id"],
 	computed: {
-		...mapState(useCategoriesStore, ["categories"]),
 		filter: {
 			get() {
 				return {
@@ -161,7 +160,6 @@ export default defineComponent({
 		/>
 
 		<AppCategoriesList
-			:categories="categories"
 			:selected-category-id="selectedCategoryId"
 			:search-quary="search"
 			@select-cateogry="selectCategory"

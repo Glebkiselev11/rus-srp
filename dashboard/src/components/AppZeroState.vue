@@ -67,7 +67,7 @@ export default defineComponent({
 		align-items: center;
 		text-align: center;
 		gap: 16px;
-		width: 280px;
+		max-width: 280px;
 	}
 
 	&__description {
