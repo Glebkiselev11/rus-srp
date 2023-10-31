@@ -42,7 +42,7 @@ export default defineComponent({
 .app-list-item {
 	padding-inline: 16px;
 	padding-block: 12px;
-	border-radius: 8px;
+	border-radius: 12px;
 	display: flex;
 	align-items: center;
 	column-gap: 16px;
