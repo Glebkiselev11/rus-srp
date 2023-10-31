@@ -18,6 +18,10 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
+		paddingInline: {
+			type: String,
+			default: "16px",
+		},
 	},
 });
 
@@ -31,6 +35,9 @@ export default defineComponent({
 			'app-list-item--selected': selected,
 			'app-list-item--compact': size === 'compact',
 		}"
+		:style="{
+			paddingInline,
+		}"
 	>
 		<slot />
 	</div>
@@ -40,7 +47,6 @@ export default defineComponent({
 @import "@/styles/main.scss";
 
 .app-list-item {
-	padding-inline: 16px;
 	padding-block: 12px;
 	border-radius: 12px;
 	display: flex;
