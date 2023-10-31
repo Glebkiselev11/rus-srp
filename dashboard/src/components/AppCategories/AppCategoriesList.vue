@@ -52,6 +52,7 @@ export default defineComponent({
 				clickable
 				size="compact"
 				:selected="!selectedCategoryId"
+				padding-inline="8px"
 				@click="selectCategory(0)"
 			>
 				<AppAllWordsCategoryImage size="24px" />

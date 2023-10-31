@@ -63,6 +63,7 @@ export default defineComponent({
 		clickable
 		:selected="selected"
 		size="compact"
+		padding-inline="8px"
 		@click="selectCategory"
 	>
 		<div class="app-category-item">
