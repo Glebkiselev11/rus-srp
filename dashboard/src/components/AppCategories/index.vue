@@ -10,6 +10,7 @@ import AppHeader from "@/components/AppHeader.vue";
 import AppDropdownMenu from "../AppDropdownMenu.vue";
 import type { Order, RequestParams } from "@/types/api";
 import type { LanguageCode } from "@/i18n";
+import AppTooltip from "../AppTooltip.vue";
 
 export default defineComponent({
 	name: "AppCategories",
@@ -19,6 +20,7 @@ export default defineComponent({
 		AppCategoriesList,
 		AppHeader,
 		AppDropdownMenu,
+		AppTooltip,
 	},
 	props: {
 		selectedCategoryId: {
@@ -127,13 +129,15 @@ export default defineComponent({
 						v-slot="{ isMenuOpen }"		
 						:items="orderOptions"
 					>
-						<AppButton 
-							icon="sort"
-							size="compact"
-							type="inline"
-							color="neutral"
-							:pressed="isMenuOpen"
-						/>
+						<AppTooltip :text="$t('to-sort')">
+							<AppButton 
+								icon="sort"
+								size="compact"
+								type="inline"
+								color="neutral"
+								:pressed="isMenuOpen"
+							/>
+						</AppTooltip>
 					</AppDropdownMenu>
 
 					<AppButton
