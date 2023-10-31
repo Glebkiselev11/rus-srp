@@ -64,6 +64,7 @@ export default defineComponent({
 		:selected="selected"
 		size="compact"
 		padding-inline="8px"
+		class="app-list-item"
 		@click="selectCategory"
 	>
 		<div class="app-category-item">
@@ -82,8 +83,9 @@ export default defineComponent({
 				/>
 			</div>
 
-			<AppDropdownMenu 
+			<AppDropdownMenu
 				v-slot="{ isMenuOpen }"
+				class="app-category-item__menu"
 				:items="[
 					{ 
 						label: $t('edit'),
@@ -97,7 +99,7 @@ export default defineComponent({
 					icon="more_vert"
 					type="inline"
 					color="neutral"
-					size="compact"
+					size="small"
 					:pressed="isMenuOpen"
 				/>
 			</AppDropdownMenu>
@@ -106,7 +108,7 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
-
+@import "@/styles/main.scss";
 .app-category-item {
 	display: flex;
 	align-items: center;
@@ -119,8 +121,21 @@ export default defineComponent({
 		column-gap: 12px;
 	}
 
-	&__label::first-letter {
-		text-transform: uppercase;
+	&__label {
+		@extend .text-body-2;
+		&::first-letter {
+			text-transform: uppercase;
+		}
+	}
+
+	&__menu {
+		visibility: hidden;
+	}
+}
+
+.app-list-item:hover {
+	.app-category-item__menu {
+		visibility: visible;
 	}
 }
 
