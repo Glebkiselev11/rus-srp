@@ -45,6 +45,8 @@
   "not-found-description": "Pokušajte da promenite upit ili promenite filtere",
   "edit-image": "Uređivanje slike",
   "add-image": "Dodavanje slike",
+  "editing-category": "Uređivanje kategorije",
+  "creation-category": "Kreiranje kategorije",
   "selected": "Izabrano",
   "search-by-query": "Traži “{query}”",
   "image-search-title": "Da biste pronašli sliku, unesite upit na engleskom",

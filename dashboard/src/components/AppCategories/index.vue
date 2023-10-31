@@ -11,6 +11,7 @@ import AppDropdownMenu from "../AppDropdownMenu.vue";
 import type { Order, RequestParams } from "@/types/api";
 import type { LanguageCode } from "@/i18n";
 import AppTooltip from "../AppTooltip.vue";
+import AppCategoryFormModal from "../AppCategoryFormModal.vue";
 
 export default defineComponent({
 	name: "AppCategories",
@@ -21,6 +22,7 @@ export default defineComponent({
 		AppHeader,
 		AppDropdownMenu,
 		AppTooltip,
+		AppCategoryFormModal,
 	},
 	props: {
 		selectedCategoryId: {
@@ -29,6 +31,12 @@ export default defineComponent({
 		},
 	},
 	emits: ["update:selected-category-id"],
+	data() {
+		return {
+			showCategoryForm: false,
+			editingCategoryId: undefined as number | undefined,
+		};
+	},
 	computed: {
 		filter: {
 			get() {
@@ -102,8 +110,13 @@ export default defineComponent({
 	},
 	methods: {
 		...mapActions(useCategoriesStore, ["fetchCategories"]),
-		addCategory() {
-			console.log("add category");
+		openCreationCategoryForm() {
+			this.editingCategoryId = undefined;
+			this.showCategoryForm = true;
+		},
+		openEditingCategoryForm(categoryId: number) {
+			this.editingCategoryId = categoryId;
+			this.showCategoryForm = true;
 		},
 		selectCategory(categoryId: number) {
 			this.$emit("update:selected-category-id", categoryId || undefined);
@@ -143,7 +156,7 @@ export default defineComponent({
 							icon="add"
 							type="inline"
 							color="neutral"
-							@click="addCategory"
+							@click="openCreationCategoryForm"
 						/>
 					</AppTooltip>
 				</div>
@@ -163,6 +176,13 @@ export default defineComponent({
 			:selected-category-id="selectedCategoryId"
 			:search-quary="search"
 			@select-cateogry="selectCategory"
+			@select-category-for-editing="openEditingCategoryForm"
+		/>
+
+		<AppCategoryFormModal
+			:category-id="editingCategoryId"
+			:visible="showCategoryForm"
+			@update:visible="showCategoryForm = $event"
 		/>
 	</div>
 </template>

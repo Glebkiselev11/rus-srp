@@ -45,6 +45,8 @@
   "not-found-description": "Check if the query was entered correctly, or enter it differently",
   "edit-image": "Editing an image",
   "add-image": "Adding an image",
+  "editing-category": "Editing a category",
+  "creation-category": "Creating a category.",
   "selected": "Selected",
   "search-by-query": "Search for “{query}”",
   "image-search-title": "To find an image, enter a query in English",

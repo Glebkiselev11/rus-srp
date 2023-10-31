@@ -45,6 +45,8 @@
   "not-found-description": "Покушајте да промените упит или промените филтере",
   "edit-image": "Уређивање слике",
   "add-image": "Додавање слике",
+  "editing-category": "Уређивање категорије",
+  "creation-category": "Креирање категорије",
   "selected": "Изабрано",
   "search-by-query": "Тражи “{query}”",
   "image-search-title": "Да бисте пронашли слику, унесите упит на енглеском",

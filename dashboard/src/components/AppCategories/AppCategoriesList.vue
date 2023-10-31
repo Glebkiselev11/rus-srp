@@ -25,7 +25,7 @@ export default defineComponent({
 			default: "",
 		},
 	},
-	emits: ["selectCateogry"],
+	emits: ["selectCateogry", "select-category-for-editing"],
 	computed: {
 		...mapState(useCategoriesStore, ["categories", "loadState", "count"]),
 		notFoundTitle(): string {
@@ -36,6 +36,9 @@ export default defineComponent({
 		selectCategory(categoryId: number) {
 			if (categoryId === this.selectedCategoryId) return;
 			this.$emit("selectCateogry", categoryId);
+		},
+		selectCategoryForEditing(categoryId: number) {
+			this.$emit("select-category-for-editing", categoryId);
 		},
 	},
 });
@@ -70,6 +73,7 @@ export default defineComponent({
 				:selected="category.id === selectedCategoryId"
 				:query="searchQuary"
 				@select-cateogry="selectCategory"
+				@select-category-for-editing="selectCategoryForEditing"
 			/>
 		</div>
 
