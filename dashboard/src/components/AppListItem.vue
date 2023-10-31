@@ -59,7 +59,7 @@ export default defineComponent({
 
 	&--selected {
 		cursor: default;
-		background-color: $color-background-content-secondary;
+		background-color: $color-background-content-primary-active;
 
 		&:hover {
 			@extend .app-list-item--selected;
