@@ -113,6 +113,9 @@ export default defineComponent({
 		&.app-button--size-compact {
 			padding-block: 6px;
 		}
+		&.app-button--size-small {
+			padding-block: 2px;
+		}
 	}
 
 	/* Paddings for Only icon case */
@@ -122,6 +125,9 @@ export default defineComponent({
 		}
 		&.app-button--size-compact {
 			padding: 6px;
+		}
+		&.app-button--size-small {
+			padding: 2px;
 		}
 	}
 
@@ -134,6 +140,9 @@ export default defineComponent({
 		&.app-button--size-compact {
 			padding-block: 6px;
 		}
+		&.app-button--size-small {
+			padding-block: 2px;
+		}
 	}
 
 	&--size {
@@ -144,6 +153,10 @@ export default defineComponent({
 		&-compact {
 			min-block-size: 32px;
 			min-inline-size: 32px;
+		}
+		&-small {
+			min-block-size: 24px;
+			min-inline-size: 24px;
 		}
 	}
 

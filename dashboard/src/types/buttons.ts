@@ -1,4 +1,4 @@
-export type ButtonSize = "regular" | "compact";
+export type ButtonSize = "small" | "compact" | "regular";
 
 export type ButtonType = "primary" | "secondary" | "inline";
 
