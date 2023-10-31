@@ -62,18 +62,26 @@ export default defineComponent({
 				{ value: "-created_at", label: this.$t("order.last-added") },
 				{ value: "-updated_at", label: this.$t("order.last-updated") },
 			],
+			defaultFilter: {
+				search: "",
+				offset: 0,
+				limit: LIMIT_DEFAULT,
+				order: "-created_at" as Order,
+				category_id: undefined,
+			},
 		};
 	},
 	computed: {
 		...mapState(useWordsStore, ["words", "count"]),
 		filter: {
 			get(): RequestParams {
+				const { search, offset, limit, order, category_id } = this.defaultFilter;
 				return {
-					search: this.$route.query.search_word as string || "",
-					offset: Number(this.$route.query.offset) || 0,
-					limit: Number(this.$route.query.limit) || LIMIT_DEFAULT,
-					order: (this.$route.query.order_word) as Order,
-					category_id: Number(this.$route.query.category_id) || undefined,
+					search: this.$route.query.search_word as string || search,
+					offset: Number(this.$route.query.offset) || offset,
+					limit: Number(this.$route.query.limit) || limit,
+					order: (this.$route.query.order_word) as Order || order,
+					category_id: Number(this.$route.query.category_id) || category_id,
 				};
 			},
 			set(params: RequestParams) {
@@ -96,7 +104,12 @@ export default defineComponent({
 				return this.filter.search;
 			},
 			set(search: string) {
-				this.filter = { ...this.filter, search };
+				const { category_id } = this.filter;
+				this.filter = { 
+					...this.defaultFilter, 
+					category_id,
+					search, 
+				};
 			},
 		},
 		limit: {
@@ -128,7 +141,7 @@ export default defineComponent({
 				return this.filter.category_id;
 			},
 			set(category_id: number | undefined) {
-				this.filter = { ...this.filter, category_id };
+				this.filter = { ...this.defaultFilter, category_id };
 			},
 		},
 		notFoundTitle(): string {
