@@ -40,13 +40,13 @@ export default defineComponent({
 			<slot />
 		</div>
 
-		<div
+		<span
 			v-show="showTooltip"
 			class="app-tooltip"
 			:class="`app-tooltip--${position}`"
 		>
 			{{ text }}
-		</div>
+		</span>
 	</div>
 </template>
 
@@ -74,6 +74,7 @@ export default defineComponent({
   color: $color-text-contrast;
   border-radius: 8px;
   padding: 8px 12px;
+  text-wrap: nowrap;
 
   &--bottom {
     top: calc(100% + 10px);
