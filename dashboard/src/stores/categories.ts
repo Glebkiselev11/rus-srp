@@ -9,6 +9,13 @@ export const useCategoriesStore = defineStore("categories", {
 		count: 0,
 		loadState: "initial" as Load,
 	}),
+
+	getters: {
+		getCategoryById(state) {
+			return (id: number) => state.categories.find((c) => c.id === id);
+		},
+	},
+
 	actions: {
 		async fetchCategories(params: RequestParams) {
 			try {
@@ -32,4 +39,5 @@ export const useCategoriesStore = defineStore("categories", {
 			}
 		},
 	}, 
+
 });
