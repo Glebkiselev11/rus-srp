@@ -24,6 +24,11 @@ export default defineComponent({
 			type: String,
 			default: null,
 		},
+		// Disable modal window and show image preview only
+		static: {
+			type: Boolean,
+			default: false,
+		},
 		defaultImageSearchQuery: {
 			type: String,
 			default: null,
@@ -61,6 +66,8 @@ export default defineComponent({
 	methods: {
 		addCropImagaeParamsToUrl,
 		handleClick(e: Event): void {
+			if (this.static) return;
+
 			e.stopPropagation();
 			this.isModalVisible = true;
 		},
@@ -77,7 +84,7 @@ export default defineComponent({
 	<button
 		class="app-image-preview"
 		:style="{ width: size, height: size }"
-		@click.stop="handleClick"
+		@click="handleClick"
 	>
 		<img
 			v-if="src"
@@ -90,7 +97,10 @@ export default defineComponent({
 			color="tertiary"
 		/>
 
-		<div class="app-image-preview--overlay">
+		<div
+			v-if="!static"
+			class="app-image-preview--overlay"
+		>
 			<app-icon
 				v-if="src"
 				name="edit"

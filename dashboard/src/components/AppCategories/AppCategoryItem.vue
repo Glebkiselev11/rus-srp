@@ -5,8 +5,6 @@ import type { LanguageCode } from "@/i18n";
 
 import AppImagePreview from "@/components/AppImagePreview.vue";
 import AppListItem from "@/components/AppListItem.vue";
-import { useCategoriesStore } from "@/stores/categories";
-import { mapActions } from "pinia";
 import { highlighTextByQuery } from "@/utils";
 import AppButton from "../AppButton.vue";
 import AppDropdownMenu from "../AppDropdownMenu.vue";
@@ -35,16 +33,9 @@ export default defineComponent({
 	},
 	emits: ["selectCateogry", "selectCategoryForEditing"],
 	methods: {
-		...mapActions(useCategoriesStore, ["updateCategory"]),
 		highlighTextByQuery,
 		extractCategoryPreview(category: Category) {
 			return category[this.$i18n.locale as LanguageCode];
-		},
-		updateCategoryImage(category: Category, src: string) {
-			this.updateCategory({
-				...category,
-				image: src,
-			});
 		},
 		selectCategory() {
 			if (this.selected) return;
@@ -72,9 +63,7 @@ export default defineComponent({
 				<AppImagePreview
 					size="24px"
 					:src="category.image"
-					:image-search-modal-subtitle="extractCategoryPreview(category)"
-					:default-image-search-query="category.eng"
-					@update:src="src => updateCategoryImage(category, src)"
+					static
 				/>
 
 				<span
