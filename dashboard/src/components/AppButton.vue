@@ -115,7 +115,7 @@ export default defineComponent({
 		padding-inline-end: 16px;
 
 		&.app-button--size-regular {
-			padding-block: 10px;
+			padding-block: 8px;
 		}
 		&.app-button--size-compact {
 			padding-block: 6px;
