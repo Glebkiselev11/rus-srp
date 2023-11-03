@@ -73,7 +73,6 @@ export default defineComponent({
 
 <template>
 	<AppInputWrapper
-		v-slot="wrapper"
 		:label="label"
 	>
 		<AppDropdownMenu
@@ -82,7 +81,6 @@ export default defineComponent({
 			:disabled="disabled"
 		>
 			<button 
-				:id="wrapper.id"
 				class="app-select"
 				:disabled="disabled"
 				:class="[

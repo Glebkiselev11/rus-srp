@@ -9,11 +9,19 @@ export default defineComponent({
 			default: null,
 		},
 	},
-	data() {
-		return {
-			uniqueId: Math.random().toString(),
-		};
+	methods: {
+		selectInput() {
+			const target = this.$refs.target as HTMLElement;
+			["input", "textarea", "select", "button"].forEach((tag) => {
+				const element = target.querySelector(tag) as HTMLElement;
+
+				if (element) {
+					tag === "button" ? element.click() : element.focus();
+				}
+			});
+		},
 	},
+
 });
 
 </script>
@@ -22,18 +30,32 @@ export default defineComponent({
 	<div class="app-input-wrapper">
 		<label
 			v-if="label"
-			:for="uniqueId"
+			class="app-input-wrapper__label"
+			@click="selectInput"
 		>
 			{{ label }}
 		</label>
-		<slot :id="uniqueId" />
+
+		<div ref="target">
+			<slot />
+		</div>
 	</div>
 </template>
 
 <style scoped lang="scss">
+@import "@/styles/main.scss";
 .app-input-wrapper {
 	display: flex;
 	flex-direction: column;
+	row-gap: 8px;
+
+	&__label {
+		@extend .text-body-2;
+		&::first-letter {
+			text-transform: uppercase;
+		}
+	}
+
 }
 
 </style>
