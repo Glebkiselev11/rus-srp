@@ -4,6 +4,7 @@ import { type PropType, defineComponent } from "vue";
 import type { IconName } from "../types/icons";
 import AppIcon from "./AppIcon/index.vue";
 import AppButton from "./AppButton.vue";
+import AppInputWrapper from "./AppInputWrapper.vue";
 
 type InputSize = "regular" | "compact";
 
@@ -12,8 +13,13 @@ export default defineComponent({
 	components: {
 		AppIcon,
 		AppButton,
+		AppInputWrapper,
 	},
 	props: {
+		label: {
+			type: String,
+			default: null,
+		},
 		type: {
 			type: String,
 			default: "text",
@@ -90,39 +96,43 @@ export default defineComponent({
 </script>
 
 <template>
-	<div class="app-input">
-		<AppIcon
-			v-if="leftIcon"
-			class="app-input--left-icon"
-			:name="leftIcon"
-			color="tertiary"
-		/>
+	<AppInputWrapper
+		:label="label"
+	>
+		<div class="app-input">
+			<AppIcon
+				v-if="leftIcon"
+				class="app-input--left-icon"
+				:name="leftIcon"
+				color="tertiary"
+			/>
 
-		<input
-			class="app-input__field"
-			:class="['app-input__field--' + size]"
-			:style="{ width }"
-			:type="type"
-			:value="modelValue"
-			:placeholder="placeholder"
-			:disabled="disabled"
-			:warning="error"
-			:max="max"
-			:min="min"
-			@input="handleInput"
-		>
+			<input
+				class="app-input__field"
+				:class="['app-input__field--' + size]"
+				:style="{ width }"
+				:type="type"
+				:value="modelValue"
+				:placeholder="placeholder"
+				:disabled="disabled"
+				:warning="error"
+				:max="max"
+				:min="min"
+				@input="handleInput"
+			>
 
-		<AppButton
-			v-if="clearButton && modelValue"
-			icon="cancel"
-			color="neutral"
-			size="compact"
-			type="inline"
-			icon-color="tertiary"
-			class="app-input__clear-button"
-			@click="emitValue('')"
-		/>
-	</div>
+			<AppButton
+				v-if="clearButton && modelValue"
+				icon="cancel"
+				color="neutral"
+				size="compact"
+				type="inline"
+				icon-color="tertiary"
+				class="app-input__clear-button"
+				@click="emitValue('')"
+			/>
+		</div>
+	</AppInputWrapper>
 </template>
 
 <style scoped lang="scss">
