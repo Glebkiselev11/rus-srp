@@ -61,7 +61,10 @@ export default defineComponent({
 			/>
 		</template>
 		<template #content>
-			<AppCategoryForm :category-id="categoryId" />
+			<AppCategoryForm
+				:category-id="categoryId"
+				@saved="updateVisible(false)"
+			/>
 		</template>
 	</AppModal>
 </template>

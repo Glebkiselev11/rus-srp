@@ -2,20 +2,22 @@
 import { defineComponent } from "vue";
 import AppImagePreview from "./AppImagePreview.vue";
 import { useCategoriesStore } from "@/stores/categories";
-import { mapState } from "pinia";
+import { mapActions, mapState } from "pinia";
 import type { Category, DraftCategory } from "@/types/categories";
 import { LanguageList, type LanguageCode } from "@/i18n";
 import AppInput from "./AppInput.vue";
+import AppButton from "./AppButton.vue";
 
 export default defineComponent({
 	name: "AppCategoryForm",
-	components: { AppImagePreview, AppInput },
+	components: { AppImagePreview, AppInput, AppButton },
 	props: {
 		categoryId: {
 			type: Number,
 			default: undefined,
 		},
 	},
+	emits: ["saved"],
 	data() {
 		return {
 			draftCategory: {
@@ -41,6 +43,9 @@ export default defineComponent({
 		defaultImageSearchQuery(): string {
 			return this.draftCategory.eng;
 		},
+		saveButtonLabel(): string {
+			return this.categoryId ? this.$t("save-changes") : this.$t("create");
+		},
 	},
 	created() {
 		if (this.category) {
@@ -48,8 +53,18 @@ export default defineComponent({
 		}
 	},
 	methods: {
+		...mapActions(useCategoriesStore, ["createCategory", "updateCategory"]),
 		getLabelByKey(key: LanguageCode): string {
 			return LanguageList.find(({ value }) => value === key)?.label || "Not found label";
+		},
+		async saveCategory() {
+			if (this.category) {
+				await this.updateCategory(this.category.id, this.draftCategory);
+			} else {
+				await this.createCategory(this.draftCategory);
+			}
+
+			this.$emit("saved");
 		},
 	},
 
@@ -77,6 +92,45 @@ export default defineComponent({
 		<h4 class="app-category-form__subtitle">
 			{{ $t("translation") }}
 		</h4>
+
+		<AppInput
+			v-if="selectedLanguage !== 'rus'"
+			v-model="draftCategory.rus"
+			:label="getLabelByKey('rus')"
+			class="app-category-form__translation-input"
+		/>
+
+		<AppInput
+			v-if="selectedLanguage !== 'eng'"
+			v-model="draftCategory.eng"
+			:label="getLabelByKey('eng')"
+			class="app-category-form__translation-input"
+		/>
+
+		<AppInput
+			v-if="selectedLanguage !== 'srp_latin'"
+			v-model="draftCategory.srp_latin"
+			:label="getLabelByKey('srp_latin')"
+			class="app-category-form__translation-input"
+		/>
+
+		<AppInput
+			v-if="selectedLanguage !== 'srp_cyrillic'"
+			v-model="draftCategory.srp_cyrillic"
+			:label="getLabelByKey('srp_cyrillic')"
+			class="app-category-form__translation-input"
+		/>
+
+		<div class="app-category-form__footer">
+			<AppButton
+				type="secondary"
+				:label="$t('cancel')"	
+			/>
+			<AppButton
+				:label="saveButtonLabel"
+				@click="saveCategory"
+			/>
+		</div>
 	</div>
 </template>
 
@@ -85,6 +139,7 @@ export default defineComponent({
 
 .app-category-form {
 	padding-inline: 16px;
+	padding-block-end: 20px;
 	width: 598px;
 
 	&__preview {
@@ -100,6 +155,17 @@ export default defineComponent({
 	&__subtitle {
 		margin-block-start: 24px;
 		margin-block-end: 28px;
+	}
+	
+	&__translation-input {
+		margin-block-end: 24px;
+	}
+
+	&__footer {
+		display: flex;
+		justify-content: flex-end;
+		column-gap: 8px;
+		padding-block-start: 16px;
 	}
 }
 </style>

@@ -1,7 +1,7 @@
 import type { Load, RequestParams } from "@/types/api";
 import { defineStore } from "pinia";
 import { CategoriesApi } from "@/api";
-import type { Category } from "@/types/categories";
+import type { Category, DraftCategory } from "@/types/categories";
 
 export const useCategoriesStore = defineStore("categories", {
 	state: () => ({
@@ -30,10 +30,19 @@ export const useCategoriesStore = defineStore("categories", {
 			} 
 		},
 
-		async updateCategory(category: Category) {
+		async updateCategory(id: number, category: DraftCategory | Category) {
 			try {
-				await CategoriesApi.update(category);
-				this.categories = this.categories.map((c) => (c.id === category.id ? category : c));
+				const { data } = await CategoriesApi.update(id, category);
+				this.categories = this.categories.map((c) => (c.id === data.id ? data : c));
+			} catch (error) {
+				console.error(error);
+			}
+		},
+
+		async createCategory(category: DraftCategory) {
+			try {
+				const { data } = await CategoriesApi.create(category);
+				this.categories = [...this.categories, data];
 			} catch (error) {
 				console.error(error);
 			}

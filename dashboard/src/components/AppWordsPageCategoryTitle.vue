@@ -32,7 +32,7 @@ export default defineComponent({
 		},
 		updateCategoryImage(src: string) {
 			if (this.category && src) {
-				this.updateCategory({
+				this.updateCategory(this.category.id, {
 					...this.category,
 					image: src,
 				});

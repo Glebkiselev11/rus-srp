@@ -1,5 +1,7 @@
 {
   "translation": "Translation",
+  "create": "Create",
+  "save-changes": "Save changes",
   "no-words-were-found": "No words were found for this query",
   "general": "General",
   "categories": "Categories",

@@ -1,5 +1,5 @@
 import type { ListResponse, OptionalRequestParams } from "@/types/api";
-import type { Category } from "@/types/categories";
+import type { Category, DraftCategory } from "@/types/categories";
 import axios, { type AxiosResponse } from "axios";
 
 export const CategoriesApi = {
@@ -9,7 +9,11 @@ export const CategoriesApi = {
 		return axios.get(this.ENDPOINT, { params }); 
 	},
 
-	update(data: Category): Promise<AxiosResponse<Category>> {
-		return axios.put(`${this.ENDPOINT}/${data.id}`, data);
+	update(id: number, data: Category | DraftCategory): Promise<AxiosResponse<Category>> {
+		return axios.put(`${this.ENDPOINT}/${id}`, data);
+	},
+
+	create(data: DraftCategory): Promise<AxiosResponse<Category>> {
+		return axios.post(`${this.ENDPOINT}/create`, data);
 	},
 };
