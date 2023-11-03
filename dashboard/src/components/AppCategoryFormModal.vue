@@ -5,6 +5,7 @@ import AppCategoryForm from "./AppCategoryForm.vue";
 import { useCategoriesStore } from "@/stores/categories";
 import { mapState } from "pinia";
 import type { LanguageCode } from "@/i18n";
+import type { Category } from "@/types/categories";
 
 export default defineComponent({
 	name: "AppCategoryFormModal",
@@ -23,16 +24,14 @@ export default defineComponent({
 	emits: ["update:visible"],
 	computed: {
 		...mapState(useCategoriesStore, ["getCategoryById"]),
+		category(): Category | undefined {
+			return this.categoryId ? this.getCategoryById(this.categoryId) : undefined;
+		},
 		title(): string {
 			return this.categoryId ? this.$t("editing-category") : this.$t("creation-category");
 		},
 		subtitle(): string {
-			if (this.categoryId) {
-			  const category = this.getCategoryById(this.categoryId); 
-				return category ? category[this.$i18n.locale as LanguageCode] : "";
-			} else {
-				return this.$t("new-category");
-			}
+			return this.category?.[this.$i18n.locale as LanguageCode] || "";
 		},
 	},
 	methods: {
