@@ -39,4 +39,5 @@ export type IconName =
   "expand_more_up" |
   "sort" |
   "widgets" |
-  "done";
+  "done" |
+  "edit_note";

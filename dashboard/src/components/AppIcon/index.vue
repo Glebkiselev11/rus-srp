@@ -28,6 +28,7 @@ import ExpandMoreUpIcon from "./ExpandMoreUpIcon.vue";
 import SortIcon from "./SortIcon.vue";
 import WidgetsIcon from "./WidgetsIcon.vue";
 import DoneIcon from "./DoneIcon.vue";
+import EditNoteIcon from "./EditNoteIcon.vue";
 
 export default defineComponent({
 	name: "AppIcon",
@@ -74,6 +75,7 @@ export default defineComponent({
 				"sort": SortIcon,
 				"widgets": WidgetsIcon,
 				"done": DoneIcon,
+				"edit_note": EditNoteIcon,
 			}[this.name];
 		},
 		convertedSize(): string {
