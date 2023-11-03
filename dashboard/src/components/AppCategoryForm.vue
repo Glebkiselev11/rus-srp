@@ -84,7 +84,7 @@ export default defineComponent({
 
 			<AppInput
 				v-model="draftCategory[selectedLanguage]"
-				:label="getLabelByKey(selectedLanguage)"
+				:label="$t('category-name')"
 				width="400px"
 			/>
 		</div>
