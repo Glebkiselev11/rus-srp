@@ -6,7 +6,7 @@ import AppImagesSearch from "./AppImagesSearch.vue";
 import { addCropImagaeParamsToUrl } from "@/utils";
 import type { IconSize } from "@/types/icons";
 
-type PreviewSize = "24px" | "32px" | "40px" | "48px" | "56px" | "64px";
+type PreviewSize = "24px" | "32px" | "40px" | "48px" | "56px" | "64px" | "96px";
 
 export default defineComponent({
 	name: "AppImagePreview",
@@ -118,6 +118,7 @@ export default defineComponent({
 	</button>
 
 	<AppModal 
+		v-if="!static"
 		:visible="isModalVisible"
 		:title="imagesSearchModalTitle"
 		:subtitle="imageSearchModalSubtitle"
@@ -127,14 +128,10 @@ export default defineComponent({
 			v-if="src"
 			#header-left
 		>
-			<div
-				class="app-image-preview"
-				:style="{width: size}"
-			>
-				<img
-					:src="srcWithParams"
-				>
-			</div>
+			<AppImagePreview
+				:src="srcWithParams"
+				static
+			/>
 		</template>
 
 		<template #content>
