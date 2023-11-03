@@ -6,14 +6,14 @@ import srpCyrillic from "@/locales/srp_cyrillic.json";
 
 export const STORAGE_KEY = "languageKey";
 
+export type LanguageCode = "eng" | "rus" | "srp_latin" | "srp_cyrillic";
+
 export const LanguageList = [
 	{ value: "eng", label: "English" },
 	{ value: "rus", label: "Русский" },
 	{ value: "srp_latin", label: "Srpski" },
 	{ value: "srp_cyrillic", label: "Српски" },
-];
-
-export type LanguageCode = "eng" | "rus" | "srp_latin" | "srp_cyrillic";
+] as { value: LanguageCode; label: string }[];
 
 export default createI18n({
 	locale: localStorage.getItem(STORAGE_KEY) || "eng",
