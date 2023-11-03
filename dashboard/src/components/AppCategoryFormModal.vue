@@ -6,10 +6,11 @@ import { useCategoriesStore } from "@/stores/categories";
 import { mapState } from "pinia";
 import type { LanguageCode } from "@/i18n";
 import type { Category } from "@/types/categories";
+import AppImagePreview from "./AppImagePreview.vue";
 
 export default defineComponent({
 	name: "AppCategoryFormModal",
-	components: { AppModal, AppCategoryForm },
+	components: { AppModal, AppCategoryForm, AppImagePreview },
 	props: {
 		// If provided category id, then form will be in edit mode
 		categoryId: {
@@ -50,6 +51,15 @@ export default defineComponent({
 		:visible="visible"
 		@update:visible="updateVisible"
 	>
+		<template
+			v-if="category"
+			#header-left
+		>
+			<AppImagePreview
+				:src="category.image"
+				static
+			/>
+		</template>
 		<template #content>
 			<AppCategoryForm :category-id="categoryId" />
 		</template>
