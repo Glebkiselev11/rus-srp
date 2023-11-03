@@ -73,6 +73,10 @@ export default defineComponent({
 				width="400px"
 			/>
 		</div>
+
+		<h4 class="app-category-form__subtitle">
+			{{ $t("translation") }}
+		</h4>
 	</div>
 </template>
 
@@ -91,7 +95,11 @@ export default defineComponent({
 		padding: 24px;
 		background: $color-background;
 		border-radius: 16px;
+	}
 
+	&__subtitle {
+		margin-block-start: 24px;
+		margin-block-end: 28px;
 	}
 }
 </style>
