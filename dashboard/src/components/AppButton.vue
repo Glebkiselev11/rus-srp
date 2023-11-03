@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { IconColor, IconName } from "@/types/icons";
+import type { IconColor, IconName, IconSize } from "@/types/icons";
 import AppIcon from "@/components/AppIcon/index.vue";
 import { defineComponent, type PropType } from "vue";
 import type { ButtonColor, ButtonSize, ButtonType } from "@/types/buttons";
@@ -59,6 +59,13 @@ export default defineComponent({
 
 			return this.color;	
 		},
+		_iconSize(): IconSize {
+			if (this.size === "regular") {
+				return "regular";
+			} else {
+				return "compact";
+			}
+		},
 	},
 });
 </script>
@@ -81,7 +88,7 @@ export default defineComponent({
 			v-if="icon"
 			:name="icon"
 			:color="_iconColor"
-			size="compact"
+			:size="_iconSize"
 		/>
 		<template v-if="label">
 			{{ label }}
