@@ -55,9 +55,11 @@ export default defineComponent({
 				padding-inline="8px"
 				@click="selectCategory(0)"
 			>
-				<AppAllWordsCategoryImage size="24px" />
+				<div class="app-categories-list__all-words-item">
+					<AppAllWordsCategoryImage size="24px" />
 
-				<span class="text-body-2">{{ $t('all-words') }}</span>
+					<span class="text-body-2">{{ $t('all-words') }}</span>
+				</div>
 			</AppListItem>
 		</div>
 
@@ -94,6 +96,12 @@ export default defineComponent({
 <style scoped lang="scss">
 
 .app-categories-list {
+	&__all-words-item {
+		display: flex;
+		align-items: center;
+		column-gap: 8px;
+	}
+
 	&__items {
 		margin-inline: 12px;
 		margin-block: 12px;

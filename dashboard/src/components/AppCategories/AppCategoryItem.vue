@@ -118,7 +118,7 @@ export default defineComponent({
 	&__row {
 		display: inherit;
 		align-items: inherit;
-		column-gap: 12px;
+		column-gap: 8px;
 	}
 
 	&__label {
