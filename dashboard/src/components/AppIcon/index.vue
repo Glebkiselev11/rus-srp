@@ -29,6 +29,7 @@ import SortIcon from "./SortIcon.vue";
 import WidgetsIcon from "./WidgetsIcon.vue";
 import DoneIcon from "./DoneIcon.vue";
 import EditNoteIcon from "./EditNoteIcon.vue";
+import ErrorIcon from "./ErrorIcon.vue";
 
 export default defineComponent({
 	name: "AppIcon",
@@ -76,6 +77,7 @@ export default defineComponent({
 				"widgets": WidgetsIcon,
 				"done": DoneIcon,
 				"edit_note": EditNoteIcon,
+				"error": ErrorIcon,
 			}[this.name];
 		},
 		convertedSize(): string {

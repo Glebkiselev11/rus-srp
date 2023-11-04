@@ -40,4 +40,5 @@ export type IconName =
   "sort" |
   "widgets" |
   "done" |
-  "edit_note";
+  "edit_note" |
+  "error";
