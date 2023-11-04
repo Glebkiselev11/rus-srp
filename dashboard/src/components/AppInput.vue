@@ -122,16 +122,25 @@ export default defineComponent({
 				@input="handleInput"
 			>
 
-			<AppButton
-				v-if="clearButton && modelValue"
-				icon="cancel"
-				color="neutral"
-				size="compact"
-				type="inline"
-				icon-color="tertiary"
-				class="app-input__clear-button"
-				@click="emitValue('')"
-			/>
+			<div class="app-input__buttons">
+				<AppIcon 
+					v-if="errors.length > 0"
+					color="negative"
+					name="error"
+					:size="size"
+				/>
+
+				<AppButton
+					v-if="clearButton && modelValue"
+					icon="cancel"
+					color="neutral"
+					:size="size"
+					type="inline"
+					icon-color="tertiary"
+					class="app-input__clear-button"
+					@click="emitValue('')"
+				/>
+			</div>
 		</div>
 	</AppInputWrapper>
 </template>
@@ -189,10 +198,14 @@ export default defineComponent({
 		}
 	}
 
-	&__clear-button {
+	&__buttons {
 		position: absolute;
 		right: 8px;
-		top: 4px;
+		top: 0;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		column-gap: 8px;
 	}
 }
 
