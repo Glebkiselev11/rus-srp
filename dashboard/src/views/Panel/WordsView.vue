@@ -214,7 +214,7 @@ export default defineComponent({
 					<AppSelect
 						v-model="order"
 						:options="orderOptions"
-						type="inline"
+						appearance="inline"
 						icon="sort"
 						size="compact"
 						:placeholder="$t('to-sort')"

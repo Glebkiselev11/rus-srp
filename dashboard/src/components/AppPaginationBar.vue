@@ -71,7 +71,7 @@ export default defineComponent({
 					:model-value="limit"
 					:options="limitOptions"
 					size="compact"
-					type="filled"
+					appearance="filled"
 					@update:model-value="updateLimit"
 				/>
 			</div>
