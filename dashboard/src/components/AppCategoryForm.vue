@@ -65,7 +65,7 @@ export default defineComponent({
 		getLabelByKey(key: LanguageCode): string {
 			return LanguageList.find(({ value }) => value === key)?.label || "Not found label";
 		},
-		async isCategoryNameUnique(): Promise<void> {
+		async triggerCategoryNameUniqueValidation(): Promise<void> {
 			const key = this.selectedLanguage;
 			const name = this.draftCategory[key];
 			const error = this.$t("category-exists");
@@ -135,7 +135,7 @@ export default defineComponent({
 				width="400px"
 				appearance="outline"
 				:errors="categoryNameValidationErrors"
-				@focusout="isCategoryNameUnique"
+				@focusout="triggerCategoryNameUniqueValidation"
 			/>
 		</div>
 
