@@ -63,7 +63,7 @@ export default defineComponent({
 			<AppButton
 				v-if="closeButton"
 				icon="close"
-				type="inline"
+				appearance="inline"
 				color="neutral"
 				class="app-header__close-button"
 				@click="handleClose"

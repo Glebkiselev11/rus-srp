@@ -2,7 +2,7 @@
 import type { IconColor, IconName, IconSize } from "@/types/icons";
 import AppIcon from "@/components/AppIcon/index.vue";
 import { defineComponent, type PropType } from "vue";
-import type { ButtonColor, ButtonSize, ButtonType } from "@/types/buttons";
+import type { ButtonColor, ButtonSize, ButtonAppearance } from "@/types/buttons";
 
 export default defineComponent({
 	name: "AppButton",
@@ -26,8 +26,8 @@ export default defineComponent({
 			type: String as PropType<ButtonSize>,
 			default: "regular",
 		},
-		type: {
-			type: String as PropType<ButtonType>,
+		appearance: {
+			type: String as PropType<ButtonAppearance>,
 			default: "primary",
 		},
 		disabled: {
@@ -53,7 +53,7 @@ export default defineComponent({
 				return "primary";
 			}
 
-			if (this.type === "primary") {
+			if (this.appearance === "primary") {
 				return "contrast";
 			}
 
@@ -75,7 +75,7 @@ export default defineComponent({
 		class="app-button" 
 		:class="[
 			`app-button--size-${size}`, 
-			`app-button--type-${type}`, 
+			`app-button--appearance-${appearance}`, 
 			`app-button--color-${color}`,
 			{ 'app-button--icon-and-label' : icon && label},
 			{ 'app-button--only-icon' : icon && !label},
@@ -167,7 +167,7 @@ export default defineComponent({
 		}
 	}
 
-	&--type {
+	&--appearance {
 		&-primary {
 			&.app-button--color-accent-primary {
 				background-color: $color-text-accent-primary;
@@ -231,7 +231,7 @@ export default defineComponent({
 	}
 
 	&:hover {
-		&.app-button--type-primary {
+		&.app-button--appearance-primary {
 			&.app-button--color-accent-primary {
 				background-color: $color-background-accent-primary-hovered;
 			}
@@ -249,18 +249,18 @@ export default defineComponent({
 			}
 		}
 
-		&.app-button--type-secondary {
+		&.app-button--appearance-secondary {
 			background-color: $color-background-tertiary-hovered;
 		}
 
-		&.app-button--type-inline {
+		&.app-button--appearance-inline {
 			background-color: $color-background-content-primary-hovered;
 		}
 
 	}
 
 	&--pressed {
-		&.app-button--type-primary {
+		&.app-button--appearance-primary {
 			&.app-button--color-accent-primary {
 				background-color: $color-background-accent-primary-active;
 			}
@@ -278,11 +278,11 @@ export default defineComponent({
 			}
 		}
 
-		&.app-button--type-secondary {
+		&.app-button--appearance-secondary {
 			background-color: $color-background-tertiary-active;
 		}
 
-		&.app-button--type-inline {
+		&.app-button--appearance-inline {
 			background-color: $color-background-content-primary-active;
 		}
 	}

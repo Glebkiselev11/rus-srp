@@ -144,7 +144,7 @@ export default defineComponent({
 						<AppTooltip :text="$t('to-sort')">
 							<AppButton 
 								icon="sort"
-								type="inline"
+								appearance="inline"
 								color="neutral"
 								:pressed="isMenuOpen"
 							/>
@@ -154,7 +154,7 @@ export default defineComponent({
 					<AppTooltip :text="$t('create-category')">
 						<AppButton
 							icon="add"
-							type="inline"
+							appearance="inline"
 							color="neutral"
 							@click="openCreationCategoryForm"
 						/>

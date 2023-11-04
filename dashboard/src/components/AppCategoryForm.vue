@@ -144,7 +144,7 @@ export default defineComponent({
 			<AppButton
 				v-show="showFillAutoButton"
 				icon="edit_note"
-				type="inline"
+				appearance="inline"
 				size="regular"
 				:label="$t('fill-in-auto')"
 				@click="autoFill"
@@ -181,7 +181,7 @@ export default defineComponent({
 
 		<div class="app-category-form__footer">
 			<AppButton
-				type="secondary"
+				appearance="secondary"
 				:label="$t('cancel')"	
 			/>
 			<AppButton

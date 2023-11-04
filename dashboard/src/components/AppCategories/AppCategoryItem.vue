@@ -86,7 +86,7 @@ export default defineComponent({
 			>
 				<AppButton
 					icon="more_vert"
-					type="inline"
+					appearance="inline"
 					color="neutral"
 					size="small"
 					:pressed="isMenuOpen"

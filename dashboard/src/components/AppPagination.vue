@@ -85,7 +85,7 @@ export default defineComponent({
 		<AppButton
 			icon="navigate_before"
 			:disabled="currentPage === 1"
-			type="inline"
+			appearance="inline"
 			size="compact"
 			color="neutral"
 			@click="prevPage"
@@ -130,7 +130,7 @@ export default defineComponent({
 		<AppButton
 			icon="navigate_next"
 			:disabled="currentPage === lastPage"
-			type="inline"
+			appearance="inline"
 			size="compact"
 			color="neutral"
 			@click="nextPage"

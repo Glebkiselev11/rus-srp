@@ -135,7 +135,7 @@ export default defineComponent({
 					icon="cancel"
 					color="neutral"
 					:size="size"
-					type="inline"
+					appearance="inline"
 					icon-color="tertiary"
 					class="app-input__clear-button"
 					@click="emitValue('')"
