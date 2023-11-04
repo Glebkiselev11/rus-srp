@@ -10,17 +10,19 @@ const API_VERSION: [(&str, &str); 1] = [("api-version", "3.0")];
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 enum Language {
-    RU,
-    EN,
-    SR,
+    Ru,
+    En,
+    SrpLatin,
+    SrpCyrillic,
 }
 
 impl Language {
     pub fn as_str(&self) -> &'static str {
         match *self {
-            Language::RU => "ru",
-            Language::EN => "en",
-            Language::SR => "bs",
+            Language::Ru => "ru",
+            Language::En => "en",
+            Language::SrpCyrillic => "sr-Cyrl",
+            Language::SrpLatin => "hr",
         }
     }
 }
@@ -74,7 +76,26 @@ pub async fn translate(body: web::Json<TranslatePayload>) -> actix_web::Result<i
     match res {
         Ok(resp) => {
             let data: Vec<ResponseData> = resp.json().await.unwrap();
-            Ok(HttpResponse::Ok().json(&data[0]))
+
+            Ok(HttpResponse::Ok().json(ResponseData {
+                translations: data[0]
+                    .translations
+                    .iter()
+                    .map(|x| {
+                        return Translation {
+                            text: x.text.clone(),
+                            to: (match x.to.as_str() {
+                                "ru" => "rus",
+                                "en" => "eng",
+                                "sr-Cyrl" => "srp_cyrillic",
+                                "hr" => "srp_latin",
+                                _ => "unknown",
+                            })
+                            .to_string(),
+                        };
+                    })
+                    .collect(),
+            }))
         }
         Err(e) => Err(actix_web::error::ErrorInternalServerError(e)),
     }
