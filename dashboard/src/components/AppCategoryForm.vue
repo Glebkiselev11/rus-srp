@@ -133,6 +133,7 @@ export default defineComponent({
 				v-model="draftCategory[selectedLanguage]"
 				:label="$t('category-name')"
 				width="400px"
+				appearance="outline"
 				:errors="categoryNameValidationErrors"
 				@focusout="isCategoryNameUnique"
 			/>
@@ -154,6 +155,7 @@ export default defineComponent({
 		<AppInput
 			v-if="selectedLanguage !== 'rus'"
 			v-model="draftCategory.rus"
+			appearance="outline"
 			:label="getLabelByKey('rus')"
 			class="app-category-form__translation-input"
 		/>
@@ -161,6 +163,7 @@ export default defineComponent({
 		<AppInput
 			v-if="selectedLanguage !== 'eng'"
 			v-model="draftCategory.eng"
+			appearance="outline"
 			:label="getLabelByKey('eng')"
 			class="app-category-form__translation-input"
 		/>
@@ -168,6 +171,7 @@ export default defineComponent({
 		<AppInput
 			v-if="selectedLanguage !== 'srp_latin'"
 			v-model="draftCategory.srp_latin"
+			appearance="outline"
 			:label="getLabelByKey('srp_latin')"
 			class="app-category-form__translation-input"
 		/>
@@ -175,6 +179,7 @@ export default defineComponent({
 		<AppInput
 			v-if="selectedLanguage !== 'srp_cyrillic'"
 			v-model="draftCategory.srp_cyrillic"
+			appearance="outline"
 			:label="getLabelByKey('srp_cyrillic')"
 			class="app-category-form__translation-input"
 		/>
