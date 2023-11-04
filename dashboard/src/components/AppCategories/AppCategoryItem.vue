@@ -5,7 +5,7 @@ import type { LanguageCode } from "@/i18n";
 
 import AppImagePreview from "@/components/AppImagePreview.vue";
 import AppListItem from "@/components/AppListItem.vue";
-import { highlighTextByQuery } from "@/utils";
+import { highlighTextByQuery } from "@/common/utils";
 import AppButton from "../AppButton.vue";
 import AppDropdownMenu from "../AppDropdownMenu.vue";
 

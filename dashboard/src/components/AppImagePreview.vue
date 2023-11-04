@@ -3,7 +3,7 @@ import { defineComponent, type PropType } from "vue";
 import AppIcon from "@/components/AppIcon/index.vue";
 import AppModal from "@/components/AppModal.vue";
 import AppImagesSearch from "./AppImagesSearch.vue";
-import { addCropImagaeParamsToUrl } from "@/utils";
+import { addCropImagaeParamsToUrl } from "@/common/utils";
 import type { IconSize } from "@/types/icons";
 
 type PreviewSize = "24px" | "32px" | "40px" | "48px" | "56px" | "64px" | "96px";

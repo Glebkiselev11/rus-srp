@@ -16,7 +16,7 @@ import AppDropdownMenu from "@/components/AppDropdownMenu.vue";
 import AppPaginationBar from "@/components/AppPaginationBar.vue";
 import AppZeroState from "@/components/AppZeroState.vue";
 import AppWordsPageCategoryTitle from "@/components/AppWordsPageCategoryTitle.vue";
-import { highlighTextByQuery } from "@/utils";
+import { highlighTextByQuery } from "@/common/utils";
 
 import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/i18n";

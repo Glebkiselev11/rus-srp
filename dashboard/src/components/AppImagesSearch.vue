@@ -2,7 +2,7 @@
 import { defineComponent, type PropType } from "vue";
 import AppInput from "./AppInput.vue";
 import AppIcon from "./AppIcon/index.vue";
-import { addCropImagaeParamsToUrl } from "@/utils";
+import { addCropImagaeParamsToUrl } from "@/common/utils";
 import { useImagesStore } from "@/stores/images";
 import { mapActions, mapState } from "pinia";
 import type { RequestParams } from "@/types/api";
