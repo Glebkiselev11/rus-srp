@@ -5,6 +5,7 @@
   "no-words-were-found": "Nisu pronađene reči za ovaj upit",
   "general": "Opšta",
   "categories": "Kategorije",
+  "category-exists": "Kategorija sa ovim imenom već postoji",
   "category-name": "Ime kategorije",
   "create-category": "Kreirajte kategoriju",
   "order": {

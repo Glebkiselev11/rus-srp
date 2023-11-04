@@ -5,6 +5,7 @@
   "no-words-were-found": "Слова по данному запросу не были найдены",
   "general": "Общие",
   "categories": "Категории",
+  "category-exists": "Категория с таким названием уже существует",
   "category-name": "Название категории",
   "create-category": "Создать категорию",
   "order": {

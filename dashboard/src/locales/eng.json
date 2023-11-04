@@ -5,6 +5,7 @@
   "no-words-were-found": "No words were found for this query",
   "general": "General",
   "categories": "Categories",
+  "category-exists": "Category with this name already exists",
   "category-name": "Category name",
   "create-category": "Create category",
   "order": {

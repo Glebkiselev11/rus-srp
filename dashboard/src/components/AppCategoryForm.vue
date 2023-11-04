@@ -9,6 +9,7 @@ import type { LanguageCode } from "@/types/translations";
 import AppInput from "./AppInput.vue";
 import AppButton from "./AppButton.vue";
 import { translate } from "@/common/translations";
+import { CategoriesApi } from "@/api/categories";
 
 export default defineComponent({
 	name: "AppCategoryForm",
@@ -29,6 +30,7 @@ export default defineComponent({
 				srp_cyrillic: "",
 				image: null,
 			} as DraftCategory,
+			categoryNameValidationErrors: [] as string[],
 		};
 	},
 	computed: {
@@ -63,6 +65,34 @@ export default defineComponent({
 		getLabelByKey(key: LanguageCode): string {
 			return LanguageList.find(({ value }) => value === key)?.label || "Not found label";
 		},
+		async isCategoryNameUnique(): Promise<void> {
+			const key = this.selectedLanguage;
+			const name = this.draftCategory[key];
+			const error = this.$t("category-exists");
+
+			const reset = () => 
+				this.categoryNameValidationErrors = this.categoryNameValidationErrors.filter(
+					(x) => x !== error,
+				);
+
+			if (!name || this.category && this.category[key] === name) {
+				reset();
+				return;
+			}
+
+			const { data } = await CategoriesApi.query({ search: name });
+
+			const exists = data.result.some((category) => 
+				category[key].toLocaleLowerCase() === name.toLocaleLowerCase());
+			
+			if (exists) {
+				this.categoryNameValidationErrors.push(error);
+				this.categoryNameValidationErrors = [...new Set(this.categoryNameValidationErrors)];
+			} else {
+				reset();	
+			}
+		},
+
 		async saveCategory() {
 			if (this.category) {
 				await this.updateCategory(this.category.id, this.draftCategory);
@@ -103,6 +133,8 @@ export default defineComponent({
 				v-model="draftCategory[selectedLanguage]"
 				:label="$t('category-name')"
 				width="400px"
+				:errors="categoryNameValidationErrors"
+				@focusout="isCategoryNameUnique"
 			/>
 		</div>
 
