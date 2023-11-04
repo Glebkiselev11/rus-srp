@@ -8,6 +8,10 @@ export default defineComponent({
 			type: String,
 			default: null,
 		},
+		error: {
+			type: String,
+			default: null,
+		},
 	},
 	methods: {
 		selectInput() {
@@ -39,6 +43,13 @@ export default defineComponent({
 		<div ref="target">
 			<slot />
 		</div>
+
+		<span
+			v-if="error"
+			class="app-input-wrapper__error"
+		>
+			{{ error }}
+		</span>
 	</div>
 </template>
 
@@ -56,6 +67,10 @@ export default defineComponent({
 		}
 	}
 
+	&__error {
+		@extend .text-caption-2;
+		color: $color-text-negative;
+	}
 }
 
 </style>

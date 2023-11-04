@@ -36,9 +36,9 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
-		error: {
-			type: Boolean,
-			default: false,
+		errors: {
+			type: Array as PropType<string[]>,
+			default: () => [],
 		},
 		leftIcon: {
 			type: String as PropType<IconName>,
@@ -98,6 +98,7 @@ export default defineComponent({
 <template>
 	<AppInputWrapper
 		:label="label"
+		:error="errors[0]"
 	>
 		<div class="app-input">
 			<AppIcon
@@ -115,7 +116,7 @@ export default defineComponent({
 				:value="modelValue"
 				:placeholder="placeholder"
 				:disabled="disabled"
-				:warning="error"
+				:warning="errors.length > 0"
 				:max="max"
 				:min="min"
 				@input="handleInput"
