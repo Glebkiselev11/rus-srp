@@ -4,9 +4,11 @@ import AppImagePreview from "./AppImagePreview.vue";
 import { useCategoriesStore } from "@/stores/categories";
 import { mapActions, mapState } from "pinia";
 import type { Category, DraftCategory } from "@/types/categories";
-import { LanguageList, type LanguageCode } from "@/i18n";
+import { LanguageList } from "@/i18n";
+import type { LanguageCode } from "@/types/translations";
 import AppInput from "./AppInput.vue";
 import AppButton from "./AppButton.vue";
+import { translate } from "@/common/translations";
 
 export default defineComponent({
 	name: "AppCategoryForm",
@@ -46,6 +48,10 @@ export default defineComponent({
 		saveButtonLabel(): string {
 			return this.categoryId ? this.$t("save-changes") : this.$t("create");
 		},
+		showFillAutoButton(): boolean {
+			return Boolean(this.draftCategory[this.selectedLanguage]) && 
+				LanguageList.some(({ value }) => this.draftCategory[value] === "");
+		},
 	},
 	created() {
 		if (this.category) {
@@ -65,6 +71,17 @@ export default defineComponent({
 			}
 
 			this.$emit("saved");
+		},
+		autoFill() {
+			const from = this.selectedLanguage;
+			const target = LanguageList
+				.filter(({ value }) => value !== from).map(({ value }) => value);
+
+			translate(from, target, this.draftCategory[from]).then((translations) => {
+				translations.forEach(({ to, text }) => {
+					this.draftCategory[to] = text.toLowerCase();
+				});
+			});
 		},
 	},
 
@@ -89,9 +106,18 @@ export default defineComponent({
 			/>
 		</div>
 
-		<h4 class="app-category-form__subtitle">
-			{{ $t("translation") }}
-		</h4>
+		<div class="app-category-form__row">
+			<h4 v-text="$t('translation')" />
+
+			<AppButton
+				v-show="showFillAutoButton"
+				icon="edit_note"
+				type="inline"
+				size="regular"
+				:label="$t('fill-in-auto')"
+				@click="autoFill"
+			/>
+		</div>
 
 		<AppInput
 			v-if="selectedLanguage !== 'rus'"
@@ -152,9 +178,13 @@ export default defineComponent({
 		border-radius: 16px;
 	}
 
-	&__subtitle {
-		margin-block-start: 24px;
-		margin-block-end: 28px;
+	&__row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		min-height: 40px;
+		margin-block-start: 16px;
+		margin-block-end: 20px;
 	}
 	
 	&__translation-input {

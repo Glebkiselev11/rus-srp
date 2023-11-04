@@ -4,7 +4,7 @@ import AppAllWordsCategoryImage from "./AppCategories/AppAllWordsCategoryImage.v
 import { useCategoriesStore } from "@/stores/categories";
 import { mapActions, mapState } from "pinia";
 import type { Category } from "@/types/categories";
-import type { LanguageCode } from "@/i18n";
+import type { LanguageCode } from "@/types/translations";
 import AppImagePreview from "./AppImagePreview.vue";
 
 export default defineComponent({

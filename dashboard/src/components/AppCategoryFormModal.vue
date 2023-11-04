@@ -4,7 +4,7 @@ import AppModal from "./AppModal.vue";
 import AppCategoryForm from "./AppCategoryForm.vue";
 import { useCategoriesStore } from "@/stores/categories";
 import { mapState } from "pinia";
-import type { LanguageCode } from "@/i18n";
+import type { LanguageCode } from "@/types/translations";
 import type { Category } from "@/types/categories";
 import AppImagePreview from "./AppImagePreview.vue";
 

@@ -30,16 +30,4 @@ export type RequestParams = {
 
 export type OptionalRequestParams = Partial<RequestParams>;
 
-export type TranslationTarget = "RU" | "EN" | "SR";
-
-export type TranslateRequest = {
-  from: string;
-  targets: Array<TranslationTarget>;
-  text: string;
-}
-
-export type TranslateResponse = {
-  translations: Array<{ text: string; to: "bs" | "ru" | "en" }>;
-}
-
 export type Load = "initial" | "loading" | "loaded" | "error";

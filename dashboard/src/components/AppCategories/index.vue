@@ -9,7 +9,7 @@ import AppCategoriesList from "@/components/AppCategories/AppCategoriesList.vue"
 import AppHeader from "@/components/AppHeader.vue";
 import AppDropdownMenu from "../AppDropdownMenu.vue";
 import type { Order, RequestParams } from "@/types/api";
-import type { LanguageCode } from "@/i18n";
+import type { LanguageCode } from "@/types/translations";
 import AppTooltip from "../AppTooltip.vue";
 import AppCategoryFormModal from "../AppCategoryFormModal.vue";
 

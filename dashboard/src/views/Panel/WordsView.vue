@@ -19,7 +19,7 @@ import AppWordsPageCategoryTitle from "@/components/AppWordsPageCategoryTitle.vu
 import { highlighTextByQuery } from "@/common/utils";
 
 import type { Word } from "@/types/words";
-import type { LanguageCode } from "@/i18n";
+import type { LanguageCode } from "@/types/translations";
 
 const LIMIT_DEFAULT = 25;
 

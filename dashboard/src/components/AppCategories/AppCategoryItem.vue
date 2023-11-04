@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { Category } from "@/types/categories";
 import { defineComponent, type PropType } from "vue";
-import type { LanguageCode } from "@/i18n";
+import type { LanguageCode } from "@/types/translations";
 
 import AppImagePreview from "@/components/AppImagePreview.vue";
 import AppListItem from "@/components/AppListItem.vue";
