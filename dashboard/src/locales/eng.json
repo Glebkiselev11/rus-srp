@@ -4,8 +4,10 @@
   "save-changes": "Save changes",
   "no-words-were-found": "No words were found for this query",
   "general": "General",
+  "required": "Required",
   "categories": "Categories",
   "category-exists": "Category with this name already exists",
+  "category-name-required": "Category name is required",
   "category-name": "Category name",
   "create-category": "Create category",
   "order": {

@@ -4,8 +4,10 @@
   "save-changes": "Сачувајте промене",
   "no-words-were-found": "Нису пронађене речи за овај упит",
   "general": "Општа",
+  "required": "Обавезно поље",
   "categories": "Категорије",
   "category-exists": "Категорија са овим именом већ постоји",
+  "category-name-required": "Име категорије је обавезно",
   "category-name": "Име категорије",
   "create-category": "Креирајте категорију",
   "order": {

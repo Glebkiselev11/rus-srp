@@ -39,9 +39,13 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
-		errors: {
-			type: Array as PropType<string[]>,
-			default: () => [],
+		error: {
+			type: String,
+			default: null,
+		},
+		disableErrorLabel: {
+			type: Boolean,
+			default: false,
 		},
 		leftIcon: {
 			type: String as PropType<IconName>,
@@ -73,6 +77,11 @@ export default defineComponent({
 		},
 	},
 	emits: ["update:modelValue"],
+	computed: {
+		errorLabel() {
+			return this.disableErrorLabel ? undefined : this.error;
+		},
+	},
 	methods: {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		debounceEmit: debounce(function(this: any, value: unknown) {
@@ -101,7 +110,7 @@ export default defineComponent({
 <template>
 	<AppInputWrapper
 		:label="label"
-		:error="errors[0]"
+		:error="errorLabel"
 	>
 		<div class="app-input">
 			<AppIcon
@@ -122,7 +131,7 @@ export default defineComponent({
 				:value="modelValue"
 				:placeholder="placeholder"
 				:disabled="disabled"
-				:warning="errors.length > 0"
+				:error="error !== null"
 				:max="max"
 				:min="min"
 				@input="handleInput"
@@ -141,7 +150,7 @@ export default defineComponent({
 				/>
 
 				<AppIcon 
-					v-if="errors.length > 0"
+					v-if="error !== null"
 					color="negative"
 					name="error"
 					:size="size"
@@ -216,7 +225,7 @@ export default defineComponent({
 			color: $color-text-tertiary;
 		}
 
-		&[warning="true"] {
+		&[error="true"] {
 			outline: 1px solid $color-stroke-negative;
 		}
 	}

@@ -31,6 +31,10 @@ export default defineComponent({
 				image: null,
 			} as DraftCategory,
 			categoryNameValidationErrors: [] as string[],
+			rusValidationError: undefined as string | undefined,
+			engValidationError: undefined as string | undefined,
+			srp_latinValidationError: undefined as string | undefined,
+			srp_cyrillicValidationError: undefined as string | undefined,
 		};
 	},
 	computed: {
@@ -54,6 +58,16 @@ export default defineComponent({
 			return Boolean(this.draftCategory[this.selectedLanguage]) && 
 				LanguageList.some(({ value }) => this.draftCategory[value] === "");
 		},
+		isValidToSave(): boolean {
+			return this.categoryNameValidationErrors.length === 0 &&
+				!this.translationError;	
+		},
+		translationError(): string | undefined {
+			return this.rusValidationError ||
+				this.engValidationError ||
+				this.srp_latinValidationError ||
+				this.srp_cyrillicValidationError;
+		},
 	},
 	created() {
 		if (this.category) {
@@ -65,18 +79,22 @@ export default defineComponent({
 		getLabelByKey(key: LanguageCode): string {
 			return LanguageList.find(({ value }) => value === key)?.label || "Not found label";
 		},
+		removeCategoryNameErrorValidation(error: string): void {
+			this.categoryNameValidationErrors = this.categoryNameValidationErrors.filter(
+				(x) => x !== error,
+			);
+		},	
+		addCategoryNameErrorValidation(error: string): void {
+			this.categoryNameValidationErrors.push(error);
+			this.categoryNameValidationErrors = [...new Set(this.categoryNameValidationErrors)];
+		},
 		async triggerCategoryNameUniqueValidation(): Promise<void> {
 			const key = this.selectedLanguage;
 			const name = this.draftCategory[key];
 			const error = this.$t("category-exists");
 
-			const reset = () => 
-				this.categoryNameValidationErrors = this.categoryNameValidationErrors.filter(
-					(x) => x !== error,
-				);
-
 			if (!name || this.category && this.category[key] === name) {
-				reset();
+				this.removeCategoryNameErrorValidation(error);
 				return;
 			}
 
@@ -86,14 +104,52 @@ export default defineComponent({
 				category[key].toLocaleLowerCase() === name.toLocaleLowerCase());
 			
 			if (exists) {
-				this.categoryNameValidationErrors.push(error);
-				this.categoryNameValidationErrors = [...new Set(this.categoryNameValidationErrors)];
+				this.addCategoryNameErrorValidation(error);	
 			} else {
-				reset();	
+				this.removeCategoryNameErrorValidation(error);
 			}
 		},
+		async triggerValidation(): Promise<void> {
+			await this.triggerCategoryNameUniqueValidation();
 
+			const requiredError = this.$t("required");
+			if (!this.draftCategory.rus && this.selectedLanguage !== "rus") {
+				this.rusValidationError = requiredError;
+			} else {
+				this.rusValidationError = undefined;
+			}
+
+			if (!this.draftCategory.eng && this.selectedLanguage !== "eng") {
+				this.engValidationError = requiredError;
+			} else {
+				this.engValidationError = undefined;
+			}
+
+			if (!this.draftCategory.srp_latin && this.selectedLanguage !== "srp_latin") {
+				this.srp_latinValidationError = requiredError;
+			} else {
+				this.srp_latinValidationError = undefined;
+			}
+
+			if (!this.draftCategory.srp_cyrillic && this.selectedLanguage !== "srp_cyrillic") {
+				this.srp_cyrillicValidationError = requiredError;
+			} else {
+				this.srp_cyrillicValidationError = undefined;
+			}
+
+			if (!this.draftCategory[this.selectedLanguage]) {
+				this.addCategoryNameErrorValidation(this.$t("category-name-required"));
+			} else {
+				this.removeCategoryNameErrorValidation(this.$t("category-name-required"));
+			}
+		},
 		async saveCategory() {
+			await this.triggerValidation();
+
+			if (!this.isValidToSave) {
+				return;
+			}
+
 			if (this.category) {
 				await this.updateCategory(this.category.id, this.draftCategory);
 			} else {
@@ -134,13 +190,19 @@ export default defineComponent({
 				:label="$t('category-name')"
 				width="400px"
 				appearance="outline"
-				:errors="categoryNameValidationErrors"
+				:error="categoryNameValidationErrors[0]"
 				@focusout="triggerCategoryNameUniqueValidation"
 			/>
 		</div>
 
 		<div class="app-category-form__row">
-			<h4 v-text="$t('translation')" />
+			<div>
+				<h4 v-text="$t('translation')" />
+				<span
+					class="text-color-negative text-body-2"
+					v-text="translationError"
+				/>
+			</div>
 
 			<AppButton
 				v-show="showFillAutoButton"
@@ -156,6 +218,8 @@ export default defineComponent({
 			v-if="selectedLanguage !== 'rus'"
 			v-model="draftCategory.rus"
 			appearance="outline"
+			disable-error-label
+			:error="rusValidationError"
 			:label="getLabelByKey('rus')"
 			class="app-category-form__translation-input"
 		/>
@@ -164,6 +228,8 @@ export default defineComponent({
 			v-if="selectedLanguage !== 'eng'"
 			v-model="draftCategory.eng"
 			appearance="outline"
+			disable-error-label
+			:error="engValidationError"
 			:label="getLabelByKey('eng')"
 			class="app-category-form__translation-input"
 		/>
@@ -172,6 +238,8 @@ export default defineComponent({
 			v-if="selectedLanguage !== 'srp_latin'"
 			v-model="draftCategory.srp_latin"
 			appearance="outline"
+			disable-error-label
+			:error="srp_latinValidationError"
 			:label="getLabelByKey('srp_latin')"
 			class="app-category-form__translation-input"
 		/>
@@ -180,6 +248,8 @@ export default defineComponent({
 			v-if="selectedLanguage !== 'srp_cyrillic'"
 			v-model="draftCategory.srp_cyrillic"
 			appearance="outline"
+			disable-error-label
+			:error="srp_cyrillicValidationError"
 			:label="getLabelByKey('srp_cyrillic')"
 			class="app-category-form__translation-input"
 		/>

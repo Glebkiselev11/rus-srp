@@ -4,8 +4,10 @@
   "save-changes": "Sačuvajte promene",
   "no-words-were-found": "Nisu pronađene reči za ovaj upit",
   "general": "Opšta",
+  "required": "Obavezno polje",
   "categories": "Kategorije",
   "category-exists": "Kategorija sa ovim imenom već postoji",
+  "category-name-required": "Ime kategorije je obavezno",
   "category-name": "Ime kategorije",
   "create-category": "Kreirajte kategoriju",
   "order": {
