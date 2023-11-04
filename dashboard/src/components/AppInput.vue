@@ -5,8 +5,7 @@ import type { IconName } from "../types/icons";
 import AppIcon from "./AppIcon/index.vue";
 import AppButton from "./AppButton.vue";
 import AppInputWrapper from "./AppInputWrapper.vue";
-
-type InputSize = "regular" | "compact";
+import type { InputSize, InputAppearance } from "@/types/input";
 
 export default defineComponent({
 	name: "AppInput",
@@ -23,6 +22,10 @@ export default defineComponent({
 		type: {
 			type: String,
 			default: "text",
+		},
+		appearance: {
+			type: String as PropType<InputAppearance>,
+			default: "default",
 		},
 		modelValue: {
 			type: [String, Number],
@@ -110,7 +113,10 @@ export default defineComponent({
 
 			<input
 				class="app-input__field"
-				:class="['app-input__field--' + size]"
+				:class="[
+					`app-input__field--size-${size}`,
+					`app-input__field--appearance-${appearance}`
+				]"
 				:style="{ width }"
 				:type="type"
 				:value="modelValue"
@@ -165,32 +171,49 @@ export default defineComponent({
 	&__field {
 		border-radius: 8px;
 		border: 1px solid $color-separator-primary;
-		background: $color-field-background;
 		padding: 0 8px;
 
-		&--regular {
-			@extend .text-body-1;
-			height: 40px;
+		&--size {
+			&-regular {
+				@extend .text-body-1;
+				height: 40px;
+			}
+
+			&-compact {
+				@extend .text-body-2;
+				height: 32px;
+			}
 		}
 
-		&--compact {
-			@extend .text-body-2;
-			height: 32px;
+		&--appearance {
+			&-default {
+				background: $color-field-background;
+
+				&:hover {
+					background: $color-background-content-primary-hovered;
+				}
+			}
+
+			&-outline {
+				background: $color-background-content-primary;
+
+				&:hover {
+					border-color: $color-field-border-invert;
+				}
+			}
 		}
 
 		&:has(.app-input--left-icon) {
 			padding-left: 48px;
 		}
 
+		&:disabled {
+			pointer-events: none;
+		}
+
 		&::placeholder {
 			@extend .text-body-1;
 			color: $color-text-tertiary;
-		}
-
-		&:disabled {
-			&::placeholder {
-				color: $color-text-disabled;
-			}
 		}
 
 		&[warning="true"] {
