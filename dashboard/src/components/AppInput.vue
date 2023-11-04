@@ -123,13 +123,6 @@ export default defineComponent({
 			>
 
 			<div class="app-input__buttons">
-				<AppIcon 
-					v-if="errors.length > 0"
-					color="negative"
-					name="error"
-					:size="size"
-				/>
-
 				<AppButton
 					v-if="clearButton && modelValue"
 					icon="cancel"
@@ -139,6 +132,13 @@ export default defineComponent({
 					icon-color="tertiary"
 					class="app-input__clear-button"
 					@click="emitValue('')"
+				/>
+
+				<AppIcon 
+					v-if="errors.length > 0"
+					color="negative"
+					name="error"
+					:size="size"
 				/>
 			</div>
 		</div>
