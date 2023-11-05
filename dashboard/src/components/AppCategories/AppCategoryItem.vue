@@ -84,7 +84,6 @@ export default defineComponent({
 
 			<AppDropdownMenu
 				v-slot="{ isMenuOpen }"
-				class="app-category-item__menu"
 				:items="[
 					{ 
 						label: $t('edit'),
@@ -106,6 +105,7 @@ export default defineComponent({
 					appearance="inline"
 					color="neutral"
 					size="small"
+					class="app-category-item__menu-button"
 					:pressed="isMenuOpen"
 				/>
 			</AppDropdownMenu>
@@ -140,13 +140,13 @@ export default defineComponent({
 		}
 	}
 
-	&__menu {
+	&__menu-button {
 		visibility: hidden;
 	}
 }
 
-.app-list-item:hover, .app-list-item--selected {
-	.app-category-item__menu {
+.app-list-item:hover, .app-dropdown--open {
+	.app-category-item__menu-button {
 		visibility: visible;
 	}
 }

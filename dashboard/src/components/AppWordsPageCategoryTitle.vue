@@ -81,7 +81,6 @@ export default defineComponent({
 
 		<AppDropdownMenu
 			v-slot="{ isMenuOpen }"
-			class="app-category-item__menu"
 			:items="[
 				{ 
 					label: $t('edit'),
@@ -102,6 +101,7 @@ export default defineComponent({
 				appearance="inline"
 				color="neutral"
 				size="compact"
+				class="app-words-page-category-title__menu-button"
 				:pressed="isMenuOpen"
 			/>
 		</AppDropdownMenu>
@@ -140,6 +140,16 @@ export default defineComponent({
 	& > h2::first-letter {
 		text-transform: uppercase;
 	}
+
+	&__menu-button {
+		visibility: hidden;
+	}
 }
+
+.app-words-page-category-title:hover, .app-dropdown--open {
+		.app-words-page-category-title__menu-button {
+			visibility: visible;
+		}
+	}
 
 </style>

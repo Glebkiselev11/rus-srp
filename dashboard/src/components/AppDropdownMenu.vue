@@ -78,6 +78,7 @@ export default defineComponent({
 	<div
 		v-on-click-outside="closeMenu"
 		class="app-dropdown"
+		:class="{'app-dropdown--open': isMenuOpen }"
 	>
 		<div @click="toggleMenu">
 			<slot :is-menu-open="isMenuOpen" />
@@ -86,7 +87,9 @@ export default defineComponent({
 		<div
 			v-if="isMenuOpen"
 			class="app-dropdown__menu"
-			:class="[`app-dropdown__menu-position-${menuPosition}`]"
+			:class="[
+				`app-dropdown__menu-position-${menuPosition}`, 
+			]"
 		>
 			<template
 				v-for="(item, i) in items"
