@@ -41,4 +41,5 @@ export type IconName =
   "widgets" |
   "done" |
   "edit_note" |
-  "error";
+  "error" |
+  "restart_alt";

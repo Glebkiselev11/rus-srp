@@ -30,6 +30,7 @@ import WidgetsIcon from "./WidgetsIcon.vue";
 import DoneIcon from "./DoneIcon.vue";
 import EditNoteIcon from "./EditNoteIcon.vue";
 import ErrorIcon from "./ErrorIcon.vue";
+import RestartAltIcon from "./RestartAltIcon.vue";
 
 export default defineComponent({
 	name: "AppIcon",
@@ -78,6 +79,7 @@ export default defineComponent({
 				"done": DoneIcon,
 				"edit_note": EditNoteIcon,
 				"error": ErrorIcon,
+				"restart_alt": RestartAltIcon,
 			}[this.name];
 		},
 		convertedSize(): string {
