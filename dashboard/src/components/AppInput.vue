@@ -81,6 +81,11 @@ export default defineComponent({
 		},
 	},
 	emits: ["update:modelValue"],
+	data() {
+		return {
+			focusOnInput: false,
+		};
+	},
 	computed: {
 		errorLabel() {
 			return this.disableErrorLabel ? undefined : this.error;
@@ -147,12 +152,14 @@ export default defineComponent({
 				:error="error !== null"
 				:max="max"
 				:min="min"
+				@focus="focusOnInput = true"
+				@focusout="focusOnInput = false"
 				@input="handleInput"
 			>
 
 			<div class="app-input__buttons">
 				<AppButton
-					v-if="clearButton && modelValue"
+					v-if="clearButton && modelValue && focusOnInput"
 					icon="cancel"
 					color="neutral"
 					:size="size"

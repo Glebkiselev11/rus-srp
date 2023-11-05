@@ -192,6 +192,7 @@ export default defineComponent({
 				appearance="outline"
 				:focus-on-mount="!category"
 				:error="categoryNameValidationErrors[0]"
+				clear-button
 				@focusout="triggerCategoryNameUniqueValidation"
 			/>
 		</div>
@@ -221,6 +222,7 @@ export default defineComponent({
 			appearance="outline"
 			disable-error-label
 			:error="rusValidationError"
+			clear-button
 			:label="getLabelByKey('rus')"
 			class="app-category-form__translation-input"
 		/>
@@ -230,6 +232,7 @@ export default defineComponent({
 			v-model="draftCategory.eng"
 			appearance="outline"
 			disable-error-label
+			clear-button
 			:error="engValidationError"
 			:label="getLabelByKey('eng')"
 			class="app-category-form__translation-input"
@@ -240,6 +243,7 @@ export default defineComponent({
 			v-model="draftCategory.srp_latin"
 			appearance="outline"
 			disable-error-label
+			clear-button
 			:error="srp_latinValidationError"
 			:label="getLabelByKey('srp_latin')"
 			class="app-category-form__translation-input"
@@ -250,6 +254,7 @@ export default defineComponent({
 			v-model="draftCategory.srp_cyrillic"
 			appearance="outline"
 			disable-error-label
+			clear-button
 			:error="srp_cyrillicValidationError"
 			:label="getLabelByKey('srp_cyrillic')"
 			class="app-category-form__translation-input"
