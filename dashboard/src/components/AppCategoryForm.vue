@@ -190,7 +190,7 @@ export default defineComponent({
 				:label="$t('category-name')"
 				width="400px"
 				appearance="outline"
-				focus-on-mount
+				:focus-on-mount="!category"
 				:error="categoryNameValidationErrors[0]"
 				@focusout="triggerCategoryNameUniqueValidation"
 			/>
