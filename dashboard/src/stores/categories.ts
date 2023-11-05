@@ -47,6 +47,15 @@ export const useCategoriesStore = defineStore("categories", {
 				console.error(error);
 			}
 		},
+
+		async deleteCategory(id: number) {
+			try {
+				await CategoriesApi.delete(id);
+				this.categories = this.categories.filter((c) => c.id !== id);
+			} catch (error) {
+				console.error(error);
+			}
+		},
 	}, 
 
 });

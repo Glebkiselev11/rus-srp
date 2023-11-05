@@ -16,6 +16,13 @@
     "alphabetical-asc": "Sortiranje od A do Ž",
     "alphabetical-desc": "Sortiranje od Ž do A"
   },
+  "category-removing": {
+    "title": "Izbrisati kategoriju „{categoryName}“?",
+    "subtitle": "Ne sadrži reči | Sadrži {n} reč | Sadrži {n} reči | Sadrži {n} reči",
+    "description": "Reči neće biti izbrisane iz baze podataka",
+    "confirmation-label": "Da biste potvrdili brisanje, unesite naziv kategorije"
+  },
+  "yes-remove": "Da, izbriši",
   "fill-in-auto": "Popunite",
   "cancel": "Otkazati",
   "settings": "Podešavanja",

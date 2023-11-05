@@ -16,4 +16,8 @@ export const CategoriesApi = {
 	create(data: DraftCategory): Promise<AxiosResponse<Category>> {
 		return axios.post(`${this.ENDPOINT}/create`, data);
 	},
+
+	delete(id: number): Promise<AxiosResponse<void>> {
+		return axios.delete(`${this.ENDPOINT}/${id}`);
+	},
 };

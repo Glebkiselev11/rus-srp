@@ -8,6 +8,7 @@ import AppListItem from "@/components/AppListItem.vue";
 import { highlighTextByQuery } from "@/common/utils";
 import AppButton from "../AppButton.vue";
 import AppDropdownMenu from "../AppDropdownMenu.vue";
+import AppRemoveCategoryModal from "./AppRemoveCategoryModal.vue";
 
 export default defineComponent({
 	name: "AppCategoryItem",
@@ -16,6 +17,7 @@ export default defineComponent({
 		AppListItem,
 		AppButton,
 		AppDropdownMenu,
+		AppRemoveCategoryModal,
 	},
 	props: {
 		category: {
@@ -32,6 +34,11 @@ export default defineComponent({
 		},
 	},
 	emits: ["selectCateogry", "selectCategoryForEditing"],
+	data() {
+		return {
+			isRemoveCategoryModalOpen: false,
+		};
+	},
 	methods: {
 		highlighTextByQuery,
 		extractCategoryPreview(category: Category) {
@@ -43,6 +50,9 @@ export default defineComponent({
 		},
 		editCategory(categoryId: number) {
 			this.$emit("selectCategoryForEditing", categoryId);
+		},
+		openRemoveCategoryModal() {
+			this.isRemoveCategoryModalOpen = true;
 		},
 	},
 });
@@ -81,6 +91,13 @@ export default defineComponent({
 						icon: 'edit',
 						handler: () => editCategory(category.id)
 					},
+					'separator',
+					{ 
+						label: $t('delete'), 
+						icon: 'delete', 
+						color: 'negative', 
+						handler: openRemoveCategoryModal 
+					}
 				]"		
 				@click.stop
 			>
@@ -94,6 +111,12 @@ export default defineComponent({
 			</AppDropdownMenu>
 		</div>
 	</AppListItem>
+
+	<AppRemoveCategoryModal
+		v-if="isRemoveCategoryModalOpen"
+		:category="category"
+		@close="isRemoveCategoryModalOpen = false"
+	/>
 </template>
 
 <style scoped lang="scss">

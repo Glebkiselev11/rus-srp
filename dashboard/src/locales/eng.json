@@ -10,6 +10,13 @@
   "category-name-required": "Category name is required",
   "category-name": "Category name",
   "create-category": "Create category",
+  "category-removing": {
+    "title": "Delete category ”{categoryName}”?",
+    "subtitle": "Contains no words | Contains {n} word | Contains {n} words",
+    "description": "Words won't be deleted from the database",
+    "confirmation-label": "To confirm deletion, enter the category name"
+  },
+  "yes-remove": "Yes, remove",
   "order": {
     "last-added": "Last added",
     "last-updated": "Last updated",
