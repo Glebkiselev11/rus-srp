@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, type PropType } from "vue";
+import { defineComponent } from "vue";
 import AppHeader from "@/components/AppHeader.vue";
 
 export default defineComponent({
@@ -16,9 +16,9 @@ export default defineComponent({
 			type: String,
 			default: null,
 		},
-		size: {
-			type: String as PropType<"big" | "regular" | "compact">,
-			default: "regular",
+		headerPaddingInline: {
+			type: String,
+			default: "16px",
 		},
 	},
 	emits: ["close"],
@@ -39,6 +39,7 @@ export default defineComponent({
 			<AppHeader
 				:title="title"
 				:subtitle="subtitle"
+				:padding-inline="headerPaddingInline"
 				close-button
 				@close="handleClose"
 			>

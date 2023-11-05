@@ -18,6 +18,10 @@ export default defineComponent({
 			type: String as PropType<TitleTag>,
 			default: "h3",
 		},
+		paddingInline: {
+			type: String,
+			default: "16px",
+		},
 		subtitle: {
 			type: String,
 			default: null,
@@ -38,7 +42,10 @@ export default defineComponent({
 </script>
 
 <template>
-	<header class="app-header">
+	<header
+		class="app-header"
+		:style="{paddingInline}"
+	>
 		<div class="app-header__part-container">
 			<slot name="left" />
 			<div>
@@ -79,7 +86,6 @@ export default defineComponent({
 	width: 100%;
 	min-height: 48px;
 	padding-block: 12px;
-	padding-inline: 16px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
