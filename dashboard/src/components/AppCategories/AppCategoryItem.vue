@@ -122,7 +122,7 @@ export default defineComponent({
 	}
 }
 
-.app-list-item:hover {
+.app-list-item:hover, .app-list-item--selected {
 	.app-category-item__menu {
 		visibility: visible;
 	}
