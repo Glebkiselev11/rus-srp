@@ -180,9 +180,9 @@ export default defineComponent({
 		/>
 
 		<AppCategoryFormModal
+			v-if="showCategoryForm"
 			:category-id="editingCategoryId"
-			:visible="showCategoryForm"
-			@update:visible="showCategoryForm = $event"
+			@close="showCategoryForm = false"
 		/>
 	</div>
 </template>

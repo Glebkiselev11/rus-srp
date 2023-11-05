@@ -118,11 +118,10 @@ export default defineComponent({
 	</button>
 
 	<AppModal 
-		v-if="!static"
-		:visible="isModalVisible"
+		v-if="!static && isModalVisible"
 		:title="imagesSearchModalTitle"
 		:subtitle="imageSearchModalSubtitle"
-		@update:visible="isModalVisible = $event"
+		@close="isModalVisible = false"
 	>
 		<template
 			v-if="src"

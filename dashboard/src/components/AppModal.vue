@@ -16,19 +16,15 @@ export default defineComponent({
 			type: String,
 			default: null,
 		},
-		visible: {
-			type: Boolean,
-			required: true,
-		},
 		size: {
 			type: String as PropType<"big" | "regular" | "compact">,
 			default: "regular",
 		},
 	},
-	emits: ["update:visible"],
+	emits: ["close"],
 	methods: {
 		handleClose(): void {
-			this.$emit("update:visible", false);
+			this.$emit("close");
 		},
 	},
 });
@@ -37,7 +33,6 @@ export default defineComponent({
 
 <template>
 	<div
-		v-if="visible"
 		class="app-modal-screen"
 	>
 		<div class="app-modal">

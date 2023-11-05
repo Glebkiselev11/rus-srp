@@ -17,12 +17,8 @@ export default defineComponent({
 			type: Number,
 			default: undefined,
 		},
-		visible: {
-			type: Boolean,
-			required: true,
-		},
 	},
-	emits: ["update:visible"],
+	emits: ["close"],
 	computed: {
 		...mapState(useCategoriesStore, ["getCategoryById"]),
 		category(): Category | undefined {
@@ -36,8 +32,8 @@ export default defineComponent({
 		},
 	},
 	methods: {
-		updateVisible(value: boolean) {
-			this.$emit("update:visible", value);
+		close() {
+			this.$emit("close");
 		},
 	},
 });
@@ -48,8 +44,7 @@ export default defineComponent({
 	<AppModal
 		:title="title"
 		:subtitle="subtitle"
-		:visible="visible"
-		@update:visible="updateVisible"
+		@close="close"
 	>
 		<template
 			v-if="category"
@@ -63,7 +58,7 @@ export default defineComponent({
 		<template #content>
 			<AppCategoryForm
 				:category-id="categoryId"
-				@saved="updateVisible(false)"
+				@saved="close"
 			/>
 		</template>
 	</AppModal>
