@@ -75,12 +75,24 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
+		focusOnMount: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	emits: ["update:modelValue"],
 	computed: {
 		errorLabel() {
 			return this.disableErrorLabel ? undefined : this.error;
 		},
+	},
+	mounted() {
+		if (this.focusOnMount) {
+			this.$nextTick(() => {
+				const input = this.$refs.input as HTMLInputElement;
+				input.focus();
+			});
+		}
 	},
 	methods: {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -121,6 +133,7 @@ export default defineComponent({
 			/>
 
 			<input
+				ref="input"
 				class="app-input__field"
 				:class="[
 					`app-input__field--size-${size}`,
