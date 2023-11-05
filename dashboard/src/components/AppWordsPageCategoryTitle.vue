@@ -6,18 +6,32 @@ import { mapActions, mapState } from "pinia";
 import type { Category } from "@/types/categories";
 import type { LanguageCode } from "@/types/translations";
 import AppImagePreview from "./AppImagePreview.vue";
+import AppDropdownMenu from "./AppDropdownMenu.vue";
+import AppButton from "./AppButton.vue";
+import AppRemoveCategoryModal from "./AppCategories/AppRemoveCategoryModal.vue";
+import AppCategoryFormModal from "./AppCategoryFormModal.vue";
 
 export default defineComponent({
 	name: "AppWordsPageCategoryTitle",
 	components: {
 		AppAllWordsCategoryImage,
 		AppImagePreview,
+		AppDropdownMenu,
+		AppButton,
+		AppRemoveCategoryModal, 
+		AppCategoryFormModal,
 	},
 	props: {
 		categoryId: {
 			type: Number,
 			default: undefined,
 		},	
+	},
+	data() {
+		return {
+			isRemoveCategoryModalOpen: false,
+			isEditCategoryModalOpen: false,
+		};
 	},
 	computed: {
 		...mapState(useCategoriesStore, ["categories"]),
@@ -38,6 +52,12 @@ export default defineComponent({
 				});
 			}
 		},	
+		editCategory() {
+			this.isEditCategoryModalOpen = true;
+		},
+		openRemoveCategoryModal() {
+			this.isRemoveCategoryModalOpen = true;
+		},
 	},
 });
 
@@ -58,6 +78,45 @@ export default defineComponent({
 		<h2>
 			{{ getCategoryName(category) }}
 		</h2>
+
+		<AppDropdownMenu
+			v-slot="{ isMenuOpen }"
+			class="app-category-item__menu"
+			:items="[
+				{ 
+					label: $t('edit'),
+					icon: 'edit',
+					handler: editCategory
+				},
+				'separator',
+				{ 
+					label: $t('delete'), 
+					icon: 'delete', 
+					color: 'negative', 
+					handler: openRemoveCategoryModal 
+				}
+			]"		
+		>
+			<AppButton
+				icon="more_vert"
+				appearance="inline"
+				color="neutral"
+				size="compact"
+				:pressed="isMenuOpen"
+			/>
+		</AppDropdownMenu>
+
+		<AppRemoveCategoryModal
+			v-if="isRemoveCategoryModalOpen"
+			:category="category"
+			@close="isRemoveCategoryModalOpen = false"
+		/>
+
+		<AppCategoryFormModal
+			v-if="isEditCategoryModalOpen"
+			:category-id="category.id"
+			@close="isEditCategoryModalOpen = false"
+		/>
 	</div>
 
 	<div
