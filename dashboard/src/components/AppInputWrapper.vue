@@ -12,17 +12,19 @@ export default defineComponent({
 			type: String,
 			default: null,
 		},
+		for: {
+			type: String,
+			required: true,
+		},
 	},
 	methods: {
 		selectInput() {
 			const target = this.$refs.target as HTMLElement;
-			["input", "textarea", "select", "button"].forEach((tag) => {
-				const element = target.querySelector(tag) as HTMLElement;
+			const element = target.querySelector(`#${this.for}`) as HTMLElement;
 
-				if (element) {
-					tag === "button" ? element.click() : element.focus();
-				}
-			});
+			if (element) {
+				element.tagName === "BUTTON" ? element.click() : element.focus();
+			}
 		},
 	},
 

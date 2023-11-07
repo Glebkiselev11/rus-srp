@@ -140,6 +140,7 @@ export default defineComponent({
 	<AppInputWrapper
 		:label="label"
 		:error="errorLabel"
+		for="input"
 	>
 		<div
 			class="app-input"
@@ -152,6 +153,7 @@ export default defineComponent({
 			/>
 
 			<input
+				id="input"
 				ref="input"
 				class="app-input__field"
 				:class="[
