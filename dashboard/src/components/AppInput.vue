@@ -119,6 +119,14 @@ export default defineComponent({
 
 			this.debounce ? this.debounceEmit(value) : this.emitValue(value);
 		},
+		removeFocus() {
+			this.$nextTick(() => {
+				this.focusOnInput = true;
+			});
+		},
+		setFocus() {
+			this.focusOnInput = true;
+		},
 	},
 });
 
@@ -152,8 +160,8 @@ export default defineComponent({
 				:error="error !== null"
 				:max="max"
 				:min="min"
-				@focus="focusOnInput = true"
-				@focusout="focusOnInput = false"
+				@focus="setFocus"
+				@focusout="removeFocus"
 				@input="handleInput"
 			>
 
@@ -165,7 +173,6 @@ export default defineComponent({
 					:size="size"
 					appearance="inline"
 					icon-color="tertiary"
-					class="app-input__clear-button"
 					@click="emitValue('')"
 				/>
 
