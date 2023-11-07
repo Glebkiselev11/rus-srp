@@ -17,6 +17,7 @@
     "confirmation-label": "To confirm deletion, enter the category name"
   },
   "yes-remove": "Yes, remove",
+  "reset": "Reset",
   "order": {
     "last-added": "Last added",
     "last-updated": "Last updated",

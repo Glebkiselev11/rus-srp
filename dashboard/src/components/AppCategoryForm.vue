@@ -193,6 +193,7 @@ export default defineComponent({
 				:focus-on-mount="!category"
 				:error="categoryNameValidationErrors[0]"
 				clear-button
+				:reset-value="category?.[selectedLanguage]"
 				@focusout="triggerCategoryNameUniqueValidation"
 			/>
 		</div>
@@ -222,6 +223,7 @@ export default defineComponent({
 			appearance="outline"
 			disable-error-label
 			:error="rusValidationError"
+			:reset-value="category?.rus"
 			clear-button
 			:label="getLabelByKey('rus')"
 			class="app-category-form__translation-input"
@@ -233,6 +235,7 @@ export default defineComponent({
 			appearance="outline"
 			disable-error-label
 			clear-button
+			:reset-value="category?.eng"
 			:error="engValidationError"
 			:label="getLabelByKey('eng')"
 			class="app-category-form__translation-input"
@@ -244,6 +247,7 @@ export default defineComponent({
 			appearance="outline"
 			disable-error-label
 			clear-button
+			:reset-value="category?.srp_latin"
 			:error="srp_latinValidationError"
 			:label="getLabelByKey('srp_latin')"
 			class="app-category-form__translation-input"
@@ -255,6 +259,7 @@ export default defineComponent({
 			appearance="outline"
 			disable-error-label
 			clear-button
+			:reset-value="category?.srp_cyrillic"
 			:error="srp_cyrillicValidationError"
 			:label="getLabelByKey('srp_cyrillic')"
 			class="app-category-form__translation-input"

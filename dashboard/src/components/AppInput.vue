@@ -5,6 +5,7 @@ import type { IconName } from "../types/icons";
 import AppIcon from "./AppIcon/index.vue";
 import AppButton from "./AppButton.vue";
 import AppInputWrapper from "./AppInputWrapper.vue";
+import AppTooltip from "./AppTooltip.vue";
 import type { InputSize, InputAppearance } from "@/types/input";
 
 export default defineComponent({
@@ -13,6 +14,7 @@ export default defineComponent({
 		AppIcon,
 		AppButton,
 		AppInputWrapper,
+		AppTooltip,
 	},
 	props: {
 		label: {
@@ -79,6 +81,11 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
+		// If provided - show reset button 
+		resetValue: {
+			type: [String, Number],
+			default: undefined,
+		},
 	},
 	emits: ["update:modelValue"],
 	data() {
@@ -93,10 +100,7 @@ export default defineComponent({
 	},
 	mounted() {
 		if (this.focusOnMount) {
-			this.$nextTick(() => {
-				const input = this.$refs.input as HTMLInputElement;
-				input.focus();
-			});
+			this.setFocus();
 		}
 	},
 	methods: {
@@ -137,7 +141,9 @@ export default defineComponent({
 		:label="label"
 		:error="errorLabel"
 	>
-		<div class="app-input">
+		<div
+			class="app-input"
+		>
 			<AppIcon
 				v-if="leftIcon"
 				class="app-input--left-icon"
@@ -175,6 +181,21 @@ export default defineComponent({
 					icon-color="tertiary"
 					@click="emitValue('')"
 				/>
+
+				<AppTooltip
+					:text="$t('reset')"
+					position="top"
+				>
+					<AppButton 
+						v-if="resetValue && modelValue !== resetValue"
+						icon="restart_alt"
+						color="neutral"
+						:size="size"
+						appearance="inline"
+						icon-color="tertiary"
+						@click="emitValue(resetValue)"
+					/>
+				</AppTooltip>
 
 				<AppIcon 
 					v-if="error !== null"
@@ -264,7 +285,6 @@ export default defineComponent({
 		height: 100%;
 		display: flex;
 		align-items: center;
-		column-gap: 8px;
 	}
 }
 
