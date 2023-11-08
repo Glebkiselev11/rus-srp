@@ -55,8 +55,26 @@ export default defineComponent({
 			return this.categoryId ? this.$t("save-changes") : this.$t("create");
 		},
 		showFillAutoButton(): boolean {
-			return Boolean(this.draftCategory[this.selectedLanguage]) && 
-				LanguageList.some(({ value }) => this.draftCategory[value] === "");
+			const draftCategoryName = this.draftCategory[this.selectedLanguage];
+
+			if (!draftCategoryName) {
+				return false;
+			}
+			
+			const categoryName = this.category?.[this.selectedLanguage];	
+
+			if (categoryName && categoryName !== draftCategoryName) {
+				return true;
+			}
+
+			const isAllFieldsFilled = LanguageList.every(({ value }) => 
+				this.draftCategory[value] !== "");
+
+			if (isAllFieldsFilled) {
+				return false;
+			}
+			
+			return true;
 		},
 		isValidToSave(): boolean {
 			return this.categoryNameValidationErrors.length === 0 &&
