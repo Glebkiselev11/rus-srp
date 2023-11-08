@@ -1,12 +1,13 @@
 <script lang="ts">
 import { debounce } from "lodash";
-import { type PropType, defineComponent } from "vue";
+import { type PropType, defineComponent, watch } from "vue";
 import type { IconName } from "../types/icons";
 import AppIcon from "./AppIcon/index.vue";
 import AppButton from "./AppButton.vue";
 import AppInputWrapper from "./AppInputWrapper.vue";
 import AppTooltip from "./AppTooltip.vue";
 import type { InputSize, InputAppearance } from "@/types/input";
+import { useFocusWithin } from "@vueuse/core";
 
 export default defineComponent({
 	name: "AppInput",
@@ -102,12 +103,23 @@ export default defineComponent({
 		if (this.focusOnMount) {
 			this.setFocus();
 		}
+
+		this.initWatchingFocus();
 	},
 	methods: {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		debounceEmit: debounce(function(this: any, value: unknown) {
 			this.emitValue(value);
 		}, 500),
+
+		initWatchingFocus() {
+			const wrapper = this.$refs.wrapper as HTMLElement;
+			const { focused } = useFocusWithin(wrapper);
+			watch(focused, focused => {
+				this.focusOnInput = focused;
+			});
+		},
+
 		emitValue(value: unknown) {
 			this.$emit("update:modelValue", value);
 		},
@@ -123,13 +135,17 @@ export default defineComponent({
 
 			this.debounce ? this.debounceEmit(value) : this.emitValue(value);
 		},
-		removeFocus() {
-			this.$nextTick(() => {
-				this.focusOnInput = true;
-			});
-		},
 		setFocus() {
-			this.focusOnInput = true;
+			const input = this.$refs.input as HTMLInputElement;
+			input.focus();
+		},
+		clearInput() {
+			this.emitValue("");
+			this.setFocus();
+		},
+		resetInput() {
+			this.emitValue(this.resetValue);
+			this.setFocus();
 		},
 	},
 });
@@ -138,6 +154,7 @@ export default defineComponent({
 
 <template>
 	<AppInputWrapper
+		ref="wrapper"
 		:label="label"
 		:error="errorLabel"
 		for="input"
@@ -168,20 +185,18 @@ export default defineComponent({
 				:error="error !== null"
 				:max="max"
 				:min="min"
-				@focus="setFocus"
-				@focusout="removeFocus"
 				@input="handleInput"
 			>
 
 			<div class="app-input__buttons">
 				<AppButton
-					v-if="clearButton && modelValue && focusOnInput"
+					v-show="clearButton && modelValue && focusOnInput"
 					icon="cancel"
 					color="neutral"
 					:size="size"
 					appearance="inline"
 					icon-color="tertiary"
-					@click="emitValue('')"
+					@click="clearInput"
 				/>
 
 				<AppTooltip
@@ -189,18 +204,18 @@ export default defineComponent({
 					position="top"
 				>
 					<AppButton 
-						v-if="resetValue && modelValue !== resetValue"
+						v-show="resetValue && modelValue !== resetValue"
 						icon="restart_alt"
 						color="neutral"
 						:size="size"
 						appearance="inline"
 						icon-color="tertiary"
-						@click="emitValue(resetValue)"
+						@click="resetInput"
 					/>
 				</AppTooltip>
 
 				<AppIcon 
-					v-if="error !== null"
+					v-show="error !== null"
 					color="negative"
 					name="error"
 					:size="size"
