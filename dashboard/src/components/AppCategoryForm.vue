@@ -20,7 +20,7 @@ export default defineComponent({
 			default: undefined,
 		},
 	},
-	emits: ["saved"],
+	emits: ["saved", "close", "set-changed-status"],
 	data() {
 		return {
 			draftCategory: {
@@ -37,6 +37,7 @@ export default defineComponent({
 			srp_cyrillicValidationError: undefined as string | undefined,
 		};
 	},
+
 	computed: {
 		...mapState(useCategoriesStore, ["getCategoryById"]),
 		category(): Category | undefined {
@@ -85,6 +86,14 @@ export default defineComponent({
 				this.engValidationError ||
 				this.srp_latinValidationError ||
 				this.srp_cyrillicValidationError;
+		},
+	},
+	watch: {
+		draftCategory: {
+			handler() {
+				this.updateChangeStatus();
+			},
+			deep: true,
 		},
 	},
 	created() {
@@ -187,6 +196,28 @@ export default defineComponent({
 				});
 			});
 		},
+		close() {
+			this.$emit("close");
+		},
+		updateChangeStatus() {
+			const getFields = (category: Category | DraftCategory) => [
+				category.rus,
+				category.eng,
+				category.srp_latin,
+				category.srp_cyrillic,
+				category.image,
+			];
+
+			if (!this.categoryId) {
+				const isAnyFilled = getFields(this.draftCategory).some((x) => x);
+				this.$emit("set-changed-status", isAnyFilled);
+			} else if (this.category) {
+				const categoryFields = getFields(this.category);
+				const draftCategoryFields = getFields(this.draftCategory);
+				const isAnyChanged = categoryFields.some((x, i) => x !== draftCategoryFields[i]);
+				this.$emit("set-changed-status", isAnyChanged);
+			}
+		},
 	},
 
 });
@@ -287,6 +318,7 @@ export default defineComponent({
 			<AppButton
 				appearance="secondary"
 				:label="$t('cancel')"	
+				@click="close"
 			/>
 			<AppButton
 				:label="saveButtonLabel"

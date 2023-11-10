@@ -19,6 +19,12 @@ export default defineComponent({
 		},
 	},
 	emits: ["close"],
+	data() {
+		return {
+			// Mark as changed to prevent closing modal without confirmation
+			isChanged: false,
+		};
+	},
 	computed: {
 		...mapState(useCategoriesStore, ["getCategoryById"]),
 		category(): Category | undefined {
@@ -34,6 +40,9 @@ export default defineComponent({
 	methods: {
 		close() {
 			this.$emit("close");
+		},
+		setChanged(status: boolean) {
+			this.isChanged = status;
 		},
 	},
 });
@@ -59,6 +68,8 @@ export default defineComponent({
 			<AppCategoryForm
 				:category-id="categoryId"
 				@saved="close"
+				@close="close"
+				@set-changed-status="setChanged"
 			/>
 		</template>
 	</AppModal>
