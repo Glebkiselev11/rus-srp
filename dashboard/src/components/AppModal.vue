@@ -22,9 +22,28 @@ export default defineComponent({
 		},
 	},
 	emits: ["close"],
+	mounted() {
+		this.updateBackgroundShadow();
+	},
+	unmounted() {
+		this.updateBackgroundShadow();
+	},
 	methods: {
 		handleClose(): void {
 			this.$emit("close");
+		},
+		// It needs us to keep only one shadow (on last modal) for all modals
+		updateBackgroundShadow() {
+			const modals = document.body.querySelectorAll(".app-modal-screen");
+			const className = "app-modal-screen--last-modal";
+			modals.forEach((modal) => {
+				modal.classList.remove(className);
+			});
+
+			const lastModal = modals[modals.length - 1];
+			if (lastModal) {
+				lastModal.classList.add(className);
+			}
 		},
 	},
 });
@@ -62,16 +81,21 @@ export default defineComponent({
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0, 0, 0, 0.5);
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	&--last-modal {
+		background-color: #3C495899;
+	}
 }
 
 .app-modal {
 	border-radius: 16px;
 	padding: 8px;
 	background: $color-background-content-primary;
+	border: 1px solid $color-separator-primary;
+	box-shadow: 0px 4px 16px 0px rgba(2, 18, 38, 0.08), 0px 0px 2px 0px rgba(2, 18, 38, 0.08);
 }
 
 </style>
