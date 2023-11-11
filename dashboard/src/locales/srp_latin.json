@@ -22,6 +22,14 @@
     "description": "Reči neće biti izbrisane iz baze podataka",
     "confirmation-label": "Da biste potvrdili brisanje, unesite naziv kategorije"
   },
+  "modal-exit-confirmation": {
+    "description": "Uneti izmene neće biti sačuvane",
+    "edit-category-title": "Prekinuti izmenu kategorije?",
+    "creation-category-title": "Prekinuti stvaranje kategorije?",
+    "continue-creation": "Nastavi stvaranje",
+    "continue-editing": "Nastavi izmenu",
+    "confirm": "Da, prekini"
+  },
   "yes-remove": "Da, izbriši",
   "reset": "Resetuj",
   "fill-in-auto": "Popunite",

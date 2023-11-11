@@ -10,6 +10,14 @@
   "category-name-required": "Укажите название категории",
   "category-name": "Название категории",
   "create-category": "Создать категорию",
+  "modal-exit-confirmation": {
+    "description": "Внесенные изменения не сохранятся",
+    "edit-category-title": "Прекратить изменение категории?",
+    "creation-category-title": "Прекратить создание категории?",
+    "continue-creation": "Продолжить создание",
+    "continue-editing": "Продолжить изменение",
+    "confirm": "Да, прекратить"
+  },
   "category-removing": {
     "title": "Удалить категорию ”{categoryName}”?",
     "subtitle": "Не содержит слов | Содержит {n} слово | Содержит {n} слова | Содержит {n} слов",

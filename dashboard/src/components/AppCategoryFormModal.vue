@@ -7,10 +7,11 @@ import { mapState } from "pinia";
 import type { LanguageCode } from "@/types/translations";
 import type { Category } from "@/types/categories";
 import AppImagePreview from "./AppImagePreview.vue";
+import AppCategoryCloseConfirmationModal from "./AppCategoryCloseConfirmationModal.vue";
 
 export default defineComponent({
 	name: "AppCategoryFormModal",
-	components: { AppModal, AppCategoryForm, AppImagePreview },
+	components: { AppModal, AppCategoryForm, AppImagePreview, AppCategoryCloseConfirmationModal },
 	props: {
 		// If provided category id, then form will be in edit mode
 		categoryId: {
@@ -23,6 +24,7 @@ export default defineComponent({
 		return {
 			// Mark as changed to prevent closing modal without confirmation
 			isChanged: false,
+			showCloseConfirmationModal: false,
 		};
 	},
 	computed: {
@@ -38,6 +40,13 @@ export default defineComponent({
 		},
 	},
 	methods: {
+		tryClose() {
+			if (this.isChanged) {
+				this.showCloseConfirmationModal = true;
+			} else {
+				this.close();
+			}
+		},
 		close() {
 			this.$emit("close");
 		},
@@ -53,7 +62,7 @@ export default defineComponent({
 	<AppModal
 		:title="title"
 		:subtitle="subtitle"
-		@close="close"
+		@close="tryClose"
 	>
 		<template
 			v-if="category"
@@ -68,9 +77,17 @@ export default defineComponent({
 			<AppCategoryForm
 				:category-id="categoryId"
 				@saved="close"
-				@close="close"
+				@close="tryClose"
 				@set-changed-status="setChanged"
 			/>
 		</template>
 	</AppModal>
+
+	<AppCategoryCloseConfirmationModal
+		v-if="showCloseConfirmationModal"
+		:is-editing="Boolean(category)"
+		@close="showCloseConfirmationModal = false"
+		@confirm="close"
+	/>
 </template>
+

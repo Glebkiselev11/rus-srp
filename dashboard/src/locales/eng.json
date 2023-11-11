@@ -16,6 +16,14 @@
     "description": "Words won't be deleted from the database",
     "confirmation-label": "To confirm deletion, enter the category name"
   },
+  "modal-exit-confirmation": {
+    "description": "Entered changes will not be saved",
+    "edit-category-title": "Stop editing the category?",
+    "creation-category-title": "Stop creating the category?",
+    "continue-creation": "Continue creation",
+    "continue-editing": "Continue editing",
+    "confirm": "Yes, stop"
+  },
   "yes-remove": "Yes, remove",
   "reset": "Reset",
   "order": {

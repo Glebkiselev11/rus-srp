@@ -22,6 +22,14 @@
     "description": "Речи неће бити избрисане из базе података",
     "confirmation-label": "Да бисте потврдили брисање, унесите назив категорије"
   },
+  "modal-exit-confirmation": {
+    "description": "Унете измене неће бити сачуване",
+    "edit-category-title": "Прекинути измену категорије?",
+    "creation-category-title": "Прекинути стварање категорије?",
+    "continue-creation": "Настави стварање",
+    "continue-editing": "Настави измену",
+    "confirm": "Да, прекини"
+  },
   "yes-remove": "Да, избриши",
   "reset": "Ресетуј",
   "fill-in-auto": "Попуните",
