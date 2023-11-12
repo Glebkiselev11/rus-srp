@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { IconColor, IconName } from "@/types/icons";
 import { defineComponent, type PropType } from "vue"; 
-import AppListItem from "./AppListItem.vue";
+import ListItemComp from "./ListItemComp.vue";
 import { vOnClickOutside, vElementVisibility } from "@vueuse/components";
 import { watchDebounced } from "@vueuse/core";
 import IconComp from "@/components/IconComp/index.vue";
@@ -24,7 +24,7 @@ export default defineComponent({
 		elementVisibility: vElementVisibility,
 	},
 	components: {
-		AppListItem,
+		ListItemComp,
 		IconComp,
 	},
 	props: {
@@ -99,7 +99,7 @@ export default defineComponent({
 					<hr>
 				</template>
 
-				<AppListItem
+				<ListItemComp
 					v-else
 					clickable
 					@click="handdleClickOnItem(item.handler)"
@@ -114,7 +114,7 @@ export default defineComponent({
 						:class="[`text-color-${item.color}`]"
 						v-text="item.label"
 					/>
-				</AppListItem>
+				</ListItemComp>
 			</template>
 
 			<div

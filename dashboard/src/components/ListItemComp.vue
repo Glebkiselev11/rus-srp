@@ -4,7 +4,7 @@ import { defineComponent, type PropType } from "vue";
 type Size = "regular" | "compact";
 
 export default defineComponent({
-	name: "AppListItem",
+	name: "ListItemComp",
 	props: {
 		clickable: {
 			type: Boolean,
@@ -29,11 +29,11 @@ export default defineComponent({
 
 <template>
 	<div 
-		class="app-list-item"
+		class="list-item"
 		:class="{
-			'app-list-item--clickable': clickable,
-			'app-list-item--selected': selected,
-			'app-list-item--compact': size === 'compact',
+			'list-item--clickable': clickable,
+			'list-item--selected': selected,
+			'list-item--compact': size === 'compact',
 		}"
 		:style="{
 			paddingInline,
@@ -46,7 +46,7 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "@/styles/main.scss";
 
-.app-list-item {
+.list-item {
 	padding-block: 12px;
 	border-radius: 12px;
 	display: flex;
@@ -68,7 +68,7 @@ export default defineComponent({
 		background-color: $color-background-content-primary-active;
 
 		&:hover {
-			@extend .app-list-item--selected;
+			@extend .list-item--selected;
 		}
 	}
 

@@ -4,7 +4,7 @@ import { defineComponent, type PropType } from "vue";
 import type { LanguageCode } from "@/types/translations";
 
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
-import AppListItem from "@/components/AppListItem.vue";
+import ListItemComp from "@/components/ListItemComp.vue";
 import { highlighTextByQuery } from "@/common/utils";
 import ButtonComp from "../ButtonComp.vue";
 import DropdownMenuComp from "../DropdownMenuComp.vue";
@@ -14,7 +14,7 @@ export default defineComponent({
 	name: "CategoryItemComp",
 	components: {
 		ImagePreviewComp,
-		AppListItem,
+		ListItemComp,
 		ButtonComp,
 		DropdownMenuComp,
 		RemoveCategoryModalComp,
@@ -60,7 +60,7 @@ export default defineComponent({
 </script>
 
 <template>
-	<AppListItem
+	<ListItemComp
 		clickable
 		:selected="selected"
 		size="compact"
@@ -110,7 +110,7 @@ export default defineComponent({
 				/>
 			</DropdownMenuComp>
 		</div>
-	</AppListItem>
+	</ListItemComp>
 
 	<RemoveCategoryModalComp
 		v-if="isRemoveCategoryModalOpen"

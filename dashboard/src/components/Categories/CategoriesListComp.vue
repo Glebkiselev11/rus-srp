@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import CategoryItemComp from "./CategoryItemComp.vue";
-import AppListItem from "@/components/AppListItem.vue";
+import ListItemComp from "@/components/ListItemComp.vue";
 import AllWordsCategoryImageComp from "./AllWordsCategoryImageComp.vue";
 import { useCategoriesStore } from "@/stores/categories";
 import { mapState } from "pinia";
@@ -11,7 +11,7 @@ export default defineComponent({
 	name: "CategoriesListComp",
 	components: {
 		CategoryItemComp,
-		AppListItem,
+		ListItemComp,
 		AllWordsCategoryImageComp,
 		AppZeroState,
 	},
@@ -48,7 +48,7 @@ export default defineComponent({
 <template>
 	<div class="categories-list">
 		<div class="categories-list__items">
-			<AppListItem
+			<ListItemComp
 				clickable
 				size="compact"
 				:selected="!selectedCategoryId"
@@ -60,7 +60,7 @@ export default defineComponent({
 
 					<span class="text-body-2">{{ $t('all-words') }}</span>
 				</div>
-			</AppListItem>
+			</ListItemComp>
 		</div>
 
 		<hr>
