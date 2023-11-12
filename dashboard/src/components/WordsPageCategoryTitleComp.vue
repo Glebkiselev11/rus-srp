@@ -5,7 +5,7 @@ import { useCategoriesStore } from "@/stores/categories";
 import { mapActions, mapState } from "pinia";
 import type { Category } from "@/types/categories";
 import type { LanguageCode } from "@/types/translations";
-import AppImagePreview from "./AppImagePreview.vue";
+import ImagePreviewComp from "./ImagePreviewComp.vue";
 import DropdownMenuComp from "./DropdownMenuComp.vue";
 import ButtonComp from "./ButtonComp.vue";
 import RemoveCategoryModalComp from "./Categories/RemoveCategoryModalComp.vue";
@@ -15,7 +15,7 @@ export default defineComponent({
 	name: "WordsPageCategoryTitleComp",
 	components: {
 		AllWordsCategoryImageComp,
-		AppImagePreview,
+		ImagePreviewComp,
 		DropdownMenuComp,
 		ButtonComp,
 		RemoveCategoryModalComp, 
@@ -68,7 +68,7 @@ export default defineComponent({
 		v-if="category"
 		class="words-page-category-title"
 	>
-		<AppImagePreview
+		<ImagePreviewComp
 			size="56px"
 			:src="category.image"
 			:image-search-modal-subtitle="getCategoryName(category)"

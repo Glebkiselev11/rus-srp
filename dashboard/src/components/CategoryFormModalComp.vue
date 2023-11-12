@@ -6,12 +6,12 @@ import { useCategoriesStore } from "@/stores/categories";
 import { mapState } from "pinia";
 import type { LanguageCode } from "@/types/translations";
 import type { Category } from "@/types/categories";
-import AppImagePreview from "./AppImagePreview.vue";
+import ImagePreviewComp from "./ImagePreviewComp.vue";
 import CategoryCloseConfirmationModalComp from "./CategoryCloseConfirmationModalComp.vue";
 
 export default defineComponent({
 	name: "CategoryFormModalComp",
-	components: { AppModal, CategoryFormComp, AppImagePreview, CategoryCloseConfirmationModalComp },
+	components: { AppModal, CategoryFormComp, ImagePreviewComp, CategoryCloseConfirmationModalComp },
 	props: {
 		// If provided category id, then form will be in edit mode
 		categoryId: {
@@ -68,7 +68,7 @@ export default defineComponent({
 			v-if="category"
 			#header-left
 		>
-			<AppImagePreview
+			<ImagePreviewComp
 				:src="category.image"
 				static
 			/>

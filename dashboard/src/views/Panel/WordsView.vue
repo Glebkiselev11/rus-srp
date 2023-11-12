@@ -10,7 +10,7 @@ import AppInput from "@/components/AppInput.vue";
 import AppSelect from "@/components/AppSelect.vue";
 import TableComp from "@/components/Table/TableComp.vue";
 import TableRowComp from "@/components/Table/TableRowComp.vue";
-import AppImagePreview from "@/components/AppImagePreview.vue";
+import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import ButtonComp from "@/components/ButtonComp.vue";
 import DropdownMenuComp from "@/components/DropdownMenuComp.vue";
 import AppPaginationBar from "@/components/AppPaginationBar.vue";
@@ -31,7 +31,7 @@ export default defineComponent({
 		AppSelect,
 		TableComp,
 		TableRowComp,
-		AppImagePreview,
+		ImagePreviewComp,
 		ButtonComp,
 		DropdownMenuComp,
 		AppPaginationBar,
@@ -237,7 +237,7 @@ export default defineComponent({
 							:key="word.id"
 						>
 							<td>
-								<AppImagePreview
+								<ImagePreviewComp
 									:src="word.image"
 									:image-search-modal-subtitle="extractWordPreview(word)"
 									:default-image-search-query="word.eng"

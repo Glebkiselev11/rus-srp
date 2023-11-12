@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import AppImagePreview from "./AppImagePreview.vue";
+import ImagePreviewComp from "./ImagePreviewComp.vue";
 import { useCategoriesStore } from "@/stores/categories";
 import { mapActions, mapState } from "pinia";
 import type { Category, DraftCategory } from "@/types/categories";
@@ -13,7 +13,7 @@ import { CategoriesApi } from "@/api/categories";
 
 export default defineComponent({
 	name: "CategoryFormComp",
-	components: { AppImagePreview, AppInput, ButtonComp },
+	components: { ImagePreviewComp, AppInput, ButtonComp },
 	props: {
 		categoryId: {
 			type: Number,
@@ -226,7 +226,7 @@ export default defineComponent({
 <template>
 	<div class="category-form">
 		<div class="category-form__preview">
-			<AppImagePreview
+			<ImagePreviewComp
 				size="96px"
 				:src="draftCategory.image"
 				:image-search-modal-subtitle="categoryName"

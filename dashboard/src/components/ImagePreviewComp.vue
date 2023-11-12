@@ -9,7 +9,7 @@ import type { IconSize } from "@/types/icons";
 type PreviewSize = "24px" | "32px" | "40px" | "48px" | "56px" | "64px" | "96px";
 
 export default defineComponent({
-	name: "AppImagePreview",
+	name: "ImagePreviewComp",
 	components: {
 		IconComp,
 		AppModal,
@@ -82,7 +82,7 @@ export default defineComponent({
 
 <template>
 	<button
-		class="app-image-preview"
+		class="image-preview"
 		:style="{ width: size, height: size }"
 		@click="handleClick"
 	>
@@ -99,7 +99,7 @@ export default defineComponent({
 
 		<div
 			v-if="!static"
-			class="app-image-preview--overlay"
+			class="image-preview--overlay"
 		>
 			<IconComp
 				v-if="src"
@@ -127,7 +127,7 @@ export default defineComponent({
 			v-if="src"
 			#header-left
 		>
-			<AppImagePreview
+			<ImagePreviewComp
 				:src="srcWithParams"
 				static
 			/>
@@ -146,7 +146,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
 
-.app-image-preview {
+.image-preview {
 	border: none;
 	border-radius: 8px;
 	overflow: hidden;
@@ -175,7 +175,7 @@ export default defineComponent({
 	}
 
 	&:hover {
-		.app-image-preview--overlay {
+		.image-preview--overlay {
 			visibility: visible;
 			cursor: pointer;
 		}

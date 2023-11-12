@@ -3,7 +3,7 @@ import type { Category } from "@/types/categories";
 import { defineComponent, type PropType } from "vue";
 import type { LanguageCode } from "@/types/translations";
 
-import AppImagePreview from "@/components/AppImagePreview.vue";
+import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import AppListItem from "@/components/AppListItem.vue";
 import { highlighTextByQuery } from "@/common/utils";
 import ButtonComp from "../ButtonComp.vue";
@@ -13,7 +13,7 @@ import RemoveCategoryModalComp from "./RemoveCategoryModalComp.vue";
 export default defineComponent({
 	name: "CategoryItemComp",
 	components: {
-		AppImagePreview,
+		ImagePreviewComp,
 		AppListItem,
 		ButtonComp,
 		DropdownMenuComp,
@@ -70,7 +70,7 @@ export default defineComponent({
 	>
 		<div class="category-item">
 			<div class="category-item__row">
-				<AppImagePreview
+				<ImagePreviewComp
 					size="24px"
 					:src="category.image"
 					static
