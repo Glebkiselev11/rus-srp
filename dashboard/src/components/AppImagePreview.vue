@@ -3,7 +3,10 @@ import { defineComponent, type PropType } from "vue";
 import AppIcon from "@/components/AppIcon/index.vue";
 import AppModal from "@/components/AppModal.vue";
 import AppImagesSearch from "./AppImagesSearch.vue";
-import { addCropImagaeParamsToUrl } from "@/utils";
+import { addCropImagaeParamsToUrl } from "@/common/utils";
+import type { IconSize } from "@/types/icons";
+
+type PreviewSize = "24px" | "32px" | "40px" | "48px" | "56px" | "64px" | "96px";
 
 export default defineComponent({
 	name: "AppImagePreview",
@@ -21,9 +24,18 @@ export default defineComponent({
 			type: String,
 			default: null,
 		},
+		// Disable modal window and show image preview only
+		static: {
+			type: Boolean,
+			default: false,
+		},
 		defaultImageSearchQuery: {
 			type: String,
 			default: null,
+		},
+		size: {
+			type: String as PropType<PreviewSize>,
+			default: "40px",
 		},
 	},
 	emits: ["update:src"],
@@ -39,10 +51,24 @@ export default defineComponent({
 		imagesSearchModalTitle(): string {
 			return this.src ? this.$t("edit-image") : this.$t("add-image");
 		},
+		iconSize(): IconSize {
+			switch (this.size) {
+			case "24px":
+				return "small";
+			case "32px":
+			case "40px":
+				return "compact";
+			default:
+				return "regular";
+			}
+		},
 	},
 	methods: {
 		addCropImagaeParamsToUrl,
-		handleClick(): void {
+		handleClick(e: Event): void {
+			if (this.static) return;
+
+			e.stopPropagation();
 			this.isModalVisible = true;
 		},
 		handleSelectImage(src: string): void {
@@ -57,6 +83,7 @@ export default defineComponent({
 <template>
 	<button
 		class="app-image-preview"
+		:style="{ width: size, height: size }"
 		@click="handleClick"
 	>
 		<img
@@ -66,41 +93,44 @@ export default defineComponent({
 		<app-icon
 			v-else
 			name="filter_hdr"
+			:size="iconSize"
 			color="tertiary"
 		/>
 
-		<div class="app-image-preview--overlay">
+		<div
+			v-if="!static"
+			class="app-image-preview--overlay"
+		>
 			<app-icon
 				v-if="src"
 				name="edit"
 				color="contrast"
-				size="compact"
+				:size="iconSize"
 			/>
 
 			<app-icon
 				v-else
 				name="add_photo_alternate"
 				color="contrast"
-				size="compact"
+				:size="iconSize"
 			/>
 		</div>
 	</button>
 
 	<AppModal 
-		:visible="isModalVisible"
+		v-if="!static && isModalVisible"
 		:title="imagesSearchModalTitle"
 		:subtitle="imageSearchModalSubtitle"
-		@update:visible="isModalVisible = $event"
+		@close="isModalVisible = false"
 	>
 		<template
 			v-if="src"
 			#header-left
 		>
-			<div class="app-image-preview">
-				<img
-					:src="srcWithParams"
-				>
-			</div>
+			<AppImagePreview
+				:src="srcWithParams"
+				static
+			/>
 		</template>
 
 		<template #content>
@@ -118,8 +148,6 @@ export default defineComponent({
 
 .app-image-preview {
 	border: none;
-	width: 40px;
-	height: 40px;
 	border-radius: 8px;
 	overflow: hidden;
 	background-color: $color-image-placeholder;

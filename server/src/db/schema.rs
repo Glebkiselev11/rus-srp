@@ -3,10 +3,13 @@
 diesel::table! {
     categories (id) {
         id -> Integer,
-        name -> Text,
-        description -> Nullable<Text>,
+        eng -> Text,
+        rus -> Text,
+        srp_latin -> Text,
+        srp_cyrillic -> Text,
         created_at -> Timestamp,
         updated_at -> Nullable<Timestamp>,
+        image -> Nullable<Text>,
     }
 }
 

@@ -1,17 +1,14 @@
-
-
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import AppIcon from "@/components/AppIcon/index.vue";
 import AppNavbarItem from "./AppNavbarItem.vue";
 import type { NavItem } from "../types";
-
+import AppTooltip from "./AppTooltip.vue";
 
 export default defineComponent({
-	name: "AppSideMenu",
+	name: "AppNavbar",
 	components: {
-		AppIcon,
 		AppNavbarItem,
+		AppTooltip,
 	},
 	props: {
 		items: {
@@ -21,7 +18,9 @@ export default defineComponent({
 	},
 	emits: ["clickOnItem"],
 	data() {
-		return {};
+		return {
+			isExpanded: false,
+		};
 	},
 	methods: {
 		handleClick(item: NavItem) {
@@ -31,57 +30,44 @@ export default defineComponent({
 });
 </script>
 
-
 <template>
-	<aside class="app-side-menu">
-		<div class="app-side-menu--header">
-			<AppIcon
-				name="admin_panel_settings"
-			/>
-			<div>
-				<h3 class="title">
-					Srpski rec
-				</h3>
-				<span class="description">Admin</span>
-			</div>
-		</div>
-
-		<nav>
-			<AppNavbarItem 
-				v-for="item in items"
-				:key="item.name"
+	<aside
+		class="app-navbar"
+		:class="{ 'app-navbar--expanded': isExpanded}"
+	>
+		<AppTooltip
+			v-for="item in items"
+			:key="item.name"
+			:text="$t(item.name)"
+			position="right"
+		>
+			<AppNavbarItem
 				:label="item.label"
 				:active="item.active"
 				:icon-name="item.icon"
+				:show-labels="isExpanded"
 				@click="handleClick(item)"
 			/>
-		</nav>
+		</AppTooltip>
 	</aside>
 </template>
-
 
 <style scoped lang="scss">
 @import "@/styles/main.scss";
 
-.app-side-menu {
-  width: 256px;
-  height: 100%;
+.app-navbar {
+	padding-block-start: 10px;
+	width: 72px;
+	height: 100%;
 	background-color: $color-background-content-primary;
 	border-inline-end: 1px solid $color-separator-primary;
+	display: flex;
+	flex-direction: column;
+	row-gap: 4px;
+	padding-inline: 12px;
 
-	&--header {
-		display: flex;
-		gap: 12px;
-		align-items: center;
-		padding: 12px 20px;
-
-		.title {
-			color: $color-text-primary;
-		}
-		.description {
-			@extend .text-body-2;
-			color: $color-text-secondary;
-		}
+	&--expanded {
+		width: 256px;
 	}
 }
 

@@ -3,7 +3,7 @@ import { defineComponent, type PropType } from "vue";
 import AppInputWrapper from "./AppInputWrapper.vue";
 import AppDropdownMenu from "./AppDropdownMenu.vue";
 import AppIcon from "./AppIcon/index.vue";
-import type { SelectSize, SelectType } from "@/types/select";
+import type { SelectSize, SelectAppearance } from "@/types/select";
 import type { IconName } from "@/types/icons";
 
 export default defineComponent({
@@ -14,8 +14,8 @@ export default defineComponent({
 		AppIcon,
 	},
 	props: {
-		type: {
-			type: String as PropType<SelectType>,
+		appearance: {
+			type: String as PropType<SelectAppearance>,
 			default: "default",
 		},
 		size: {
@@ -73,8 +73,8 @@ export default defineComponent({
 
 <template>
 	<AppInputWrapper
-		v-slot="wrapper"
 		:label="label"
+		for="select"
 	>
 		<AppDropdownMenu
 			v-slot="{isMenuOpen}"
@@ -82,11 +82,11 @@ export default defineComponent({
 			:disabled="disabled"
 		>
 			<button 
-				:id="wrapper.id"
+				id="select"
 				class="app-select"
 				:disabled="disabled"
 				:class="[
-					`app-select--type-${type}`,
+					`app-select--appearance-${appearance}`,
 					`app-select--size-${size}`,
 					{ 'app-select--menu-open': isMenuOpen },
 					{ 'app-select--with-icon': icon }
@@ -121,7 +121,7 @@ export default defineComponent({
 	display: flex;
 	align-items: center;
 
-	&--type {
+	&--appearance {
 		&-default {
 			border: 1px solid $color-separator-primary; 
 		}
@@ -168,19 +168,19 @@ export default defineComponent({
 	}
 
 	&:hover {
-		&.app-select--type-default, &.app-select--type-inline {
+		&.app-select--appearance-default, &.app-select--appearance-inline {
 			background-color: $color-background-content-primary-hovered;
 		}
-		&.app-select--type-filled {
+		&.app-select--appearance-filled {
 			background-color: $color-background-tertiary-hovered;
 		}
 	}
 
 	&:active, &.app-select--menu-open {
-		&.app-select--type-default, &.app-select--type-inline {
+		&.app-select--appearance-default, &.app-select--appearance-inline {
 			background-color: $color-background-content-primary-active;
 		}
-		&.app-select--type-filled {
+		&.app-select--appearance-filled {
 			background-color: $color-background-tertiary-active;
 		}
 	}
@@ -189,7 +189,6 @@ export default defineComponent({
 		opacity: 0.5;
 		pointer-events: none;
 	}
-
 }
 
 </style>

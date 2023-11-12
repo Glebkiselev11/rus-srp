@@ -14,3 +14,6 @@ $ docker-composes up
 4. After that your schema.rs file should be changed, make sure that types are
    correct
 5. $ docker-compose up --build
+
+> Order of type fileds should be exact like in the scheme. See example with
+> `words` scheme and `pub struct DbWord`

@@ -19,24 +19,31 @@ export default defineComponent({
 		},
 		label: {
 			type: String,
-			required: true,
+			default: "",
+		},
+		showLabels: {
+			type: Boolean,
+			default: false,
 		},
 	},
 });
 
 </script>
 
-
 <template>
-	<div class="app-navbar-item">
+	<div
+		class="app-navbar-item"
+		:class="{'app-navbar-item--active': active}"
+	>
 		<AppIcon
 			:name="iconName"
 			:color="active ? 'accent-primary' : 'primary'"
 		/>
 
 		<span 
-			class="app-navbar-item--label"
-			:class="{ 'app-navbar-item--label-active': active }"
+			v-if="showLabels"
+			class="app-navbar-item__label"
+			:class="{ 'app-navbar-item__label--active': active }"
 		>
 			{{ label }}
 		</span>
@@ -49,18 +56,30 @@ export default defineComponent({
 .app-navbar-item {
 	display: flex;	
 	align-items: center;
-	padding: 12px 20px;
+	column-gap: 12px;
+	min-block-size: 48px;
+	min-inline-size: 48px;
+	padding: 12px;
+	border-radius: 12px;
+	cursor: pointer;
 
 	&:hover {
-		cursor: pointer;
+		background-color: $color-background-content-primary-hovered;
 	}
 
-	&--label {
+	&--active {
+		background-color: $color-background-accent-primary-tint;
+		&:hover {
+			cursor: default;
+			@extend .app-navbar-item--active;
+		}
+	}
+
+	&__label {
 		@extend .text-body-2;
-		margin-left: 12px;
 		color: $color-text-primary;
 
-		&-active {
+		&--active {
 			color: $color-text-accent-primary;
 		}
 	}

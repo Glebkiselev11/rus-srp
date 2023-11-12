@@ -27,20 +27,17 @@ export default defineComponent({
 			</template>
 		</AppTopBar>
 
-		<div class="settings-view--content">
+		<div class="settings-view__content">
 			<AppPageSection :title="$t('general')">
 				<AppListItem>
-					<template #left>
-						<AppIcon name="translate" />
+					<AppIcon name="translate" />
 
-						<AppLanguageSelect />
-					</template>
+					<AppLanguageSelect />
 				</AppListItem>
 			</AppPageSection>
 		</div>
 	</main>
 </template>
-
 
 <style scoped lang="scss">
 @import "@/styles/colors.scss";
@@ -48,7 +45,7 @@ export default defineComponent({
 	width: 100%;
 	height: 100%;
 
-	&--content {
+	&__content {
 		display: flex;
 		align-items: center;
 		flex-direction: column;

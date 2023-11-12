@@ -1,0 +1,78 @@
+{
+  "translation": "Превод",
+  "create": "Креирајте",
+  "save-changes": "Сачувајте промене",
+  "no-words-were-found": "Нису пронађене речи за овај упит",
+  "general": "Општа",
+  "required": "Обавезно поље",
+  "categories": "Категорије",
+  "category-exists": "Категорија са овим именом већ постоји",
+  "category-name-required": "Име категорије је обавезно",
+  "category-name": "Име категорије",
+  "create-category": "Креирајте категорију",
+  "order": {
+    "last-added": "Последње додато",
+    "last-updated": "Најновије ажуриране",
+    "alphabetical-asc": "Сортирање од А до Ш",
+    "alphabetical-desc": "Сортирање од Ш до А"
+  },
+  "category-removing": {
+    "title": "Избрисати категориjу „{categoryName}“?",
+    "subtitle": "Не садржи речи | Садржи {n} реч | Садржи {n} речи | Садржи {n} речи",
+    "description": "Речи неће бити избрисане из базе података",
+    "confirmation-label": "Да бисте потврдили брисање, унесите назив категорије"
+  },
+  "modal-exit-confirmation": {
+    "description": "Унете измене неће бити сачуване",
+    "edit-category-title": "Прекинути измену категорије?",
+    "creation-category-title": "Прекинути стварање категорије?",
+    "continue-creation": "Настави стварање",
+    "continue-editing": "Настави измену",
+    "confirm": "Да, прекини"
+  },
+  "yes-remove": "Да, избриши",
+  "reset": "Ресетуј",
+  "fill-in-auto": "Попуните",
+  "cancel": "Отказати",
+  "settings": "Подешавања",
+  "words": "Речи",
+  "all-words": "Све речи",
+  "add-word": "Додајте реч",
+  "adding-word": {
+    "title": "Додавање речи",
+    "description": "Унесите реч на одговарајућем језику"
+  },
+  "search": "Претрага",
+  "find-word": "Нађи реч",
+  "find-category": "Нађи категорију",
+  "save": "Сачувај",
+  "delete": "Избриши",
+  "wait": "Чекати",
+  "word-added": "Реч је успешно додата",
+  "word-updated": "Реч је успешно ажурирана",
+  "are-you-sure-delete": "Да ли желите избрисати реч '{word}'?",
+  "interface-language": "Језик интерфејса",
+  "lang": {
+    "russian": "руска",
+    "english": "енглески",
+    "serbian-cyrillic": "Српски (ћирилица)",
+    "serbian-latin": "Српски (латиница)"
+  },
+  "edit": "Уредити",
+  "pagination": {
+    "info": "{currentRange} од {count}",
+    "show": "Прикажи",
+    "select-page": "Иди на страницу"
+  },
+  "not-found": "Ништа није пронађено за „{search}”",
+  "not-found-description": "Покушајте да промените упит или промените филтере",
+  "edit-image": "Уређивање слике",
+  "add-image": "Додавање слике",
+  "editing-category": "Уређивање категорије",
+  "creation-category": "Креирање категорије",
+  "selected": "Изабрано",
+  "search-by-query": "Тражи “{query}”",
+  "image-search-title": "Да бисте пронашли слику, унесите упит на енглеском",
+  "image-search-description": "Ово може бити директан превод или синоним додане речи",
+  "to-sort": "Сортирати"
+}

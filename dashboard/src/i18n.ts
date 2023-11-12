@@ -1,27 +1,47 @@
 import { createI18n } from "vue-i18n";
-import en from "@/locales/en.json";
-import ru from "@/locales/ru.json";
-import srpLatin from "@/locales/srp-latin.json";
-import srpCyrillic from "@/locales/srp-cyrillic.json";
+import eng from "@/locales/eng.json";
+import rus from "@/locales/rus.json";
+import srpLatin from "@/locales/srp_latin.json";
+import srpCyrillic from "@/locales/srp_cyrillic.json";
+import type { LanguageCode } from "@/types/translations";
 
 export const STORAGE_KEY = "languageKey";
 
 export const LanguageList = [
-	{ value: "en", label: "English" },
-	{ value: "ru", label: "Русский" },
-	{ value: "srp-latin", label: "Srpski" },
-	{ value: "srp-cyrillic", label: "Српски" },
-];
+	{ value: "eng", label: "English" },
+	{ value: "rus", label: "Русский" },
+	{ value: "srp_latin", label: "Srpski" },
+	{ value: "srp_cyrillic", label: "Српски" },
+] as { value: LanguageCode; label: string }[];
 
-export type LanguageCode = "en" | "ru" | "srp-latin" | "srp-cyrillic";
+function slavicPluralizationRule(choice: number, choicesLength: number) {
+	if (choice === 0) {
+		return 0;
+	}
 
+	const teen = choice > 10 && choice < 20;
+	const endsWithOne = choice % 10 === 1;
+	if (!teen && endsWithOne) {
+		return 1;
+	}
+	if (!teen && choice % 10 >= 2 && choice % 10 <= 4) {
+		return 2;
+	}
+
+	return choicesLength < 4 ? 2 : 3;
+}
 
 export default createI18n({
-	locale: localStorage.getItem(STORAGE_KEY) || "en",
+	locale: localStorage.getItem(STORAGE_KEY) || "eng",
+	pluralizationRules: {
+		rus: slavicPluralizationRule,
+		srp_latin: slavicPluralizationRule,
+		srp_cyrillic: slavicPluralizationRule,
+	},
 	messages: {
-		en,
-		ru,
-		"srp-latin": srpLatin,
-		"srp-cyrillic": srpCyrillic,
+		eng,
+		rus,
+		"srp_latin": srpLatin,
+		"srp_cyrillic": srpCyrillic,
 	},
 });

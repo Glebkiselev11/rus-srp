@@ -33,7 +33,7 @@ export default defineComponent({
 		v-model="currentLanguage"
 		:label="$t('interface-language')"
 		:options="options"
-		type="inline"
+		appearance="inline"
 		size="compact"
 	/>
 </template>

@@ -4,6 +4,7 @@ import { mapActions, mapState } from "pinia";
 import { useWordsStore } from "@/stores/words";
 import type { Order, RequestParams } from "@/types/api";
 
+import AppCategories from "@/components/AppCategories/index.vue";
 import AppTopBar from "@/components/AppTopBar.vue";
 import AppInput from "@/components/AppInput.vue";
 import AppSelect from "@/components/AppSelect.vue";
@@ -14,10 +15,11 @@ import AppButton from "@/components/AppButton.vue";
 import AppDropdownMenu from "@/components/AppDropdownMenu.vue";
 import AppPaginationBar from "@/components/AppPaginationBar.vue";
 import AppZeroState from "@/components/AppZeroState.vue";
-import { highlighTextByQuery } from "@/utils";
+import AppWordsPageCategoryTitle from "@/components/AppWordsPageCategoryTitle.vue";
+import { highlighTextByQuery } from "@/common/utils";
 
 import type { Word } from "@/types/words";
-import type { LanguageCode } from "@/i18n";
+import type { LanguageCode } from "@/types/translations";
 
 const LIMIT_DEFAULT = 25;
 
@@ -34,6 +36,8 @@ export default defineComponent({
 		AppDropdownMenu,
 		AppPaginationBar,
 		AppZeroState,
+		AppCategories,
+		AppWordsPageCategoryTitle,
 	},
 	data() {
 		return {
@@ -55,26 +59,40 @@ export default defineComponent({
 				{ value: 100, label: "100" },
 			],
 			orderOptions: [
-				{ value: "-created_at", label: this.$t("order.new-words") },
+				{ value: "-created_at", label: this.$t("order.last-added") },
 				{ value: "-updated_at", label: this.$t("order.last-updated") },
 			],
+			defaultFilter: {
+				search: "",
+				offset: 0,
+				limit: LIMIT_DEFAULT,
+				order: "-created_at" as Order,
+				category_id: undefined,
+			},
 		};
 	},
 	computed: {
 		...mapState(useWordsStore, ["words", "count"]),
 		filter: {
 			get(): RequestParams {
+				const { search, offset, limit, order, category_id } = this.defaultFilter;
 				return {
-					search: this.$route.query.search as string || "",
-					offset: Number(this.$route.query.offset) || 0,
-					limit: Number(this.$route.query.limit) || LIMIT_DEFAULT,
-					order: (this.$route.query.order as string || "-created_at") as Order,
+					search: this.$route.query.search_word as string || search,
+					offset: Number(this.$route.query.offset) || offset,
+					limit: Number(this.$route.query.limit) || limit,
+					order: (this.$route.query.order_word) as Order || order,
+					category_id: Number(this.$route.query.category_id) || category_id,
 				};
 			},
 			set(params: RequestParams) {
 				this.$router.push({
 					query: {
-						...params,
+						...this.$route.query,
+						search_word: params.search,
+						offset: params.offset,
+						limit: params.limit,
+						order_word: params.order,
+						category_id: params.category_id,
 					},
 				}).then(() => {
 					this.fetchWords(params);
@@ -86,7 +104,12 @@ export default defineComponent({
 				return this.filter.search;
 			},
 			set(search: string) {
-				this.filter = { ...this.filter, search };
+				const { category_id } = this.filter;
+				this.filter = { 
+					...this.defaultFilter, 
+					category_id,
+					search, 
+				};
 			},
 		},
 		limit: {
@@ -107,10 +130,18 @@ export default defineComponent({
 		},
 		order: {
 			get(): Order {
-				return this.filter.order;
+				return this.filter.order || "-created_at";
 			},
 			set(order: Order) {
 				this.filter = { ...this.filter, order };
+			},
+		},
+		category_id: {
+			get(): number | undefined {
+				return this.filter.category_id;
+			},
+			set(category_id: number | undefined) {
+				this.filter = { ...this.defaultFilter, category_id };
 			},
 		},
 		notFoundTitle(): string {
@@ -130,14 +161,7 @@ export default defineComponent({
 			console.log("openNewWordPage");
 		},
 		async removeWord(word: Word) {
-			const localeToKeyMap: Record<LanguageCode, keyof Word> = {
-				"en": "eng",
-				"ru": "rus",
-				"srp-latin": "srp_latin",
-				"srp-cyrillic": "srp_cyrillic",
-			};
-
-			const key = localeToKeyMap[this.$i18n.locale as LanguageCode];
+			const key = this.$i18n.locale as LanguageCode;
 
 			if (confirm(this.$t("are-you-sure-delete", { word: word[key] }))) {
 				this.deleteWord(word.id);
@@ -158,120 +182,127 @@ export default defineComponent({
 
 <template>
 	<div class="words-view">
-		<AppTopBar>
-			<template #left>
-				<h3>
-					{{ $t("all-words") }}
-				</h3>
-			</template>
-			<template #right>
-				<AppButton
-					icon="add"
-					:label="$t('add-word')"
-					@click="openNewWordPage"
-				/>
-			</template>
-		</AppTopBar>
+		<AppCategories 
+			:selected-category-id="filter.category_id"
+			@update:selected-category-id="category_id = $event"
+		/>
 
-		<div class="words-view--content">
-			<div class="words-view--filter-panel">
-				<AppInput
-					v-model="search"
-					type="text"
-					:placeholder="$t('find-word')"
-					left-icon="search"
-					debounce
-				/>	
+		<div>
+			<AppTopBar>
+				<template #left>
+					<AppWordsPageCategoryTitle :category-id="filter.category_id" />
+				</template>
+				<template #right>
+					<AppButton
+						icon="add"
+						:label="$t('add-word')"
+						@click="openNewWordPage"
+					/>
+				</template>
+			</AppTopBar>
 
-				<AppSelect
-					v-model="order"
-					:options="orderOptions"
-					type="inline"
-					icon="sort"
-					size="compact"
-					:placeholder="$t('to-sort')"
-					compact
-				/>
-			</div>
-			<AppTable
-				:count="count"
-				:columns="columns"
-				:order="filter.order"
-				@update:order="updateOrder"
-			>
-				<template
-					v-if="words.length"
-					#body
+			<div class="words-view__content">
+				<div class="words-view__filter-panel">
+					<AppInput
+						v-model="search"
+						type="text"
+						:placeholder="$t('find-word')"
+						left-icon="search"
+						debounce
+					/>	
+
+					<AppSelect
+						v-model="order"
+						:options="orderOptions"
+						appearance="inline"
+						icon="sort"
+						size="compact"
+						:placeholder="$t('to-sort')"
+						compact
+					/>
+				</div>
+				<AppTable
+					:count="count"
+					:columns="columns"
+					:order="filter.order"
+					@update:order="updateOrder"
 				>
-					<AppTableRow
-						v-for="word in words"
-						:id="word.id"
-						:key="word.id"
+					<template
+						v-if="words.length"
+						#body
 					>
-						<td>
-							<AppImagePreview
-								:src="word.image"
-								:image-search-modal-subtitle="extractWordPreview(word)"
-								:default-image-search-query="word.eng"
-								@update:src="src => updateWordImage(word, src)"
-							/>
-						</td>
-						<td v-html="highlighTextByQuery(word.rus, search)" />
-						<td v-html="highlighTextByQuery(word.eng, search)" />
-						<td v-html="highlighTextByQuery(word.srp_latin, search)" />
-						<td v-html="highlighTextByQuery(word.srp_cyrillic, search)" />
-						<td style="margin-inline-start: auto">
-							<AppDropdownMenu 
-								:items="[
-									{ 
-										label: $t('edit'),
-										icon: 'edit',
-										handler: () => editWord(word.id)
-									},
-									'separator',
-									{ 
-										label: $t('delete'), 
-										icon: 'delete', 
-										color: 'negative', 
-										handler: () => removeWord(word)
-									},
-								]"		
-							>
-								<AppButton
-									icon="more_vert"
-									type="inline"
-									color="neutral"
+						<AppTableRow
+							v-for="word in words"
+							:id="word.id"
+							:key="word.id"
+						>
+							<td>
+								<AppImagePreview
+									:src="word.image"
+									:image-search-modal-subtitle="extractWordPreview(word)"
+									:default-image-search-query="word.eng"
+									@update:src="src => updateWordImage(word, src)"
 								/>
-							</AppDropdownMenu>
-						</td>
-					</AppTableRow>
-				</template>
+							</td>
+							<td v-html="highlighTextByQuery(word.rus, search)" />
+							<td v-html="highlighTextByQuery(word.eng, search)" />
+							<td v-html="highlighTextByQuery(word.srp_latin, search)" />
+							<td v-html="highlighTextByQuery(word.srp_cyrillic, search)" />
+							<td style="margin-inline-start: auto">
+								<AppDropdownMenu 
+									v-slot="{ isMenuOpen }"
+									:items="[
+										{ 
+											label: $t('edit'),
+											icon: 'edit',
+											handler: () => editWord(word.id)
+										},
+										'separator',
+										{ 
+											label: $t('delete'), 
+											icon: 'delete', 
+											color: 'negative', 
+											handler: () => removeWord(word)
+										},
+									]"		
+								>
+									<AppButton
+										icon="more_vert"
+										appearance="inline"
+										color="neutral"
+										:pressed="isMenuOpen"
+									/>
+								</AppDropdownMenu>
+							</td>
+						</AppTableRow>
+					</template>
 
-				<template
-					v-else
-					#body
-				>
-					<AppZeroState
-						icon="search"
-						:title="notFoundTitle"
-						:description="$t('not-found-description')"
-					/>
-				</template>
+					<template
+						v-else
+						#body
+					>
+						<AppZeroState
+							icon="search"
+							:title="notFoundTitle"
+							:description="$t('not-found-description')"
+						/>
+					</template>
 
-				<template
-					v-if="count > limit"
-					#pagination
-				>
-					<AppPaginationBar
-						:count="count"
-						:offset="offset"
-						:limit="limit"
-						:limit-options="limitOptions"
-						@update:limit="limit = $event"
-						@update:offset="offset = $event"
-					/>
-				</template>
-			</AppTable>
+					<template
+						v-if="count > limit"
+						#pagination
+					>
+						<AppPaginationBar
+							:count="count"
+							:offset="offset"
+							:limit="limit"
+							:limit-options="limitOptions"
+							@update:limit="limit = $event"
+							@update:offset="offset = $event"
+						/>
+					</template>
+				</AppTable>
+			</div>
 		</div>
 	</div>
 </template>
@@ -279,18 +310,20 @@ export default defineComponent({
 <style scoped lang="scss">
 
 .words-view {
+	display: grid;
+	grid-template-columns: 280px 1fr;
 	width: 100%;
 	height: 100%;
 
-	&--filter-panel {
+	&__filter-panel {
 		display: flex;
 		align-items: flex-end;
 		justify-content: space-between;
 		margin-block-end: 16px;
 	}
 	
-	&--content {
-		padding-inline: 32px;
+	&__content {
+		padding-inline: 16px;
 	}
 }
 </style>

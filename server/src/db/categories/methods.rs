@@ -1,12 +1,16 @@
 use super::models::{DbCategory, DbNewCategory};
 use crate::db::error_type::DbError;
+use crate::db::schema;
+use crate::models::category::NewCategory;
 use crate::models::{
     category::CategoryBody, pagination::DbQueryResult, query_options::QueryOptions,
 };
+use diesel::expression::expression_types::NotSelectable;
 use diesel::prelude::*;
+use diesel::sqlite::Sqlite;
 
 pub fn insert(
-    new_category: CategoryBody,
+    new_category: NewCategory,
     conn: &mut SqliteConnection,
 ) -> Result<DbCategory, DbError> {
     use crate::db::schema::categories::dsl;
@@ -38,33 +42,49 @@ pub fn select_all_with_filter(
 ) -> Result<DbQueryResult<DbCategory>, DbError> {
     use crate::db::schema::categories::dsl;
 
+    let order_by =
+        || -> Box<dyn BoxableExpression<dsl::categories, Sqlite, SqlType = NotSelectable>> {
+            if let Some(o) = &query.order {
+                match o.as_str() {
+                    "rus" => Box::new(dsl::rus.asc()),
+                    "-rus" => Box::new(dsl::rus.desc()),
+                    "eng" => Box::new(dsl::eng.asc()),
+                    "-eng" => Box::new(dsl::eng.desc()),
+                    "srp_latin" => Box::new(dsl::srp_latin.asc()),
+                    "-srp_latin" => Box::new(dsl::srp_latin.desc()),
+                    "srp_cyrillic" => Box::new(dsl::srp_cyrillic.asc()),
+                    "-srp_cyrillic" => Box::new(dsl::srp_cyrillic.desc()),
+                    "created_at" => Box::new(dsl::created_at.asc()),
+                    "-created_at" => Box::new(dsl::created_at.desc()),
+                    "updated_at" => Box::new(dsl::updated_at.asc()),
+                    "-updated_at" => Box::new(dsl::updated_at.desc()),
+                    _ => Box::new(dsl::created_at.desc()),
+                }
+            } else {
+                Box::new(dsl::created_at.desc())
+            }
+        };
+
     let offset = query.get_offset();
-
-    if query.search.is_none() {
-        let count = dsl::categories.count().get_result(conn)?;
-
-        let result = dsl::categories
-            .limit(20)
-            .offset(offset.into())
-            .load::<DbCategory>(conn)?;
-
-        return Ok(DbQueryResult { count, result });
-    }
-
     let search = query.get_search();
     let limit = query.get_limit();
 
-    let db_query = dsl::categories
-        .or_filter(dsl::name.like(&search))
-        .or_filter(dsl::description.like(&search));
+    let base_query = schema::categories::table.filter(
+        dsl::srp_cyrillic
+            .like(&search)
+            .or(dsl::srp_latin.like(&search))
+            .or(dsl::rus.like(&search))
+            .or(dsl::eng.like(&search)),
+    );
 
-    let count = db_query
+    let count = base_query
         .clone()
         .select(diesel::dsl::count_star())
         .first::<i64>(conn)?;
 
-    let result = db_query
-        .offset(offset.into())
+    let result = base_query
+        .order_by(order_by())
+        .offset(offset)
         .limit(limit)
         .load::<DbCategory>(conn)?;
 

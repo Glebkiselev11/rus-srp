@@ -1,22 +1,34 @@
 <script lang="ts">
 import { debounce } from "lodash";
-import { type PropType, defineComponent } from "vue";
+import { type PropType, defineComponent, watch } from "vue";
 import type { IconName } from "../types/icons";
 import AppIcon from "./AppIcon/index.vue";
 import AppButton from "./AppButton.vue";
-
-type InputSize = "regular" | "compact";
+import AppInputWrapper from "./AppInputWrapper.vue";
+import AppTooltip from "./AppTooltip.vue";
+import type { InputSize, InputAppearance } from "@/types/input";
+import { useFocusWithin } from "@vueuse/core";
 
 export default defineComponent({
 	name: "AppInput",
 	components: {
 		AppIcon,
 		AppButton,
+		AppInputWrapper,
+		AppTooltip,
 	},
 	props: {
+		label: {
+			type: String,
+			default: null,
+		},
 		type: {
 			type: String,
 			default: "text",
+		},
+		appearance: {
+			type: String as PropType<InputAppearance>,
+			default: "default",
 		},
 		modelValue: {
 			type: [String, Number],
@@ -31,6 +43,10 @@ export default defineComponent({
 			default: false,
 		},
 		error: {
+			type: String,
+			default: null,
+		},
+		disableErrorLabel: {
 			type: Boolean,
 			default: false,
 		},
@@ -52,7 +68,7 @@ export default defineComponent({
 		},
 		width: {
 			type: String,
-			default: "280px",
+			default: "100%",
 		},
 		size: {
 			type: String as PropType<InputSize>,
@@ -62,13 +78,48 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
+		focusOnMount: {
+			type: Boolean,
+			default: false,
+		},
+		// If provided - show reset button 
+		resetValue: {
+			type: [String, Number],
+			default: undefined,
+		},
 	},
 	emits: ["update:modelValue"],
+	data() {
+		return {
+			focusOnInput: false,
+		};
+	},
+	computed: {
+		errorLabel() {
+			return this.disableErrorLabel ? undefined : this.error;
+		},
+	},
+	mounted() {
+		if (this.focusOnMount) {
+			this.setFocus();
+		}
+
+		this.initWatchingFocus();
+	},
 	methods: {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		debounceEmit: debounce(function(this: any, value: unknown) {
 			this.emitValue(value);
 		}, 500),
+
+		initWatchingFocus() {
+			const wrapper = this.$refs.wrapper as HTMLElement;
+			const { focused } = useFocusWithin(wrapper);
+			watch(focused, focused => {
+				this.focusOnInput = focused;
+			});
+		},
+
 		emitValue(value: unknown) {
 			this.$emit("update:modelValue", value);
 		},
@@ -84,45 +135,94 @@ export default defineComponent({
 
 			this.debounce ? this.debounceEmit(value) : this.emitValue(value);
 		},
+		setFocus() {
+			const input = this.$refs.input as HTMLInputElement;
+			input.focus();
+		},
+		clearInput() {
+			this.emitValue("");
+			this.setFocus();
+		},
+		resetInput() {
+			this.emitValue(this.resetValue);
+			this.setFocus();
+		},
 	},
 });
 
 </script>
 
 <template>
-	<div class="app-input">
-		<AppIcon
-			v-if="leftIcon"
-			class="app-input--left-icon"
-			:name="leftIcon"
-			color="tertiary"
-		/>
-
-		<input
-			class="app-input--input"
-			:class="['app-input--input--' + size]"
-			:style="{ width }"
-			:type="type"
-			:value="modelValue"
-			:placeholder="placeholder"
-			:disabled="disabled"
-			:warning="error"
-			:max="max"
-			:min="min"
-			@input="handleInput"
+	<AppInputWrapper
+		ref="wrapper"
+		:label="label"
+		:error="errorLabel"
+		for="input"
+	>
+		<div
+			class="app-input"
 		>
+			<AppIcon
+				v-if="leftIcon"
+				class="app-input--left-icon"
+				:name="leftIcon"
+				color="tertiary"
+			/>
 
-		<AppButton
-			v-if="clearButton && modelValue"
-			icon="cancel"
-			color="neutral"
-			size="compact"
-			type="inline"
-			icon-color="tertiary"
-			class="app-input--clear-button"
-			@click="emitValue('')"
-		/>
-	</div>
+			<input
+				id="input"
+				ref="input"
+				class="app-input__field"
+				:class="[
+					`app-input__field--size-${size}`,
+					`app-input__field--appearance-${appearance}`
+				]"
+				:style="{ width }"
+				:type="type"
+				:value="modelValue"
+				:placeholder="placeholder"
+				:disabled="disabled"
+				:error="error !== null"
+				:max="max"
+				:min="min"
+				@input="handleInput"
+			>
+
+			<div class="app-input__buttons">
+				<AppButton
+					v-show="clearButton && modelValue && focusOnInput"
+					icon="cancel"
+					color="neutral"
+					:size="size"
+					appearance="inline"
+					icon-color="tertiary"
+					@click="clearInput"
+				/>
+
+				<AppTooltip
+					:text="$t('reset')"
+					position="top"
+				>
+					<AppButton 
+						v-show="resetValue && modelValue !== resetValue"
+						icon="restart_alt"
+						color="neutral"
+						:size="size"
+						appearance="inline"
+						icon-color="tertiary"
+						@click="resetInput"
+					/>
+				</AppTooltip>
+
+				<AppIcon 
+					v-show="error !== null"
+					color="negative"
+					name="error"
+					:size="size"
+				/>
+			</div>
+		</div>
+	</AppInputWrapper>
 </template>
 
 <style scoped lang="scss">
@@ -131,7 +231,7 @@ export default defineComponent({
 .app-input {
 	position: relative;
 
-	&:has(.app-input--left-icon) .app-input--input {
+	&:has(.app-input--left-icon) .app-input__field {
 		padding-left: 40px;
 	}
 
@@ -142,24 +242,47 @@ export default defineComponent({
 		transform: translateY(-50%);
 	}
 
-	&--input {
+	&__field {
 		border-radius: 8px;
 		border: 1px solid $color-separator-primary;
-		background: $color-field-background;
 		padding: 0 8px;
 
-		&--regular {
-			@extend .text-body-1;
-			height: 40px;
+		&--size {
+			&-regular {
+				@extend .text-body-1;
+				height: 40px;
+			}
+
+			&-compact {
+				@extend .text-body-2;
+				height: 32px;
+			}
 		}
 
-		&--compact {
-			@extend .text-body-2;
-			height: 32px;
+		&--appearance {
+			&-default {
+				background: $color-field-background;
+
+				&:hover {
+					background: $color-background-content-primary-hovered;
+				}
+			}
+
+			&-outline {
+				background: $color-background-content-primary;
+
+				&:hover {
+					border-color: $color-field-border-invert;
+				}
+			}
 		}
 
 		&:has(.app-input--left-icon) {
 			padding-left: 48px;
+		}
+
+		&:disabled {
+			pointer-events: none;
 		}
 
 		&::placeholder {
@@ -167,21 +290,18 @@ export default defineComponent({
 			color: $color-text-tertiary;
 		}
 
-		&:disabled {
-			&::placeholder {
-				color: $color-text-disabled;
-			}
-		}
-
-		&[warning="true"] {
+		&[error="true"] {
 			outline: 1px solid $color-stroke-negative;
 		}
 	}
 
-	&--clear-button {
+	&__buttons {
 		position: absolute;
 		right: 8px;
-		top: 4px;
+		top: 0;
+		height: 100%;
+		display: flex;
+		align-items: center;
 	}
 }
 

@@ -1,14 +1,41 @@
 {
+  "translation": "Translation",
+  "create": "Create",
+  "save-changes": "Save changes",
   "no-words-were-found": "No words were found for this query",
   "general": "General",
-  "order": {
-    "new-words": "Last added",
-    "old-words": "Old words",
-    "last-updated": "Last updated"
+  "required": "Required",
+  "categories": "Categories",
+  "category-exists": "Category with this name already exists",
+  "category-name-required": "Category name is required",
+  "category-name": "Category name",
+  "create-category": "Create category",
+  "category-removing": {
+    "title": "Delete category ”{categoryName}”?",
+    "subtitle": "Contains no words | Contains {n} word | Contains {n} words",
+    "description": "Words won't be deleted from the database",
+    "confirmation-label": "To confirm deletion, enter the category name"
   },
-  "fill-in-auto": "Fill in automatically",
+  "modal-exit-confirmation": {
+    "description": "Entered changes will not be saved",
+    "edit-category-title": "Stop editing the category?",
+    "creation-category-title": "Stop creating the category?",
+    "continue-creation": "Continue creation",
+    "continue-editing": "Continue editing",
+    "confirm": "Yes, stop"
+  },
+  "yes-remove": "Yes, remove",
+  "reset": "Reset",
+  "order": {
+    "last-added": "Last added",
+    "last-updated": "Last updated",
+    "alphabetical-asc": "Sort from A to Z",
+    "alphabetical-desc": "Sort from Z to A"
+  },
+  "fill-in-auto": "Fill in",
   "cancel": "Cancel",
   "settings": "Settings",
+  "words": "Words",
   "all-words": "All words",
   "adding-word": {
     "title": "Adding a word",
@@ -17,6 +44,7 @@
   "add-word": "Add word",
   "search": "Search",
   "find-word": "Find the word",
+  "find-category": "Find category",
   "save": "Save",
   "delete": "Delete",
   "wait": "Wait",
@@ -40,6 +68,8 @@
   "not-found-description": "Check if the query was entered correctly, or enter it differently",
   "edit-image": "Editing an image",
   "add-image": "Adding an image",
+  "editing-category": "Editing a category",
+  "creation-category": "Creating a category",
   "selected": "Selected",
   "search-by-query": "Search for “{query}”",
   "image-search-title": "To find an image, enter a query in English",

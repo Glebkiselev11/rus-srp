@@ -4,7 +4,7 @@ import { defineComponent, type PropType } from "vue";
 import AppTableColumnTitle from "./AppTableColumnTitle.vue";
 import type { Order } from "@/types/api";
 
-interface Column {
+type Column = {
 	sort_key?: string;
 	sortable: boolean;
 	width?: string;
@@ -77,8 +77,8 @@ export default defineComponent({
 		>
 			<thead
 				v-if="columns.length"
-				class="app-table--header"
-				:class="{ 'app-table--header-scrollable-body': isContentBodyScrollable }"	
+				class="app-table__header"
+				:class="{ 'app-table__header--scrollable-body': isContentBodyScrollable }"	
 			>
 				<tr>
 					<th v-if="checkable">
@@ -103,7 +103,7 @@ export default defineComponent({
 			</thead>
 			<tbody
 				ref="tableBody"
-				class="app-table--body"
+				class="app-table__body"
 			>
 				<slot name="body" />
 			</tbody>
@@ -116,7 +116,7 @@ export default defineComponent({
 <style  lang="scss">
 @import "@/styles/main.scss";
 $column-template: repeat(auto-fit, minmax(100px, 1fr));
-$extra-space: 250px;
+$extra-space: 270px;
 
 .app-table-wrap {
 	border: 1px solid $color-separator-primary;
@@ -129,7 +129,7 @@ $extra-space: 250px;
 	background: $color-background-content-primary;
 	border-collapse: collapse;
 
-	&--header {
+	&__header {
 		display: block;
 		height: 48px;
 		border-block-end: 1px solid $color-separator-primary;
@@ -145,12 +145,12 @@ $extra-space: 250px;
 			}
 		}
 
-		&-scrollable-body {
+		&--scrollable-body {
 			padding-inline-end: 4px;
 		}
 	}
 
-	&--body {
+	&__body {
 		display: block;
 		overflow-y: auto;
 		height: calc(100vh - $extra-space);

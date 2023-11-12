@@ -6,7 +6,7 @@ import { vOnClickOutside, vElementVisibility } from "@vueuse/components";
 import { watchDebounced } from "@vueuse/core";
 import AppIcon from "@/components/AppIcon/index.vue";
 
-interface MenuItem {
+type MenuItem = {
 	label: string;
 	icon?: IconName;
 	color?: IconColor;
@@ -78,6 +78,7 @@ export default defineComponent({
 	<div
 		v-on-click-outside="closeMenu"
 		class="app-dropdown"
+		:class="{'app-dropdown--open': isMenuOpen }"
 	>
 		<div @click="toggleMenu">
 			<slot :is-menu-open="isMenuOpen" />
@@ -85,8 +86,10 @@ export default defineComponent({
 
 		<div
 			v-if="isMenuOpen"
-			class="app-dropdown--menu"
-			:class="[`app-dropdown--menu-position-${menuPosition}`]"
+			class="app-dropdown__menu"
+			:class="[
+				`app-dropdown__menu-position-${menuPosition}`, 
+			]"
 		>
 			<template
 				v-for="(item, i) in items"
@@ -101,24 +104,22 @@ export default defineComponent({
 					clickable
 					@click="handdleClickOnItem(item.handler)"
 				>
-					<template #left>
-						<AppIcon
-							v-if="item.icon"
-							:name="item.icon"
-							:color="item.color"
-						/>
+					<AppIcon
+						v-if="item.icon"
+						:name="item.icon"
+						:color="item.color"
+					/>
 
-						<span
-							:class="[`text-color-${item.color}`]"
-							v-text="item.label"
-						/>
-					</template>
+					<span
+						:class="[`text-color-${item.color}`]"
+						v-text="item.label"
+					/>
 				</AppListItem>
 			</template>
 
 			<div
 				v-element-visibility="setBottomMenuAngleVisibility"
-				class="app-dropdown--mark-bottom"
+				class="app-dropdown__mark-bottom"
 			/>
 		</div>
 	</div>
@@ -130,7 +131,8 @@ export default defineComponent({
 .app-dropdown {
 	position: relative;
 
-	&--menu {
+	&__menu {
+		min-inline-size: 148px;
 		padding-block: 8px;
 		position: absolute;
 		right: 0;
@@ -149,7 +151,7 @@ export default defineComponent({
 		}
 	}
 
-	&--mark-bottom {
+	&__mark-bottom {
 		position: absolute;
 		bottom: 0;
 		left: 0;

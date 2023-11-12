@@ -1,14 +1,41 @@
 {
+  "translation": "Перевод",
+  "create": "Создать",
+  "save-changes": "Сохранить изменения",
   "no-words-were-found": "Слова по данному запросу не были найдены",
   "general": "Общие",
-  "order": {
-    "new-words": "Последние добавленные",
-    "old-words": "Старые слова",
-    "last-updated": "Последние изменения"
+  "required": "Обязательно для заполнения",
+  "categories": "Категории",
+  "category-exists": "Категория с таким названием уже существует",
+  "category-name-required": "Укажите название категории",
+  "category-name": "Название категории",
+  "create-category": "Создать категорию",
+  "modal-exit-confirmation": {
+    "description": "Внесенные изменения не сохранятся",
+    "edit-category-title": "Прекратить изменение категории?",
+    "creation-category-title": "Прекратить создание категории?",
+    "continue-creation": "Продолжить создание",
+    "continue-editing": "Продолжить изменение",
+    "confirm": "Да, прекратить"
   },
-  "fill-in-auto": "Заполнить автоматически",
+  "category-removing": {
+    "title": "Удалить категорию ”{categoryName}”?",
+    "subtitle": "Не содержит слов | Содержит {n} слово | Содержит {n} слова | Содержит {n} слов",
+    "description": "Слова из базы не будут удалены",
+    "confirmation-label": "Чтобы подтвердить удаление, введите название категории"
+  },
+  "yes-remove": "Да, удалить",
+  "reset": "Сбросить изменения",
+  "order": {
+    "last-added": "Последние добавленные",
+    "last-updated": "Последние изменения",
+    "alphabetical-asc": "Сортивовка от А до Я",
+    "alphabetical-desc": "Сортировка от Я до А"
+  },
+  "fill-in-auto": "Заполнить",
   "cancel": "Отмена",
   "settings": "Настройки",
+  "words": "Слова",
   "all-words": "Все слова",
   "add-word": "Добавить слово",
   "adding-word": {
@@ -17,6 +44,7 @@
   },
   "search": "Поиск",
   "find-word": "Найти слово",
+  "find-category": "Найти категорию",
   "save": "Сохранить",
   "delete": "Удалить",
   "wait": "Подождите",
@@ -40,6 +68,8 @@
   "not-found-description": "Проверьте, правильно ли введен запрос, или задайте его по-другому",
   "edit-image": "Изменение изображения",
   "add-image": "Добавление изображения",
+  "editing-category": "Изменение категории",
+  "creation-category": "Создание категории",
   "selected": "Выбрано",
   "search-by-query": "Искать “{query}”",
   "image-search-title": "Чтобы найти изображение, введите запрос на английском",

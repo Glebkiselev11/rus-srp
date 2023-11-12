@@ -2,7 +2,7 @@
 import { defineComponent, type PropType } from "vue";
 import AppInput from "./AppInput.vue";
 import AppIcon from "./AppIcon/index.vue";
-import { addCropImagaeParamsToUrl } from "@/utils";
+import { addCropImagaeParamsToUrl } from "@/common/utils";
 import { useImagesStore } from "@/stores/images";
 import { mapActions, mapState } from "pinia";
 import type { RequestParams } from "@/types/api";
@@ -40,7 +40,7 @@ export default defineComponent({
 		};
 	},
 	computed: {
-		...mapState(useImagesStore, ["images", "count", "loading"]),
+		...mapState(useImagesStore, ["images", "count", "loadState"]),
 		requestParams(): RequestParams {
 			return {
 				search: this.searchQuery,
@@ -65,7 +65,9 @@ export default defineComponent({
 		},
 	},
 	created() {
-		this.fetchImages(this.requestParams);
+		if (this.searchQuery) {
+			this.fetchImages(this.requestParams);
+		}
 	},
 	beforeUnmount() {
 		this.clearImages();
@@ -77,7 +79,7 @@ export default defineComponent({
 			this.$emit("select", src);
 		},
 		loadMore() {
-			if (this.loading) return;
+			if (this.loadState === "loading") return;
 			this.offset += this.limit;
 
 			if (this.offset >= this.count) return;
@@ -105,16 +107,15 @@ export default defineComponent({
 		>
 			<!-- Search query is empty -->
 			<AppZeroState 
-				v-if="!loading && !searchQuery"
+				v-if="loadState === 'initial' && !searchQuery"
 				icon="manage_search"
 				:title="$t('image-search-title')"
 				:description="$t('image-search-description')"
 			/>
 
-
 			<!-- Nothing were found -->
 			<AppZeroState 
-				v-if="!loading && !images.length"
+				v-if="loadState === 'loaded' && !images.length"
 				icon="search"
 				:title="$t('not-found', { search: searchQuery })"
 				:description="$t('not-found-description')"
@@ -125,8 +126,6 @@ export default defineComponent({
 					@click="searchQuery = defaultSearchQuery"
 				/>
 			</AppZeroState>
-
-
 
 			<div 
 				v-if="savedLink && areImagesContainSavedLink"
@@ -154,7 +153,7 @@ export default defineComponent({
 				@click="selectImage(image.src)"
 			>
 
-			<template v-if="loading">
+			<template v-if="loadState === 'loading'">
 				<div
 					v-for="i in limit"
 					:key="i"
@@ -184,7 +183,6 @@ export default defineComponent({
 	margin-block-start: 20px;
 	block-size: 70vh;
 	overflow: auto;
-
 
 	&--image {
 		width: 218px;

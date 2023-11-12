@@ -1,4 +1,4 @@
-export type IconSize = "regular" | "compact";
+export type IconSize = "small" | "compact" | "regular";
 
 export type IconColor = 
   "primary" |
@@ -10,7 +10,8 @@ export type IconColor =
   "positive" |
   "negative" |
   "warning" |
-  "link";
+  "link" |
+  "transparent";
 
 export type IconName = 
   "admin_panel_settings" | 
@@ -36,4 +37,9 @@ export type IconName =
   "cancel" |
   "expand_more_down" |
   "expand_more_up" |
-  "sort";
+  "sort" |
+  "widgets" |
+  "done" |
+  "edit_note" |
+  "error" |
+  "restart_alt";

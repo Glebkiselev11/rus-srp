@@ -1,8 +1,12 @@
 use super::models::{DbNewWord, DbWord};
-use crate::models::{
-    pagination::DbQueryResult,
-    query_options::QueryOptions,
-    word::{NewWord, UpdateWordBody},
+use crate::{
+    db::{self, schema},
+    // db::words_categories::models::DbWordCategory,
+    models::{
+        pagination::DbQueryResult,
+        query_options::QueryOptions,
+        word::{NewWord, UpdateWordBody},
+    },
 };
 use diesel::{expression::expression_types::NotSelectable, prelude::*, sqlite::Sqlite};
 
@@ -40,64 +44,67 @@ pub fn select_all_with_filter(
 ) -> Result<DbQueryResult<DbWord>, DbError> {
     use crate::db::schema::words::dsl;
 
-    let mut order_clause: Box<dyn BoxableExpression<dsl::words, Sqlite, SqlType = NotSelectable>> =
-        Box::new(dsl::created_at.desc());
-
-    if let Some(o) = &query.order {
-        match o.as_str() {
-            "rus" => order_clause = Box::new(dsl::rus.asc()),
-            "-rus" => order_clause = Box::new(dsl::rus.desc()),
-            "eng" => order_clause = Box::new(dsl::eng.asc()),
-            "-eng" => order_clause = Box::new(dsl::eng.desc()),
-            "srp_latin" => order_clause = Box::new(dsl::srp_latin.asc()),
-            "-srp_latin" => order_clause = Box::new(dsl::srp_latin.desc()),
-            "srp_cyrillic" => order_clause = Box::new(dsl::srp_cyrillic.asc()),
-            "-srp_cyrillic" => order_clause = Box::new(dsl::srp_cyrillic.desc()),
-            "image" => order_clause = Box::new(dsl::image.asc()),
-            "-image" => order_clause = Box::new(dsl::image.desc()),
-            "created_at" => order_clause = Box::new(dsl::created_at.asc()),
-            "-created_at" => order_clause = Box::new(dsl::created_at.desc()),
-            "updated_at" => order_clause = Box::new(dsl::updated_at.asc()),
-            "-updated_at" => order_clause = Box::new(dsl::updated_at.desc()),
-            _ => {}
+    let order_by = || -> Box<dyn BoxableExpression<dsl::words, Sqlite, SqlType = NotSelectable>> {
+        if let Some(o) = &query.order {
+            match o.as_str() {
+                "rus" => Box::new(dsl::rus.asc()),
+                "-rus" => Box::new(dsl::rus.desc()),
+                "eng" => Box::new(dsl::eng.asc()),
+                "-eng" => Box::new(dsl::eng.desc()),
+                "srp_latin" => Box::new(dsl::srp_latin.asc()),
+                "-srp_latin" => Box::new(dsl::srp_latin.desc()),
+                "srp_cyrillic" => Box::new(dsl::srp_cyrillic.asc()),
+                "-srp_cyrillic" => Box::new(dsl::srp_cyrillic.desc()),
+                "image" => Box::new(dsl::image.asc()),
+                "-image" => Box::new(dsl::image.desc()),
+                "created_at" => Box::new(dsl::created_at.asc()),
+                "-created_at" => Box::new(dsl::created_at.desc()),
+                "updated_at" => Box::new(dsl::updated_at.asc()),
+                "-updated_at" => Box::new(dsl::updated_at.desc()),
+                _ => Box::new(dsl::created_at.desc()),
+            }
+        } else {
+            Box::new(dsl::created_at.desc())
         }
-    }
+    };
 
-    let offset = query.get_offset();
-    let limit = query.get_limit();
-
-    if query.search.is_none() {
-        let count = dsl::words.count().get_result(conn)?;
-
-        let result = dsl::words
-            .offset(offset.into())
-            .order(order_clause)
-            .limit(limit)
-            .load::<DbWord>(conn)?;
-
-        return Ok(DbQueryResult { count, result });
-    }
-
+    // Preparing values for filtering
     let search = query.get_search();
+    let words_ids = if let Some(cid) = query.category_id {
+        Some(db::words_categories::methods::get_words_ids_by_category_id(
+            cid, conn,
+        )?)
+    } else {
+        None
+    };
 
-    let db_query = dsl::words
-        .or_filter(dsl::srp_cyrillic.like(&search))
-        .or_filter(dsl::srp_latin.like(&search))
-        .or_filter(dsl::rus.like(&search))
-        .or_filter(dsl::eng.like(&search));
+    let apply_filters = || {
+        let mut base_query = schema::words::table.into_boxed().filter(
+            dsl::srp_cyrillic
+                .like(&search)
+                .or(dsl::srp_latin.like(&search))
+                .or(dsl::rus.like(&search))
+                .or(dsl::eng.like(&search)),
+        );
 
-    let count = db_query
-        .clone()
+        if let Some(ids) = words_ids.clone() {
+            base_query = base_query.filter(dsl::id.eq_any(ids));
+        }
+
+        return base_query;
+    };
+
+    let count = apply_filters()
         .select(diesel::dsl::count_star())
         .first::<i64>(conn)?;
 
-    let result = db_query
-        .order(order_clause)
-        .offset(offset.into())
-        .limit(limit)
+    let result = apply_filters()
+        .order(order_by())
+        .offset(query.get_offset())
+        .limit(query.get_limit())
         .load::<DbWord>(conn)?;
 
-    Ok(DbQueryResult { count, result })
+    return Ok(DbQueryResult { count, result });
 }
 
 pub fn update(

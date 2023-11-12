@@ -6,6 +6,7 @@ pub struct QueryOptions {
     pub search: Option<String>,
     pub limit: Option<i64>,
     pub order: Option<String>,
+    pub category_id: Option<i32>,
 }
 
 impl QueryOptions {
@@ -18,9 +19,7 @@ impl QueryOptions {
     }
 
     pub fn get_search(&self) -> String {
-        self.search
-            .as_ref()
-            .map(|s| format!("%{}%", s.to_lowercase()))
-            .unwrap_or_else(String::new)
+        let s = self.search.clone().unwrap_or_else(String::new);
+        format!("%{}%", s.to_lowercase().trim())
     }
 }

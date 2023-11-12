@@ -14,12 +14,14 @@ export default defineComponent({
 	<header
 		class="app-top-bar"
 	>
-		<div>
-			<slot name="left" />	
-		</div>
+		<div class="app-top-bar__content">
+			<div>
+				<slot name="left" />	
+			</div>
 
-		<div>
-			<slot name="right" />
+			<div>
+				<slot name="right" />
+			</div>
 		</div>
 	</header>
 </template>
@@ -28,12 +30,15 @@ export default defineComponent({
 @import "@/styles/main.scss";
 
 .app-top-bar{
-	width: 100%;
-	height: 64px;
-	padding: 0 32px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	padding: 16px;
+
+	&__content {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		height: 56px;
+	}
 }
 
 </style>

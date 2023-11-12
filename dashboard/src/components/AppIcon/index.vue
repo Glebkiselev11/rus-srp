@@ -26,6 +26,11 @@ import CancelIcon from "./CancelIcon.vue";
 import ExpandMoreDownIcon from "./ExpandMoreDownIcon.vue";
 import ExpandMoreUpIcon from "./ExpandMoreUpIcon.vue";
 import SortIcon from "./SortIcon.vue";
+import WidgetsIcon from "./WidgetsIcon.vue";
+import DoneIcon from "./DoneIcon.vue";
+import EditNoteIcon from "./EditNoteIcon.vue";
+import ErrorIcon from "./ErrorIcon.vue";
+import RestartAltIcon from "./RestartAltIcon.vue";
 
 export default defineComponent({
 	name: "AppIcon",
@@ -70,12 +75,18 @@ export default defineComponent({
 				"expand_more_down": ExpandMoreDownIcon,
 				"expand_more_up": ExpandMoreUpIcon,
 				"sort": SortIcon,
+				"widgets": WidgetsIcon,
+				"done": DoneIcon,
+				"edit_note": EditNoteIcon,
+				"error": ErrorIcon,
+				"restart_alt": RestartAltIcon,
 			}[this.name];
 		},
 		convertedSize(): string {
 			return {
-				"regular": "24px",
+				"small": "16px",
 				"compact": "20px",
+				"regular": "24px",
 			}[this.size];
 		},
 	},
@@ -92,7 +103,6 @@ export default defineComponent({
 		:color="color"
 	/>
 </template>
-
 
 <style lang="scss">
 @import "@/styles/colors.scss";
@@ -138,7 +148,10 @@ export default defineComponent({
 	&--link {
 		fill: $color-icon-link;
 	}
-}
 
+	&--transparent {
+		fill: transparent;
+	}
+}
 
 </style>

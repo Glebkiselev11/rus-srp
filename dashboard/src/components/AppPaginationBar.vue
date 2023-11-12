@@ -60,26 +60,26 @@ export default defineComponent({
 
 <template>
 	<div class="app-pagination-bar">
-		<div class="app-pagination-bar--section">
+		<div class="app-pagination-bar__section">
 			<div class="count-info">
 				{{ $t("pagination.info", { currentRange, count }) }}
 			</div>
 
 			<div class="limit-controller">
-				<span class="limit-controller--text">{{ $t("pagination.show") }}</span>
+				<span class="limit-controller__text">{{ $t("pagination.show") }}</span>
 				<AppSelect
 					:model-value="limit"
 					:options="limitOptions"
 					size="compact"
-					type="filled"
+					appearance="filled"
 					@update:model-value="updateLimit"
 				/>
 			</div>
 		</div>
 
-		<div class="app-pagination-bar--section">
+		<div class="app-pagination-bar__section">
 			<div class="select-page-controller">
-				<span class="select-page-controller--text">
+				<span class="select-page-controller__text">
 					{{ $t("pagination.select-page") }}
 				</span>
 
@@ -117,8 +117,7 @@ export default defineComponent({
   border-block-start: 1px solid $color-separator-primary;
   background-color: $color-background-content-primary;
 
-
-	&--section {
+	&__section {
 		display: flex;
 		align-items: center;
 		column-gap: 24px;
@@ -133,7 +132,7 @@ export default defineComponent({
 		display: flex;
 		align-items: center;
 
-		&--text {
+		&__text {
 			@extend .text-body-2;
 			color: $color-text-secondary;
 			margin-inline-end: 8px;

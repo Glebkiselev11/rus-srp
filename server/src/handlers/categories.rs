@@ -1,21 +1,21 @@
-use crate::db;
-use crate::models::category::CategoryBody;
+use crate::models::category::{CategoryBody, NewCategory};
 use crate::models::pagination::Pagination;
 use crate::models::query_options::QueryOptions;
 use crate::DbPool;
+use crate::{db, models::category::NewCategoryBody};
 use actix_web::{web, HttpResponse, Responder};
 
 use super::custom_http_error::{CustomHttpError, ErrorMessagesBuilder};
 
 pub async fn create(
     pool: web::Data<DbPool>,
-    body: web::Json<CategoryBody>,
+    body: web::Json<NewCategoryBody>,
 ) -> actix_web::Result<impl Responder> {
-    let category = body.into_inner();
+    let new_category = NewCategory::from(body.into_inner());
 
     let category = web::block(move || {
         let mut conn = pool.get()?;
-        db::categories::methods::insert(category, &mut conn)
+        db::categories::methods::insert(new_category, &mut conn)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
