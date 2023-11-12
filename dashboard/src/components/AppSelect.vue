@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import AppInputWrapper from "./AppInputWrapper.vue";
+import InputWrapperComp from "./InputWrapperComp.vue";
 import DropdownMenuComp from "./DropdownMenuComp.vue";
 import IconComp from "./IconComp/index.vue";
 import type { SelectSize, SelectAppearance } from "@/types/select";
@@ -9,7 +9,7 @@ import type { IconName } from "@/types/icons";
 export default defineComponent({
 	name: "AppSelect",
 	components: {
-		AppInputWrapper,
+		InputWrapperComp,
 		DropdownMenuComp,
 		IconComp,
 	},
@@ -72,7 +72,7 @@ export default defineComponent({
 </script>
 
 <template>
-	<AppInputWrapper
+	<InputWrapperComp
 		:label="label"
 		for="select"
 	>
@@ -108,7 +108,7 @@ export default defineComponent({
 				/>
 			</button>
 		</DropdownMenuComp>
-	</AppInputWrapper>
+	</InputWrapperComp>
 </template>
 
 <style lang="scss" scoped>

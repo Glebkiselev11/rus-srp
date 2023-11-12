@@ -4,7 +4,7 @@ import { type PropType, defineComponent, watch } from "vue";
 import type { IconName } from "../types/icons";
 import IconComp from "./IconComp/index.vue";
 import ButtonComp from "./ButtonComp.vue";
-import AppInputWrapper from "./AppInputWrapper.vue";
+import InputWrapperComp from "./InputWrapperComp.vue";
 import AppTooltip from "./AppTooltip.vue";
 import type { InputSize, InputAppearance } from "@/types/input";
 import { useFocusWithin } from "@vueuse/core";
@@ -14,7 +14,7 @@ export default defineComponent({
 	components: {
 		IconComp,
 		ButtonComp,
-		AppInputWrapper,
+		InputWrapperComp,
 		AppTooltip,
 	},
 	props: {
@@ -153,7 +153,7 @@ export default defineComponent({
 </script>
 
 <template>
-	<AppInputWrapper
+	<InputWrapperComp
 		ref="wrapper"
 		:label="label"
 		:error="errorLabel"
@@ -222,7 +222,7 @@ export default defineComponent({
 				/>
 			</div>
 		</div>
-	</AppInputWrapper>
+	</InputWrapperComp>
 </template>
 
 <style scoped lang="scss">

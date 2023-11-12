@@ -2,7 +2,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-	name: "AppInputWrapper",
+	name: "InputWrapperComp",
 	props: {
 		label: {
 			type: String,
@@ -33,10 +33,10 @@ export default defineComponent({
 </script>
 
 <template>
-	<div class="app-input-wrapper">
+	<div class="input-wrapper">
 		<label
 			v-if="label"
-			class="app-input-wrapper__label"
+			class="input-wrapper__label"
 			@click="selectInput"
 		>
 			{{ label }}
@@ -48,7 +48,7 @@ export default defineComponent({
 
 		<span
 			v-if="error"
-			class="app-input-wrapper__error"
+			class="input-wrapper__error"
 		>
 			{{ error }}
 		</span>
@@ -57,7 +57,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "@/styles/main.scss";
-.app-input-wrapper {
+.input-wrapper {
 	display: flex;
 	flex-direction: column;
 	row-gap: 8px;
