@@ -1,11 +1,11 @@
 <script lang="ts">
-import type { IconColor, IconName } from "@/types/icons";
+import type { IconColor, IconName } from "../../types/icons";
 import { defineComponent, type PropType } from "vue";
-import AppIcon from "@/components/AppIcon/index.vue";
-import type { Order } from "@/types/api";
+import AppIcon from "../AppIcon/index.vue";
+import type { Order } from "../../types/api";
 
 export default defineComponent({
-	name: "AppTableColumnTitle",
+	name: "TableColumnTitleComp",
 	components: {
 		AppIcon,
 	},
@@ -70,10 +70,10 @@ export default defineComponent({
 
 <template>
 	<th :style="{ width }">
-		<div class="app-table-column-title__outer">
+		<div class="table-column-title__outer">
 			<button 
-				class="app-table-column-title"
-				:class="{ 'app-table-column-title--sortable': sortable }"
+				class="table-column-title"
+				:class="{ 'table-column-title--sortable': sortable }"
 				:disabled="!sortable"
 				@click="handlerSort"
 			>
@@ -84,8 +84,8 @@ export default defineComponent({
 				/>
 				<span
 					v-if="label"
-					class="app-table-column-title__label text-subtitle-2"
-					:class="{ 'app-table-column-title__label--active-sort': sortActive }"
+					class="table-column-title__label text-subtitle-2"
+					:class="{ 'table-column-title__label--active-sort': sortActive }"
 					v-text="label"
 				/>
 
@@ -105,13 +105,13 @@ export default defineComponent({
 
 $padding: 8px;
 
-.app-table-column-title__outer {
+.table-column-title__outer {
 	display: flex;
 	justify-content: flex-start;
 	margin-inline-start: -$padding;
 }
 
-.app-table-column-title {
+.table-column-title {
   display: flex;
   align-items: center;
   column-gap: 4px;

@@ -8,8 +8,8 @@ import CategoriesComp from "@/components/Categories/CategoriesComp.vue";
 import AppTopBar from "@/components/AppTopBar.vue";
 import AppInput from "@/components/AppInput.vue";
 import AppSelect from "@/components/AppSelect.vue";
-import AppTable from "@/components/AppTable/index.vue";
-import AppTableRow from "@/components/AppTable/AppTableRow.vue";
+import TableComp from "@/components/Table/TableComp.vue";
+import TableRowComp from "@/components/Table/TableRowComp.vue";
 import AppImagePreview from "@/components/AppImagePreview.vue";
 import AppButton from "@/components/AppButton.vue";
 import AppDropdownMenu from "@/components/AppDropdownMenu.vue";
@@ -29,8 +29,8 @@ export default defineComponent({
 		AppTopBar,
 		AppInput,
 		AppSelect,
-		AppTable,
-		AppTableRow,
+		TableComp,
+		TableRowComp,
 		AppImagePreview,
 		AppButton,
 		AppDropdownMenu,
@@ -221,7 +221,7 @@ export default defineComponent({
 						compact
 					/>
 				</div>
-				<AppTable
+				<TableComp
 					:count="count"
 					:columns="columns"
 					:order="filter.order"
@@ -231,7 +231,7 @@ export default defineComponent({
 						v-if="words.length"
 						#body
 					>
-						<AppTableRow
+						<TableRowComp
 							v-for="word in words"
 							:id="word.id"
 							:key="word.id"
@@ -274,7 +274,7 @@ export default defineComponent({
 									/>
 								</AppDropdownMenu>
 							</td>
-						</AppTableRow>
+						</TableRowComp>
 					</template>
 
 					<template
@@ -301,7 +301,7 @@ export default defineComponent({
 							@update:offset="offset = $event"
 						/>
 					</template>
-				</AppTable>
+				</TableComp>
 			</div>
 		</div>
 	</div>

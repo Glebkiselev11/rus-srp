@@ -1,8 +1,8 @@
 <script lang="ts">
-import type { IconColor, IconName } from "@/types/icons";
+import type { IconColor, IconName } from "../../types/icons";
 import { defineComponent, type PropType } from "vue";
-import AppTableColumnTitle from "./AppTableColumnTitle.vue";
-import type { Order } from "@/types/api";
+import TableColumnTitleComp from "./TableColumnTitleComp.vue";
+import type { Order } from "../../types/api";
 
 type Column = {
 	sort_key?: string;
@@ -16,9 +16,9 @@ type Column = {
 }
 
 export default defineComponent({
-	name: "AppTable",
+	name: "TableComp",
 	components: {
-		AppTableColumnTitle,
+		TableColumnTitleComp,
 	},
 	props: {
 		columns: {
@@ -70,15 +70,15 @@ export default defineComponent({
 
 <template>
 	<div
-		class="app-table-wrap"
+		class="table-wrap"
 	>
 		<table
-			class="app-table" 
+			class="table" 
 		>
 			<thead
 				v-if="columns.length"
-				class="app-table__header"
-				:class="{ 'app-table__header--scrollable-body': isContentBodyScrollable }"	
+				class="table__header"
+				:class="{ 'table__header--scrollable-body': isContentBodyScrollable }"	
 			>
 				<tr>
 					<th v-if="checkable">
@@ -87,7 +87,7 @@ export default defineComponent({
 							type="checkbox"
 						>
 					</th>
-					<AppTableColumnTitle
+					<TableColumnTitleComp
 						v-for="col in columns"
 						:key="col.sort_key"
 						:sort-key="col.sort_key"
@@ -103,7 +103,7 @@ export default defineComponent({
 			</thead>
 			<tbody
 				ref="tableBody"
-				class="app-table__body"
+				class="table__body"
 			>
 				<slot name="body" />
 			</tbody>
@@ -118,13 +118,13 @@ export default defineComponent({
 $column-template: repeat(auto-fit, minmax(100px, 1fr));
 $extra-space: 270px;
 
-.app-table-wrap {
+.table-wrap {
 	border: 1px solid $color-separator-primary;
 	border-radius: 16px;
 	overflow: hidden;
 }
 
-.app-table {
+.table {
 	width: 100%;
 	background: $color-background-content-primary;
 	border-collapse: collapse;

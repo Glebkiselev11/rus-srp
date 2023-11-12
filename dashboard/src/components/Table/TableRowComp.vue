@@ -2,7 +2,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-	name: "AppTableRow",
+	name: "TableRowComp",
 	props: {
 		checkable: {
 			type: Boolean,
@@ -21,7 +21,7 @@ export default defineComponent({
 	},
 	watch: {
 		checked(checked: boolean) {
-			if (this.id === null) return console.warn("AppTableRow: id is null. Cannot emit event");
+			if (this.id === null) return console.warn("TableRow: id is null. Cannot emit event");
 
 			if (checked) {
 				this.$emit("checked", this.id);
@@ -35,7 +35,7 @@ export default defineComponent({
 </script>
 
 <template>
-	<tr class="app-table-row">
+	<tr class="table-row">
 		<td v-if="checkable">
 			<input
 				v-model="checked"
@@ -47,7 +47,7 @@ export default defineComponent({
 </template>
 
 <style lang="scss">
-.app-table-row {
+.table-row {
   height: 72px;
 
   td {
