@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 import IconComp from "@/components/IconComp/index.vue";
-import AppModal from "@/components/AppModal.vue";
+import ModalComp from "@/components/ModalComp.vue";
 import ImagesSearchComp from "./ImagesSearchComp.vue";
 import { addCropImagaeParamsToUrl } from "@/common/utils";
 import type { IconSize } from "@/types/icons";
@@ -12,7 +12,7 @@ export default defineComponent({
 	name: "ImagePreviewComp",
 	components: {
 		IconComp,
-		AppModal,
+		ModalComp,
 		ImagesSearchComp,
 	}, 
 	props: {
@@ -117,7 +117,7 @@ export default defineComponent({
 		</div>
 	</button>
 
-	<AppModal 
+	<ModalComp 
 		v-if="!static && isModalVisible"
 		:title="imagesSearchModalTitle"
 		:subtitle="imageSearchModalSubtitle"
@@ -140,7 +140,7 @@ export default defineComponent({
 				@select="handleSelectImage"
 			/>
 		</template>
-	</AppModal>
+	</ModalComp>
 </template>
 
 <style lang="scss" scoped>

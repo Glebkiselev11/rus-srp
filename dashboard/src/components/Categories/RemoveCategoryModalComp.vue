@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { Category } from "@/types/categories";
 import { defineComponent, type PropType } from "vue";
-import AppModal from "../AppModal.vue";
+import ModalComp from "../ModalComp.vue";
 import type { LanguageCode } from "@/types/translations";
 import { WordsApi } from "@/api";
 import InputComp from "../InputComp.vue";
@@ -12,7 +12,7 @@ import { mapActions } from "pinia";
 export default defineComponent({
 	name: "RemoveCategoryModalComp",
 	components: {
-		AppModal,
+		ModalComp,
 		InputComp,
 		ButtonComp,
 	},
@@ -63,7 +63,7 @@ export default defineComponent({
 </script>
 
 <template>
-	<AppModal
+	<ModalComp
 		:title="title"
 		:subtitle="subtitle"
 		header-padding-inline="12px"
@@ -98,7 +98,7 @@ export default defineComponent({
 				</div>
 			</div>
 		</template>
-	</AppModal>
+	</ModalComp>
 </template>
 
 <style scoped lang="scss">

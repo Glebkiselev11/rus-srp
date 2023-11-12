@@ -1,12 +1,12 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import AppModal from "./AppModal.vue";
+import ModalComp from "./ModalComp.vue";
 import ButtonComp from "./ButtonComp.vue";
 
 export default defineComponent({
 	name: "CategoryCloseConfirmationModalComp",
 	components: {
-		AppModal,
+		ModalComp,
 		ButtonComp,
 	},
 	props: {
@@ -41,7 +41,7 @@ export default defineComponent({
 </script>
 
 <template>
-	<AppModal
+	<ModalComp
 		:title="title"
 		header-padding-inline="12px"
 		@close="close"
@@ -63,7 +63,7 @@ export default defineComponent({
 				</div>
 			</div>
 		</template>
-	</AppModal>
+	</ModalComp>
 </template>
 
 <style lang="scss" scoped>

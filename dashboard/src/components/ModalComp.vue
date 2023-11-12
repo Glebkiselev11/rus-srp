@@ -3,7 +3,7 @@ import { defineComponent } from "vue";
 import HeaderComp from "@/components/HeaderComp.vue";
 
 export default defineComponent({
-	name: "AppModal",
+	name: "ModalComp",
 	components: {
 		HeaderComp,
 	},
@@ -34,8 +34,8 @@ export default defineComponent({
 		},
 		// It needs us to keep only one shadow (on last modal) for all modals
 		updateBackgroundShadow() {
-			const modals = document.body.querySelectorAll(".app-modal-screen");
-			const className = "app-modal-screen--last-modal";
+			const modals = document.body.querySelectorAll(".modal-screen");
+			const className = "modal-screen--last-modal";
 			modals.forEach((modal) => {
 				modal.classList.remove(className);
 			});
@@ -52,9 +52,9 @@ export default defineComponent({
 
 <template>
 	<div
-		class="app-modal-screen"
+		class="modal-screen"
 	>
-		<div class="app-modal">
+		<div class="modal">
 			<HeaderComp
 				:title="title"
 				:subtitle="subtitle"
@@ -74,7 +74,7 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "@/styles/main.scss";
 
-.app-modal-screen {
+.modal-screen {
 	position: fixed;
 	z-index: 2;
 	top: 0;
@@ -90,7 +90,7 @@ export default defineComponent({
 	}
 }
 
-.app-modal {
+.modal {
 	border-radius: 16px;
 	padding: 8px;
 	background: $color-background-content-primary;

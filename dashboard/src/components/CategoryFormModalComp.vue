@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import AppModal from "./AppModal.vue";
+import ModalComp from "./ModalComp.vue";
 import CategoryFormComp from "./CategoryFormComp.vue";
 import { useCategoriesStore } from "@/stores/categories";
 import { mapState } from "pinia";
@@ -12,7 +12,7 @@ import CategoryCloseConfirmationModalComp from "./CategoryCloseConfirmationModal
 export default defineComponent({
 	name: "CategoryFormModalComp",
 	components: { 
-		AppModal, 
+		ModalComp, 
 		CategoryFormComp, 
 		ImagePreviewComp, 
 		CategoryCloseConfirmationModalComp, 
@@ -64,7 +64,7 @@ export default defineComponent({
 </script>
 
 <template>
-	<AppModal
+	<ModalComp
 		:title="title"
 		:subtitle="subtitle"
 		@close="tryClose"
@@ -86,7 +86,7 @@ export default defineComponent({
 				@set-changed-status="setChanged"
 			/>
 		</template>
-	</AppModal>
+	</ModalComp>
 
 	<CategoryCloseConfirmationModalComp
 		v-if="showCloseConfirmationModal"
