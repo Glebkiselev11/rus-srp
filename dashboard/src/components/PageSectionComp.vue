@@ -3,7 +3,7 @@ import { defineComponent } from "vue";
 import HeaderComp from "@/components/HeaderComp.vue";
 
 export default defineComponent({
-	name: "AppPageSection",
+	name: "PageSectionComp",
 	components: {
 		HeaderComp,
 	},
@@ -18,7 +18,7 @@ export default defineComponent({
 </script>
 
 <template>
-	<div class="app-page-section">
+	<div class="page-section">
 		<HeaderComp
 			v-if="title"
 			:title="title"
@@ -33,7 +33,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
 
-.app-page-section {
+.page-section {
   background: $color-background-content-primary;
   width: 549px;
   border-radius: 16px;

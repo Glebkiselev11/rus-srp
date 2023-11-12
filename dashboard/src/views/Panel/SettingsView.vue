@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import AppTopBar from "@/components/AppTopBar.vue";
-import AppPageSection from "@/components/AppPageSection.vue";
+import PageSectionComp from "@/components/PageSectionComp.vue";
 import IconComp from "@/components/IconComp/index.vue";
 import ListItemComp from "@/components/ListItemComp.vue";
 import LanguageSelectComp from "@/components/LanguageSelectComp.vue";
@@ -10,7 +10,7 @@ export default defineComponent({
 	name: "SettingsView",
 	components: {
 		AppTopBar,
-		AppPageSection,
+		PageSectionComp,
 		IconComp,
 		ListItemComp,
 		LanguageSelectComp,
@@ -28,13 +28,13 @@ export default defineComponent({
 		</AppTopBar>
 
 		<div class="settings-view__content">
-			<AppPageSection :title="$t('general')">
+			<PageSectionComp :title="$t('general')">
 				<ListItemComp>
 					<IconComp name="translate" />
 
 					<LanguageSelectComp />
 				</ListItemComp>
-			</AppPageSection>
+			</PageSectionComp>
 		</div>
 	</main>
 </template>
