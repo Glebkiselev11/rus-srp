@@ -1,13 +1,13 @@
 <script lang="ts">
 import type { IconColor, IconName, IconSize } from "@/types/icons";
-import AppIcon from "@/components/AppIcon/index.vue";
+import IconComp from "@/components/IconComp/index.vue";
 import { defineComponent, type PropType } from "vue";
 import type { ButtonColor, ButtonSize, ButtonAppearance } from "@/types/buttons";
 
 export default defineComponent({
 	name: "AppButton",
 	components: {
-		AppIcon,
+		IconComp,
 	},
 	props: {
 		label: {
@@ -84,7 +84,7 @@ export default defineComponent({
 		]"
 		:disabled="disabled"
 	>
-		<AppIcon 
+		<IconComp 
 			v-if="icon"
 			:name="icon"
 			:color="_iconColor"

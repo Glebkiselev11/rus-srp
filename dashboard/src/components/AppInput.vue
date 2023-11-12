@@ -2,7 +2,7 @@
 import { debounce } from "lodash";
 import { type PropType, defineComponent, watch } from "vue";
 import type { IconName } from "../types/icons";
-import AppIcon from "./AppIcon/index.vue";
+import IconComp from "./IconComp/index.vue";
 import AppButton from "./AppButton.vue";
 import AppInputWrapper from "./AppInputWrapper.vue";
 import AppTooltip from "./AppTooltip.vue";
@@ -12,7 +12,7 @@ import { useFocusWithin } from "@vueuse/core";
 export default defineComponent({
 	name: "AppInput",
 	components: {
-		AppIcon,
+		IconComp,
 		AppButton,
 		AppInputWrapper,
 		AppTooltip,
@@ -162,7 +162,7 @@ export default defineComponent({
 		<div
 			class="app-input"
 		>
-			<AppIcon
+			<IconComp
 				v-if="leftIcon"
 				class="app-input--left-icon"
 				:name="leftIcon"
@@ -214,7 +214,7 @@ export default defineComponent({
 					/>
 				</AppTooltip>
 
-				<AppIcon 
+				<IconComp 
 					v-show="error !== null"
 					color="negative"
 					name="error"

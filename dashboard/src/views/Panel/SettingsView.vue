@@ -2,7 +2,7 @@
 import { defineComponent } from "vue";
 import AppTopBar from "@/components/AppTopBar.vue";
 import AppPageSection from "@/components/AppPageSection.vue";
-import AppIcon from "@/components/AppIcon/index.vue";
+import IconComp from "@/components/IconComp/index.vue";
 import AppListItem from "@/components/AppListItem.vue";
 import AppLanguageSelect from "@/components/AppLanguageSelect.vue";
 
@@ -11,7 +11,7 @@ export default defineComponent({
 	components: {
 		AppTopBar,
 		AppPageSection,
-		AppIcon,
+		IconComp,
 		AppListItem,
 		AppLanguageSelect,
 	},
@@ -30,7 +30,7 @@ export default defineComponent({
 		<div class="settings-view__content">
 			<AppPageSection :title="$t('general')">
 				<AppListItem>
-					<AppIcon name="translate" />
+					<IconComp name="translate" />
 
 					<AppLanguageSelect />
 				</AppListItem>

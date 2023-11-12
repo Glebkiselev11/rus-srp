@@ -4,7 +4,7 @@ import { defineComponent, type PropType } from "vue";
 import AppListItem from "./AppListItem.vue";
 import { vOnClickOutside, vElementVisibility } from "@vueuse/components";
 import { watchDebounced } from "@vueuse/core";
-import AppIcon from "@/components/AppIcon/index.vue";
+import IconComp from "@/components/IconComp/index.vue";
 
 type MenuItem = {
 	label: string;
@@ -25,7 +25,7 @@ export default defineComponent({
 	},
 	components: {
 		AppListItem,
-		AppIcon,
+		IconComp,
 	},
 	props: {
 		items: {
@@ -104,7 +104,7 @@ export default defineComponent({
 					clickable
 					@click="handdleClickOnItem(item.handler)"
 				>
-					<AppIcon
+					<IconComp
 						v-if="item.icon"
 						:name="item.icon"
 						:color="item.color"

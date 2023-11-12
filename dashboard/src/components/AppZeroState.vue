@@ -1,12 +1,12 @@
 <script lang="ts">
 import type { IconName } from "@/types/icons";
-import AppIcon from "./AppIcon/index.vue";
+import IconComp from "./IconComp/index.vue";
 import { defineComponent, type PropType } from "vue";
 
 export default defineComponent({
 	name: "AppZeroState",
 	components: {
-		AppIcon,
+		IconComp,
 	},
 	props: {
 		icon: {
@@ -29,7 +29,7 @@ export default defineComponent({
 <template>
 	<div class="app-zero-state">
 		<div class="app-zero-state__container">
-			<AppIcon
+			<IconComp
 				v-if="icon"
 				:name="icon"
 			/>

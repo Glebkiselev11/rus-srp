@@ -1,13 +1,13 @@
 <script lang="ts">
 import type { IconColor, IconName } from "../../types/icons";
 import { defineComponent, type PropType } from "vue";
-import AppIcon from "../AppIcon/index.vue";
+import IconComp from "../IconComp/index.vue";
 import type { Order } from "../../types/api";
 
 export default defineComponent({
 	name: "TableColumnTitleComp",
 	components: {
-		AppIcon,
+		IconComp,
 	},
 	props: {
 		label: {
@@ -77,7 +77,7 @@ export default defineComponent({
 				:disabled="!sortable"
 				@click="handlerSort"
 			>
-				<AppIcon
+				<IconComp
 					v-if="icon"
 					:name="icon.name"
 					:color="icon.color"
@@ -89,7 +89,7 @@ export default defineComponent({
 					v-text="label"
 				/>
 
-				<AppIcon
+				<IconComp
 					v-if="sortable"
 					:name="sortIcon"
 					:color="sortIconColor"

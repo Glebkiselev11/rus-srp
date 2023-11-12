@@ -1,12 +1,12 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import AppIcon from "@/components/AppIcon/index.vue";
+import IconComp from "@/components/IconComp/index.vue";
 import type { IconName } from "../types/icons";
 
 export default defineComponent({
 	name: "AppNavbarItem",
 	components: {
-		AppIcon,
+		IconComp,
 	},
 	props: {
 		active: {
@@ -35,7 +35,7 @@ export default defineComponent({
 		class="app-navbar-item"
 		:class="{'app-navbar-item--active': active}"
 	>
-		<AppIcon
+		<IconComp
 			:name="iconName"
 			:color="active ? 'accent-primary' : 'primary'"
 		/>

@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 import AppInput from "./AppInput.vue";
-import AppIcon from "./AppIcon/index.vue";
+import IconComp from "./IconComp/index.vue";
 import { addCropImagaeParamsToUrl } from "@/common/utils";
 import { useImagesStore } from "@/stores/images";
 import { mapActions, mapState } from "pinia";
@@ -14,7 +14,7 @@ export default defineComponent({
 	name: "AppImagesSearch",
 	components: {
 		AppInput,
-		AppIcon,
+		IconComp,
 		AppButton,
 		AppZeroState,
 	},
@@ -137,7 +137,7 @@ export default defineComponent({
 				>
 
 				<div class="selected-image--badge">
-					<AppIcon
+					<IconComp
 						name="check_circle"
 						color="accent-primary"
 					/>

@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import AppIcon from "@/components/AppIcon/index.vue";
+import IconComp from "@/components/IconComp/index.vue";
 import AppModal from "@/components/AppModal.vue";
 import AppImagesSearch from "./AppImagesSearch.vue";
 import { addCropImagaeParamsToUrl } from "@/common/utils";
@@ -11,7 +11,7 @@ type PreviewSize = "24px" | "32px" | "40px" | "48px" | "56px" | "64px" | "96px";
 export default defineComponent({
 	name: "AppImagePreview",
 	components: {
-		AppIcon,
+		IconComp,
 		AppModal,
 		AppImagesSearch,
 	}, 
@@ -90,7 +90,7 @@ export default defineComponent({
 			v-if="src"
 			:src="srcWithParams"
 		>
-		<app-icon
+		<IconComp
 			v-else
 			name="filter_hdr"
 			:size="iconSize"
@@ -101,14 +101,14 @@ export default defineComponent({
 			v-if="!static"
 			class="app-image-preview--overlay"
 		>
-			<app-icon
+			<IconComp
 				v-if="src"
 				name="edit"
 				color="contrast"
 				:size="iconSize"
 			/>
 
-			<app-icon
+			<IconComp
 				v-else
 				name="add_photo_alternate"
 				color="contrast"

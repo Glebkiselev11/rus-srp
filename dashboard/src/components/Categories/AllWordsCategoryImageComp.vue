@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import AppIcon from "@/components/AppIcon/index.vue";
+import IconComp from "@/components/IconComp/index.vue";
 import type { IconSize } from "@/types/icons";
 
 type Size = "24px" | "56px";
@@ -8,7 +8,7 @@ type Size = "24px" | "56px";
 export default defineComponent({
 	name: "AllWordsCategoryImageComp",
 	components: {
-		AppIcon,
+		IconComp,
 	},
 	props: {
 		size: {
@@ -35,7 +35,7 @@ export default defineComponent({
 		class="all-words-category-image"
 		:class="[`all-words-category-image--${size}`]"
 	>
-		<AppIcon
+		<IconComp
 			name="widgets"
 			:size="iconSize"
 			color="contrast"

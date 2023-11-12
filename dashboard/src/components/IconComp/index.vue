@@ -33,7 +33,7 @@ import ErrorIcon from "./ErrorIcon.vue";
 import RestartAltIcon from "./RestartAltIcon.vue";
 
 export default defineComponent({
-	name: "AppIcon",
+	name: "IconComp",
 	props: {
 		name: {
 			type: String as PropType<IconName>,
@@ -98,7 +98,7 @@ export default defineComponent({
 <template>
 	<component
 		:is="icon"
-		:class="[`app-icon--${color}`]"
+		:class="[`icon--${color}`]"
 		:size="convertedSize"
 		:color="color"
 	/>
@@ -107,7 +107,7 @@ export default defineComponent({
 <style lang="scss">
 @import "@/styles/colors.scss";
 
-.app-icon {
+.icon {
 
 	&--primary {
 		fill: $color-icon-primary;

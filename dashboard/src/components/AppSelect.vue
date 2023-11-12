@@ -2,7 +2,7 @@
 import { defineComponent, type PropType } from "vue";
 import AppInputWrapper from "./AppInputWrapper.vue";
 import AppDropdownMenu from "./AppDropdownMenu.vue";
-import AppIcon from "./AppIcon/index.vue";
+import IconComp from "./IconComp/index.vue";
 import type { SelectSize, SelectAppearance } from "@/types/select";
 import type { IconName } from "@/types/icons";
 
@@ -11,7 +11,7 @@ export default defineComponent({
 	components: {
 		AppInputWrapper,
 		AppDropdownMenu,
-		AppIcon,
+		IconComp,
 	},
 	props: {
 		appearance: {
@@ -92,7 +92,7 @@ export default defineComponent({
 					{ 'app-select--with-icon': icon }
 				]"
 			>
-				<AppIcon
+				<IconComp
 					v-if="icon"
 					:name="icon"
 					size="compact"
@@ -101,7 +101,7 @@ export default defineComponent({
 
 				{{ selectedItem }}
 
-				<AppIcon
+				<IconComp
 					:name="isMenuOpen ? 'expand_more_up' : 'expand_more_down'"
 					size="compact"
 					color="tertiary"
