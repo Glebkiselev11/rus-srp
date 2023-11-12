@@ -7,7 +7,7 @@ import { useCategoriesStore } from "@/stores/categories";
 import AppInput from "@/components/AppInput.vue";
 import CategoriesListComp from "@/components/Categories/CategoriesListComp.vue";
 import AppHeader from "@/components/AppHeader.vue";
-import AppDropdownMenu from "../AppDropdownMenu.vue";
+import DropdownMenuComp from "../DropdownMenuComp.vue";
 import type { Order, RequestParams } from "@/types/api";
 import type { LanguageCode } from "@/types/translations";
 import AppTooltip from "../AppTooltip.vue";
@@ -20,7 +20,7 @@ export default defineComponent({
 		ButtonComp,
 		CategoriesListComp,
 		AppHeader,
-		AppDropdownMenu,
+		DropdownMenuComp,
 		AppTooltip,
 		CategoryFormModalComp,
 	},
@@ -137,7 +137,7 @@ export default defineComponent({
 		>
 			<template #right>
 				<div class="categories__controls">
-					<AppDropdownMenu 
+					<DropdownMenuComp 
 						v-slot="{ isMenuOpen }"		
 						:items="orderOptions"
 					>
@@ -149,7 +149,7 @@ export default defineComponent({
 								:pressed="isMenuOpen"
 							/>
 						</AppTooltip>
-					</AppDropdownMenu>
+					</DropdownMenuComp>
 
 					<AppTooltip :text="$t('create-category')">
 						<ButtonComp

@@ -12,7 +12,7 @@ import TableComp from "@/components/Table/TableComp.vue";
 import TableRowComp from "@/components/Table/TableRowComp.vue";
 import AppImagePreview from "@/components/AppImagePreview.vue";
 import ButtonComp from "@/components/ButtonComp.vue";
-import AppDropdownMenu from "@/components/AppDropdownMenu.vue";
+import DropdownMenuComp from "@/components/DropdownMenuComp.vue";
 import AppPaginationBar from "@/components/AppPaginationBar.vue";
 import AppZeroState from "@/components/AppZeroState.vue";
 import WordsPageCategoryTitleComp from "@/components/WordsPageCategoryTitleComp.vue";
@@ -33,7 +33,7 @@ export default defineComponent({
 		TableRowComp,
 		AppImagePreview,
 		ButtonComp,
-		AppDropdownMenu,
+		DropdownMenuComp,
 		AppPaginationBar,
 		AppZeroState,
 		CategoriesComp,
@@ -249,7 +249,7 @@ export default defineComponent({
 							<td v-html="highlighTextByQuery(word.srp_latin, search)" />
 							<td v-html="highlighTextByQuery(word.srp_cyrillic, search)" />
 							<td style="margin-inline-start: auto">
-								<AppDropdownMenu 
+								<DropdownMenuComp 
 									v-slot="{ isMenuOpen }"
 									:items="[
 										{ 
@@ -272,7 +272,7 @@ export default defineComponent({
 										color="neutral"
 										:pressed="isMenuOpen"
 									/>
-								</AppDropdownMenu>
+								</DropdownMenuComp>
 							</td>
 						</TableRowComp>
 					</template>

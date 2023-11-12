@@ -7,7 +7,7 @@ import AppImagePreview from "@/components/AppImagePreview.vue";
 import AppListItem from "@/components/AppListItem.vue";
 import { highlighTextByQuery } from "@/common/utils";
 import ButtonComp from "../ButtonComp.vue";
-import AppDropdownMenu from "../AppDropdownMenu.vue";
+import DropdownMenuComp from "../DropdownMenuComp.vue";
 import RemoveCategoryModalComp from "./RemoveCategoryModalComp.vue";
 
 export default defineComponent({
@@ -16,7 +16,7 @@ export default defineComponent({
 		AppImagePreview,
 		AppListItem,
 		ButtonComp,
-		AppDropdownMenu,
+		DropdownMenuComp,
 		RemoveCategoryModalComp,
 	},
 	props: {
@@ -82,7 +82,7 @@ export default defineComponent({
 				/>
 			</div>
 
-			<AppDropdownMenu
+			<DropdownMenuComp
 				v-slot="{ isMenuOpen }"
 				:items="[
 					{ 
@@ -108,7 +108,7 @@ export default defineComponent({
 					class="category-item__menu-button"
 					:pressed="isMenuOpen"
 				/>
-			</AppDropdownMenu>
+			</DropdownMenuComp>
 		</div>
 	</AppListItem>
 
@@ -145,7 +145,7 @@ export default defineComponent({
 	}
 }
 
-.list-item:hover, .app-dropdown--open {
+.list-item:hover, .dropdown--open {
 	.category-item__menu-button {
 		visibility: visible;
 	}

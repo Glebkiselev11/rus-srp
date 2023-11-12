@@ -6,7 +6,7 @@ import { mapActions, mapState } from "pinia";
 import type { Category } from "@/types/categories";
 import type { LanguageCode } from "@/types/translations";
 import AppImagePreview from "./AppImagePreview.vue";
-import AppDropdownMenu from "./AppDropdownMenu.vue";
+import DropdownMenuComp from "./DropdownMenuComp.vue";
 import ButtonComp from "./ButtonComp.vue";
 import RemoveCategoryModalComp from "./Categories/RemoveCategoryModalComp.vue";
 import CategoryFormModalComp from "./CategoryFormModalComp.vue";
@@ -16,7 +16,7 @@ export default defineComponent({
 	components: {
 		AllWordsCategoryImageComp,
 		AppImagePreview,
-		AppDropdownMenu,
+		DropdownMenuComp,
 		ButtonComp,
 		RemoveCategoryModalComp, 
 		CategoryFormModalComp,
@@ -79,7 +79,7 @@ export default defineComponent({
 			{{ getCategoryName(category) }}
 		</h2>
 
-		<AppDropdownMenu
+		<DropdownMenuComp
 			v-slot="{ isMenuOpen }"
 			:items="[
 				{ 
@@ -104,7 +104,7 @@ export default defineComponent({
 				class="words-page-category-title__menu-button"
 				:pressed="isMenuOpen"
 			/>
-		</AppDropdownMenu>
+		</DropdownMenuComp>
 
 		<RemoveCategoryModalComp
 			v-if="isRemoveCategoryModalOpen"
@@ -146,7 +146,7 @@ export default defineComponent({
 	}
 }
 
-.words-page-category-title:hover, .app-dropdown--open {
+.words-page-category-title:hover, .dropdown--open {
 		.words-page-category-title__menu-button {
 			visibility: visible;
 		}

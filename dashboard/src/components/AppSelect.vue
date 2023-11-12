@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 import AppInputWrapper from "./AppInputWrapper.vue";
-import AppDropdownMenu from "./AppDropdownMenu.vue";
+import DropdownMenuComp from "./DropdownMenuComp.vue";
 import IconComp from "./IconComp/index.vue";
 import type { SelectSize, SelectAppearance } from "@/types/select";
 import type { IconName } from "@/types/icons";
@@ -10,7 +10,7 @@ export default defineComponent({
 	name: "AppSelect",
 	components: {
 		AppInputWrapper,
-		AppDropdownMenu,
+		DropdownMenuComp,
 		IconComp,
 	},
 	props: {
@@ -76,7 +76,7 @@ export default defineComponent({
 		:label="label"
 		for="select"
 	>
-		<AppDropdownMenu
+		<DropdownMenuComp
 			v-slot="{isMenuOpen}"
 			:items="items"
 			:disabled="disabled"
@@ -107,7 +107,7 @@ export default defineComponent({
 					color="tertiary"
 				/>
 			</button>
-		</AppDropdownMenu>
+		</DropdownMenuComp>
 	</AppInputWrapper>
 </template>
 

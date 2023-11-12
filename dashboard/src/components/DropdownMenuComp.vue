@@ -18,7 +18,7 @@ type Separator = "separator";
 type MenuPosition = "bottom" | "top";
 
 export default defineComponent({
-	name: "AppDropdownMenu",
+	name: "DropdownMenuComp",
 	directives: {
 		onClickOutside: vOnClickOutside,
 		elementVisibility: vElementVisibility,
@@ -77,8 +77,8 @@ export default defineComponent({
 <template>
 	<div
 		v-on-click-outside="closeMenu"
-		class="app-dropdown"
-		:class="{'app-dropdown--open': isMenuOpen }"
+		class="dropdown"
+		:class="{'dropdown--open': isMenuOpen }"
 	>
 		<div @click="toggleMenu">
 			<slot :is-menu-open="isMenuOpen" />
@@ -86,9 +86,9 @@ export default defineComponent({
 
 		<div
 			v-if="isMenuOpen"
-			class="app-dropdown__menu"
+			class="dropdown__menu"
 			:class="[
-				`app-dropdown__menu-position-${menuPosition}`, 
+				`dropdown__menu-position-${menuPosition}`, 
 			]"
 		>
 			<template
@@ -119,7 +119,7 @@ export default defineComponent({
 
 			<div
 				v-element-visibility="setBottomMenuAngleVisibility"
-				class="app-dropdown__mark-bottom"
+				class="dropdown__mark-bottom"
 			/>
 		</div>
 	</div>
@@ -128,7 +128,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
 
-.app-dropdown {
+.dropdown {
 	position: relative;
 
 	&__menu {
