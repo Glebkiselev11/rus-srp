@@ -7,7 +7,7 @@ import type { Category } from "@/types/categories";
 import type { LanguageCode } from "@/types/translations";
 import AppImagePreview from "./AppImagePreview.vue";
 import AppDropdownMenu from "./AppDropdownMenu.vue";
-import AppButton from "./AppButton.vue";
+import ButtonComp from "./ButtonComp.vue";
 import RemoveCategoryModalComp from "./Categories/RemoveCategoryModalComp.vue";
 import AppCategoryFormModal from "./AppCategoryFormModal.vue";
 
@@ -17,7 +17,7 @@ export default defineComponent({
 		AllWordsCategoryImageComp,
 		AppImagePreview,
 		AppDropdownMenu,
-		AppButton,
+		ButtonComp,
 		RemoveCategoryModalComp, 
 		AppCategoryFormModal,
 	},
@@ -96,7 +96,7 @@ export default defineComponent({
 				}
 			]"		
 		>
-			<AppButton
+			<ButtonComp
 				icon="more_vert"
 				appearance="inline"
 				color="neutral"

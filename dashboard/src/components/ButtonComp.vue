@@ -5,7 +5,7 @@ import { defineComponent, type PropType } from "vue";
 import type { ButtonColor, ButtonSize, ButtonAppearance } from "@/types/buttons";
 
 export default defineComponent({
-	name: "AppButton",
+	name: "ButtonComp",
 	components: {
 		IconComp,
 	},
@@ -72,15 +72,15 @@ export default defineComponent({
 
 <template>
 	<button
-		class="app-button" 
+		class="button" 
 		:class="[
-			`app-button--size-${size}`, 
-			`app-button--appearance-${appearance}`, 
-			`app-button--color-${color}`,
-			{ 'app-button--icon-and-label' : icon && label},
-			{ 'app-button--only-icon' : icon && !label},
-			{ 'app-button--only-label': label && !icon},
-			{ 'app-button--pressed': pressed }
+			`button--size-${size}`, 
+			`button--appearance-${appearance}`, 
+			`button--color-${color}`,
+			{ 'button--icon-and-label' : icon && label},
+			{ 'button--only-icon' : icon && !label},
+			{ 'button--only-label': label && !icon},
+			{ 'button--pressed': pressed }
 		]"
 		:disabled="disabled"
 	>
@@ -99,7 +99,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
 
-.app-button {
+.button {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -114,26 +114,26 @@ export default defineComponent({
 		padding-inline-start: 12px;
 		padding-inline-end: 16px;
 
-		&.app-button--size-regular {
+		&.button--size-regular {
 			padding-block: 8px;
 		}
-		&.app-button--size-compact {
+		&.button--size-compact {
 			padding-block: 6px;
 		}
-		&.app-button--size-small {
+		&.button--size-small {
 			padding-block: 2px;
 		}
 	}
 
 	/* Paddings for Only icon case */
 	&--only-icon {
-		&.app-button--size-regular {
+		&.button--size-regular {
 			padding: 8px;
 		}
-		&.app-button--size-compact {
+		&.button--size-compact {
 			padding: 6px;
 		}
-		&.app-button--size-small {
+		&.button--size-small {
 			padding: 2px;
 		}
 	}
@@ -141,13 +141,13 @@ export default defineComponent({
 	/* Paddings for Only label case */
 	&--only-label {
 		padding-inline: 16px;
-		&.app-button--size-regular {
+		&.button--size-regular {
 			padding-block: 10px;
 		}
-		&.app-button--size-compact {
+		&.button--size-compact {
 			padding-block: 6px;
 		}
-		&.app-button--size-small {
+		&.button--size-small {
 			padding-block: 2px;
 		}
 	}
@@ -169,22 +169,22 @@ export default defineComponent({
 
 	&--appearance {
 		&-primary {
-			&.app-button--color-accent-primary {
+			&.button--color-accent-primary {
 				background-color: $color-text-accent-primary;
 				color: $color-text-contrast;
 			}
 
-			&.app-button--color-accent-secondary {
+			&.button--color-accent-secondary {
 				background-color: $color-text-accent-secondary;
 				color: $color-text-contrast;
 			}
 
-			&.app-button--color-negative {
+			&.button--color-negative {
 				background-color: $color-background-negative;
 				color: $color-text-contrast;
 			}
 
-			&.app-button--color-neutral {
+			&.button--color-neutral {
 				background-color: $color-background-content-secondary;
 				color: $color-text-primary;
 			}
@@ -192,19 +192,19 @@ export default defineComponent({
 
 		&-secondary {
 			background-color: $color-background-content-tertiary;
-			&.app-button--color-accent-primary {
+			&.button--color-accent-primary {
 				color: $color-text-accent-primary;
 			}
 
-			&.app-button--color-accent-secondary {
+			&.button--color-accent-secondary {
 				color: $color-text-accent-secondary;
 			}
 
-			&.app-button--color-negative {
+			&.button--color-negative {
 				color: $color-text-negative;
 			}
 
-			&.app-button--color-neutral {
+			&.button--color-neutral {
 				color: $color-text-primary;
 			}
 
@@ -212,83 +212,83 @@ export default defineComponent({
 
 		&-inline {
 			background: none;
-			&.app-button--color-accent-primary {
+			&.button--color-accent-primary {
 				color: $color-text-accent-primary;
 			}
 
-			&.app-button--color-accent-secondary {
+			&.button--color-accent-secondary {
 				color: $color-text-accent-secondary;
 			}
 
-			&.app-button--color-negative {
+			&.button--color-negative {
 				color: $color-text-negative;
 			}
 
-			&.app-button--color-neutral {
+			&.button--color-neutral {
 				color: $color-text-primary;
 			}
 		}
 	}
 
 	&:hover {
-		&.app-button--appearance-primary {
-			&.app-button--color-accent-primary {
+		&.button--appearance-primary {
+			&.button--color-accent-primary {
 				background-color: $color-background-accent-primary-hovered;
 			}
 
-			&.app-button--color-accent-secondary {
+			&.button--color-accent-secondary {
 				background-color: $color-background-accent-secondary-hovered;
 			}
 
-			&.app-button--color-negative {
+			&.button--color-negative {
 				background-color: $color-background-negative-hovered;
 			}
 
-			&.app-button--color-neutral {
+			&.button--color-neutral {
 				background-color: $color-background-secondary-hovered;
 			}
 		}
 
-		&.app-button--appearance-secondary {
+		&.button--appearance-secondary {
 			background-color: $color-background-tertiary-hovered;
 		}
 
-		&.app-button--appearance-inline {
+		&.button--appearance-inline {
 			background-color: $color-background-content-primary-hovered;
 		}
 
 	}
 
 	&--pressed {
-		&.app-button--appearance-primary {
-			&.app-button--color-accent-primary {
+		&.button--appearance-primary {
+			&.button--color-accent-primary {
 				background-color: $color-background-accent-primary-active;
 			}
 
-			&.app-button--color-accent-secondary {
+			&.button--color-accent-secondary {
 				background-color: $color-background-accent-secondary-active;
 			}
 
-			&.app-button--color-negative {
+			&.button--color-negative {
 				background-color: $color-background-negative-active;
 			}
 
-			&.app-button--color-neutral {
+			&.button--color-neutral {
 				background-color: $color-background-secondary-active;
 			}
 		}
 
-		&.app-button--appearance-secondary {
+		&.button--appearance-secondary {
 			background-color: $color-background-tertiary-active;
 		}
 
-		&.app-button--appearance-inline {
+		&.button--appearance-inline {
 			background-color: $color-background-content-primary-active;
 		}
 	}
 
 	&:active {
-		@extend .app-button--pressed;
+		@extend .button--pressed;
 	}
 
 	&:disabled {

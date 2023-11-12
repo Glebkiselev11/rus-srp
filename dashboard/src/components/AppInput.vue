@@ -3,7 +3,7 @@ import { debounce } from "lodash";
 import { type PropType, defineComponent, watch } from "vue";
 import type { IconName } from "../types/icons";
 import IconComp from "./IconComp/index.vue";
-import AppButton from "./AppButton.vue";
+import ButtonComp from "./ButtonComp.vue";
 import AppInputWrapper from "./AppInputWrapper.vue";
 import AppTooltip from "./AppTooltip.vue";
 import type { InputSize, InputAppearance } from "@/types/input";
@@ -13,7 +13,7 @@ export default defineComponent({
 	name: "AppInput",
 	components: {
 		IconComp,
-		AppButton,
+		ButtonComp,
 		AppInputWrapper,
 		AppTooltip,
 	},
@@ -189,7 +189,7 @@ export default defineComponent({
 			>
 
 			<div class="app-input__buttons">
-				<AppButton
+				<ButtonComp
 					v-show="clearButton && modelValue && focusOnInput"
 					icon="cancel"
 					color="neutral"
@@ -203,7 +203,7 @@ export default defineComponent({
 					:text="$t('reset')"
 					position="top"
 				>
-					<AppButton 
+					<ButtonComp 
 						v-show="resetValue && modelValue !== resetValue"
 						icon="restart_alt"
 						color="neutral"

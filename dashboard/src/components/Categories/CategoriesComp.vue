@@ -1,7 +1,7 @@
 <!-- The side bar with categories -->
 <script lang="ts">
 import { defineComponent } from "vue";
-import AppButton from "@/components/AppButton.vue";
+import ButtonComp from "@/components/ButtonComp.vue";
 import { mapActions } from "pinia";
 import { useCategoriesStore } from "@/stores/categories";
 import AppInput from "@/components/AppInput.vue";
@@ -17,7 +17,7 @@ export default defineComponent({
 	name: "CategoriesComp",
 	components: {
 		AppInput,
-		AppButton,
+		ButtonComp,
 		CategoriesListComp,
 		AppHeader,
 		AppDropdownMenu,
@@ -142,7 +142,7 @@ export default defineComponent({
 						:items="orderOptions"
 					>
 						<AppTooltip :text="$t('to-sort')">
-							<AppButton 
+							<ButtonComp 
 								icon="sort"
 								appearance="inline"
 								color="neutral"
@@ -152,7 +152,7 @@ export default defineComponent({
 					</AppDropdownMenu>
 
 					<AppTooltip :text="$t('create-category')">
-						<AppButton
+						<ButtonComp
 							icon="add"
 							appearance="inline"
 							color="neutral"

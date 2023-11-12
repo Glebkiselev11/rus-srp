@@ -11,7 +11,7 @@ import AppSelect from "@/components/AppSelect.vue";
 import TableComp from "@/components/Table/TableComp.vue";
 import TableRowComp from "@/components/Table/TableRowComp.vue";
 import AppImagePreview from "@/components/AppImagePreview.vue";
-import AppButton from "@/components/AppButton.vue";
+import ButtonComp from "@/components/ButtonComp.vue";
 import AppDropdownMenu from "@/components/AppDropdownMenu.vue";
 import AppPaginationBar from "@/components/AppPaginationBar.vue";
 import AppZeroState from "@/components/AppZeroState.vue";
@@ -32,7 +32,7 @@ export default defineComponent({
 		TableComp,
 		TableRowComp,
 		AppImagePreview,
-		AppButton,
+		ButtonComp,
 		AppDropdownMenu,
 		AppPaginationBar,
 		AppZeroState,
@@ -193,7 +193,7 @@ export default defineComponent({
 					<WordsPageCategoryTitleComp :category-id="filter.category_id" />
 				</template>
 				<template #right>
-					<AppButton
+					<ButtonComp
 						icon="add"
 						:label="$t('add-word')"
 						@click="openNewWordPage"
@@ -266,7 +266,7 @@ export default defineComponent({
 										},
 									]"		
 								>
-									<AppButton
+									<ButtonComp
 										icon="more_vert"
 										appearance="inline"
 										color="neutral"

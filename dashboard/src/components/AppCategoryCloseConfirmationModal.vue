@@ -1,13 +1,13 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import AppModal from "./AppModal.vue";
-import AppButton from "./AppButton.vue";
+import ButtonComp from "./ButtonComp.vue";
 
 export default defineComponent({
 	name: "AppCategoryCloseConfirmationModal",
 	components: {
 		AppModal,
-		AppButton,
+		ButtonComp,
 	},
 	props: {
 		isEditing: {
@@ -51,12 +51,12 @@ export default defineComponent({
 				{{ $t("modal-exit-confirmation.description") }}
 
 				<div class="app-category-close-confirmation-modal__buttons">
-					<AppButton
+					<ButtonComp
 						:label="cancelButtonLabel"
 						appearance="secondary"
 						@click="close"
 					/>
-					<AppButton
+					<ButtonComp
 						:label="$t('modal-exit-confirmation.confirm')"
 						@click="confirm"
 					/>

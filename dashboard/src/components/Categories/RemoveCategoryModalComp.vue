@@ -5,7 +5,7 @@ import AppModal from "../AppModal.vue";
 import type { LanguageCode } from "@/types/translations";
 import { WordsApi } from "@/api";
 import AppInput from "../AppInput.vue";
-import AppButton from "../AppButton.vue";
+import ButtonComp from "../ButtonComp.vue";
 import { useCategoriesStore } from "@/stores/categories";
 import { mapActions } from "pinia";
 
@@ -14,7 +14,7 @@ export default defineComponent({
 	components: {
 		AppModal,
 		AppInput,
-		AppButton,
+		ButtonComp,
 	},
 	props: {
 		category: {
@@ -83,13 +83,13 @@ export default defineComponent({
 				/>
 
 				<div class="remove-category-modal__buttons">
-					<AppButton
+					<ButtonComp
 						:label="$t('cancel')"
 						color="neutral"
 						appearance="secondary"
 						@click="close"
 					/>
-					<AppButton
+					<ButtonComp
 						:disabled="!confirmed"
 						color="negative"
 						:label="$t('yes-remove')"

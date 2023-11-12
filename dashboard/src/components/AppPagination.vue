@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import AppButton from "./AppButton.vue";
+import ButtonComp from "./ButtonComp.vue";
 import AppPaginationButton from "./AppPaginationButton.vue";
 
 const BEFORE_AND_AFTER_ELLIPSIS = 2;
@@ -8,7 +8,7 @@ const BEFORE_AND_AFTER_ELLIPSIS = 2;
 export default defineComponent({
 	name: "AppPagination",
 	components: {
-		AppButton,
+		ButtonComp,
 		AppPaginationButton,
 	},
 	props: {
@@ -82,7 +82,7 @@ export default defineComponent({
 
 <template>
 	<div class="app-pagination">
-		<AppButton
+		<ButtonComp
 			icon="navigate_before"
 			:disabled="currentPage === 1"
 			appearance="inline"
@@ -127,7 +127,7 @@ export default defineComponent({
 			/>
 		</div>
 
-		<AppButton
+		<ButtonComp
 			icon="navigate_next"
 			:disabled="currentPage === lastPage"
 			appearance="inline"

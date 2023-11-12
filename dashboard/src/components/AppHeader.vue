@@ -1,13 +1,13 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import AppButton from "./AppButton.vue";
+import ButtonComp from "./ButtonComp.vue";
 
 type TitleTag = "h1" | "h2" | "h3" | "h4" | "h5";
 
 export default defineComponent({
 	name: "AppHeader",
 	components: {
-		AppButton,
+		ButtonComp,
 	},
 	props: {
 		title: {
@@ -66,7 +66,7 @@ export default defineComponent({
 		<div class="app-header__part-container">
 			<slot name="right" />
 
-			<AppButton
+			<ButtonComp
 				v-if="closeButton"
 				icon="close"
 				appearance="inline"

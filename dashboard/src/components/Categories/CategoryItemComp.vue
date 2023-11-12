@@ -6,7 +6,7 @@ import type { LanguageCode } from "@/types/translations";
 import AppImagePreview from "@/components/AppImagePreview.vue";
 import AppListItem from "@/components/AppListItem.vue";
 import { highlighTextByQuery } from "@/common/utils";
-import AppButton from "../AppButton.vue";
+import ButtonComp from "../ButtonComp.vue";
 import AppDropdownMenu from "../AppDropdownMenu.vue";
 import RemoveCategoryModalComp from "./RemoveCategoryModalComp.vue";
 
@@ -15,7 +15,7 @@ export default defineComponent({
 	components: {
 		AppImagePreview,
 		AppListItem,
-		AppButton,
+		ButtonComp,
 		AppDropdownMenu,
 		RemoveCategoryModalComp,
 	},
@@ -100,7 +100,7 @@ export default defineComponent({
 				]"		
 				@click.stop
 			>
-				<AppButton
+				<ButtonComp
 					icon="more_vert"
 					appearance="inline"
 					color="neutral"

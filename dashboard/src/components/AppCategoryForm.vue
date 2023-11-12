@@ -7,13 +7,13 @@ import type { Category, DraftCategory } from "@/types/categories";
 import { LanguageList } from "@/i18n";
 import type { LanguageCode } from "@/types/translations";
 import AppInput from "./AppInput.vue";
-import AppButton from "./AppButton.vue";
+import ButtonComp from "./ButtonComp.vue";
 import { translate } from "@/common/translations";
 import { CategoriesApi } from "@/api/categories";
 
 export default defineComponent({
 	name: "AppCategoryForm",
-	components: { AppImagePreview, AppInput, AppButton },
+	components: { AppImagePreview, AppInput, ButtonComp },
 	props: {
 		categoryId: {
 			type: Number,
@@ -256,7 +256,7 @@ export default defineComponent({
 				/>
 			</div>
 
-			<AppButton
+			<ButtonComp
 				v-show="showFillAutoButton"
 				icon="edit_note"
 				appearance="inline"
@@ -315,12 +315,12 @@ export default defineComponent({
 		/>
 
 		<div class="app-category-form__footer">
-			<AppButton
+			<ButtonComp
 				appearance="secondary"
 				:label="$t('cancel')"	
 				@click="close"
 			/>
-			<AppButton
+			<ButtonComp
 				:label="saveButtonLabel"
 				@click="saveCategory"
 			/>
