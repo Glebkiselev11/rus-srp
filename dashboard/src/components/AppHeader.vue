@@ -33,9 +33,8 @@ export default defineComponent({
 	},
 	emits: ["close"],
 	methods: {
-		handleClose(e: Event): void {
-			e.stopPropagation();
-			this.$emit("close");
+		close(e: Event): void {
+			this.$emit("close", e);
 		},
 	},
 });
@@ -73,7 +72,7 @@ export default defineComponent({
 				appearance="inline"
 				color="neutral"
 				class="app-header__close-button"
-				@click="handleClose"
+				@click.stop="close"
 			/>
 		</div>
 	</header>
