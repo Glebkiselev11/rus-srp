@@ -2,7 +2,7 @@
 import { defineComponent, type PropType } from "vue";
 import IconComp from "@/components/IconComp/index.vue";
 import AppModal from "@/components/AppModal.vue";
-import AppImagesSearch from "./AppImagesSearch.vue";
+import ImagesSearchComp from "./ImagesSearchComp.vue";
 import { addCropImagaeParamsToUrl } from "@/common/utils";
 import type { IconSize } from "@/types/icons";
 
@@ -13,7 +13,7 @@ export default defineComponent({
 	components: {
 		IconComp,
 		AppModal,
-		AppImagesSearch,
+		ImagesSearchComp,
 	}, 
 	props: {
 		src: {
@@ -134,7 +134,7 @@ export default defineComponent({
 		</template>
 
 		<template #content>
-			<AppImagesSearch
+			<ImagesSearchComp
 				:default-search-query="defaultImageSearchQuery"
 				:saved-link="src"
 				@select="handleSelectImage"

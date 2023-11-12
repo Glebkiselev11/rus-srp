@@ -11,7 +11,7 @@ import ButtonComp from "./ButtonComp.vue";
 import AppZeroState from "./AppZeroState.vue";
 
 export default defineComponent({
-	name: "AppImagesSearch",
+	name: "ImagesSearchComp",
 	components: {
 		AppInput,
 		IconComp,
@@ -90,20 +90,20 @@ export default defineComponent({
 </script>
 
 <template>
-	<div class="app-image-search">
+	<div class="image-search">
 		<AppInput
 			v-model="searchQuery"
 			width="100%"
 			type="text"
 			left-icon="search"
-			class="app-image-search--input"
+			class="image-search--input"
 			debounce
 			clear-button
 		/>
 
 		<section
 			v-infinite-scroll="[loadMore, { 'distance' : 10 }]"
-			class="app-image-search-list"
+			class="image-search-list"
 		>
 			<!-- Search query is empty -->
 			<AppZeroState 
@@ -132,7 +132,7 @@ export default defineComponent({
 				class="selected-image"
 			>
 				<img
-					class="app-image-search-list--image"
+					class="image-search-list--image"
 					:src="addCropImagaeParamsToUrl(savedLink, 300)"
 				>
 
@@ -148,7 +148,7 @@ export default defineComponent({
 			<img
 				v-for="image in filteredImages"
 				:key="image.id"
-				class="app-image-search-list--image"
+				class="image-search-list--image"
 				:src="addCropImagaeParamsToUrl(image.src, 300)"
 				@click="selectImage(image.src)"
 			>
@@ -157,7 +157,7 @@ export default defineComponent({
 				<div
 					v-for="i in limit"
 					:key="i"
-					class="app-image-search-list--image app-image-search-list--skeleton-item"
+					class="image-search-list--image image-search-list--skeleton-item"
 				/>
 			</template>
 		</section>
@@ -167,7 +167,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
 
-.app-image-search {
+.image-search {
 	inline-size: 946px;
 	padding-inline-start: 12px;
 
@@ -176,7 +176,7 @@ export default defineComponent({
 	}
 }
 
-.app-image-search-list {
+.image-search-list {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 16px;
