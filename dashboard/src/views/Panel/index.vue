@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import AppNavbar from "@/components/AppNavbar.vue";
+import NavbarComp from "@/components/NavbarComp.vue";
 import { RouterView } from "vue-router";
 import type { NavItem } from "../../types";
 
@@ -8,7 +8,7 @@ export default defineComponent({
 	name: "PanelView",
 	components: {
 		RouterView,
-		AppNavbar,
+		NavbarComp,
 	},
 	data() {
 		return {
@@ -45,7 +45,7 @@ export default defineComponent({
 
 <template>
 	<div class="panel-view">
-		<AppNavbar
+		<NavbarComp
 			:items="panelPages"
 			@click-on-item="changePage"
 		/>

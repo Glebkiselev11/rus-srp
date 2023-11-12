@@ -4,18 +4,18 @@ import { mapActions, mapState } from "pinia";
 import { useWordsStore } from "@/stores/words";
 import type { Order, RequestParams } from "@/types/api";
 
-import AppCategories from "@/components/AppCategories/index.vue";
-import AppTopBar from "@/components/AppTopBar.vue";
-import AppInput from "@/components/AppInput.vue";
-import AppSelect from "@/components/AppSelect.vue";
-import AppTable from "@/components/AppTable/index.vue";
-import AppTableRow from "@/components/AppTable/AppTableRow.vue";
-import AppImagePreview from "@/components/AppImagePreview.vue";
-import AppButton from "@/components/AppButton.vue";
-import AppDropdownMenu from "@/components/AppDropdownMenu.vue";
-import AppPaginationBar from "@/components/AppPaginationBar.vue";
-import AppZeroState from "@/components/AppZeroState.vue";
-import AppWordsPageCategoryTitle from "@/components/AppWordsPageCategoryTitle.vue";
+import CategoriesComp from "@/components/Categories/CategoriesComp.vue";
+import TopBarComp from "@/components/TopBarComp.vue";
+import InputComp from "@/components/InputComp.vue";
+import SelectComp from "@/components/SelectComp.vue";
+import TableComp from "@/components/Table/TableComp.vue";
+import TableRowComp from "@/components/Table/TableRowComp.vue";
+import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
+import ButtonComp from "@/components/ButtonComp.vue";
+import DropdownMenuComp from "@/components/DropdownMenuComp.vue";
+import PaginationBarComp from "@/components/PaginationBarComp.vue";
+import ZeroStateComp from "@/components/ZeroStateComp.vue";
+import WordsPageCategoryTitleComp from "@/components/WordsPageCategoryTitleComp.vue";
 import { highlighTextByQuery } from "@/common/utils";
 
 import type { Word } from "@/types/words";
@@ -26,18 +26,18 @@ const LIMIT_DEFAULT = 25;
 export default defineComponent({
 	name: "WordsView",
 	components: {
-		AppTopBar,
-		AppInput,
-		AppSelect,
-		AppTable,
-		AppTableRow,
-		AppImagePreview,
-		AppButton,
-		AppDropdownMenu,
-		AppPaginationBar,
-		AppZeroState,
-		AppCategories,
-		AppWordsPageCategoryTitle,
+		TopBarComp,
+		InputComp,
+		SelectComp,
+		TableComp,
+		TableRowComp,
+		ImagePreviewComp,
+		ButtonComp,
+		DropdownMenuComp,
+		PaginationBarComp,
+		ZeroStateComp,
+		CategoriesComp,
+		WordsPageCategoryTitleComp,
 	},
 	data() {
 		return {
@@ -182,28 +182,28 @@ export default defineComponent({
 
 <template>
 	<div class="words-view">
-		<AppCategories 
+		<CategoriesComp 
 			:selected-category-id="filter.category_id"
 			@update:selected-category-id="category_id = $event"
 		/>
 
 		<div>
-			<AppTopBar>
+			<TopBarComp>
 				<template #left>
-					<AppWordsPageCategoryTitle :category-id="filter.category_id" />
+					<WordsPageCategoryTitleComp :category-id="filter.category_id" />
 				</template>
 				<template #right>
-					<AppButton
+					<ButtonComp
 						icon="add"
 						:label="$t('add-word')"
 						@click="openNewWordPage"
 					/>
 				</template>
-			</AppTopBar>
+			</TopBarComp>
 
 			<div class="words-view__content">
 				<div class="words-view__filter-panel">
-					<AppInput
+					<InputComp
 						v-model="search"
 						type="text"
 						:placeholder="$t('find-word')"
@@ -211,7 +211,7 @@ export default defineComponent({
 						debounce
 					/>	
 
-					<AppSelect
+					<SelectComp
 						v-model="order"
 						:options="orderOptions"
 						appearance="inline"
@@ -221,7 +221,7 @@ export default defineComponent({
 						compact
 					/>
 				</div>
-				<AppTable
+				<TableComp
 					:count="count"
 					:columns="columns"
 					:order="filter.order"
@@ -231,13 +231,13 @@ export default defineComponent({
 						v-if="words.length"
 						#body
 					>
-						<AppTableRow
+						<TableRowComp
 							v-for="word in words"
 							:id="word.id"
 							:key="word.id"
 						>
 							<td>
-								<AppImagePreview
+								<ImagePreviewComp
 									:src="word.image"
 									:image-search-modal-subtitle="extractWordPreview(word)"
 									:default-image-search-query="word.eng"
@@ -249,7 +249,7 @@ export default defineComponent({
 							<td v-html="highlighTextByQuery(word.srp_latin, search)" />
 							<td v-html="highlighTextByQuery(word.srp_cyrillic, search)" />
 							<td style="margin-inline-start: auto">
-								<AppDropdownMenu 
+								<DropdownMenuComp 
 									v-slot="{ isMenuOpen }"
 									:items="[
 										{ 
@@ -266,22 +266,22 @@ export default defineComponent({
 										},
 									]"		
 								>
-									<AppButton
+									<ButtonComp
 										icon="more_vert"
 										appearance="inline"
 										color="neutral"
 										:pressed="isMenuOpen"
 									/>
-								</AppDropdownMenu>
+								</DropdownMenuComp>
 							</td>
-						</AppTableRow>
+						</TableRowComp>
 					</template>
 
 					<template
 						v-else
 						#body
 					>
-						<AppZeroState
+						<ZeroStateComp
 							icon="search"
 							:title="notFoundTitle"
 							:description="$t('not-found-description')"
@@ -292,7 +292,7 @@ export default defineComponent({
 						v-if="count > limit"
 						#pagination
 					>
-						<AppPaginationBar
+						<PaginationBarComp
 							:count="count"
 							:offset="offset"
 							:limit="limit"
@@ -301,7 +301,7 @@ export default defineComponent({
 							@update:offset="offset = $event"
 						/>
 					</template>
-				</AppTable>
+				</TableComp>
 			</div>
 		</div>
 	</div>
