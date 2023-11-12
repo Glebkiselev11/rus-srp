@@ -2,7 +2,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-	name: "AppTopBar",
+	name: "TopBarComp",
 	data() {
 		return {};
 	},
@@ -12,9 +12,9 @@ export default defineComponent({
 
 <template>
 	<header
-		class="app-top-bar"
+		class="top-bar"
 	>
-		<div class="app-top-bar__content">
+		<div class="top-bar__content">
 			<div>
 				<slot name="left" />	
 			</div>
@@ -29,7 +29,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
 
-.app-top-bar{
+.top-bar{
 	padding: 16px;
 
 	&__content {

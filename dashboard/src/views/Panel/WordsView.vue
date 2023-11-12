@@ -5,7 +5,7 @@ import { useWordsStore } from "@/stores/words";
 import type { Order, RequestParams } from "@/types/api";
 
 import CategoriesComp from "@/components/Categories/CategoriesComp.vue";
-import AppTopBar from "@/components/AppTopBar.vue";
+import TopBarComp from "@/components/TopBarComp.vue";
 import InputComp from "@/components/InputComp.vue";
 import SelectComp from "@/components/SelectComp.vue";
 import TableComp from "@/components/Table/TableComp.vue";
@@ -26,7 +26,7 @@ const LIMIT_DEFAULT = 25;
 export default defineComponent({
 	name: "WordsView",
 	components: {
-		AppTopBar,
+		TopBarComp,
 		InputComp,
 		SelectComp,
 		TableComp,
@@ -188,7 +188,7 @@ export default defineComponent({
 		/>
 
 		<div>
-			<AppTopBar>
+			<TopBarComp>
 				<template #left>
 					<WordsPageCategoryTitleComp :category-id="filter.category_id" />
 				</template>
@@ -199,7 +199,7 @@ export default defineComponent({
 						@click="openNewWordPage"
 					/>
 				</template>
-			</AppTopBar>
+			</TopBarComp>
 
 			<div class="words-view__content">
 				<div class="words-view__filter-panel">
