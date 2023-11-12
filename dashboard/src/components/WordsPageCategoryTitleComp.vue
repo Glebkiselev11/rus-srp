@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import AppAllWordsCategoryImage from "./AppCategories/AppAllWordsCategoryImage.vue";
+import AllWordsCategoryImageComp from "./Categories/AllWordsCategoryImageComp.vue";
 import { useCategoriesStore } from "@/stores/categories";
 import { mapActions, mapState } from "pinia";
 import type { Category } from "@/types/categories";
@@ -8,17 +8,17 @@ import type { LanguageCode } from "@/types/translations";
 import AppImagePreview from "./AppImagePreview.vue";
 import AppDropdownMenu from "./AppDropdownMenu.vue";
 import AppButton from "./AppButton.vue";
-import AppRemoveCategoryModal from "./AppCategories/AppRemoveCategoryModal.vue";
+import RemoveCategoryModalComp from "./Categories/RemoveCategoryModalComp.vue";
 import AppCategoryFormModal from "./AppCategoryFormModal.vue";
 
 export default defineComponent({
-	name: "AppWordsPageCategoryTitle",
+	name: "WordsPageCategoryTitleComp",
 	components: {
-		AppAllWordsCategoryImage,
+		AllWordsCategoryImageComp,
 		AppImagePreview,
 		AppDropdownMenu,
 		AppButton,
-		AppRemoveCategoryModal, 
+		RemoveCategoryModalComp, 
 		AppCategoryFormModal,
 	},
 	props: {
@@ -66,7 +66,7 @@ export default defineComponent({
 <template>
 	<div
 		v-if="category"
-		class="app-words-page-category-title"
+		class="words-page-category-title"
 	>
 		<AppImagePreview
 			size="56px"
@@ -101,12 +101,12 @@ export default defineComponent({
 				appearance="inline"
 				color="neutral"
 				size="compact"
-				class="app-words-page-category-title__menu-button"
+				class="words-page-category-title__menu-button"
 				:pressed="isMenuOpen"
 			/>
 		</AppDropdownMenu>
 
-		<AppRemoveCategoryModal
+		<RemoveCategoryModalComp
 			v-if="isRemoveCategoryModalOpen"
 			:category="category"
 			@close="isRemoveCategoryModalOpen = false"
@@ -121,9 +121,9 @@ export default defineComponent({
 
 	<div
 		v-else
-		class="app-words-page-category-title"
+		class="words-page-category-title"
 	>
-		<AppAllWordsCategoryImage size="56px" />
+		<AllWordsCategoryImageComp size="56px" />
 		<h2>
 			{{ $t("all-words") }}
 		</h2>
@@ -132,7 +132,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 
-.app-words-page-category-title {
+.words-page-category-title {
 	display: flex;
 	align-items: center;
 	gap: 12px;
@@ -146,8 +146,8 @@ export default defineComponent({
 	}
 }
 
-.app-words-page-category-title:hover, .app-dropdown--open {
-		.app-words-page-category-title__menu-button {
+.words-page-category-title:hover, .app-dropdown--open {
+		.words-page-category-title__menu-button {
 			visibility: visible;
 		}
 	}

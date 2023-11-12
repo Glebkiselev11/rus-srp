@@ -10,7 +10,7 @@ import { useCategoriesStore } from "@/stores/categories";
 import { mapActions } from "pinia";
 
 export default defineComponent({
-	name: "AppRemoveCategoryModal",
+	name: "RemoveCategoryModalComp",
 	components: {
 		AppModal,
 		AppInput,
@@ -70,10 +70,10 @@ export default defineComponent({
 		@close="close"
 	>
 		<template #content>
-			<div class="app-remove-category-modal">
+			<div class="remove-category-modal">
 				<span
 					v-if="wordsInCategory > 0"
-					class="app-remove-category-modal__description"
+					class="remove-category-modal__description"
 					v-text="$t('category-removing.description')"
 				/>
 
@@ -82,7 +82,7 @@ export default defineComponent({
 					:label="$t('category-removing.confirmation-label')"
 				/>
 
-				<div class="app-remove-category-modal__buttons">
+				<div class="remove-category-modal__buttons">
 					<AppButton
 						:label="$t('cancel')"
 						color="neutral"
@@ -104,7 +104,7 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "@/styles/main.scss";
 
-.app-remove-category-modal {
+.remove-category-modal {
 	display: flex;
 	flex-direction: column;
 	padding: 12px;

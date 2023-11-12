@@ -5,7 +5,7 @@ import AppButton from "@/components/AppButton.vue";
 import { mapActions } from "pinia";
 import { useCategoriesStore } from "@/stores/categories";
 import AppInput from "@/components/AppInput.vue";
-import AppCategoriesList from "@/components/AppCategories/AppCategoriesList.vue";
+import CategoriesListComp from "@/components/Categories/CategoriesListComp.vue";
 import AppHeader from "@/components/AppHeader.vue";
 import AppDropdownMenu from "../AppDropdownMenu.vue";
 import type { Order, RequestParams } from "@/types/api";
@@ -14,11 +14,11 @@ import AppTooltip from "../AppTooltip.vue";
 import AppCategoryFormModal from "../AppCategoryFormModal.vue";
 
 export default defineComponent({
-	name: "AppCategories",
+	name: "CategoriesComp",
 	components: {
 		AppInput,
 		AppButton,
-		AppCategoriesList,
+		CategoriesListComp,
 		AppHeader,
 		AppDropdownMenu,
 		AppTooltip,
@@ -130,13 +130,13 @@ export default defineComponent({
 </script>
 
 <template>
-	<div class="app-categories">
+	<div class="categories">
 		<AppHeader
 			:title="$t('categories')"
 			title-tag="h4"
 		>
 			<template #right>
-				<div class="app-categories__controls">
+				<div class="categories__controls">
 					<AppDropdownMenu 
 						v-slot="{ isMenuOpen }"		
 						:items="orderOptions"
@@ -169,10 +169,10 @@ export default defineComponent({
 			left-icon="search"
 			debounce
 			clear-button
-			class="app-categories__search"
+			class="categories__search"
 		/>
 
-		<AppCategoriesList
+		<CategoriesListComp
 			:selected-category-id="selectedCategoryId"
 			:search-quary="search"
 			@select-cateogry="selectCategory"
@@ -190,7 +190,7 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "@/styles/main.scss";
 
-.app-categories {
+.categories {
   background-color: $color-background-content-primary;
   border-inline-end: 1px solid $color-separator-primary;
 

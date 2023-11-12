@@ -1,18 +1,18 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import AppCategoryItem from "./AppCategoryItem.vue";
+import CategoryItemComp from "./CategoryItemComp.vue";
 import AppListItem from "@/components/AppListItem.vue";
-import AppAllWordsCategoryImage from "./AppAllWordsCategoryImage.vue";
+import AllWordsCategoryImageComp from "./AllWordsCategoryImageComp.vue";
 import { useCategoriesStore } from "@/stores/categories";
 import { mapState } from "pinia";
 import AppZeroState from "../AppZeroState.vue";
 
 export default defineComponent({
-	name: "AppCategoriesList",
+	name: "CategoriesListComp",
 	components: {
-		AppCategoryItem,
+		CategoryItemComp,
 		AppListItem,
-		AppAllWordsCategoryImage,
+		AllWordsCategoryImageComp,
 		AppZeroState,
 	},
 	props: {
@@ -46,8 +46,8 @@ export default defineComponent({
 </script>
 
 <template>
-	<div class="app-categories-list">
-		<div class="app-categories-list__items">
+	<div class="categories-list">
+		<div class="categories-list__items">
 			<AppListItem
 				clickable
 				size="compact"
@@ -55,8 +55,8 @@ export default defineComponent({
 				padding-inline="8px"
 				@click="selectCategory(0)"
 			>
-				<div class="app-categories-list__all-words-item">
-					<AppAllWordsCategoryImage size="24px" />
+				<div class="categories-list__all-words-item">
+					<AllWordsCategoryImageComp size="24px" />
 
 					<span class="text-body-2">{{ $t('all-words') }}</span>
 				</div>
@@ -67,9 +67,9 @@ export default defineComponent({
 
 		<div
 			v-if="loadState === 'loaded' && count > 0"
-			class="app-categories-list__items"
+			class="categories-list__items"
 		>
-			<AppCategoryItem
+			<CategoryItemComp
 				v-for="category in categories"
 				:key="category.id"
 				:category="category"
@@ -82,7 +82,7 @@ export default defineComponent({
 
 		<div
 			v-if="loadState === 'loaded' && count === 0"
-			class="app-categories-list__zero-state"
+			class="categories-list__zero-state"
 		>
 			<AppZeroState
 				icon="search"
@@ -95,7 +95,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 
-.app-categories-list {
+.categories-list {
 	&__all-words-item {
 		display: flex;
 		align-items: center;
@@ -111,7 +111,7 @@ export default defineComponent({
 	}
 
 	&__zero-state {
-		@extend .app-categories-list__items;	
+		@extend .categories-list__items;	
 		margin-block: 75%;
 	}
 }

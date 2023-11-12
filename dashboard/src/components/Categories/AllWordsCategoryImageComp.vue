@@ -6,7 +6,7 @@ import type { IconSize } from "@/types/icons";
 type Size = "24px" | "56px";
 
 export default defineComponent({
-	name: "AppAllWordsCategoryImage",
+	name: "AllWordsCategoryImageComp",
 	components: {
 		AppIcon,
 	},
@@ -32,8 +32,8 @@ export default defineComponent({
 
 <template>
 	<div 
-		class="app-all-words-category-image"
-		:class="[`app-all-words-category-image--${size}`]"
+		class="all-words-category-image"
+		:class="[`all-words-category-image--${size}`]"
 	>
 		<AppIcon
 			name="widgets"
@@ -45,7 +45,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 
-.app-all-words-category-image {
+.all-words-category-image {
   display: flex;
   align-items: center;
   justify-content: center;

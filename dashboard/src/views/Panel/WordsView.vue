@@ -4,7 +4,7 @@ import { mapActions, mapState } from "pinia";
 import { useWordsStore } from "@/stores/words";
 import type { Order, RequestParams } from "@/types/api";
 
-import AppCategories from "@/components/AppCategories/index.vue";
+import CategoriesComp from "@/components/Categories/CategoriesComp.vue";
 import AppTopBar from "@/components/AppTopBar.vue";
 import AppInput from "@/components/AppInput.vue";
 import AppSelect from "@/components/AppSelect.vue";
@@ -15,7 +15,7 @@ import AppButton from "@/components/AppButton.vue";
 import AppDropdownMenu from "@/components/AppDropdownMenu.vue";
 import AppPaginationBar from "@/components/AppPaginationBar.vue";
 import AppZeroState from "@/components/AppZeroState.vue";
-import AppWordsPageCategoryTitle from "@/components/AppWordsPageCategoryTitle.vue";
+import WordsPageCategoryTitleComp from "@/components/WordsPageCategoryTitleComp.vue";
 import { highlighTextByQuery } from "@/common/utils";
 
 import type { Word } from "@/types/words";
@@ -36,8 +36,8 @@ export default defineComponent({
 		AppDropdownMenu,
 		AppPaginationBar,
 		AppZeroState,
-		AppCategories,
-		AppWordsPageCategoryTitle,
+		CategoriesComp,
+		WordsPageCategoryTitleComp,
 	},
 	data() {
 		return {
@@ -182,7 +182,7 @@ export default defineComponent({
 
 <template>
 	<div class="words-view">
-		<AppCategories 
+		<CategoriesComp 
 			:selected-category-id="filter.category_id"
 			@update:selected-category-id="category_id = $event"
 		/>
@@ -190,7 +190,7 @@ export default defineComponent({
 		<div>
 			<AppTopBar>
 				<template #left>
-					<AppWordsPageCategoryTitle :category-id="filter.category_id" />
+					<WordsPageCategoryTitleComp :category-id="filter.category_id" />
 				</template>
 				<template #right>
 					<AppButton

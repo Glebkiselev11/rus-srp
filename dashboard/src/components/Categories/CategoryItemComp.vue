@@ -8,16 +8,16 @@ import AppListItem from "@/components/AppListItem.vue";
 import { highlighTextByQuery } from "@/common/utils";
 import AppButton from "../AppButton.vue";
 import AppDropdownMenu from "../AppDropdownMenu.vue";
-import AppRemoveCategoryModal from "./AppRemoveCategoryModal.vue";
+import RemoveCategoryModalComp from "./RemoveCategoryModalComp.vue";
 
 export default defineComponent({
-	name: "AppCategoryItem",
+	name: "CategoryItemComp",
 	components: {
 		AppImagePreview,
 		AppListItem,
 		AppButton,
 		AppDropdownMenu,
-		AppRemoveCategoryModal,
+		RemoveCategoryModalComp,
 	},
 	props: {
 		category: {
@@ -65,11 +65,11 @@ export default defineComponent({
 		:selected="selected"
 		size="compact"
 		padding-inline="8px"
-		class="app-list-item"
+		class="list-item"
 		@click="selectCategory"
 	>
-		<div class="app-category-item">
-			<div class="app-category-item__row">
+		<div class="category-item">
+			<div class="category-item__row">
 				<AppImagePreview
 					size="24px"
 					:src="category.image"
@@ -77,7 +77,7 @@ export default defineComponent({
 				/>
 
 				<span
-					class="app-category-item__label"
+					class="category-item__label"
 					v-html="highlighTextByQuery(extractCategoryPreview(category), query)"
 				/>
 			</div>
@@ -105,14 +105,14 @@ export default defineComponent({
 					appearance="inline"
 					color="neutral"
 					size="small"
-					class="app-category-item__menu-button"
+					class="category-item__menu-button"
 					:pressed="isMenuOpen"
 				/>
 			</AppDropdownMenu>
 		</div>
 	</AppListItem>
 
-	<AppRemoveCategoryModal
+	<RemoveCategoryModalComp
 		v-if="isRemoveCategoryModalOpen"
 		:category="category"
 		@close="isRemoveCategoryModalOpen = false"
@@ -121,7 +121,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "@/styles/main.scss";
-.app-category-item {
+.category-item {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -145,8 +145,8 @@ export default defineComponent({
 	}
 }
 
-.app-list-item:hover, .app-dropdown--open {
-	.app-category-item__menu-button {
+.list-item:hover, .app-dropdown--open {
+	.category-item__menu-button {
 		visibility: visible;
 	}
 }
