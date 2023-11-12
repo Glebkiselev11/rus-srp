@@ -14,7 +14,7 @@ import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import ButtonComp from "@/components/ButtonComp.vue";
 import DropdownMenuComp from "@/components/DropdownMenuComp.vue";
 import PaginationBarComp from "@/components/PaginationBarComp.vue";
-import AppZeroState from "@/components/AppZeroState.vue";
+import ZeroStateComp from "@/components/ZeroStateComp.vue";
 import WordsPageCategoryTitleComp from "@/components/WordsPageCategoryTitleComp.vue";
 import { highlighTextByQuery } from "@/common/utils";
 
@@ -35,7 +35,7 @@ export default defineComponent({
 		ButtonComp,
 		DropdownMenuComp,
 		PaginationBarComp,
-		AppZeroState,
+		ZeroStateComp,
 		CategoriesComp,
 		WordsPageCategoryTitleComp,
 	},
@@ -281,7 +281,7 @@ export default defineComponent({
 						v-else
 						#body
 					>
-						<AppZeroState
+						<ZeroStateComp
 							icon="search"
 							:title="notFoundTitle"
 							:description="$t('not-found-description')"

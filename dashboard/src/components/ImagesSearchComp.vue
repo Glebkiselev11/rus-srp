@@ -8,7 +8,7 @@ import { mapActions, mapState } from "pinia";
 import type { RequestParams } from "@/types/api";
 import { vInfiniteScroll } from "@vueuse/components";
 import ButtonComp from "./ButtonComp.vue";
-import AppZeroState from "./AppZeroState.vue";
+import ZeroStateComp from "./ZeroStateComp.vue";
 
 export default defineComponent({
 	name: "ImagesSearchComp",
@@ -16,7 +16,7 @@ export default defineComponent({
 		InputComp,
 		IconComp,
 		ButtonComp,
-		AppZeroState,
+		ZeroStateComp,
 	},
 	directives: {
 		infiniteScroll: vInfiniteScroll,
@@ -106,7 +106,7 @@ export default defineComponent({
 			class="image-search-list"
 		>
 			<!-- Search query is empty -->
-			<AppZeroState 
+			<ZeroStateComp 
 				v-if="loadState === 'initial' && !searchQuery"
 				icon="manage_search"
 				:title="$t('image-search-title')"
@@ -114,7 +114,7 @@ export default defineComponent({
 			/>
 
 			<!-- Nothing were found -->
-			<AppZeroState 
+			<ZeroStateComp 
 				v-if="loadState === 'loaded' && !images.length"
 				icon="search"
 				:title="$t('not-found', { search: searchQuery })"
@@ -125,7 +125,7 @@ export default defineComponent({
 					:label="$t('search-by-query', { query: defaultSearchQuery})"
 					@click="searchQuery = defaultSearchQuery"
 				/>
-			</AppZeroState>
+			</ZeroStateComp>
 
 			<div 
 				v-if="savedLink && areImagesContainSavedLink"

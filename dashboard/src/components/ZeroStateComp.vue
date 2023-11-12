@@ -4,7 +4,7 @@ import IconComp from "./IconComp/index.vue";
 import { defineComponent, type PropType } from "vue";
 
 export default defineComponent({
-	name: "AppZeroState",
+	name: "ZeroStateComp",
 	components: {
 		IconComp,
 	},
@@ -27,8 +27,8 @@ export default defineComponent({
 </script>
 
 <template>
-	<div class="app-zero-state">
-		<div class="app-zero-state__container">
+	<div class="zero-state">
+		<div class="zero-state__container">
 			<IconComp
 				v-if="icon"
 				:name="icon"
@@ -40,7 +40,7 @@ export default defineComponent({
 
 			<span
 				v-if="description"
-				class="app-zero-state__description"
+				class="zero-state__description"
 			>
 				{{ description }}
 			</span>
@@ -53,7 +53,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
 
-.app-zero-state {
+.zero-state {
 	display: flex;
 	flex-direction: column;
 	align-items: center;

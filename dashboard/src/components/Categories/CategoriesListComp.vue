@@ -5,7 +5,7 @@ import ListItemComp from "@/components/ListItemComp.vue";
 import AllWordsCategoryImageComp from "./AllWordsCategoryImageComp.vue";
 import { useCategoriesStore } from "@/stores/categories";
 import { mapState } from "pinia";
-import AppZeroState from "../AppZeroState.vue";
+import ZeroStateComp from "../ZeroStateComp.vue";
 
 export default defineComponent({
 	name: "CategoriesListComp",
@@ -13,7 +13,7 @@ export default defineComponent({
 		CategoryItemComp,
 		ListItemComp,
 		AllWordsCategoryImageComp,
-		AppZeroState,
+		ZeroStateComp,
 	},
 	props: {
 		selectedCategoryId: {
@@ -84,7 +84,7 @@ export default defineComponent({
 			v-if="loadState === 'loaded' && count === 0"
 			class="categories-list__zero-state"
 		>
-			<AppZeroState
+			<ZeroStateComp
 				icon="search"
 				:title="notFoundTitle"
 				:description="$t('not-found-description')"
