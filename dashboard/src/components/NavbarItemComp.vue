@@ -4,7 +4,7 @@ import IconComp from "@/components/IconComp/index.vue";
 import type { IconName } from "../types/icons";
 
 export default defineComponent({
-	name: "AppNavbarItem",
+	name: "NavbarItemComp",
 	components: {
 		IconComp,
 	},
@@ -32,8 +32,8 @@ export default defineComponent({
 
 <template>
 	<div
-		class="app-navbar-item"
-		:class="{'app-navbar-item--active': active}"
+		class="navbar-item"
+		:class="{'navbar-item--active': active}"
 	>
 		<IconComp
 			:name="iconName"
@@ -42,8 +42,8 @@ export default defineComponent({
 
 		<span 
 			v-if="showLabels"
-			class="app-navbar-item__label"
-			:class="{ 'app-navbar-item__label--active': active }"
+			class="navbar-item__label"
+			:class="{ 'navbar-item__label--active': active }"
 		>
 			{{ label }}
 		</span>
@@ -53,7 +53,7 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "@/styles/main.scss";
 
-.app-navbar-item {
+.navbar-item {
 	display: flex;	
 	align-items: center;
 	column-gap: 12px;
@@ -71,7 +71,7 @@ export default defineComponent({
 		background-color: $color-background-accent-primary-tint;
 		&:hover {
 			cursor: default;
-			@extend .app-navbar-item--active;
+			@extend .navbar-item--active;
 		}
 	}
 

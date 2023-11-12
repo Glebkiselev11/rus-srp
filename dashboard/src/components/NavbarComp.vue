@@ -1,13 +1,13 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import AppNavbarItem from "./AppNavbarItem.vue";
+import NavbarItemComp from "./NavbarItemComp.vue";
 import type { NavItem } from "../types";
 import AppTooltip from "./AppTooltip.vue";
 
 export default defineComponent({
-	name: "AppNavbar",
+	name: "NavbarComp",
 	components: {
-		AppNavbarItem,
+		NavbarItemComp,
 		AppTooltip,
 	},
 	props: {
@@ -32,8 +32,8 @@ export default defineComponent({
 
 <template>
 	<aside
-		class="app-navbar"
-		:class="{ 'app-navbar--expanded': isExpanded}"
+		class="navbar"
+		:class="{ 'navbar--expanded': isExpanded}"
 	>
 		<AppTooltip
 			v-for="item in items"
@@ -41,7 +41,7 @@ export default defineComponent({
 			:text="$t(item.name)"
 			position="right"
 		>
-			<AppNavbarItem
+			<NavbarItemComp
 				:label="item.label"
 				:active="item.active"
 				:icon-name="item.icon"
@@ -55,7 +55,7 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "@/styles/main.scss";
 
-.app-navbar {
+.navbar {
 	padding-block-start: 10px;
 	width: 72px;
 	height: 100%;
