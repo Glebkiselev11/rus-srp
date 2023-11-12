@@ -13,7 +13,7 @@ import TableRowComp from "@/components/Table/TableRowComp.vue";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import ButtonComp from "@/components/ButtonComp.vue";
 import DropdownMenuComp from "@/components/DropdownMenuComp.vue";
-import AppPaginationBar from "@/components/AppPaginationBar.vue";
+import PaginationBarComp from "@/components/PaginationBarComp.vue";
 import AppZeroState from "@/components/AppZeroState.vue";
 import WordsPageCategoryTitleComp from "@/components/WordsPageCategoryTitleComp.vue";
 import { highlighTextByQuery } from "@/common/utils";
@@ -34,7 +34,7 @@ export default defineComponent({
 		ImagePreviewComp,
 		ButtonComp,
 		DropdownMenuComp,
-		AppPaginationBar,
+		PaginationBarComp,
 		AppZeroState,
 		CategoriesComp,
 		WordsPageCategoryTitleComp,
@@ -292,7 +292,7 @@ export default defineComponent({
 						v-if="count > limit"
 						#pagination
 					>
-						<AppPaginationBar
+						<PaginationBarComp
 							:count="count"
 							:offset="offset"
 							:limit="limit"

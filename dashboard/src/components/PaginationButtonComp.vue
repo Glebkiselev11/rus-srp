@@ -2,7 +2,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-	name: "AppPaginationButton",
+	name: "PaginationButtonComp",
 	props: {
 		label: {
 			type: String,
@@ -25,8 +25,8 @@ export default defineComponent({
 
 <template>
 	<button
-		class="app-pagination-button"
-		:class="{ 'app-pagination-button--active': active }"
+		class="pagination-button"
+		:class="{ 'pagination-button--active': active }"
 		@click="click"
 	>
 		{{ label }}
@@ -36,7 +36,7 @@ export default defineComponent({
 <style scoped lang="scss">
 @import 'src/styles/main.scss';
 
-.app-pagination-button {
+.pagination-button {
 	width: 32px;
 	height: 32px;
 	display: flex;
@@ -58,7 +58,7 @@ export default defineComponent({
 		cursor: default;
 
 		&:hover {
-			@extend .app-pagination-button--active;
+			@extend .pagination-button--active;
 		}
 	}
 }

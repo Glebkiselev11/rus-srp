@@ -2,14 +2,14 @@
 import { defineComponent, type PropType } from "vue"; 
 import AppSelect from "@/components/AppSelect.vue";
 import InputComp from "@/components/InputComp.vue";
-import AppPagination from "./AppPagination.vue";
+import PaginationComp from "./PaginationComp.vue";
 
 export default defineComponent({
-	name: "AppPaginationBar",
+	name: "PaginationBarComp",
 	components: {
 		AppSelect,
 		InputComp,
-		AppPagination,
+		PaginationComp,
 	},
 	props: {
 		count: {
@@ -59,8 +59,8 @@ export default defineComponent({
 </script>
 
 <template>
-	<div class="app-pagination-bar">
-		<div class="app-pagination-bar__section">
+	<div class="pagination-bar">
+		<div class="pagination-bar__section">
 			<div class="count-info">
 				{{ $t("pagination.info", { currentRange, count }) }}
 			</div>
@@ -77,7 +77,7 @@ export default defineComponent({
 			</div>
 		</div>
 
-		<div class="app-pagination-bar__section">
+		<div class="pagination-bar__section">
 			<div class="select-page-controller">
 				<span class="select-page-controller__text">
 					{{ $t("pagination.select-page") }}
@@ -95,7 +95,7 @@ export default defineComponent({
 				/>
 			</div>
 
-			<AppPagination
+			<PaginationComp
 				:limit="limit"
 				:offset="offset"
 				:count="count"
@@ -108,7 +108,7 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "@/styles/main.scss";
 
-.app-pagination-bar {
+.pagination-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;

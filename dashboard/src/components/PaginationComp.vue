@@ -1,15 +1,15 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import ButtonComp from "./ButtonComp.vue";
-import AppPaginationButton from "./AppPaginationButton.vue";
+import PaginationButtonComp from "./PaginationButtonComp.vue";
 
 const BEFORE_AND_AFTER_ELLIPSIS = 2;
 
 export default defineComponent({
-	name: "AppPagination",
+	name: "PaginationComp",
 	components: {
 		ButtonComp,
-		AppPaginationButton,
+		PaginationButtonComp,
 	},
 	props: {
 		limit: {
@@ -81,7 +81,7 @@ export default defineComponent({
 </script>
 
 <template>
-	<div class="app-pagination">
+	<div class="pagination">
 		<ButtonComp
 			icon="navigate_before"
 			:disabled="currentPage === 1"
@@ -91,8 +91,8 @@ export default defineComponent({
 			@click="prevPage"
 		/>
 
-		<div class="app-pagination__pages">
-			<AppPaginationButton
+		<div class="pagination__pages">
+			<PaginationButtonComp
 				label="1"
 				:active="isCurrentPage(1)"
 				@click="changePage(1)"
@@ -100,12 +100,12 @@ export default defineComponent({
 
 			<span
 				v-show="ellipsisBeforeMiddle"
-				class="app-pagination__ellipses"
+				class="pagination__ellipses"
 			>
 				...
 			</span>
 
-			<AppPaginationButton 
+			<PaginationButtonComp 
 				v-for="page in middleNumbers"
 				:key="page"
 				:label="page.toString()"
@@ -115,12 +115,12 @@ export default defineComponent({
 
 			<span
 				v-show="ellipsisAfterMiddle"
-				class="app-pagination__ellipses"
+				class="pagination__ellipses"
 			>
 				...
 			</span>
 
-			<AppPaginationButton
+			<PaginationButtonComp
 				:label="lastPage.toString()"
 				:active="isCurrentPage(lastPage)"
 				@click="changePage(lastPage)"
@@ -140,7 +140,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 
-.app-pagination {
+.pagination {
 	display: flex;
 	column-gap: 8px;
 
