@@ -2,7 +2,7 @@
 import { defineComponent, type PropType } from "vue";
 
 export default defineComponent({
-	name: "AppTooltip",
+	name: "TooltipComp",
 	props: {
 		text: {
 			type: String,
@@ -31,7 +31,7 @@ export default defineComponent({
 </script>
 
 <template>
-	<div class="app-tooltip__container">
+	<div class="tooltip__container">
 		<div
 			@mouseenter="show"
 			@mouseleave="hide"
@@ -42,8 +42,8 @@ export default defineComponent({
 
 		<span
 			v-show="showTooltip"
-			class="app-tooltip"
-			:class="`app-tooltip--${position}`"
+			class="tooltip"
+			:class="`tooltip--${position}`"
 		>
 			{{ text }}
 		</span>
@@ -53,11 +53,11 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
 
-.app-tooltip__container {
+.tooltip__container {
   position: relative;
 }
 
-.app-tooltip__triangle {
+.tooltip__triangle {
   position: absolute;
   content: "";
   height: 12px;
@@ -67,7 +67,7 @@ export default defineComponent({
   border-radius: 2px;
 }
 
-.app-tooltip {
+.tooltip {
   @extend .text-caption-2;
   position: absolute;
   z-index: 2;
@@ -82,8 +82,8 @@ export default defineComponent({
     left: 50%;
     translate: -50% 0;
     &::before {
-      @extend .app-tooltip__triangle;
-      @extend .app-tooltip--bottom;
+      @extend .tooltip__triangle;
+      @extend .tooltip--bottom;
       top: -4px;
     }
   }
@@ -93,8 +93,8 @@ export default defineComponent({
     left: calc(100% + 10px);
     translate: 0 -50%;
     &::before {
-      @extend .app-tooltip__triangle;
-      @extend .app-tooltip--right;
+      @extend .tooltip__triangle;
+      @extend .tooltip--right;
       left: -4px;
     }
   }
@@ -104,8 +104,8 @@ export default defineComponent({
     right: calc(100% + 10px);
     translate: 0 -50%;
     &::before {
-      @extend .app-tooltip__triangle;
-      @extend .app-tooltip--left;
+      @extend .tooltip__triangle;
+      @extend .tooltip--left;
       right: -4px;
     }
   }
@@ -115,8 +115,8 @@ export default defineComponent({
     left: 50%;
     translate: -50% 0;
     &::before {
-      @extend .app-tooltip__triangle;
-      @extend .app-tooltip--top;
+      @extend .tooltip__triangle;
+      @extend .tooltip--top;
       bottom: -4px;
     }
   }

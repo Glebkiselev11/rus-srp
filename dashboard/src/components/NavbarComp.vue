@@ -2,13 +2,13 @@
 import { defineComponent, type PropType } from "vue";
 import NavbarItemComp from "./NavbarItemComp.vue";
 import type { NavItem } from "../types";
-import AppTooltip from "./AppTooltip.vue";
+import TooltipComp from "./TooltipComp.vue";
 
 export default defineComponent({
 	name: "NavbarComp",
 	components: {
 		NavbarItemComp,
-		AppTooltip,
+		TooltipComp,
 	},
 	props: {
 		items: {
@@ -35,7 +35,7 @@ export default defineComponent({
 		class="navbar"
 		:class="{ 'navbar--expanded': isExpanded}"
 	>
-		<AppTooltip
+		<TooltipComp
 			v-for="item in items"
 			:key="item.name"
 			:text="$t(item.name)"
@@ -48,7 +48,7 @@ export default defineComponent({
 				:show-labels="isExpanded"
 				@click="handleClick(item)"
 			/>
-		</AppTooltip>
+		</TooltipComp>
 	</aside>
 </template>
 

@@ -5,7 +5,7 @@ import type { IconName } from "../types/icons";
 import IconComp from "./IconComp/index.vue";
 import ButtonComp from "./ButtonComp.vue";
 import InputWrapperComp from "./InputWrapperComp.vue";
-import AppTooltip from "./AppTooltip.vue";
+import TooltipComp from "./TooltipComp.vue";
 import type { InputSize, InputAppearance } from "@/types/input";
 import { useFocusWithin } from "@vueuse/core";
 
@@ -15,7 +15,7 @@ export default defineComponent({
 		IconComp,
 		ButtonComp,
 		InputWrapperComp,
-		AppTooltip,
+		TooltipComp,
 	},
 	props: {
 		label: {
@@ -199,7 +199,7 @@ export default defineComponent({
 					@click="clearInput"
 				/>
 
-				<AppTooltip
+				<TooltipComp
 					:text="$t('reset')"
 					position="top"
 				>
@@ -212,7 +212,7 @@ export default defineComponent({
 						icon-color="tertiary"
 						@click="resetInput"
 					/>
-				</AppTooltip>
+				</TooltipComp>
 
 				<IconComp 
 					v-show="error !== null"

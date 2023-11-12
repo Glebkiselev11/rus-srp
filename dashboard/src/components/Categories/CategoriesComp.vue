@@ -10,7 +10,7 @@ import HeaderComp from "@/components/HeaderComp.vue";
 import DropdownMenuComp from "../DropdownMenuComp.vue";
 import type { Order, RequestParams } from "@/types/api";
 import type { LanguageCode } from "@/types/translations";
-import AppTooltip from "../AppTooltip.vue";
+import TooltipComp from "../TooltipComp.vue";
 import CategoryFormModalComp from "../CategoryFormModalComp.vue";
 
 export default defineComponent({
@@ -21,7 +21,7 @@ export default defineComponent({
 		CategoriesListComp,
 		HeaderComp,
 		DropdownMenuComp,
-		AppTooltip,
+		TooltipComp,
 		CategoryFormModalComp,
 	},
 	props: {
@@ -141,24 +141,24 @@ export default defineComponent({
 						v-slot="{ isMenuOpen }"		
 						:items="orderOptions"
 					>
-						<AppTooltip :text="$t('to-sort')">
+						<TooltipComp :text="$t('to-sort')">
 							<ButtonComp 
 								icon="sort"
 								appearance="inline"
 								color="neutral"
 								:pressed="isMenuOpen"
 							/>
-						</AppTooltip>
+						</TooltipComp>
 					</DropdownMenuComp>
 
-					<AppTooltip :text="$t('create-category')">
+					<TooltipComp :text="$t('create-category')">
 						<ButtonComp
 							icon="add"
 							appearance="inline"
 							color="neutral"
 							@click="openCreationCategoryForm"
 						/>
-					</AppTooltip>
+					</TooltipComp>
 				</div>
 			</template>
 		</HeaderComp>
