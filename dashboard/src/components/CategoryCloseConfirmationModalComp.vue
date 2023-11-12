@@ -4,7 +4,7 @@ import AppModal from "./AppModal.vue";
 import ButtonComp from "./ButtonComp.vue";
 
 export default defineComponent({
-	name: "AppCategoryCloseConfirmationModal",
+	name: "CategoryCloseConfirmationModalComp",
 	components: {
 		AppModal,
 		ButtonComp,
@@ -47,10 +47,10 @@ export default defineComponent({
 		@close="close"
 	>
 		<template #content>
-			<div class="app-category-close-confirmation-modal">
+			<div class="category-close-confirmation-modal">
 				{{ $t("modal-exit-confirmation.description") }}
 
-				<div class="app-category-close-confirmation-modal__buttons">
+				<div class="category-close-confirmation-modal__buttons">
 					<ButtonComp
 						:label="cancelButtonLabel"
 						appearance="secondary"
@@ -67,7 +67,7 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
-.app-category-close-confirmation-modal {
+.category-close-confirmation-modal {
   width: 502px;
   padding: 12px;
 

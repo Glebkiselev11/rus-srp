@@ -7,11 +7,11 @@ import { mapState } from "pinia";
 import type { LanguageCode } from "@/types/translations";
 import type { Category } from "@/types/categories";
 import AppImagePreview from "./AppImagePreview.vue";
-import AppCategoryCloseConfirmationModal from "./AppCategoryCloseConfirmationModal.vue";
+import CategoryCloseConfirmationModalComp from "./CategoryCloseConfirmationModalComp.vue";
 
 export default defineComponent({
 	name: "AppCategoryFormModal",
-	components: { AppModal, AppCategoryForm, AppImagePreview, AppCategoryCloseConfirmationModal },
+	components: { AppModal, AppCategoryForm, AppImagePreview, CategoryCloseConfirmationModalComp },
 	props: {
 		// If provided category id, then form will be in edit mode
 		categoryId: {
@@ -83,7 +83,7 @@ export default defineComponent({
 		</template>
 	</AppModal>
 
-	<AppCategoryCloseConfirmationModal
+	<CategoryCloseConfirmationModalComp
 		v-if="showCloseConfirmationModal"
 		:is-editing="Boolean(category)"
 		@close="showCloseConfirmationModal = false"
