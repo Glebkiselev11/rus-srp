@@ -10,7 +10,7 @@ import type { InputSize, InputAppearance } from "@/types/input";
 import { useFocusWithin } from "@vueuse/core";
 
 export default defineComponent({
-	name: "AppInput",
+	name: "InputComp",
 	components: {
 		IconComp,
 		ButtonComp,
@@ -160,11 +160,11 @@ export default defineComponent({
 		for="input"
 	>
 		<div
-			class="app-input"
+			class="input"
 		>
 			<IconComp
 				v-if="leftIcon"
-				class="app-input--left-icon"
+				class="input--left-icon"
 				:name="leftIcon"
 				color="tertiary"
 			/>
@@ -172,10 +172,10 @@ export default defineComponent({
 			<input
 				id="input"
 				ref="input"
-				class="app-input__field"
+				class="input__field"
 				:class="[
-					`app-input__field--size-${size}`,
-					`app-input__field--appearance-${appearance}`
+					`input__field--size-${size}`,
+					`input__field--appearance-${appearance}`
 				]"
 				:style="{ width }"
 				:type="type"
@@ -188,7 +188,7 @@ export default defineComponent({
 				@input="handleInput"
 			>
 
-			<div class="app-input__buttons">
+			<div class="input__buttons">
 				<ButtonComp
 					v-show="clearButton && modelValue && focusOnInput"
 					icon="cancel"
@@ -228,10 +228,10 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "@/styles/main.scss";
 
-.app-input {
+.input {
 	position: relative;
 
-	&:has(.app-input--left-icon) .app-input__field {
+	&:has(.input--left-icon) .input__field {
 		padding-left: 40px;
 	}
 
@@ -277,7 +277,7 @@ export default defineComponent({
 			}
 		}
 
-		&:has(.app-input--left-icon) {
+		&:has(.input--left-icon) {
 			padding-left: 48px;
 		}
 

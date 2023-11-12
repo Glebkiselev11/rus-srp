@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import AppInput from "./AppInput.vue";
+import InputComp from "./InputComp.vue";
 import IconComp from "./IconComp/index.vue";
 import { addCropImagaeParamsToUrl } from "@/common/utils";
 import { useImagesStore } from "@/stores/images";
@@ -13,7 +13,7 @@ import AppZeroState from "./AppZeroState.vue";
 export default defineComponent({
 	name: "ImagesSearchComp",
 	components: {
-		AppInput,
+		InputComp,
 		IconComp,
 		ButtonComp,
 		AppZeroState,
@@ -91,7 +91,7 @@ export default defineComponent({
 
 <template>
 	<div class="image-search">
-		<AppInput
+		<InputComp
 			v-model="searchQuery"
 			width="100%"
 			type="text"

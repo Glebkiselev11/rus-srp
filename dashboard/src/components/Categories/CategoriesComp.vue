@@ -4,7 +4,7 @@ import { defineComponent } from "vue";
 import ButtonComp from "@/components/ButtonComp.vue";
 import { mapActions } from "pinia";
 import { useCategoriesStore } from "@/stores/categories";
-import AppInput from "@/components/AppInput.vue";
+import InputComp from "@/components/InputComp.vue";
 import CategoriesListComp from "@/components/Categories/CategoriesListComp.vue";
 import HeaderComp from "@/components/HeaderComp.vue";
 import DropdownMenuComp from "../DropdownMenuComp.vue";
@@ -16,7 +16,7 @@ import CategoryFormModalComp from "../CategoryFormModalComp.vue";
 export default defineComponent({
 	name: "CategoriesComp",
 	components: {
-		AppInput,
+		InputComp,
 		ButtonComp,
 		CategoriesListComp,
 		HeaderComp,
@@ -163,7 +163,7 @@ export default defineComponent({
 			</template>
 		</HeaderComp>
 
-		<AppInput
+		<InputComp
 			v-model="search"
 			:placeholder="$t('find-category')"
 			left-icon="search"

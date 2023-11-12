@@ -1,14 +1,14 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue"; 
 import AppSelect from "@/components/AppSelect.vue";
-import AppInput from "@/components/AppInput.vue";
+import InputComp from "@/components/InputComp.vue";
 import AppPagination from "./AppPagination.vue";
 
 export default defineComponent({
 	name: "AppPaginationBar",
 	components: {
 		AppSelect,
-		AppInput,
+		InputComp,
 		AppPagination,
 	},
 	props: {
@@ -83,7 +83,7 @@ export default defineComponent({
 					{{ $t("pagination.select-page") }}
 				</span>
 
-				<AppInput
+				<InputComp
 					type="number"
 					:model-value="currentPage"
 					:min="1"

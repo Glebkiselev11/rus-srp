@@ -6,7 +6,7 @@ import type { Order, RequestParams } from "@/types/api";
 
 import CategoriesComp from "@/components/Categories/CategoriesComp.vue";
 import AppTopBar from "@/components/AppTopBar.vue";
-import AppInput from "@/components/AppInput.vue";
+import InputComp from "@/components/InputComp.vue";
 import AppSelect from "@/components/AppSelect.vue";
 import TableComp from "@/components/Table/TableComp.vue";
 import TableRowComp from "@/components/Table/TableRowComp.vue";
@@ -27,7 +27,7 @@ export default defineComponent({
 	name: "WordsView",
 	components: {
 		AppTopBar,
-		AppInput,
+		InputComp,
 		AppSelect,
 		TableComp,
 		TableRowComp,
@@ -203,7 +203,7 @@ export default defineComponent({
 
 			<div class="words-view__content">
 				<div class="words-view__filter-panel">
-					<AppInput
+					<InputComp
 						v-model="search"
 						type="text"
 						:placeholder="$t('find-word')"

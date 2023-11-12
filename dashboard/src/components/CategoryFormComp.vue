@@ -6,14 +6,14 @@ import { mapActions, mapState } from "pinia";
 import type { Category, DraftCategory } from "@/types/categories";
 import { LanguageList } from "@/i18n";
 import type { LanguageCode } from "@/types/translations";
-import AppInput from "./AppInput.vue";
+import InputComp from "./InputComp.vue";
 import ButtonComp from "./ButtonComp.vue";
 import { translate } from "@/common/translations";
 import { CategoriesApi } from "@/api/categories";
 
 export default defineComponent({
 	name: "CategoryFormComp",
-	components: { ImagePreviewComp, AppInput, ButtonComp },
+	components: { ImagePreviewComp, InputComp, ButtonComp },
 	props: {
 		categoryId: {
 			type: Number,
@@ -234,7 +234,7 @@ export default defineComponent({
 				@update:src="draftCategory.image = $event"
 			/>
 
-			<AppInput
+			<InputComp
 				v-model="draftCategory[selectedLanguage]"
 				:label="$t('category-name')"
 				width="400px"
@@ -266,7 +266,7 @@ export default defineComponent({
 			/>
 		</div>
 
-		<AppInput
+		<InputComp
 			v-if="selectedLanguage !== 'rus'"
 			v-model="draftCategory.rus"
 			appearance="outline"
@@ -278,7 +278,7 @@ export default defineComponent({
 			class="category-form__translation-input"
 		/>
 
-		<AppInput
+		<InputComp
 			v-if="selectedLanguage !== 'eng'"
 			v-model="draftCategory.eng"
 			appearance="outline"
@@ -290,7 +290,7 @@ export default defineComponent({
 			class="category-form__translation-input"
 		/>
 
-		<AppInput
+		<InputComp
 			v-if="selectedLanguage !== 'srp_latin'"
 			v-model="draftCategory.srp_latin"
 			appearance="outline"
@@ -302,7 +302,7 @@ export default defineComponent({
 			class="category-form__translation-input"
 		/>
 
-		<AppInput
+		<InputComp
 			v-if="selectedLanguage !== 'srp_cyrillic'"
 			v-model="draftCategory.srp_cyrillic"
 			appearance="outline"

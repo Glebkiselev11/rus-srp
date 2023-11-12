@@ -4,7 +4,7 @@ import { defineComponent, type PropType } from "vue";
 import AppModal from "../AppModal.vue";
 import type { LanguageCode } from "@/types/translations";
 import { WordsApi } from "@/api";
-import AppInput from "../AppInput.vue";
+import InputComp from "../InputComp.vue";
 import ButtonComp from "../ButtonComp.vue";
 import { useCategoriesStore } from "@/stores/categories";
 import { mapActions } from "pinia";
@@ -13,7 +13,7 @@ export default defineComponent({
 	name: "RemoveCategoryModalComp",
 	components: {
 		AppModal,
-		AppInput,
+		InputComp,
 		ButtonComp,
 	},
 	props: {
@@ -77,7 +77,7 @@ export default defineComponent({
 					v-text="$t('category-removing.description')"
 				/>
 
-				<AppInput
+				<InputComp
 					v-model="confirmationInput"
 					:label="$t('category-removing.confirmation-label')"
 				/>
