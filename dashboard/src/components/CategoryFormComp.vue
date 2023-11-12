@@ -12,7 +12,7 @@ import { translate } from "@/common/translations";
 import { CategoriesApi } from "@/api/categories";
 
 export default defineComponent({
-	name: "AppCategoryForm",
+	name: "CategoryFormComp",
 	components: { AppImagePreview, AppInput, ButtonComp },
 	props: {
 		categoryId: {
@@ -224,8 +224,8 @@ export default defineComponent({
 </script>
 
 <template>
-	<div class="app-category-form">
-		<div class="app-category-form__preview">
+	<div class="category-form">
+		<div class="category-form__preview">
 			<AppImagePreview
 				size="96px"
 				:src="draftCategory.image"
@@ -247,7 +247,7 @@ export default defineComponent({
 			/>
 		</div>
 
-		<div class="app-category-form__row">
+		<div class="category-form__row">
 			<div>
 				<h4 v-text="$t('translation')" />
 				<span
@@ -275,7 +275,7 @@ export default defineComponent({
 			:reset-value="category?.rus"
 			clear-button
 			:label="getLabelByKey('rus')"
-			class="app-category-form__translation-input"
+			class="category-form__translation-input"
 		/>
 
 		<AppInput
@@ -287,7 +287,7 @@ export default defineComponent({
 			:reset-value="category?.eng"
 			:error="engValidationError"
 			:label="getLabelByKey('eng')"
-			class="app-category-form__translation-input"
+			class="category-form__translation-input"
 		/>
 
 		<AppInput
@@ -299,7 +299,7 @@ export default defineComponent({
 			:reset-value="category?.srp_latin"
 			:error="srp_latinValidationError"
 			:label="getLabelByKey('srp_latin')"
-			class="app-category-form__translation-input"
+			class="category-form__translation-input"
 		/>
 
 		<AppInput
@@ -311,10 +311,10 @@ export default defineComponent({
 			:reset-value="category?.srp_cyrillic"
 			:error="srp_cyrillicValidationError"
 			:label="getLabelByKey('srp_cyrillic')"
-			class="app-category-form__translation-input"
+			class="category-form__translation-input"
 		/>
 
-		<div class="app-category-form__footer">
+		<div class="category-form__footer">
 			<ButtonComp
 				appearance="secondary"
 				:label="$t('cancel')"	
@@ -331,7 +331,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
 
-.app-category-form {
+.category-form {
 	padding-inline: 16px;
 	padding-block-end: 20px;
 	width: 598px;

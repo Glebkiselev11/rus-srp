@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import AppModal from "./AppModal.vue";
-import AppCategoryForm from "./AppCategoryForm.vue";
+import CategoryFormComp from "./CategoryFormComp.vue";
 import { useCategoriesStore } from "@/stores/categories";
 import { mapState } from "pinia";
 import type { LanguageCode } from "@/types/translations";
@@ -10,8 +10,8 @@ import AppImagePreview from "./AppImagePreview.vue";
 import CategoryCloseConfirmationModalComp from "./CategoryCloseConfirmationModalComp.vue";
 
 export default defineComponent({
-	name: "AppCategoryFormModal",
-	components: { AppModal, AppCategoryForm, AppImagePreview, CategoryCloseConfirmationModalComp },
+	name: "CategoryFormModalComp",
+	components: { AppModal, CategoryFormComp, AppImagePreview, CategoryCloseConfirmationModalComp },
 	props: {
 		// If provided category id, then form will be in edit mode
 		categoryId: {
@@ -74,7 +74,7 @@ export default defineComponent({
 			/>
 		</template>
 		<template #content>
-			<AppCategoryForm
+			<CategoryFormComp
 				:category-id="categoryId"
 				@saved="close"
 				@close="tryClose"

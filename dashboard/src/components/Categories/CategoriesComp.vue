@@ -11,7 +11,7 @@ import AppDropdownMenu from "../AppDropdownMenu.vue";
 import type { Order, RequestParams } from "@/types/api";
 import type { LanguageCode } from "@/types/translations";
 import AppTooltip from "../AppTooltip.vue";
-import AppCategoryFormModal from "../AppCategoryFormModal.vue";
+import CategoryFormModalComp from "../CategoryFormModalComp.vue";
 
 export default defineComponent({
 	name: "CategoriesComp",
@@ -22,7 +22,7 @@ export default defineComponent({
 		AppHeader,
 		AppDropdownMenu,
 		AppTooltip,
-		AppCategoryFormModal,
+		CategoryFormModalComp,
 	},
 	props: {
 		selectedCategoryId: {
@@ -179,7 +179,7 @@ export default defineComponent({
 			@select-category-for-editing="openEditingCategoryForm"
 		/>
 
-		<AppCategoryFormModal
+		<CategoryFormModalComp
 			v-if="showCategoryForm"
 			:category-id="editingCategoryId"
 			@close="showCategoryForm = false"

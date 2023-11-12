@@ -9,7 +9,7 @@ import AppImagePreview from "./AppImagePreview.vue";
 import AppDropdownMenu from "./AppDropdownMenu.vue";
 import ButtonComp from "./ButtonComp.vue";
 import RemoveCategoryModalComp from "./Categories/RemoveCategoryModalComp.vue";
-import AppCategoryFormModal from "./AppCategoryFormModal.vue";
+import CategoryFormModalComp from "./CategoryFormModalComp.vue";
 
 export default defineComponent({
 	name: "WordsPageCategoryTitleComp",
@@ -19,7 +19,7 @@ export default defineComponent({
 		AppDropdownMenu,
 		ButtonComp,
 		RemoveCategoryModalComp, 
-		AppCategoryFormModal,
+		CategoryFormModalComp,
 	},
 	props: {
 		categoryId: {
@@ -112,7 +112,7 @@ export default defineComponent({
 			@close="isRemoveCategoryModalOpen = false"
 		/>
 
-		<AppCategoryFormModal
+		<CategoryFormModalComp
 			v-if="isEditCategoryModalOpen"
 			:category-id="category.id"
 			@close="isEditCategoryModalOpen = false"
