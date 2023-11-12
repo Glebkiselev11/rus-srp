@@ -11,7 +11,12 @@ import CategoryCloseConfirmationModalComp from "./CategoryCloseConfirmationModal
 
 export default defineComponent({
 	name: "CategoryFormModalComp",
-	components: { AppModal, CategoryFormComp, ImagePreviewComp, CategoryCloseConfirmationModalComp },
+	components: { 
+		AppModal, 
+		CategoryFormComp, 
+		ImagePreviewComp, 
+		CategoryCloseConfirmationModalComp, 
+	},
 	props: {
 		// If provided category id, then form will be in edit mode
 		categoryId: {
