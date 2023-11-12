@@ -4,7 +4,7 @@ import AppTopBar from "@/components/AppTopBar.vue";
 import AppPageSection from "@/components/AppPageSection.vue";
 import IconComp from "@/components/IconComp/index.vue";
 import AppListItem from "@/components/AppListItem.vue";
-import AppLanguageSelect from "@/components/AppLanguageSelect.vue";
+import LanguageSelectComp from "@/components/LanguageSelectComp.vue";
 
 export default defineComponent({
 	name: "SettingsView",
@@ -13,7 +13,7 @@ export default defineComponent({
 		AppPageSection,
 		IconComp,
 		AppListItem,
-		AppLanguageSelect,
+		LanguageSelectComp,
 	},
 });
 
@@ -32,7 +32,7 @@ export default defineComponent({
 				<AppListItem>
 					<IconComp name="translate" />
 
-					<AppLanguageSelect />
+					<LanguageSelectComp />
 				</AppListItem>
 			</AppPageSection>
 		</div>

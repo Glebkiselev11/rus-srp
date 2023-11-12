@@ -4,7 +4,7 @@ import AppSelect from "./AppSelect.vue";
 import { LanguageList, STORAGE_KEY } from "@/i18n";
 
 export default defineComponent({
-	name: "AppLanguageSelect",
+	name: "LanguageSelectComp",
 	components: {
 		AppSelect,
 	},
