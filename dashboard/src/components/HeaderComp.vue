@@ -5,7 +5,7 @@ import ButtonComp from "./ButtonComp.vue";
 type TitleTag = "h1" | "h2" | "h3" | "h4" | "h5";
 
 export default defineComponent({
-	name: "AppHeader",
+	name: "HeaderComp",
 	components: {
 		ButtonComp,
 	},
@@ -42,10 +42,10 @@ export default defineComponent({
 
 <template>
 	<header
-		class="app-header"
+		class="header"
 		:style="{paddingInline}"
 	>
-		<div class="app-header__part-container">
+		<div class="header__part-container">
 			<slot name="left" />
 			<div>
 				<component
@@ -57,13 +57,13 @@ export default defineComponent({
 
 				<span
 					v-if="subtitle"
-					class="app-header__subtitle"
+					class="header__subtitle"
 					v-text="subtitle"
 				/>
 			</div>
 		</div>
 
-		<div class="app-header__part-container">
+		<div class="header__part-container">
 			<slot name="right" />
 
 			<ButtonComp
@@ -71,7 +71,7 @@ export default defineComponent({
 				icon="close"
 				appearance="inline"
 				color="neutral"
-				class="app-header__close-button"
+				class="header__close-button"
 				@click.stop="close"
 			/>
 		</div>
@@ -81,7 +81,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
 
-.app-header {
+.header {
 	width: 100%;
 	min-height: 48px;
 	padding-block: 12px;

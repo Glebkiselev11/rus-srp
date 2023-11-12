@@ -6,7 +6,7 @@ import { mapActions } from "pinia";
 import { useCategoriesStore } from "@/stores/categories";
 import AppInput from "@/components/AppInput.vue";
 import CategoriesListComp from "@/components/Categories/CategoriesListComp.vue";
-import AppHeader from "@/components/AppHeader.vue";
+import HeaderComp from "@/components/HeaderComp.vue";
 import DropdownMenuComp from "../DropdownMenuComp.vue";
 import type { Order, RequestParams } from "@/types/api";
 import type { LanguageCode } from "@/types/translations";
@@ -19,7 +19,7 @@ export default defineComponent({
 		AppInput,
 		ButtonComp,
 		CategoriesListComp,
-		AppHeader,
+		HeaderComp,
 		DropdownMenuComp,
 		AppTooltip,
 		CategoryFormModalComp,
@@ -131,7 +131,7 @@ export default defineComponent({
 
 <template>
 	<div class="categories">
-		<AppHeader
+		<HeaderComp
 			:title="$t('categories')"
 			title-tag="h4"
 		>
@@ -161,7 +161,7 @@ export default defineComponent({
 					</AppTooltip>
 				</div>
 			</template>
-		</AppHeader>
+		</HeaderComp>
 
 		<AppInput
 			v-model="search"

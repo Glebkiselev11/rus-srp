@@ -1,11 +1,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import AppHeader from "@/components/AppHeader.vue";
+import HeaderComp from "@/components/HeaderComp.vue";
 
 export default defineComponent({
 	name: "AppModal",
 	components: {
-		AppHeader,
+		HeaderComp,
 	},
 	props: {
 		title: {
@@ -55,7 +55,7 @@ export default defineComponent({
 		class="app-modal-screen"
 	>
 		<div class="app-modal">
-			<AppHeader
+			<HeaderComp
 				:title="title"
 				:subtitle="subtitle"
 				:padding-inline="headerPaddingInline"
@@ -65,7 +65,7 @@ export default defineComponent({
 				<template #left>
 					<slot name="header-left" />
 				</template>
-			</AppHeader>
+			</HeaderComp>
 			<slot name="content" />
 		</div>
 	</div>

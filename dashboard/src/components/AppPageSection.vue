@@ -1,11 +1,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import AppHeader from "@/components/AppHeader.vue";
+import HeaderComp from "@/components/HeaderComp.vue";
 
 export default defineComponent({
 	name: "AppPageSection",
 	components: {
-		AppHeader,
+		HeaderComp,
 	},
 	props: {
 		title: {
@@ -19,7 +19,7 @@ export default defineComponent({
 
 <template>
 	<div class="app-page-section">
-		<AppHeader
+		<HeaderComp
 			v-if="title"
 			:title="title"
 		/>
