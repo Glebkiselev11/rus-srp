@@ -1,13 +1,13 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue"; 
-import AppSelect from "@/components/AppSelect.vue";
+import SelectComp from "@/components/SelectComp.vue";
 import InputComp from "@/components/InputComp.vue";
 import PaginationComp from "./PaginationComp.vue";
 
 export default defineComponent({
 	name: "PaginationBarComp",
 	components: {
-		AppSelect,
+		SelectComp,
 		InputComp,
 		PaginationComp,
 	},
@@ -67,7 +67,7 @@ export default defineComponent({
 
 			<div class="limit-controller">
 				<span class="limit-controller__text">{{ $t("pagination.show") }}</span>
-				<AppSelect
+				<SelectComp
 					:model-value="limit"
 					:options="limitOptions"
 					size="compact"

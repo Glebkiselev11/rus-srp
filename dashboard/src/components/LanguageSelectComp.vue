@@ -1,12 +1,12 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import AppSelect from "./AppSelect.vue";
+import SelectComp from "./SelectComp.vue";
 import { LanguageList, STORAGE_KEY } from "@/i18n";
 
 export default defineComponent({
 	name: "LanguageSelectComp",
 	components: {
-		AppSelect,
+		SelectComp,
 	},
 	data() {
 		return {
@@ -29,7 +29,7 @@ export default defineComponent({
 </script>
 
 <template>
-	<AppSelect
+	<SelectComp
 		v-model="currentLanguage"
 		:label="$t('interface-language')"
 		:options="options"

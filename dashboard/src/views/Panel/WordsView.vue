@@ -7,7 +7,7 @@ import type { Order, RequestParams } from "@/types/api";
 import CategoriesComp from "@/components/Categories/CategoriesComp.vue";
 import AppTopBar from "@/components/AppTopBar.vue";
 import InputComp from "@/components/InputComp.vue";
-import AppSelect from "@/components/AppSelect.vue";
+import SelectComp from "@/components/SelectComp.vue";
 import TableComp from "@/components/Table/TableComp.vue";
 import TableRowComp from "@/components/Table/TableRowComp.vue";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
@@ -28,7 +28,7 @@ export default defineComponent({
 	components: {
 		AppTopBar,
 		InputComp,
-		AppSelect,
+		SelectComp,
 		TableComp,
 		TableRowComp,
 		ImagePreviewComp,
@@ -211,7 +211,7 @@ export default defineComponent({
 						debounce
 					/>	
 
-					<AppSelect
+					<SelectComp
 						v-model="order"
 						:options="orderOptions"
 						appearance="inline"

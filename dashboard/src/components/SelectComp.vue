@@ -7,7 +7,7 @@ import type { SelectSize, SelectAppearance } from "@/types/select";
 import type { IconName } from "@/types/icons";
 
 export default defineComponent({
-	name: "AppSelect",
+	name: "SelectComp",
 	components: {
 		InputWrapperComp,
 		DropdownMenuComp,
@@ -83,13 +83,13 @@ export default defineComponent({
 		>
 			<button 
 				id="select"
-				class="app-select"
+				class="select"
 				:disabled="disabled"
 				:class="[
-					`app-select--appearance-${appearance}`,
-					`app-select--size-${size}`,
-					{ 'app-select--menu-open': isMenuOpen },
-					{ 'app-select--with-icon': icon }
+					`select--appearance-${appearance}`,
+					`select--size-${size}`,
+					{ 'select--menu-open': isMenuOpen },
+					{ 'select--with-icon': icon }
 				]"
 			>
 				<IconComp
@@ -114,7 +114,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
 
-.app-select {
+.select {
 	border-radius: 8px;
 	padding-block: 0px;
 	cursor: pointer;
@@ -157,30 +157,30 @@ export default defineComponent({
 	}
 
 	&--with-icon {
-		&.app-select--size-regular {
+		&.select--size-regular {
 			padding-inline: 8px;
 			column-gap: 8px;
 		}
 
-		&.app-select--size-compact {
+		&.select--size-compact {
 			padding-inline: 6px;
 		}
 	}
 
 	&:hover {
-		&.app-select--appearance-default, &.app-select--appearance-inline {
+		&.select--appearance-default, &.select--appearance-inline {
 			background-color: $color-background-content-primary-hovered;
 		}
-		&.app-select--appearance-filled {
+		&.select--appearance-filled {
 			background-color: $color-background-tertiary-hovered;
 		}
 	}
 
-	&:active, &.app-select--menu-open {
-		&.app-select--appearance-default, &.app-select--appearance-inline {
+	&:active, &.select--menu-open {
+		&.select--appearance-default, &.select--appearance-inline {
 			background-color: $color-background-content-primary-active;
 		}
-		&.app-select--appearance-filled {
+		&.select--appearance-filled {
 			background-color: $color-background-tertiary-active;
 		}
 	}
