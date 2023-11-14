@@ -172,8 +172,9 @@ export default defineComponent({
 				this.deleteWord(word.id);
 			}
 		},
-		editWord(id: number) {
-			console.log("editWord", id);
+		openEditingWordForm(id: number) {
+			this.editingWordId = id;
+			this.showWordForm = true;
 		},
 		extractWordPreview(word: Word): string {
 			return `${word.rus} — ${word.eng} — ${word.srp_latin} — ${word.srp_cyrillic}`;
@@ -260,7 +261,7 @@ export default defineComponent({
 										{ 
 											label: $t('edit'),
 											icon: 'edit',
-											handler: () => editWord(word.id)
+											handler: () => openEditingWordForm(word.id)
 										},
 										'separator',
 										{ 

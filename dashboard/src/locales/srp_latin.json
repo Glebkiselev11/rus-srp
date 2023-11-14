@@ -71,6 +71,8 @@
   "add-image": "Dodavanje slike",
   "editing-category": "Uređivanje kategorije",
   "creation-category": "Kreiranje kategorije",
+  "creation-word": "Kreiranje reči",
+  "editing-word": "Uređivanje reči",
   "selected": "Izabrano",
   "search-by-query": "Traži “{query}”",
   "image-search-title": "Da biste pronašli sliku, unesite upit na engleskom",

@@ -17,6 +17,11 @@ export default defineComponent({
 		},
 	},
 	emits: ["close"],
+	computed: {
+		title(): string {
+			return this.wordId ? this.$t("editing-word") : this.$t("creation-word");
+		},
+	},
 	methods: {
 		close() {
 			this.$emit("close");
@@ -28,7 +33,7 @@ export default defineComponent({
 
 <template>
 	<ModalComp
-		title="title"
+		:title="title"
 		@close="close"
 	>
 		<template #content>

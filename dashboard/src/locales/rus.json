@@ -71,6 +71,8 @@
   "add-image": "Добавление изображения",
   "editing-category": "Изменение категории",
   "creation-category": "Создание категории",
+  "creation-word": "Создание слова",
+  "editing-word": "Изменение слова",
   "selected": "Выбрано",
   "search-by-query": "Искать “{query}”",
   "image-search-title": "Чтобы найти изображение, введите запрос на английском",

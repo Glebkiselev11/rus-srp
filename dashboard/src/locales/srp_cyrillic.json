@@ -71,6 +71,8 @@
   "add-image": "Додавање слике",
   "editing-category": "Уређивање категорије",
   "creation-category": "Креирање категорије",
+  "creation-word": "Креирање речи",
+  "editing-word": "Уређивање речи",
   "selected": "Изабрано",
   "search-by-query": "Тражи “{query}”",
   "image-search-title": "Да бисте пронашли слику, унесите упит на енглеском",
