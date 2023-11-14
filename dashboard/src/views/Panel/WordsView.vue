@@ -20,6 +20,7 @@ import { highlighTextByQuery } from "@/common/utils";
 
 import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/types/translations";
+import WordFormModalComp from "@/components/WordFormModalComp.vue";
 
 const LIMIT_DEFAULT = 25;
 
@@ -38,6 +39,7 @@ export default defineComponent({
 		ZeroStateComp,
 		CategoriesComp,
 		WordsPageCategoryTitleComp,
+		WordFormModalComp,
 	},
 	data() {
 		return {
@@ -69,6 +71,8 @@ export default defineComponent({
 				order: "-created_at" as Order,
 				category_id: undefined,
 			},
+			showWordForm: false,
+			editingWordId: undefined as number | undefined,
 		};
 	},
 	computed: {
@@ -157,8 +161,9 @@ export default defineComponent({
 		updateOrder(order: Order) {
 			this.filter = { ...this.filter, order };
 		},
-		openNewWordPage() {
-			console.log("openNewWordPage");
+		openCreationWordForm() {
+			this.editingWordId = undefined;
+			this.showWordForm = true;
 		},
 		async removeWord(word: Word) {
 			const key = this.$i18n.locale as LanguageCode;
@@ -195,8 +200,8 @@ export default defineComponent({
 				<template #right>
 					<ButtonComp
 						icon="add"
-						:label="$t('add-word')"
-						@click="openNewWordPage"
+						:label="$t('create-word')"
+						@click="openCreationWordForm"
 					/>
 				</template>
 			</TopBarComp>
@@ -305,6 +310,12 @@ export default defineComponent({
 			</div>
 		</div>
 	</div>
+
+	<WordFormModalComp
+		v-if="showWordForm"
+		:word-id="editingWordId"
+		@close="showWordForm = false"
+	/>
 </template>
 
 <style scoped lang="scss">

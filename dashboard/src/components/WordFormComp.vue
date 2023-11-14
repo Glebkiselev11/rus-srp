@@ -2,13 +2,13 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-	name: "WordFormComponent",
+	name: "WordFormComp",
 });
 
 </script>
 
 <template>
 	<div>
-		hi from word form
+		word form...
 	</div>
 </template>

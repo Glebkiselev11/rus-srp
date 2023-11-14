@@ -42,6 +42,7 @@
     "description": "Enter a word in the corresponding language"
   },
   "add-word": "Add word",
+  "create-word": "Create word",
   "search": "Search",
   "find-word": "Find the word",
   "find-category": "Find category",
