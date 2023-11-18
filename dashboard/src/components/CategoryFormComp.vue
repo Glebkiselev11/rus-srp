@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import ImagePreviewComp from "./ImagePreviewComp.vue";
+import ImageSectionComp from "./ImageSectionComp.vue";
 import { useCategoriesStore } from "@/stores/categories";
 import { mapActions, mapState } from "pinia";
 import type { Category, DraftCategory } from "@/types/categories";
@@ -13,7 +13,11 @@ import { CategoriesApi } from "@/api/categories";
 
 export default defineComponent({
 	name: "CategoryFormComp",
-	components: { ImagePreviewComp, InputComp, ButtonComp },
+	components: { 
+		ImageSectionComp,
+		InputComp, 
+		ButtonComp, 
+	},
 	props: {
 		categoryId: {
 			type: Number,
@@ -225,15 +229,12 @@ export default defineComponent({
 
 <template>
 	<div class="category-form">
-		<div class="category-form__preview">
-			<ImagePreviewComp
-				size="96px"
-				:src="draftCategory.image"
-				:image-search-modal-subtitle="categoryName"
-				:default-image-search-query="defaultImageSearchQuery"
-				@update:src="draftCategory.image = $event"
-			/>
-
+		<ImageSectionComp
+			:src="draftCategory.image"
+			:image-search-modal-subtitle="categoryName"
+			:default-image-search-query="defaultImageSearchQuery"
+			@update:src="draftCategory.image = $event"	
+		>
 			<InputComp
 				v-model="draftCategory[selectedLanguage]"
 				:label="$t('category-name')"
@@ -245,7 +246,7 @@ export default defineComponent({
 				:reset-value="category?.[selectedLanguage]"
 				@focusout="triggerCategoryNameUniqueValidation"
 			/>
-		</div>
+		</ImageSectionComp>
 
 		<div class="category-form__row">
 			<div>
@@ -335,16 +336,6 @@ export default defineComponent({
 	padding-inline: 16px;
 	padding-block-end: 20px;
 	width: 598px;
-
-	&__preview {
-		display: flex;
-		column-gap: 24px;
-		width: 100%;
-		height: 144px;
-		padding: 24px;
-		background: $color-background;
-		border-radius: 16px;
-	}
 
 	&__row {
 		display: flex;
