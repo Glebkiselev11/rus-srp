@@ -77,5 +77,7 @@
   "search-by-query": "Traži “{query}”",
   "image-search-title": "Da biste pronašli sliku, unesite upit na engleskom",
   "image-search-description": "Ovo može biti direktan prevod ili sinonim dodane reči",
-  "to-sort": "Sortirati"
+  "to-sort": "Sortirati",
+  "image": "Slika",
+  "new-word": "Nova reč"
 }

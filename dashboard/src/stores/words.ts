@@ -8,6 +8,11 @@ export const useWordsStore = defineStore("words", {
 		words: [] as Array<Word>,
 		count: 0,
 	}),
+	getters: {
+		getWordById(state) {
+			return (id: number) => state.words.find((w) => w.id === id);
+		},
+	},
 	actions: {
 		async fetchWords(params: RequestParams) {
 			try {
