@@ -1,4 +1,4 @@
-import type { Load, RequestParams } from "@/types/api";
+import type { Id, Load, RequestParams } from "@/types/api";
 import { defineStore } from "pinia";
 import { CategoriesApi } from "@/api";
 import type { Category, DraftCategory } from "@/types/categories";
@@ -17,6 +17,15 @@ export const useCategoriesStore = defineStore("categories", {
 	},
 
 	actions: {
+		async createCategory(category: DraftCategory) {
+			try {
+				const { data } = await CategoriesApi.create(category);
+				this.categories = [...this.categories, data];
+			} catch (error) {
+				console.error(error);
+			}
+		},
+
 		async fetchCategories(params: RequestParams) {
 			try {
 				this.loadState = "loading";
@@ -30,7 +39,7 @@ export const useCategoriesStore = defineStore("categories", {
 			} 
 		},
 
-		async updateCategory(id: number, category: DraftCategory | Category) {
+		async updateCategory(id: Id, category: DraftCategory | Category) {
 			try {
 				const { data } = await CategoriesApi.update(id, category);
 				this.categories = this.categories.map((c) => (c.id === data.id ? data : c));
@@ -39,16 +48,7 @@ export const useCategoriesStore = defineStore("categories", {
 			}
 		},
 
-		async createCategory(category: DraftCategory) {
-			try {
-				const { data } = await CategoriesApi.create(category);
-				this.categories = [...this.categories, data];
-			} catch (error) {
-				console.error(error);
-			}
-		},
-
-		async deleteCategory(id: number) {
+		async deleteCategory(id: Id) {
 			try {
 				await CategoriesApi.delete(id);
 				this.categories = this.categories.filter((c) => c.id !== id);
