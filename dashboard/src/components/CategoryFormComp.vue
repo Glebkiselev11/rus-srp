@@ -1,8 +1,8 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import ImageSectionComp from "./ImageSectionComp.vue";
 import { useCategoriesStore } from "@/stores/categories";
-import { mapActions, mapState } from "pinia";
+import { mapActions } from "pinia";
 import type { Category, DraftCategory } from "@/types/categories";
 import { LanguageList } from "@/i18n";
 import type { LanguageCode } from "@/types/translations";
@@ -19,8 +19,8 @@ export default defineComponent({
 		ButtonComp, 
 	},
 	props: {
-		categoryId: {
-			type: Number,
+		category: {
+			type: Object as PropType<Category>,
 			default: undefined,
 		},
 	},
@@ -43,10 +43,6 @@ export default defineComponent({
 	},
 
 	computed: {
-		...mapState(useCategoriesStore, ["getCategoryById"]),
-		category(): Category | undefined {
-			return this.categoryId ? this.getCategoryById(this.categoryId) : undefined;
-		},
 		selectedLanguage(): LanguageCode {
 			return this.$i18n.locale as LanguageCode;
 		},
@@ -57,7 +53,7 @@ export default defineComponent({
 			return this.draftCategory.eng;
 		},
 		saveButtonLabel(): string {
-			return this.categoryId ? this.$t("save-changes") : this.$t("create");
+			return this.category ? this.$t("save-changes") : this.$t("create");
 		},
 		showFillAutoButton(): boolean {
 			const draftCategoryName = this.draftCategory[this.selectedLanguage];
@@ -212,7 +208,7 @@ export default defineComponent({
 				category.image,
 			];
 
-			if (!this.categoryId) {
+			if (!this.category) {
 				const isAnyFilled = getFields(this.draftCategory).some((x) => x);
 				this.$emit("set-changed-status", isAnyFilled);
 			} else if (this.category) {

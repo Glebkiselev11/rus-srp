@@ -80,7 +80,7 @@ export default defineComponent({
 		</template>
 		<template #content>
 			<CategoryFormComp
-				:category-id="categoryId"
+				:category="category"
 				@saved="close"
 				@close="tryClose"
 				@set-changed-status="setChanged"
