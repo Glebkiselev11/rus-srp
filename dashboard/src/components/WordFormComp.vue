@@ -5,6 +5,8 @@ import { getLanguageName } from "@/common/translations";
 import ImageSectionComp from "./ImageSectionComp.vue";
 import ButtonComp from "./ButtonComp.vue";
 import InputComp from "./InputComp.vue";
+import { useWordsStore } from "@/stores/words";
+import { mapActions } from "pinia";
 
 export default defineComponent({
 	name: "WordFormComp",
@@ -15,6 +17,7 @@ export default defineComponent({
 			default: undefined,
 		},
 	},
+	emits: ["close", "saved"],
 	data() {
 		return {
 			draftWord: {
@@ -38,6 +41,9 @@ export default defineComponent({
 		showFillAutoButton(): boolean {
 			return false;
 		},
+		saveButtonLabel(): string {
+			return this.word ? this.$t("save-changes") : this.$t("create");
+		},
 	},
 	created() {
 		if (this.word) {
@@ -45,9 +51,22 @@ export default defineComponent({
 		}
 	},
 	methods: {
+		...mapActions(useWordsStore, ["createWord", "updateWord"]),
 		getLanguageName,
 		autoFill() {
 			console.log("autoFill");
+		},
+		close() {
+			this.$emit("close");
+		},
+		async saveWord() {
+			if (this.word) {
+				await this.updateWord(this.word.id, this.draftWord);
+			} else {
+				await this.createWord(this.draftWord);
+			}
+
+			this.$emit("saved");
 		},
 	},
 });
@@ -115,6 +134,18 @@ export default defineComponent({
 			:label="getLanguageName('srp_cyrillic')"
 			class="word-form__translation-input"
 		/>
+
+		<div class="word-form__footer">
+			<ButtonComp
+				appearance="secondary"
+				:label="$t('cancel')"	
+				@click="close"
+			/>
+			<ButtonComp
+				:label="saveButtonLabel"
+				@click="saveWord"
+			/>
+		</div>
 	</div>
 </template>
 
@@ -135,6 +166,13 @@ export default defineComponent({
 
 	&__translation-input {
 		margin-block: 20px;
+	}
+
+	&__footer {
+		display: flex;
+		justify-content: flex-end;
+		column-gap: 8px;
+		padding-block-start: 16px;
 	}
 }
 

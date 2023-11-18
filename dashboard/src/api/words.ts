@@ -5,7 +5,7 @@ import axios, { type AxiosResponse } from "axios";
 export const WordsApi = {
 	ENDPOINT: "/api/v1/words",
 	create(data: DraftWord): Promise<AxiosResponse<Word>> {
-		return axios.post(this.ENDPOINT, data);
+		return axios.post(`${this.ENDPOINT}/create`, data);
 	},
 	query(params: OptionalRequestParams): Promise<AxiosResponse<ListResponse<Word>>> {
 		return axios.get(this.ENDPOINT, { params }); 

@@ -180,7 +180,7 @@ export default defineComponent({
 			return `${word.rus} — ${word.eng} — ${word.srp_latin} — ${word.srp_cyrillic}`;
 		},
 		updateWordImage(word: Word, src: string) {
-			this.updateWord({ ...word, image: src });
+			this.updateWord(word.id, { ...word, image: src });
 		},
 	},
 });

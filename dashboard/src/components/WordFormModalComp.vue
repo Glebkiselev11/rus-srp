@@ -53,7 +53,11 @@ export default defineComponent({
 		@close="close"
 	>
 		<template #content>
-			<WordFormComp :word="word" />
+			<WordFormComp
+				:word="word"
+				@close="close"
+				@saved="close"
+			/>
 		</template>
 	</ModalComp>
 </template>
