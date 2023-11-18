@@ -31,7 +31,7 @@ export default defineComponent({
 		},
 		defaultImageSearchQuery: {
 			type: String,
-			default: null,
+			default: "",
 		},
 		size: {
 			type: String as PropType<PreviewSize>,
