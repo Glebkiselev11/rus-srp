@@ -1,6 +1,7 @@
 import type { LanguageCode, Translation } from "@/types/translations";
 import type { TranslateRequest } from "@/types/translations";
 import { TranslationsApi } from "@/api";
+import { LanguageList } from "@/i18n";
 
 export async function translate(
 	from: LanguageCode, 
@@ -27,4 +28,8 @@ export async function translate(
 		console.error(error);
 		return [];
 	}
+}
+
+export function getLanguageName(key: LanguageCode): string {
+	return LanguageList.find(({ value }) => value === key)?.label || "Not found label";
 }

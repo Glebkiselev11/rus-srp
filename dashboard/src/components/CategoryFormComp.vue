@@ -10,6 +10,7 @@ import InputComp from "./InputComp.vue";
 import ButtonComp from "./ButtonComp.vue";
 import { translate } from "@/common/translations";
 import { CategoriesApi } from "@/api/categories";
+import { getLanguageName } from "@/common/translations";
 
 export default defineComponent({
 	name: "CategoryFormComp",
@@ -103,9 +104,7 @@ export default defineComponent({
 	},
 	methods: {
 		...mapActions(useCategoriesStore, ["createCategory", "updateCategory"]),
-		getLabelByKey(key: LanguageCode): string {
-			return LanguageList.find(({ value }) => value === key)?.label || "Not found label";
-		},
+		getLanguageName,
 		removeCategoryNameErrorValidation(error: string): void {
 			this.categoryNameValidationErrors = this.categoryNameValidationErrors.filter(
 				(x) => x !== error,
@@ -271,7 +270,7 @@ export default defineComponent({
 			:error="rusValidationError"
 			:reset-value="category?.rus"
 			clear-button
-			:label="getLabelByKey('rus')"
+			:label="getLanguageName('rus')"
 			class="category-form__translation-input"
 		/>
 
@@ -283,7 +282,7 @@ export default defineComponent({
 			clear-button
 			:reset-value="category?.eng"
 			:error="engValidationError"
-			:label="getLabelByKey('eng')"
+			:label="getLanguageName('eng')"
 			class="category-form__translation-input"
 		/>
 
@@ -295,7 +294,7 @@ export default defineComponent({
 			clear-button
 			:reset-value="category?.srp_latin"
 			:error="srp_latinValidationError"
-			:label="getLabelByKey('srp_latin')"
+			:label="getLanguageName('srp_latin')"
 			class="category-form__translation-input"
 		/>
 
@@ -307,7 +306,7 @@ export default defineComponent({
 			clear-button
 			:reset-value="category?.srp_cyrillic"
 			:error="srp_cyrillicValidationError"
-			:label="getLabelByKey('srp_cyrillic')"
+			:label="getLanguageName('srp_cyrillic')"
 			class="category-form__translation-input"
 		/>
 
