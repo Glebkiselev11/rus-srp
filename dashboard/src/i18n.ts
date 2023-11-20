@@ -7,6 +7,8 @@ import type { LanguageCode } from "@/types/translations";
 
 export const STORAGE_KEY = "languageKey";
 
+export const LanguageCodes: LanguageCode[] = ["eng", "rus", "srp_latin", "srp_cyrillic"];
+
 export const LanguageList = [
 	{ value: "eng", label: "English" },
 	{ value: "rus", label: "Русский" },

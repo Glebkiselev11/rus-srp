@@ -189,7 +189,7 @@ export default defineComponent({
 			const target = LanguageList
 				.filter(({ value }) => value !== from).map(({ value }) => value);
 
-			translate(from, target, this.draftCategory[from]).then((translations) => {
+			translate(from, this.draftCategory[from], target).then((translations) => {
 				translations.forEach(({ to, text }) => {
 					this.draftCategory[to] = text.toLowerCase();
 				});
