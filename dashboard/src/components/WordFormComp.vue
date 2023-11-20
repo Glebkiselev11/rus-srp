@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 import type { DraftWord, Word } from "@/types/words";
-import { getLanguageName } from "@/common/translations";
+import { getLanguageName, autoTranslate } from "@/common/translations";
 import ImageSectionComp from "./ImageSectionComp.vue";
 import ButtonComp from "./ButtonComp.vue";
 import InputComp from "./InputComp.vue";
@@ -39,7 +39,12 @@ export default defineComponent({
 			}
 		},
 		showFillAutoButton(): boolean {
-			return false;
+			return Boolean(
+				this.draftWord.rus || 
+				this.draftWord.eng || 
+				this.draftWord.srp_latin || 
+				this.draftWord.srp_cyrillic,
+			);
 		},
 		saveButtonLabel(): string {
 			return this.word ? this.$t("save-changes") : this.$t("create");
@@ -53,8 +58,13 @@ export default defineComponent({
 	methods: {
 		...mapActions(useWordsStore, ["createWord", "updateWord"]),
 		getLanguageName,
-		autoFill() {
-			console.log("autoFill");
+		autoTranslate,
+		async autoFill() {
+			const fields = await this.autoTranslate(this.draftWord);
+			this.draftWord = {
+				...this.draftWord,
+				...fields,
+			};
 		},
 		close() {
 			this.$emit("close");
