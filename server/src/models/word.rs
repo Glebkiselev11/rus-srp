@@ -1,4 +1,3 @@
-use crate::utils::translate::SerbianCyrillic;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize)]
@@ -6,6 +5,7 @@ pub struct NewWordBody {
     pub rus: String,
     pub eng: String,
     pub srp_latin: String,
+    pub srp_cyrillic: String,
     pub image: Option<String>,
 }
 
@@ -26,7 +26,7 @@ impl From<NewWordBody> for NewWord {
             rus: format(&body.rus),
             srp_latin: format(&body.srp_latin),
             eng: format(&body.eng),
-            srp_cyrillic: format(&SerbianCyrillic::from_latin(&body.srp_latin)),
+            srp_cyrillic: format(&body.srp_latin),
             image: body.image,
         }
     }
