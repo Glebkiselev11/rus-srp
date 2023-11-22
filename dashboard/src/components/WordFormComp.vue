@@ -30,21 +30,25 @@ export default defineComponent({
 		};
 	},
 	computed: {
+		translations(): string[]  {
+			return [
+				this.draftWord.rus,
+				this.draftWord.eng,
+				this.draftWord.srp_latin,
+				this.draftWord.srp_cyrillic,
+			];
+		},
 		subtitle(): string {
-			if (this.word) {
-				// eslint-disable-next-line max-len
-				return `${this.draftWord.rus} - ${this.draftWord.eng} - ${this.draftWord.srp_latin} - ${this.draftWord.srp_cyrillic}`; 
+			if (this.word || this.anyTranslationFilled) {
+				return this.translations 
+					.map(x => Boolean(x) ? x : " ? ")
+					.join(" — ") as string;
 			} else {
 				return this.$t("new-word");
 			}
 		},
-		showFillAutoButton(): boolean {
-			return Boolean(
-				this.draftWord.rus || 
-				this.draftWord.eng || 
-				this.draftWord.srp_latin || 
-				this.draftWord.srp_cyrillic,
-			);
+		anyTranslationFilled(): boolean {
+			return this.translations.some(x => Boolean(x));
 		},
 		saveButtonLabel(): string {
 			return this.word ? this.$t("save-changes") : this.$t("create");
@@ -110,7 +114,7 @@ export default defineComponent({
 			<h3>{{ $t('translation') }}</h3>
 
 			<ButtonComp
-				v-show="showFillAutoButton"
+				v-show="anyTranslationFilled"
 				icon="edit_note"
 				appearance="inline"
 				size="compact"
