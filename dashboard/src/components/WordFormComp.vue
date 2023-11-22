@@ -17,7 +17,7 @@ export default defineComponent({
 			default: undefined,
 		},
 	},
-	emits: ["close", "saved"],
+	emits: ["close", "saved", "update-subtitle"],
 	data() {
 		return {
 			draftWord: {
@@ -50,10 +50,17 @@ export default defineComponent({
 			return this.word ? this.$t("save-changes") : this.$t("create");
 		},
 	},
+	watch: {
+		subtitle() {
+			this.emitUpdateSubtitle();
+		},
+	},
 	created() {
 		if (this.word) {
 			this.draftWord = { ...this.word };
 		}
+
+		this.emitUpdateSubtitle();
 	},
 	methods: {
 		...mapActions(useWordsStore, ["createWord", "updateWord"]),
@@ -77,6 +84,9 @@ export default defineComponent({
 			}
 
 			this.$emit("saved");
+		},
+		emitUpdateSubtitle() {
+			this.$emit("update-subtitle", this.subtitle);
 		},
 	},
 });
@@ -103,7 +113,7 @@ export default defineComponent({
 				v-show="showFillAutoButton"
 				icon="edit_note"
 				appearance="inline"
-				size="regular"
+				size="compact"
 				:label="$t('fill-in-auto')"
 				@click="autoFill"
 			/>
@@ -172,6 +182,7 @@ export default defineComponent({
 		justify-content: space-between;
 		align-items: center;
 		margin-block: 20px;
+		height: 32px;
 	}
 
 	&__translation-input {

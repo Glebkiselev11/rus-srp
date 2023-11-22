@@ -20,6 +20,11 @@ export default defineComponent({
 		},
 	},
 	emits: ["close"],
+	data() {
+		return {
+			subtitle: "", // Updating from child component
+		};
+	},
 	computed: {
 		...mapState(useWordsStore, ["getWordById"]),
 		word(): Word | undefined {
@@ -27,14 +32,6 @@ export default defineComponent({
 		},
 		title(): string {
 			return this.wordId ? this.$t("editing-word") : this.$t("creation-word");
-		},
-		subtitle(): string {
-			if (this.word) {
-				// eslint-disable-next-line max-len
-				return `${this.word.rus} - ${this.word.eng} - ${this.word.srp_latin} - ${this.word.srp_cyrillic}`; 
-			} else {
-				return this.$t("creation-word");
-			}
 		},
 	},
 	methods: {
@@ -55,6 +52,7 @@ export default defineComponent({
 		<template #content>
 			<WordFormComp
 				:word="word"
+				@update-subtitle="subtitle = $event"
 				@close="close"
 				@saved="close"
 			/>
