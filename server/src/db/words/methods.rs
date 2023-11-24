@@ -5,7 +5,7 @@ use crate::{
     models::{
         pagination::DbQueryResult,
         query_options::QueryOptions,
-        word::{NewWord, UpdateWordBody},
+        word::{NewWord, UpdateWord},
     },
 };
 use diesel::{expression::expression_types::NotSelectable, prelude::*, sqlite::Sqlite};
@@ -108,7 +108,7 @@ pub fn select_all_with_filter(
 }
 
 pub fn update(
-    payload: UpdateWordBody,
+    payload: UpdateWord,
     id: i32,
     conn: &mut SqliteConnection,
 ) -> Result<Option<DbWord>, DbError> {

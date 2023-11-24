@@ -1,5 +1,5 @@
-use crate::models::word::NewWord;
-use crate::{db::schema::words, models::word::UpdateWordBody};
+use crate::db::schema::words;
+use crate::models::word::{NewWord, UpdateWord};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, Queryable, Insertable)]
@@ -50,7 +50,7 @@ pub struct DbWord {
 }
 
 impl DbWord {
-    pub fn with_update(&self, payload: UpdateWordBody) -> DbWord {
+    pub fn with_update(&self, payload: UpdateWord) -> DbWord {
         DbWord {
             id: self.id,
             created_at: self.created_at,

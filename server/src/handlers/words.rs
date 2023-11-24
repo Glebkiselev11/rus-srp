@@ -3,7 +3,7 @@ use crate::db;
 use crate::db::error_type::DbError;
 use crate::models::pagination::Pagination;
 use crate::models::query_options::QueryOptions;
-use crate::models::word::{NewWord, NewWordBody, UpdateWordBody};
+use crate::models::word::{NewWord, NewWordBody, UpdateWord, UpdateWordBody};
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 
@@ -64,7 +64,7 @@ pub async fn update(
     id: web::Path<i32>,
     body: web::Json<UpdateWordBody>,
 ) -> actix_web::Result<impl Responder> {
-    let word = body.into_inner();
+    let word = UpdateWord::from(body.into_inner());
 
     let word = web::block(move || {
         let mut conn = pool.get()?;
