@@ -52,7 +52,7 @@ export default defineComponent({
 		<template #content>
 			<WordFormComp
 				:word="word"
-				@update-subtitle="subtitle = $event"
+				@update-modal-subtitle="subtitle = $event"
 				@close="close"
 				@saved="close"
 			/>

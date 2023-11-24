@@ -7,6 +7,7 @@ import ButtonComp from "./ButtonComp.vue";
 import InputComp from "./InputComp.vue";
 import { useWordsStore } from "@/stores/words";
 import { mapActions } from "pinia";
+import { WordsApi } from "@/api/words";
 
 export default defineComponent({
 	name: "WordFormComp",
@@ -17,7 +18,7 @@ export default defineComponent({
 			default: undefined,
 		},
 	},
-	emits: ["close", "saved", "update-subtitle"],
+	emits: ["close", "saved", "update-modal-subtitle"],
 	data() {
 		return {
 			draftWord: {
@@ -27,6 +28,11 @@ export default defineComponent({
 				srp_cyrillic: "",
 				image: null,
 			} as DraftWord,
+			uniqueWordError: false,
+			rusValidationError: undefined as string | undefined,
+			engValidationError: undefined as string | undefined,
+			srpLatinValidationError: undefined as string | undefined,
+			srpCyrillicValidationError: undefined as string | undefined,
 		};
 	},
 	computed: {
@@ -38,11 +44,18 @@ export default defineComponent({
 				this.draftWord.srp_cyrillic,
 			];
 		},
-		subtitle(): string {
+		wordPreview(): string {
 			if (this.word || this.anyTranslationFilled) {
-				return this.translations 
-					.map(x => Boolean(x) ? x : " ? ")
-					.join(" — ") as string;
+				return this.getWordPreview(this.draftWord);
+			} else {
+				return this.$t("new-word");
+			}
+		},
+		modalSubtitle(): string {
+			if (this.word) {
+				return this.getWordPreview(this.word);
+			} else if (this.anyTranslationFilled) {
+				return this.getWordPreview(this.draftWord);
 			} else {
 				return this.$t("new-word");
 			}
@@ -50,21 +63,44 @@ export default defineComponent({
 		anyTranslationFilled(): boolean {
 			return this.translations.some(x => Boolean(x));
 		},
+		allTranslationsFilled(): boolean {
+			return this.translations.every(x => Boolean(x));
+		},
 		saveButtonLabel(): string {
 			return this.word ? this.$t("save-changes") : this.$t("create");
 		},
+		isValidToSave(): boolean {
+			return this.allTranslationsFilled && !this.uniqueWordError;
+		},
 	},
 	watch: {
-		subtitle() {
-			this.emitUpdateSubtitle();
+		modalSubtitle() {
+			this.emitUpdateModalSubtitle();
 		},
+		["draftWord.rus"]() {
+			this.rusValidationError = undefined;
+			this.uniqueWordError = false;
+		},
+		["draftWord.eng"]() {
+			this.engValidationError = undefined;
+			this.uniqueWordError = false;
+		},
+		["draftWord.srp_latin"]() {
+			this.srpLatinValidationError = undefined;
+			this.uniqueWordError = false;
+		},
+		["draftWord.srp_cyrillic"]() {
+			this.srpCyrillicValidationError = undefined;
+			this.uniqueWordError = false;
+		},
+
 	},
 	created() {
 		if (this.word) {
 			this.draftWord = { ...this.word };
 		}
 
-		this.emitUpdateSubtitle();
+		this.emitUpdateModalSubtitle();
 	},
 	methods: {
 		...mapActions(useWordsStore, ["createWord", "updateWord"]),
@@ -80,7 +116,61 @@ export default defineComponent({
 		close() {
 			this.$emit("close");
 		},
+		getWordPreview(word: Word | DraftWord) {
+			return [
+				word.rus,
+				word.eng,
+				word.srp_latin,
+				word.srp_cyrillic]
+				.map(x => Boolean(x) ? x : " ? ")
+				.join(" — ");
+		},
+		async triggerWordNameUniqueValidation() {
+			const search = this.draftWord.eng;
+
+			if (!search) {
+				this.uniqueWordError = false;
+				return;
+			}
+
+			const { data } = await WordsApi.query({ search });
+
+			const exists = data.result.find(({ eng, rus, srp_cyrillic, srp_latin }) => {
+				return (
+					eng === this.draftWord.eng.toLocaleLowerCase() &&
+					rus === this.draftWord.rus.toLocaleLowerCase() &&
+					srp_cyrillic === this.draftWord.srp_cyrillic.toLocaleLowerCase() &&
+					srp_latin === this.draftWord.srp_latin.toLocaleLowerCase()
+				);
+			});
+
+			if (this.word?.id === exists?.id) {
+				this.uniqueWordError = false;
+				return;
+			}
+
+			if (exists) {
+				this.uniqueWordError = true;
+			} else {
+				this.uniqueWordError = false;
+			}
+
+		},
+		async triggerValidation() {
+			const checkFieldPresence = (x: string) => x ? undefined : this.$t("required");
+
+			this.rusValidationError = checkFieldPresence(this.draftWord.rus);
+			this.engValidationError = checkFieldPresence(this.draftWord.eng);
+			this.srpCyrillicValidationError = checkFieldPresence(this.draftWord.srp_cyrillic);
+			this.srpLatinValidationError = checkFieldPresence(this.draftWord.srp_latin);
+			
+			await this.triggerWordNameUniqueValidation();
+		},
 		async saveWord() {
+			await this.triggerValidation();
+
+			if (!this.isValidToSave) return;
+
 			if (this.word) {
 				await this.updateWord(this.word.id, this.draftWord);
 			} else {
@@ -89,8 +179,8 @@ export default defineComponent({
 
 			this.$emit("saved");
 		},
-		emitUpdateSubtitle() {
-			this.$emit("update-subtitle", this.subtitle);
+		emitUpdateModalSubtitle() {
+			this.$emit("update-modal-subtitle", this.modalSubtitle);
 		},
 	},
 });
@@ -106,12 +196,21 @@ export default defineComponent({
 		>
 			<div>
 				<h4>{{ $t("image") }}</h4>
-				<span class="text-body-2">{{ subtitle }}</span>
+
+				<span class="text-body-2">{{ wordPreview }}</span>
 			</div>
 		</ImageSectionComp>
 
 		<div class="word-form__row">
-			<h3>{{ $t('translation') }}</h3>
+			<div>
+				<h3>{{ $t('translation') }}</h3>
+
+				<span
+					v-if="uniqueWordError"
+					class="text-color-negative text-body-2"
+					v-text="$t('word-already-exists')"
+				/>
+			</div>
 
 			<ButtonComp
 				v-show="anyTranslationFilled"
@@ -126,8 +225,8 @@ export default defineComponent({
 		<InputComp
 			v-model="draftWord.rus"
 			appearance="outline"
-			disable-error-label
 			clear-button
+			:error="rusValidationError"
 			:label="getLanguageName('rus')"
 			class="word-form__translation-input"
 		/>
@@ -135,7 +234,7 @@ export default defineComponent({
 		<InputComp
 			v-model="draftWord.eng"
 			appearance="outline"
-			disable-error-label
+			:error="engValidationError"
 			clear-button
 			:label="getLanguageName('eng')"
 			class="word-form__translation-input"
@@ -144,7 +243,7 @@ export default defineComponent({
 		<InputComp
 			v-model="draftWord.srp_latin"
 			appearance="outline"
-			disable-error-label
+			:error="srpLatinValidationError"
 			clear-button
 			:label="getLanguageName('srp_latin')"
 			class="word-form__translation-input"
@@ -153,7 +252,7 @@ export default defineComponent({
 		<InputComp
 			v-model="draftWord.srp_cyrillic"
 			appearance="outline"
-			disable-error-label
+			:error="srpCyrillicValidationError"
 			clear-button
 			:label="getLanguageName('srp_cyrillic')"
 			class="word-form__translation-input"
