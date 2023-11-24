@@ -26,7 +26,7 @@ impl From<NewWordBody> for NewWord {
             rus: format(&body.rus),
             srp_latin: format(&body.srp_latin),
             eng: format(&body.eng),
-            srp_cyrillic: format(&body.srp_latin),
+            srp_cyrillic: format(&body.srp_cyrillic),
             image: body.image,
         }
     }
