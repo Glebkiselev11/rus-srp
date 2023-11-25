@@ -144,6 +144,8 @@ export default defineComponent({
 				);
 			});
 
+			// If word exists and it's the same word we are editing
+			// so we are fine
 			if (this.word?.id === exists?.id) {
 				this.uniqueWordError = false;
 				return;
