@@ -175,7 +175,7 @@ export default defineComponent({
 			}
 
 			&.button--color-accent-secondary {
-				background-color: $color-text-accent-secondary;
+				background-color: $color-background-accent-secondary;
 				color: $color-text-contrast;
 			}
 
