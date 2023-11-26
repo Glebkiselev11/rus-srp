@@ -80,5 +80,6 @@
   "to-sort": "Sortirati",
   "image": "Slika",
   "new-word": "Nova reč",
-  "word-already-exists": "Reč sa ovim imenom već postoji"
+  "word-already-exists": "Reč sa ovim imenom već postoji",
+  "create-and-add-next": "Napravite i dodajte još jednu"
 }

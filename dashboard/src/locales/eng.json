@@ -80,5 +80,6 @@
   "to-sort": "Sort",
   "image": "Image",
   "new-word": "New word",
-  "word-already-exists": "Word with this name already exists"
+  "word-already-exists": "Word with this name already exists",
+  "create-and-add-next": "Create and add another"
 }

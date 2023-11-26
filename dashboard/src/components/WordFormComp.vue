@@ -9,6 +9,16 @@ import { useWordsStore } from "@/stores/words";
 import { mapActions } from "pinia";
 import { WordsApi } from "@/api/words";
 
+function initDraftWord(): DraftWord {
+	return {
+		rus: "",
+		eng: "",
+		srp_latin: "",
+		srp_cyrillic: "",
+		image: null,
+	};
+}
+
 export default defineComponent({
 	name: "WordFormComp",
 	components: { ImageSectionComp, ButtonComp, InputComp },
@@ -18,16 +28,10 @@ export default defineComponent({
 			default: undefined,
 		},
 	},
-	emits: ["close", "saved", "update-modal-subtitle"],
+	emits: ["close", "saved", "update-modal-subtitle", "reopen"],
 	data() {
 		return {
-			draftWord: {
-				rus: "",
-				eng: "",
-				srp_latin: "",
-				srp_cyrillic: "",
-				image: null,
-			} as DraftWord,
+			draftWord: initDraftWord(),
 			uniqueWordError: false,
 			rusValidationError: undefined as string | undefined,
 			engValidationError: undefined as string | undefined,
@@ -168,7 +172,7 @@ export default defineComponent({
 			
 			await this.triggerWordNameUniqueValidation();
 		},
-		async saveWord() {
+		async saveWord(resetAfterSave = false) {
 			await this.triggerValidation();
 
 			if (!this.isValidToSave) return;
@@ -179,10 +183,17 @@ export default defineComponent({
 				await this.createWord(this.draftWord);
 			}
 
-			this.$emit("saved");
+			if (resetAfterSave) {
+				this.resetDraftWord();
+			} else {
+				this.$emit("saved");
+			}
 		},
 		emitUpdateModalSubtitle() {
 			this.$emit("update-modal-subtitle", this.modalSubtitle);
+		},
+		resetDraftWord() {
+			this.draftWord = initDraftWord();
 		},
 	},
 });
@@ -266,9 +277,18 @@ export default defineComponent({
 				:label="$t('cancel')"	
 				@click="close"
 			/>
+
+			<ButtonComp
+				v-if="!word"
+				appearance="primary"
+				:label="$t('create-and-add-next')"
+				color="accent-secondary"
+				@click="saveWord(true)"
+			/>
+
 			<ButtonComp
 				:label="saveButtonLabel"
-				@click="saveWord"
+				@click="saveWord()"
 			/>
 		</div>
 	</div>
