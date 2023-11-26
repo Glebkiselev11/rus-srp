@@ -11,6 +11,17 @@ import ButtonComp from "./ButtonComp.vue";
 import { translate } from "@/common/translations";
 import { CategoriesApi } from "@/api/categories";
 import { getLanguageName } from "@/common/translations";
+import { isAnyFieldHasChanged } from "@/common/utils";
+
+function initDraftCategory(): DraftCategory {
+	return {
+		rus: "",
+		eng: "",
+		srp_latin: "",
+		srp_cyrillic: "",
+		image: null,
+	};
+}
 
 export default defineComponent({
 	name: "CategoryFormComp",
@@ -28,13 +39,7 @@ export default defineComponent({
 	emits: ["saved", "close", "set-changed-status"],
 	data() {
 		return {
-			draftCategory: {
-				rus: "",
-				eng: "",
-				srp_latin: "",
-				srp_cyrillic: "",
-				image: null,
-			} as DraftCategory,
+			draftCategory: initDraftCategory(),
 			categoryNameValidationErrors: [] as string[],
 			rusValidationError: undefined as string | undefined,
 			engValidationError: undefined as string | undefined,
@@ -199,22 +204,11 @@ export default defineComponent({
 			this.$emit("close");
 		},
 		updateChangeStatus() {
-			const getFields = (category: Category | DraftCategory) => [
-				category.rus,
-				category.eng,
-				category.srp_latin,
-				category.srp_cyrillic,
-				category.image,
-			];
-
-			if (!this.category) {
-				const isAnyFilled = getFields(this.draftCategory).some((x) => x);
-				this.$emit("set-changed-status", isAnyFilled);
-			} else if (this.category) {
-				const categoryFields = getFields(this.category);
-				const draftCategoryFields = getFields(this.draftCategory);
-				const isAnyChanged = categoryFields.some((x, i) => x !== draftCategoryFields[i]);
-				this.$emit("set-changed-status", isAnyChanged);
+			const emit = "set-changed-status";
+			if (this.category) {
+				this.$emit(emit, isAnyFieldHasChanged(this.category, this.draftCategory));
+			} else {
+				this.$emit(emit, isAnyFieldHasChanged(initDraftCategory(), this.draftCategory));
 			}
 		},
 	},
