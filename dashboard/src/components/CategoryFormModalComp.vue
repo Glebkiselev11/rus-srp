@@ -7,7 +7,7 @@ import { mapState } from "pinia";
 import type { LanguageCode } from "@/types/translations";
 import type { Category } from "@/types/categories";
 import ImagePreviewComp from "./ImagePreviewComp.vue";
-import CategoryCloseConfirmationModalComp from "./CategoryCloseConfirmationModalComp.vue";
+import FormCloseConfirmationModalComp from "./FormCloseConfirmationModalComp.vue";
 
 export default defineComponent({
 	name: "CategoryFormModalComp",
@@ -15,7 +15,7 @@ export default defineComponent({
 		ModalComp, 
 		CategoryFormComp, 
 		ImagePreviewComp, 
-		CategoryCloseConfirmationModalComp, 
+		FormCloseConfirmationModalComp, 
 	},
 	props: {
 		// If provided category id, then form will be in edit mode
@@ -42,6 +42,16 @@ export default defineComponent({
 		},
 		subtitle(): string {
 			return this.category?.[this.$i18n.locale as LanguageCode] || "";
+		},
+		closeConfirmationTitle() {
+			return Boolean(this.category) 
+				? this.$t("modal-exit-confirmation.edit-category-title")
+				: this.$t("modal-exit-confirmation.creation-category-title"); 
+		},
+		closeConfirmationCancelButtonLabel() {
+			return Boolean(this.category)
+				? this.$t("modal-exit-confirmation.continue-editing")
+				: this.$t("modal-exit-confirmation.continue-creation");
 		},
 	},
 	methods: {
@@ -88,9 +98,10 @@ export default defineComponent({
 		</template>
 	</ModalComp>
 
-	<CategoryCloseConfirmationModalComp
+	<FormCloseConfirmationModalComp
 		v-if="showCloseConfirmationModal"
-		:is-editing="Boolean(category)"
+		:title="closeConfirmationTitle"
+		:cancel-button-label="closeConfirmationCancelButtonLabel"
 		@close="showCloseConfirmationModal = false"
 		@confirm="close"
 	/>
