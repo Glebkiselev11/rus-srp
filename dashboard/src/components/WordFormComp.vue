@@ -8,6 +8,7 @@ import InputComp from "./InputComp.vue";
 import { useWordsStore } from "@/stores/words";
 import { mapActions } from "pinia";
 import { WordsApi } from "@/api/words";
+import { isAnyFieldHasChanged } from "@/common/utils";
 
 function initDraftWord(): DraftWord {
 	return {
@@ -28,7 +29,7 @@ export default defineComponent({
 			default: undefined,
 		},
 	},
-	emits: ["close", "saved", "update-modal-subtitle", "reopen"],
+	emits: ["close", "saved", "update-modal-subtitle", "set-changed-status"],
 	data() {
 		return {
 			draftWord: initDraftWord(),
@@ -80,6 +81,12 @@ export default defineComponent({
 	watch: {
 		modalSubtitle() {
 			this.emitUpdateModalSubtitle();
+		},
+		draftWord: {
+			deep: true,
+			handler() {
+				this.updateChangeStatus();
+			},
 		},
 		["draftWord.rus"]() {
 			this.rusValidationError = undefined;
@@ -194,6 +201,14 @@ export default defineComponent({
 		},
 		resetDraftWord() {
 			this.draftWord = initDraftWord();
+		},
+		updateChangeStatus() {
+			const emit = "set-changed-status";
+			if (this.word) {
+				this.$emit(emit, isAnyFieldHasChanged(this.word, this.draftWord));
+			} else {
+				this.$emit(emit, isAnyFieldHasChanged(initDraftWord(), this.draftWord));
+			}
 		},
 	},
 });

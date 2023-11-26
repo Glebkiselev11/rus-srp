@@ -26,6 +26,8 @@
     "description": "Унете измене неће бити сачуване",
     "edit-category-title": "Прекинути измену категорије?",
     "creation-category-title": "Прекинути стварање категорије?",
+    "edit-word-title": "Прекинути измену речи?",
+    "creation-word-title": "Прекинути стварање речи?",
     "continue-creation": "Настави стварање",
     "continue-editing": "Настави измену",
     "confirm": "Да, прекини"

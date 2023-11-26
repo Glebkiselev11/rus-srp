@@ -14,6 +14,8 @@
     "description": "Внесенные изменения не сохранятся",
     "edit-category-title": "Прекратить изменение категории?",
     "creation-category-title": "Прекратить создание категории?",
+    "edit-word-title": "Прекратить изменение слова?",
+    "creation-word-title": "Прекратить создание слова?",
     "continue-creation": "Продолжить создание",
     "continue-editing": "Продолжить изменение",
     "confirm": "Да, прекратить"

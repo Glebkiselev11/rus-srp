@@ -26,6 +26,8 @@
     "description": "Uneti izmene neće biti sačuvane",
     "edit-category-title": "Prekinuti izmenu kategorije?",
     "creation-category-title": "Prekinuti stvaranje kategorije?",
+    "edit-word-title": "Prekinuti izmenu reči?",
+    "creation-word-title": "Prekinuti stvaranje reči?",
     "continue-creation": "Nastavi stvaranje",
     "continue-editing": "Nastavi izmenu",
     "confirm": "Da, prekini"

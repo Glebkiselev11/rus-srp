@@ -20,6 +20,8 @@
     "description": "Entered changes will not be saved",
     "edit-category-title": "Stop editing the category?",
     "creation-category-title": "Stop creating the category?",
+    "edit-word-title": "Stop editing the word?",
+    "creation-word-title": "Stop creating the word?",
     "continue-creation": "Continue creation",
     "continue-editing": "Continue editing",
     "confirm": "Yes, stop"
