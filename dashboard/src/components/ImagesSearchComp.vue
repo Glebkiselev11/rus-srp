@@ -190,6 +190,7 @@ export default defineComponent({
 		object-fit: cover;
 		border-radius: 12px;
 		cursor: pointer;
+		border: 1px solid $color-image-border;
 	}
 
 	&--skeleton-item {
