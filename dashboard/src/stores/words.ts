@@ -6,6 +6,7 @@ import type { DraftWord, Word } from "@/types/words";
 export const useWordsStore = defineStore("words", {
 	state: () => ({
 		words: [] as Array<Word>,
+		lastFetchParams: null as RequestParams | null,
 		count: 0,
 	}),
 	getters: {
@@ -16,14 +17,17 @@ export const useWordsStore = defineStore("words", {
 	actions: {
 		async createWord(word: DraftWord) {
 			try {
-				const { data } = await WordsApi.create(word);
-				this.words = [...this.words, data];	
+				await WordsApi.create(word);
+				if (this.lastFetchParams) {
+					this.fetchWords(this.lastFetchParams);
+				}
 			} catch (error) {
 				console.error(error);	
 			}
 		},
 
 		async fetchWords(params: RequestParams) {
+			this.lastFetchParams = params;
 			try {
 				const { data } = await WordsApi.query(params);
 				this.words = data.result;
