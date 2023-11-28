@@ -6,6 +6,8 @@ import { mapState } from "pinia";
 import { useWordsStore } from "@/stores/words";
 import type { Word } from "@/types/words";
 import FormCloseConfirmationModalComp from "./FormCloseConfirmationModalComp.vue";
+import { useDraftWordStore } from "@/stores/draftWord";
+import { translationPreview } from "@/common/utils";
 
 export default defineComponent({
 	name: "WordFormModalComp",
@@ -24,19 +26,26 @@ export default defineComponent({
 	emits: ["close"],
 	data() {
 		return {
-			subtitle: "", // Updating from child component
-			// Mark as changed to prevent closing modal without confirmation
-			isChanged: false,
 			showCloseConfirmationModal: false,
 		};
 	},
 	computed: {
 		...mapState(useWordsStore, ["getWordById"]),
+		...mapState(useDraftWordStore, ["anyTranslationFilled", "draftWord", "isChanged"]),
 		word(): Word | undefined {
 			return this.wordId ? this.getWordById(this.wordId) : undefined;
 		},
 		title(): string {
 			return this.wordId ? this.$t("editing-word") : this.$t("creation-word");
+		},
+		subtitle(): string {
+			if (this.word) {
+				return translationPreview(this.word);
+			} else if (this.anyTranslationFilled) {
+				return translationPreview(this.draftWord);
+			} else {
+				return this.$t("new-word");
+			}
 		},
 		closeConfirmationTitle() {
 			return Boolean(this.word) 
@@ -52,9 +61,6 @@ export default defineComponent({
 	methods: {
 		close() {
 			this.$emit("close");
-		},
-		setChanged(status: boolean) {
-			this.isChanged = status;
 		},
 		tryClose() {
 			if (this.isChanged) {
@@ -77,10 +83,8 @@ export default defineComponent({
 		<template #content>
 			<WordFormComp
 				:word="word"
-				@update-modal-subtitle="subtitle = $event"
 				@close="tryClose"
 				@saved="close"
-				@set-changed-status="setChanged"
 			/>
 		</template>
 	</ModalComp>

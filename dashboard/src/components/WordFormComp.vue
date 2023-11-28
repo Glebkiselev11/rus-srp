@@ -1,24 +1,15 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import type { DraftWord, Word } from "@/types/words";
-import { getLanguageName, autoTranslate } from "@/common/translations";
+import type { Word } from "@/types/words";
+import { getLanguageName } from "@/common/translations";
 import ImageSectionComp from "./ImageSectionComp.vue";
 import ButtonComp from "./ButtonComp.vue";
 import InputComp from "./InputComp.vue";
 import { useWordsStore } from "@/stores/words";
-import { mapActions } from "pinia";
+import { mapActions, mapState } from "pinia";
 import { WordsApi } from "@/api/words";
-import { isAnyFieldHasChanged } from "@/common/utils";
-
-function initDraftWord(): DraftWord {
-	return {
-		rus: "",
-		eng: "",
-		srp_latin: "",
-		srp_cyrillic: "",
-		image: null,
-	};
-}
+import { translationPreview } from "@/common/utils";
+import { useDraftWordStore } from "@/stores/draftWord";
 
 export default defineComponent({
 	name: "WordFormComp",
@@ -29,10 +20,9 @@ export default defineComponent({
 			default: undefined,
 		},
 	},
-	emits: ["close", "saved", "update-modal-subtitle", "set-changed-status"],
+	emits: ["close", "saved"],
 	data() {
 		return {
-			draftWord: initDraftWord(),
 			uniqueWordError: false,
 			rusValidationError: undefined as string | undefined,
 			engValidationError: undefined as string | undefined,
@@ -41,35 +31,17 @@ export default defineComponent({
 		};
 	},
 	computed: {
-		translations(): string[]  {
-			return [
-				this.draftWord.rus,
-				this.draftWord.eng,
-				this.draftWord.srp_latin,
-				this.draftWord.srp_cyrillic,
-			];
-		},
+		...mapState(useDraftWordStore, [
+			"draftWord", 
+			"anyTranslationFilled", 
+			"allTranslationsFilled",
+		]),
 		wordPreview(): string {
 			if (this.word || this.anyTranslationFilled) {
-				return this.getWordPreview(this.draftWord);
+				return translationPreview(this.draftWord);
 			} else {
 				return this.$t("new-word");
 			}
-		},
-		modalSubtitle(): string {
-			if (this.word) {
-				return this.getWordPreview(this.word);
-			} else if (this.anyTranslationFilled) {
-				return this.getWordPreview(this.draftWord);
-			} else {
-				return this.$t("new-word");
-			}
-		},
-		anyTranslationFilled(): boolean {
-			return this.translations.some(x => Boolean(x));
-		},
-		allTranslationsFilled(): boolean {
-			return this.translations.every(x => Boolean(x));
 		},
 		saveButtonLabel(): string {
 			return this.word ? this.$t("save-changes") : this.$t("create");
@@ -79,15 +51,6 @@ export default defineComponent({
 		},
 	},
 	watch: {
-		modalSubtitle() {
-			this.emitUpdateModalSubtitle();
-		},
-		draftWord: {
-			deep: true,
-			handler() {
-				this.updateChangeStatus();
-			},
-		},
 		["draftWord.rus"]() {
 			this.rusValidationError = undefined;
 			this.uniqueWordError = false;
@@ -107,34 +70,18 @@ export default defineComponent({
 
 	},
 	created() {
-		if (this.word) {
-			this.draftWord = { ...this.word };
-		}
-
-		this.emitUpdateModalSubtitle();
+		this.initDraftWord(this.word);
 	},
 	methods: {
 		...mapActions(useWordsStore, ["createWord", "updateWord"]),
+		...mapActions(useDraftWordStore, [
+			"initDraftWord", 
+			"resetDraftWord", 
+			"autoFillTranslations",
+		]),
 		getLanguageName,
-		autoTranslate,
-		async autoFill() {
-			const fields = await this.autoTranslate(this.draftWord);
-			this.draftWord = {
-				...this.draftWord,
-				...fields,
-			};
-		},
 		close() {
 			this.$emit("close");
-		},
-		getWordPreview(word: Word | DraftWord) {
-			return [
-				word.rus,
-				word.eng,
-				word.srp_latin,
-				word.srp_cyrillic]
-				.map(x => Boolean(x) ? x : " ? ")
-				.join(" — ");
 		},
 		async triggerWordNameUniqueValidation() {
 			const search = this.draftWord.eng;
@@ -196,20 +143,6 @@ export default defineComponent({
 				this.$emit("saved");
 			}
 		},
-		emitUpdateModalSubtitle() {
-			this.$emit("update-modal-subtitle", this.modalSubtitle);
-		},
-		resetDraftWord() {
-			this.draftWord = initDraftWord();
-		},
-		updateChangeStatus() {
-			const emit = "set-changed-status";
-			if (this.word) {
-				this.$emit(emit, isAnyFieldHasChanged(this.word, this.draftWord));
-			} else {
-				this.$emit(emit, isAnyFieldHasChanged(initDraftWord(), this.draftWord));
-			}
-		},
 	},
 });
 
@@ -246,7 +179,7 @@ export default defineComponent({
 				appearance="inline"
 				size="compact"
 				:label="$t('fill-in-auto')"
-				@click="autoFill"
+				@click="autoFillTranslations"
 			/>
 		</div>
 
