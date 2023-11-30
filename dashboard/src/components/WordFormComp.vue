@@ -248,7 +248,7 @@ export default defineComponent({
 .word-form {
 	padding-inline: 16px;
 	padding-block-end: 20px;
-	width: 598px;
+	width: 580px;
 
 	&__row {
 		display: flex;
