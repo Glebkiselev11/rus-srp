@@ -111,7 +111,7 @@ export default defineComponent({
 	width: 480px;
 
 	&__description {
-		@extend .text-body-1;
+		@include text-body-1;
 		margin-block-end: 24px;
 	}
 

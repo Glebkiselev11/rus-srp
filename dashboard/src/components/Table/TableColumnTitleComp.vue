@@ -84,7 +84,7 @@ export default defineComponent({
 				/>
 				<span
 					v-if="label"
-					class="table-column-title__label text-subtitle-2"
+					class="table-column-title__label"
 					:class="{ 'table-column-title__label--active-sort': sortActive }"
 					v-text="label"
 				/>
@@ -128,6 +128,7 @@ $padding: 8px;
   }
 
   &__label {
+		@include text-subtitle-2;
     color: $color-text-secondary;
 
 		&--active-sort {

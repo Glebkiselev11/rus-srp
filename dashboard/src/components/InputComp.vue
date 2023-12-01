@@ -249,12 +249,12 @@ export default defineComponent({
 
 		&--size {
 			&-regular {
-				@extend .text-body-1;
+				@include text-body-1;
 				height: 40px;
 			}
 
 			&-compact {
-				@extend .text-body-2;
+				@include text-body-2;
 				height: 32px;
 			}
 		}
@@ -286,7 +286,7 @@ export default defineComponent({
 		}
 
 		&::placeholder {
-			@extend .text-body-1;
+			@include text-body-1;
 			color: $color-text-tertiary;
 		}
 

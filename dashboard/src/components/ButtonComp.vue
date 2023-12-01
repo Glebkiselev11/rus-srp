@@ -100,6 +100,7 @@ export default defineComponent({
 @import "@/styles/main.scss";
 
 .button {
+	@include text-subtitle-2;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -107,7 +108,6 @@ export default defineComponent({
 	border: none;
 	cursor: pointer;
 	border-radius: 8px;
-	@extend .text-subtitle-2;
 
 	/* Paggings for Icon and label case */
 	&--icon-and-label {

@@ -202,7 +202,7 @@ export default defineComponent({
 	position: relative;
 
 	&--badge {
-		@extend .text-caption-2;
+		@include text-caption-2;
 
 		position: absolute;
 		height: 28px;

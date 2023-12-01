@@ -63,14 +63,14 @@ export default defineComponent({
 	row-gap: 8px;
 
 	&__label {
-		@extend .text-body-2;
+		@include text-body-2;
 		&::first-letter {
 			text-transform: uppercase;
 		}
 	}
 
 	&__error {
-		@extend .text-caption-2;
+		@include text-caption-2;
 		color: $color-text-negative;
 	}
 }

@@ -45,7 +45,7 @@ export default defineComponent({
 	border-radius: 8px;
 	border: none;
 	background: transparent;
-	@extend .text-body-2;
+	@include text-body-2;
 
 	&:hover {
 		cursor: pointer;

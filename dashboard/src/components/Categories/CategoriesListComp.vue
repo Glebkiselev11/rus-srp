@@ -58,7 +58,7 @@ export default defineComponent({
 				<div class="categories-list__all-words-item">
 					<AllWordsCategoryImageComp size="24px" />
 
-					<span class="text-body-2">{{ $t('all-words') }}</span>
+					<span>{{ $t('all-words') }}</span>
 				</div>
 			</ListItemComp>
 		</div>
@@ -94,12 +94,14 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
+@import "@/styles/main.scss";
 
 .categories-list {
 	&__all-words-item {
 		display: flex;
 		align-items: center;
 		column-gap: 8px;
+		@include text-body-2;
 	}
 
 	&__items {
