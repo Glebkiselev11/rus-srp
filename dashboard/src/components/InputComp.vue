@@ -98,6 +98,9 @@ export default defineComponent({
 		errorLabel() {
 			return this.disableErrorLabel ? undefined : this.error;
 		},
+		leftIconColor() {
+			return this.focusOnInput ? "accent-primary" : "tertiary" ;
+		},
 	},
 	mounted() {
 		if (this.focusOnMount) {
@@ -167,7 +170,7 @@ export default defineComponent({
 				v-if="leftIcon"
 				class="input--left-icon"
 				:name="leftIcon"
-				color="tertiary"
+				:color="leftIconColor"
 			/>
 
 			<input
@@ -186,6 +189,7 @@ export default defineComponent({
 				:error="error !== null"
 				:max="max"
 				:min="min"
+				autocomplete="off"
 				@input="handleInput"
 			>
 
