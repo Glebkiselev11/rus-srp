@@ -154,16 +154,18 @@ export default defineComponent({
 	/>
 
 	<div class="word-form">
-		<WordFormTranslationComp
-			v-show="currentTab === 0"
-			:unique-word-error="uniqueWordError"
-			:rus-validation-error="rusValidationError"
-			:eng-validation-error="engValidationError"
-			:srp-cyrillic-validation-error="srpCyrillicValidationError"
-			:srp-latin-validation-error="srpLatinValidationError"
-		/>
+		<div class="word-form__content">
+			<WordFormTranslationComp
+				v-show="currentTab === 0"
+				:unique-word-error="uniqueWordError"
+				:rus-validation-error="rusValidationError"
+				:eng-validation-error="engValidationError"
+				:srp-cyrillic-validation-error="srpCyrillicValidationError"
+				:srp-latin-validation-error="srpLatinValidationError"
+			/>
 		
-		<WordFormCategoriesComp v-show="currentTab === 1" />
+			<WordFormCategoriesComp v-show="currentTab === 1" />
+		</div>
 
 		<div class="word-form__footer">
 			<ButtonComp
@@ -192,15 +194,23 @@ export default defineComponent({
 @import "@/styles/main.scss";
 
 .word-form {
-	padding-inline: 16px;
-	padding-block: 20px;
-	width: 580px;
+	width: 596px;
+	max-height: 660px;
+
+	&__content {
+		padding-block-start: 20px;
+		padding-inline: 16px;
+		height: 580px;
+		overflow-y: auto;
+		border-block-end: 1px solid $color-separator-primary;
+	}
 
 	&__footer {
 		display: flex;
 		justify-content: flex-end;
 		column-gap: 8px;
-		padding-block-start: 16px;
+		padding-inline: 16px;
+		padding-block: 20px;
 	}
 }
 
