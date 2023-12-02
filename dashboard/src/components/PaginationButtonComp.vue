@@ -15,8 +15,10 @@ export default defineComponent({
 	},
 	emits: ["click"],
 	methods: {
-		click() {
-			this.$emit("click");
+		click(e: MouseEvent) {
+			if (!this.active) {
+				this.$emit("click", e);
+			}
 		},
 	},
 });
