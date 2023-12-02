@@ -5,6 +5,7 @@ import { autoTranslate } from "@/common/translations";
 
 function _initDraftWord(): DraftWord {
 	return {
+		id: undefined,
 		rus: "",
 		eng: "",
 		srp_latin: "",
@@ -35,6 +36,12 @@ export const useDraftWordStore = defineStore("draftWord", {
 		allTranslationsFilled(): boolean {
 			return this.translations.every(x => Boolean(x));
 		},	
+		semifilledTranslations(): boolean {
+			return this.anyTranslationFilled && !this.allTranslationsFilled;
+		},
+		isEditMode(state): boolean {
+			return Boolean(state.initialWord);
+		},
 		isChanged(state): boolean {
 			if (state.initialWord) {
 				return isAnyFieldHasChanged(state.initialWord, state.draftWord);

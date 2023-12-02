@@ -1,4 +1,5 @@
 export type DraftWord = {
+  id?: number;
   rus: string;
   eng: string;
   srp_latin: string;

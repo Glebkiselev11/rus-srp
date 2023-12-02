@@ -1,19 +1,23 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 import type { Word } from "@/types/words";
-import { getLanguageName } from "@/common/translations";
-import ImageSectionComp from "./ImageSectionComp.vue";
-import ButtonComp from "./ButtonComp.vue";
-import InputComp from "./InputComp.vue";
+import ButtonComp from "../ButtonComp.vue";
+import TabsComp from "../TabsComp.vue";
+import WordFormTranslationComp from "./WordFormTranslationComp.vue";
+import WordFormCategoriesComp from "./WordFormCategoriesComp.vue";
 import { useWordsStore } from "@/stores/words";
 import { mapActions, mapState } from "pinia";
 import { WordsApi } from "@/api/words";
-import { translationPreview } from "@/common/utils";
 import { useDraftWordStore } from "@/stores/draftWord";
 
 export default defineComponent({
 	name: "WordFormComp",
-	components: { ImageSectionComp, ButtonComp, InputComp },
+	components: { 
+		ButtonComp, 
+		TabsComp, 
+		WordFormTranslationComp,
+		WordFormCategoriesComp,
+	},
 	props: {
 		word: {
 			type: Object as PropType<Word>,
@@ -28,21 +32,15 @@ export default defineComponent({
 			engValidationError: undefined as string | undefined,
 			srpLatinValidationError: undefined as string | undefined,
 			srpCyrillicValidationError: undefined as string | undefined,
+			currentTab: 0,
+			tabs: [this.$t("translation"), this.$t("categories")],
 		};
 	},
 	computed: {
 		...mapState(useDraftWordStore, [
 			"draftWord", 
-			"anyTranslationFilled", 
 			"allTranslationsFilled",
 		]),
-		wordPreview(): string {
-			if (this.word || this.anyTranslationFilled) {
-				return translationPreview(this.draftWord);
-			} else {
-				return this.$t("new-word");
-			}
-		},
 		saveButtonLabel(): string {
 			return this.word ? this.$t("save-changes") : this.$t("create");
 		},
@@ -77,9 +75,7 @@ export default defineComponent({
 		...mapActions(useDraftWordStore, [
 			"initDraftWord", 
 			"resetDraftWord", 
-			"autoFillTranslations",
 		]),
-		getLanguageName,
 		close() {
 			this.$emit("close");
 		},
@@ -149,75 +145,25 @@ export default defineComponent({
 </script>
 
 <template>
+	<TabsComp 
+		:tabs="tabs" 
+		padding-inline="16px"
+		:selected-tab-index="currentTab"		
+		class="word-form__tabs"
+		@update:selected-tab-index="currentTab = $event"
+	/>
+
 	<div class="word-form">
-		<ImageSectionComp
-			:src="draftWord.image"
-			:default-image-search-query="draftWord.eng"
-			@update:src="draftWord.image = $event"
-		>
-			<div>
-				<h4>{{ $t("image") }}</h4>
-
-				<span class="text-body-2">{{ wordPreview }}</span>
-			</div>
-		</ImageSectionComp>
-
-		<div class="word-form__row">
-			<div>
-				<h3>{{ $t('translation') }}</h3>
-
-				<span
-					v-if="uniqueWordError"
-					class="text-color-negative text-body-2"
-					v-text="$t('word-already-exists')"
-				/>
-			</div>
-
-			<ButtonComp
-				v-show="anyTranslationFilled"
-				icon="edit_note"
-				appearance="inline"
-				size="compact"
-				:label="$t('fill-in-auto')"
-				@click="autoFillTranslations"
-			/>
-		</div>
-
-		<InputComp
-			v-model="draftWord.rus"
-			appearance="outline"
-			clear-button
-			:error="rusValidationError"
-			:label="getLanguageName('rus')"
-			class="word-form__translation-input"
+		<WordFormTranslationComp
+			v-show="currentTab === 0"
+			:unique-word-error="uniqueWordError"
+			:rus-validation-error="rusValidationError"
+			:eng-validation-error="engValidationError"
+			:srp-cyrillic-validation-error="srpCyrillicValidationError"
+			:srp-latin-validation-error="srpLatinValidationError"
 		/>
-
-		<InputComp
-			v-model="draftWord.eng"
-			appearance="outline"
-			:error="engValidationError"
-			clear-button
-			:label="getLanguageName('eng')"
-			class="word-form__translation-input"
-		/>
-
-		<InputComp
-			v-model="draftWord.srp_latin"
-			appearance="outline"
-			:error="srpLatinValidationError"
-			clear-button
-			:label="getLanguageName('srp_latin')"
-			class="word-form__translation-input"
-		/>
-
-		<InputComp
-			v-model="draftWord.srp_cyrillic"
-			appearance="outline"
-			:error="srpCyrillicValidationError"
-			clear-button
-			:label="getLanguageName('srp_cyrillic')"
-			class="word-form__translation-input"
-		/>
+		
+		<WordFormCategoriesComp v-show="currentTab === 1" />
 
 		<div class="word-form__footer">
 			<ButtonComp
@@ -247,20 +193,8 @@ export default defineComponent({
 
 .word-form {
 	padding-inline: 16px;
-	padding-block-end: 20px;
+	padding-block: 20px;
 	width: 580px;
-
-	&__row {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin-block: 20px;
-		height: 32px;
-	}
-
-	&__translation-input {
-		margin-block: 20px;
-	}
 
 	&__footer {
 		display: flex;

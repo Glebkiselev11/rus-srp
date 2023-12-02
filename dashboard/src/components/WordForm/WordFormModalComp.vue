@@ -1,11 +1,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import ModalComp from "./ModalComp.vue";
+import ModalComp from "../ModalComp.vue";
 import WordFormComp from "./WordFormComp.vue";
 import { mapState } from "pinia";
 import { useWordsStore } from "@/stores/words";
 import type { Word } from "@/types/words";
-import FormCloseConfirmationModalComp from "./FormCloseConfirmationModalComp.vue";
+import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";
 import { translationPreview } from "@/common/utils";
 

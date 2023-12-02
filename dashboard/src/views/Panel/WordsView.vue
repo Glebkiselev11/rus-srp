@@ -20,7 +20,7 @@ import { highlighTextByQuery } from "@/common/utils";
 
 import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/types/translations";
-import WordFormModalComp from "@/components/WordFormModalComp.vue";
+import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
 
 const LIMIT_DEFAULT = 25;
 
