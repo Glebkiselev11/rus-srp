@@ -45,16 +45,17 @@ export const useDraftWordStore = defineStore("draftWord", {
 	},
 
 	actions: {
-		initDraftWord(word: Word | undefined) {
+		initDraftWord(word: Word | null = null) {
 			if (word) {
 				this.draftWord = { ...word };
 				this.initialWord = word;
 			} else {
 				this.draftWord = _initDraftWord();
+				this.initialWord = null;
 			}
 		},
 		resetDraftWord() {
-			this.draftWord = _initDraftWord();
+			this.initDraftWord();
 		},
 		async autoFillTranslations() {
 			const fields = await autoTranslate(this.draftWord);
