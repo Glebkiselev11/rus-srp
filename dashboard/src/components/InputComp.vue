@@ -158,6 +158,7 @@ export default defineComponent({
 		:label="label"
 		:error="errorLabel"
 		for="input"
+		:style="{ width }"
 	>
 		<div
 			class="input"

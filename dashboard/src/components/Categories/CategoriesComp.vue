@@ -199,7 +199,7 @@ export default defineComponent({
 	}
 
 	&__search {
-		margin-inline: 12px;
+		padding-inline: 12px;
 		margin-block-end: 12px;
 	}
 }

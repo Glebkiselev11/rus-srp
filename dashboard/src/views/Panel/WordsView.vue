@@ -215,6 +215,7 @@ export default defineComponent({
 						:placeholder="$t('find-word')"
 						left-icon="search"
 						debounce
+						width="360px"
 					/>	
 
 					<SelectComp
