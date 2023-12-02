@@ -92,6 +92,7 @@ export default defineComponent({
 	data() {
 		return {
 			focusOnInput: false,
+			value: this.modelValue,
 		};
 	},
 	computed: {
@@ -126,17 +127,14 @@ export default defineComponent({
 		emitValue(value: unknown) {
 			this.$emit("update:modelValue", value);
 		},
-		handleInput(event: Event) {
-			const value = (event.target as HTMLInputElement).value;
-
+		handleInput() {
 			if (
-				this.max && Number(value) > this.max || 
-				this.min && Number(value) < this.min
+				this.max && Number(this.value) > this.max || 
+				this.min && Number(this.value) < this.min
 			) {
 				return;
 			}
-
-			this.debounce ? this.debounceEmit(value) : this.emitValue(value);
+			this.debounce ? this.debounceEmit(this.value) : this.emitValue(this.value);
 		},
 		setFocus() {
 			const input = this.$refs.input as HTMLInputElement;
@@ -176,6 +174,7 @@ export default defineComponent({
 			<input
 				id="input"
 				ref="input"
+				v-model="value"
 				class="input__field"
 				:class="[
 					`input__field--size-${size}`,
@@ -183,7 +182,6 @@ export default defineComponent({
 				]"
 				:style="{ width }"
 				:type="type"
-				:value="modelValue"
 				:placeholder="placeholder"
 				:disabled="disabled"
 				:error="error !== null"
