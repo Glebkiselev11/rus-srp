@@ -103,6 +103,12 @@ export default defineComponent({
 			return this.focusOnInput ? "accent-primary" : "tertiary" ;
 		},
 	},
+	watch: {
+		// This only need with autofill case
+		modelValue(value: string | number) {
+			this.value = value;
+		},
+	},
 	mounted() {
 		if (this.focusOnMount) {
 			this.setFocus();
