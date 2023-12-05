@@ -2,7 +2,7 @@
 import { defineComponent } from "vue";
 import { mapActions, mapState } from "pinia";
 import { useWordsStore } from "@/stores/words";
-import type { Order, RequestParams } from "@/types/api";
+import type { Id, Order, RequestParams } from "@/types/api";
 
 import CategoriesComp from "@/components/Categories/CategoriesComp.vue";
 import TopBarComp from "@/components/TopBarComp.vue";
@@ -72,7 +72,7 @@ export default defineComponent({
 				category_id: undefined,
 			},
 			showWordForm: false,
-			editingWordId: undefined as number | undefined,
+			editingWordId: undefined as Id | undefined,
 		};
 	},
 	computed: {
@@ -172,7 +172,7 @@ export default defineComponent({
 				this.deleteWord(word.id);
 			}
 		},
-		openEditingWordForm(id: number) {
+		openEditingWordForm(id: Id) {
 			this.editingWordId = id;
 			this.showWordForm = true;
 		},

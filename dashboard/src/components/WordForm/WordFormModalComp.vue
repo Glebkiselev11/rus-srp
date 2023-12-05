@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import ModalComp from "../ModalComp.vue";
 import WordFormComp from "./WordFormComp.vue";
 import { mapState } from "pinia";
@@ -19,7 +19,7 @@ export default defineComponent({
 	props: {
 		// If provided word id, then form will be in edit mode
 		wordId: {
-			type: Number,
+			type: [String, Number] as PropType<Word["id"]>,
 			default: undefined,
 		},
 	},

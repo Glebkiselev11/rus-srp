@@ -1,5 +1,7 @@
+import type { Id } from "./api";
+
 export type DraftWord = {
-  id?: number;
+  id?: Id;
   rus: string;
   eng: string;
   srp_latin: string;
@@ -8,7 +10,7 @@ export type DraftWord = {
 }
 
 export type Word = {
-  id: number;
+  id: Id;
   created_at: string;
   updated_at: string;
 } & DraftWord;

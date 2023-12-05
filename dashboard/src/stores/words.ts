@@ -11,7 +11,7 @@ export const useWordsStore = defineStore("words", {
 	}),
 	getters: {
 		getWordById(state) {
-			return (id: number) => state.words.find((w) => w.id === id);
+			return (id: Id) => state.words.find((w) => w.id === id);
 		},
 	},
 	actions: {
