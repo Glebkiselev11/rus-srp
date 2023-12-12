@@ -44,7 +44,7 @@ export default defineComponent({
 					search: this.$route.query.search_category as string || "",
 					order: this.$route.query.order_category as Order || "-created_at",
 					offset: 0,
-					limit: 20,
+					limit: 1000, // TODO check if it's ok with more categories
 				};
 			},
 			set(params: RequestParams) {
