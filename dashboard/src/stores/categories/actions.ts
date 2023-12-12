@@ -5,7 +5,7 @@ import type { Category, DraftCategory } from "@/types/categories";
 import { usePageCategoriesStore } from "./pageCategories";
 import { useModalCategoriesStore } from "./modalCategories";
 
-export const useCommonCategories = defineStore("commonCategories", {
+export const useCategoriesActions = defineStore("categoriesActions", {
 
 	getters: {
 		getCategoryById() {

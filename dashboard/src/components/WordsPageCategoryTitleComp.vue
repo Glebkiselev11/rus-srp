@@ -2,7 +2,7 @@
 import { defineComponent } from "vue";
 import AllWordsCategoryImageComp from "./Categories/AllWordsCategoryImageComp.vue";
 import { usePageCategoriesStore } from "@/stores/categories/pageCategories";
-import { useCommonCategories } from "@/stores/categories/commonCategories";
+import { useCategoriesActions } from "@/stores/categories/actions";
 import { mapActions, mapState } from "pinia";
 import type { Category } from "@/types/categories";
 import type { LanguageCode } from "@/types/translations";
@@ -41,7 +41,7 @@ export default defineComponent({
 		},	
 	},
 	methods: {
-		...mapActions(useCommonCategories, ["updateCategory"]),
+		...mapActions(useCategoriesActions, ["updateCategory"]),
 		getCategoryName(category: Category) {
 			return category[this.$i18n.locale as LanguageCode];
 		},

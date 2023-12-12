@@ -6,7 +6,7 @@ import type { LanguageCode } from "@/types/translations";
 import { WordsApi } from "@/api";
 import InputComp from "../InputComp.vue";
 import ButtonComp from "../ButtonComp.vue";
-import { useCommonCategories } from "@/stores/categories/commonCategories";
+import { useCategoriesActions } from "@/stores/categories/actions";
 
 import { mapActions } from "pinia";
 
@@ -50,7 +50,7 @@ export default defineComponent({
 		this.wordsInCategory = data.count;
 	},
 	methods: {
-		...mapActions(useCommonCategories, ["deleteCategory"]),
+		...mapActions(useCategoriesActions, ["deleteCategory"]),
 		close() {
 			this.$emit("close");
 		},
