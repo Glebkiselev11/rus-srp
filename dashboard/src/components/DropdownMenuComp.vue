@@ -151,6 +151,10 @@ export default defineComponent({
 		}
 	}
 
+	hr {
+		margin-block: 6px;
+	}
+
 	&__mark-bottom {
 		position: absolute;
 		bottom: 0;
