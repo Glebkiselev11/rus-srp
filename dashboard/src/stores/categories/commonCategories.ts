@@ -22,10 +22,12 @@ export const useCommonCategories = defineStore("commonCategories", {
 	actions: {
 		async createCategory(category: DraftCategory) {
 			const pageStore = usePageCategoriesStore();
+			const modalStore = useModalCategoriesStore();
 
 			try {
 				const { data } = await CategoriesApi.create(category);
 				pageStore.categories = [...pageStore.categories, data];
+				modalStore.categories = [...modalStore.categories, data];
 			} catch (error) {
 				console.error(error);
 			}
@@ -33,11 +35,14 @@ export const useCommonCategories = defineStore("commonCategories", {
 
 		async updateCategory(id: Id, category: DraftCategory | Category) {
 			const pageStore = usePageCategoriesStore();
+			const modalStore = useModalCategoriesStore();
 
 			try {
 				const { data } = await CategoriesApi.update(id, category);
-				pageStore.categories = 
-					pageStore.categories.map((c) => (c.id === data.id ? data : c));
+				const fn = (c: Category) => (c.id === data.id ? data : c);
+
+				pageStore.categories = pageStore.categories.map(fn);
+				modalStore.categories = modalStore.categories.map(fn);
 			} catch (error) {
 				console.error(error);
 			}
@@ -45,10 +50,14 @@ export const useCommonCategories = defineStore("commonCategories", {
 
 		async deleteCategory(id: Id) {
 			const pageStore = usePageCategoriesStore();
+			const modalStore = useModalCategoriesStore();
 
 			try {
 				await CategoriesApi.delete(id);
-				pageStore.categories = pageStore.categories.filter((c) => c.id !== id);
+				const fn = (c: Category) => c.id !== id;
+
+				pageStore.categories = pageStore.categories.filter(fn);
+				modalStore.categories = modalStore.categories.filter(fn);
 			} catch (error) {
 				console.error(error);
 			}
