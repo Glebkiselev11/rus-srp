@@ -2,7 +2,7 @@
 import { defineComponent } from "vue";
 import ModalComp from "./ModalComp.vue";
 import CategoryFormComp from "./CategoryFormComp.vue";
-import { useCategoriesStore } from "@/stores/categories";
+import { useCommonCategories } from "@/stores/categories/commonCategories";
 import { mapState } from "pinia";
 import type { LanguageCode } from "@/types/translations";
 import type { Category } from "@/types/categories";
@@ -33,7 +33,7 @@ export default defineComponent({
 		};
 	},
 	computed: {
-		...mapState(useCategoriesStore, ["getCategoryById"]),
+		...mapState(useCommonCategories, ["getCategoryById"]),
 		category(): Category | undefined {
 			return this.categoryId ? this.getCategoryById(this.categoryId) : undefined;
 		},

@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 import ImageSectionComp from "./ImageSectionComp.vue";
-import { useCategoriesStore } from "@/stores/categories";
+import { useCommonCategories } from "@/stores/categories/commonCategories";
 import { mapActions } from "pinia";
 import type { Category, DraftCategory } from "@/types/categories";
 import { LanguageList } from "@/i18n";
@@ -108,7 +108,7 @@ export default defineComponent({
 		}
 	},
 	methods: {
-		...mapActions(useCategoriesStore, ["createCategory", "updateCategory"]),
+		...mapActions(useCommonCategories, ["createCategory", "updateCategory"]),
 		getLanguageName,
 		removeCategoryNameErrorValidation(error: string): void {
 			this.categoryNameValidationErrors = this.categoryNameValidationErrors.filter(

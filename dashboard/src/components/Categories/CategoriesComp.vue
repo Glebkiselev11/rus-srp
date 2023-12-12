@@ -3,7 +3,7 @@
 import { defineComponent } from "vue";
 import ButtonComp from "@/components/ButtonComp.vue";
 import { mapActions } from "pinia";
-import { useCategoriesStore } from "@/stores/categories";
+import { usePageCategoriesStore } from "@/stores/categories/pageCategories";
 import InputComp from "@/components/InputComp.vue";
 import CategoriesListComp from "@/components/Categories/CategoriesListComp.vue";
 import HeaderComp from "@/components/HeaderComp.vue";
@@ -55,7 +55,7 @@ export default defineComponent({
 						order_category: params.order,
 					},
 				}).then(() => {
-					this.fetchCategories(params);
+					this.fetchPageCategories(params);
 				});
 			},
 		},
@@ -106,10 +106,10 @@ export default defineComponent({
 		},
 	},
 	mounted() {
-		this.fetchCategories(this.filter);
+		this.fetchPageCategories(this.filter);
 	},
 	methods: {
-		...mapActions(useCategoriesStore, ["fetchCategories"]),
+		...mapActions(usePageCategoriesStore, ["fetchPageCategories"]),
 		openCreationCategoryForm() {
 			this.editingCategoryId = undefined;
 			this.showCategoryForm = true;
@@ -200,7 +200,6 @@ export default defineComponent({
 
 	&__search {
 		padding-inline: 12px;
-		margin-block-end: 12px;
 	}
 }
 

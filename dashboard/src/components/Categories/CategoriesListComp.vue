@@ -3,7 +3,7 @@ import { defineComponent } from "vue";
 import CategoryItemComp from "./CategoryItemComp.vue";
 import ListItemComp from "@/components/ListItemComp.vue";
 import AllWordsCategoryImageComp from "./AllWordsCategoryImageComp.vue";
-import { useCategoriesStore } from "@/stores/categories";
+import { usePageCategoriesStore } from "@/stores/categories/pageCategories";
 import { mapState } from "pinia";
 import ZeroStateComp from "../ZeroStateComp.vue";
 
@@ -27,7 +27,7 @@ export default defineComponent({
 	},
 	emits: ["selectCateogry", "select-category-for-editing"],
 	computed: {
-		...mapState(useCategoriesStore, ["categories", "loadState", "count"]),
+		...mapState(usePageCategoriesStore, ["categories", "loadState", "count"]),
 		notFoundTitle(): string {
 			return this.$t("not-found", { search: this.searchQuary });
 		},
@@ -105,11 +105,13 @@ export default defineComponent({
 	}
 
 	&__items {
-		margin-inline: 12px;
-		margin-block: 12px;
+		padding-inline: 12px;
+		padding-block: 12px;
 		display: flex;
 		flex-direction: column;
 		row-gap: 4px;
+		max-height: calc(100vh - 170px);
+		overflow: auto;
 	}
 
 	&__zero-state {
