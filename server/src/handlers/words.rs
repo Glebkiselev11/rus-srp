@@ -3,15 +3,15 @@ use crate::db;
 use crate::db::error_type::DbError;
 use crate::models::pagination::Pagination;
 use crate::models::query_options::QueryOptions;
-use crate::models::word::{NewWord, NewWordBody, UpdateWord, UpdateWordBody};
+use crate::models::word::{Word, WordBody};
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 
 pub async fn create(
     pool: web::Data<DbPool>,
-    body: web::Json<NewWordBody>,
+    body: web::Json<WordBody>,
 ) -> actix_web::Result<impl Responder> {
-    let new_word = NewWord::from(body.into_inner());
+    let new_word = Word::from(body.into_inner());
 
     // use web::block to offload blocking Diesel code without blocking server thread
     let word = web::block(move || {
@@ -62,9 +62,9 @@ pub async fn get_by_id(
 pub async fn update(
     pool: web::Data<DbPool>,
     id: web::Path<i32>,
-    body: web::Json<UpdateWordBody>,
+    body: web::Json<WordBody>,
 ) -> actix_web::Result<impl Responder> {
-    let word = UpdateWord::from(body.into_inner());
+    let word = Word::from(body.into_inner());
 
     let word = web::block(move || {
         let mut conn = pool.get()?;

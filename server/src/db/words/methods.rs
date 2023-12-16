@@ -1,19 +1,14 @@
 use super::models::{DbNewWord, DbWord};
 use crate::{
     db::{self, schema},
-    // db::words_categories::models::DbWordCategory,
-    models::{
-        pagination::DbQueryResult,
-        query_options::QueryOptions,
-        word::{NewWord, UpdateWord},
-    },
+    models::{pagination::DbQueryResult, query_options::QueryOptions, word::Word},
 };
 use diesel::{expression::expression_types::NotSelectable, prelude::*, sqlite::Sqlite};
 
 use crate::db::error_type::DbError;
 
 /// Run query using Diesel to insert a new database row and return the result.
-pub fn insert(new_word: NewWord, conn: &mut SqliteConnection) -> Result<DbWord, DbError> {
+pub fn insert(new_word: Word, conn: &mut SqliteConnection) -> Result<DbWord, DbError> {
     use crate::db::schema::words::dsl;
 
     let new_word = DbNewWord::from(new_word);
@@ -108,7 +103,7 @@ pub fn select_all_with_filter(
 }
 
 pub fn update(
-    payload: UpdateWord,
+    payload: Word,
     id: i32,
     conn: &mut SqliteConnection,
 ) -> Result<Option<DbWord>, DbError> {
