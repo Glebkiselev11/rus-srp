@@ -12,11 +12,22 @@ pub async fn create(
     body: web::Json<WordBody>,
 ) -> actix_web::Result<impl Responder> {
     let new_word = Word::from(body.into_inner());
+    let category_ids = new_word.category_ids.clone();
 
     // use web::block to offload blocking Diesel code without blocking server thread
     let word = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::methods::insert(new_word, &mut conn)
+
+        let word = db::words::methods::insert(new_word, &mut conn);
+
+        // Insert word into each category
+        if let Ok(w) = &word {
+            for category_id in &category_ids {
+                db::words_categories::methods::insert(*category_id, w.id, &mut conn)?;
+            }
+        }
+
+        word
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
