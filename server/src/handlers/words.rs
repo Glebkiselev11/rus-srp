@@ -75,11 +75,24 @@ pub async fn update(
     id: web::Path<i32>,
     body: web::Json<WordBody>,
 ) -> actix_web::Result<impl Responder> {
+    let added_category_ids = body.added_category_ids.clone();
+    let removed_category_ids = body.removed_category_ids.clone();
+
     let word = Word::from(body.into_inner());
+    let id = id.into_inner();
 
     let word = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::methods::update(word, id.into_inner(), &mut conn)
+
+        for category_id in &added_category_ids {
+            db::words_categories::methods::insert(*category_id, id, &mut conn)?;
+        }
+
+        for category_id in &removed_category_ids {
+            db::words_categories::methods::delete(*category_id, id, &mut conn)?;
+        }
+
+        db::words::methods::update(word, id, &mut conn)
     })
     .await?
     .map_err(_convert_db_error_to_http_error)?;

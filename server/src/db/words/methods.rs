@@ -120,7 +120,7 @@ pub fn update(
     payload: Word,
     id: i32,
     conn: &mut SqliteConnection,
-) -> Result<Option<DbWord>, DbError> {
+) -> Result<DbWordWithCategories, DbError> {
     use crate::db::schema::words::dsl;
 
     let word: DbWord = select_by_id(id, conn)?.to_dbword().with_update(payload);
@@ -129,7 +129,7 @@ pub fn update(
         .set(word.clone())
         .execute(conn)?;
 
-    Ok(Some(word))
+    select_by_id(id, conn)
 }
 
 pub fn delete(id: i32, conn: &mut SqliteConnection) -> Result<(), DbError> {

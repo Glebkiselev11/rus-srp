@@ -12,6 +12,7 @@ pub struct WordBody {
     pub srp_cyrillic: String,
     pub image: Option<String>,
     pub added_category_ids: Vec<i32>,
+    pub removed_category_ids: Vec<i32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
