@@ -1,7 +1,7 @@
 use super::models::{DbNewWord, DbWord};
 use crate::{
     db::{
-        self, categories::models::DbCategory, schema, words::models::WordWithCategories,
+        self, categories::models::DbCategory, schema, words::models::DbWordWithCategories,
         words_categories::models::DbWordCategory,
     },
     models::{pagination::DbQueryResult, query_options::QueryOptions, word::Word},
@@ -24,7 +24,7 @@ pub fn insert(new_word: Word, conn: &mut SqliteConnection) -> Result<DbWord, DbE
 }
 
 /// Run query using Diesel to find word by uid and return it.
-pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<DbWord, DbError> {
+pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<DbWordWithCategories, DbError> {
     use crate::db::schema::words::dsl;
 
     let word = dsl::words
@@ -33,13 +33,21 @@ pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<DbWord, DbEr
         .optional()?
         .ok_or(diesel::result::Error::NotFound)?;
 
-    Ok(word)
+    let word_with_category = DbWordWithCategories::new(
+        word.clone(),
+        DbWordCategory::belonging_to(&word)
+            .inner_join(schema::categories::table)
+            .select(schema::categories::all_columns)
+            .load::<DbCategory>(conn)?,
+    );
+
+    Ok(word_with_category)
 }
 
 pub fn select_all_with_filter(
     conn: &mut SqliteConnection,
     query: QueryOptions,
-) -> Result<DbQueryResult<WordWithCategories>, DbError> {
+) -> Result<DbQueryResult<DbWordWithCategories>, DbError> {
     use crate::db::schema::words::dsl;
 
     let order_by = || -> Box<dyn BoxableExpression<dsl::words, Sqlite, SqlType = NotSelectable>> {
@@ -111,9 +119,9 @@ pub fn select_all_with_filter(
                 .load::<DbCategory>(conn)
                 .expect("Error loading categories");
 
-            WordWithCategories::new(word, categories)
+            DbWordWithCategories::new(word, categories)
         })
-        .collect::<Vec<WordWithCategories>>();
+        .collect::<Vec<DbWordWithCategories>>();
 
     return Ok(DbQueryResult {
         count,
@@ -128,7 +136,7 @@ pub fn update(
 ) -> Result<Option<DbWord>, DbError> {
     use crate::db::schema::words::dsl;
 
-    let word: DbWord = select_by_id(id, conn)?.with_update(payload);
+    let word: DbWord = select_by_id(id, conn)?.to_dbword().with_update(payload);
 
     diesel::update(dsl::words.find(id))
         .set(word.clone())

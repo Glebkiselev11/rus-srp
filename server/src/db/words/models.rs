@@ -65,7 +65,7 @@ impl DbWord {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct WordWithCategories {
+pub struct DbWordWithCategories {
     pub id: i32,
     pub rus: String,
     pub eng: String,
@@ -77,9 +77,9 @@ pub struct WordWithCategories {
     pub categories: Vec<DbCategory>,
 }
 
-impl WordWithCategories {
+impl DbWordWithCategories {
     pub fn new(word: DbWord, categories: Vec<DbCategory>) -> Self {
-        WordWithCategories {
+        DbWordWithCategories {
             id: word.id,
             rus: word.rus,
             eng: word.eng,
@@ -89,6 +89,19 @@ impl WordWithCategories {
             updated_at: word.updated_at,
             image: word.image,
             categories,
+        }
+    }
+
+    pub fn to_dbword(&self) -> DbWord {
+        DbWord {
+            id: self.id,
+            rus: self.rus.clone(),
+            eng: self.eng.clone(),
+            srp_latin: self.srp_latin.clone(),
+            srp_cyrillic: self.srp_cyrillic.clone(),
+            created_at: self.created_at,
+            updated_at: self.updated_at,
+            image: self.image.clone(),
         }
     }
 }
