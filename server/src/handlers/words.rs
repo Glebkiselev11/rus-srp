@@ -11,8 +11,8 @@ pub async fn create(
     pool: web::Data<DbPool>,
     body: web::Json<WordBody>,
 ) -> actix_web::Result<impl Responder> {
+    let category_ids = body.added_category_ids.clone();
     let new_word = Word::from(body.into_inner());
-    let category_ids = new_word.category_ids.clone();
 
     // use web::block to offload blocking Diesel code without blocking server thread
     let word = web::block(move || {
