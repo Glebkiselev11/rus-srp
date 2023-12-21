@@ -11,7 +11,10 @@ use diesel::{expression::expression_types::NotSelectable, prelude::*, sqlite::Sq
 use crate::db::error_type::DbError;
 
 /// Run query using Diesel to insert a new database row and return the result.
-pub fn insert(new_word: Word, conn: &mut SqliteConnection) -> Result<DbWord, DbError> {
+pub fn insert(
+    new_word: Word,
+    conn: &mut SqliteConnection,
+) -> Result<DbWordWithCategories, DbError> {
     use crate::db::schema::words::dsl;
 
     let new_word = DbNewWord::from(new_word);
@@ -20,7 +23,7 @@ pub fn insert(new_word: Word, conn: &mut SqliteConnection) -> Result<DbWord, DbE
         .values(&new_word)
         .get_result::<DbWord>(conn)?;
 
-    Ok(word)
+    join_word_with_categories(word, conn)
 }
 
 /// Run query using Diesel to find word by uid and return it.
@@ -33,15 +36,7 @@ pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<DbWordWithCa
         .optional()?
         .ok_or(diesel::result::Error::NotFound)?;
 
-    let word_with_category = DbWordWithCategories::new(
-        word.clone(),
-        DbWordCategory::belonging_to(&word)
-            .inner_join(schema::categories::table)
-            .select(schema::categories::all_columns)
-            .load::<DbCategory>(conn)?,
-    );
-
-    Ok(word_with_category)
+    join_word_with_categories(word, conn)
 }
 
 pub fn select_all_with_filter(
@@ -112,15 +107,7 @@ pub fn select_all_with_filter(
 
     let words_with_categories = words
         .into_iter()
-        .map(|word| {
-            let categories = DbWordCategory::belonging_to(&word)
-                .inner_join(schema::categories::table)
-                .select(schema::categories::all_columns)
-                .load::<DbCategory>(conn)
-                .expect("Error loading categories");
-
-            DbWordWithCategories::new(word, categories)
-        })
+        .map(|word| join_word_with_categories(word, conn).unwrap())
         .collect::<Vec<DbWordWithCategories>>();
 
     return Ok(DbQueryResult {
@@ -152,4 +139,17 @@ pub fn delete(id: i32, conn: &mut SqliteConnection) -> Result<(), DbError> {
     diesel::delete(dsl::words.filter(dsl::id.eq(id))).execute(conn)?;
 
     Ok(())
+}
+
+fn join_word_with_categories(
+    word: DbWord,
+    conn: &mut SqliteConnection,
+) -> Result<DbWordWithCategories, DbError> {
+    let categories = DbWordCategory::belonging_to(&word)
+        .inner_join(schema::categories::table)
+        .select(schema::categories::all_columns)
+        .load::<DbCategory>(conn)
+        .expect("Error on join_word_with_categories");
+
+    Ok(DbWordWithCategories::new(word, categories))
 }
