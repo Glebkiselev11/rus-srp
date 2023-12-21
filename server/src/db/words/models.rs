@@ -1,4 +1,4 @@
-use crate::db::schema::words;
+use crate::db::{categories::models::DbCategory, schema::words};
 use crate::models::word::Word;
 use serde::{Deserialize, Serialize};
 
@@ -60,6 +60,35 @@ impl DbWord {
             srp_cyrillic: payload.srp_cyrillic,
             updated_at: Some(chrono::Utc::now().naive_utc()),
             image: payload.image,
+        }
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct WordWithCategories {
+    pub id: i32,
+    pub rus: String,
+    pub eng: String,
+    pub srp_latin: String,
+    pub srp_cyrillic: String,
+    pub created_at: chrono::NaiveDateTime,
+    pub updated_at: Option<chrono::NaiveDateTime>,
+    pub image: Option<String>,
+    pub categories: Vec<DbCategory>,
+}
+
+impl WordWithCategories {
+    pub fn new(word: DbWord, categories: Vec<DbCategory>) -> Self {
+        WordWithCategories {
+            id: word.id,
+            rus: word.rus,
+            eng: word.eng,
+            srp_latin: word.srp_latin,
+            srp_cyrillic: word.srp_cyrillic,
+            created_at: word.created_at,
+            updated_at: word.updated_at,
+            image: word.image,
+            categories,
         }
     }
 }

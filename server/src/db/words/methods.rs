@@ -1,6 +1,9 @@
 use super::models::{DbNewWord, DbWord};
 use crate::{
-    db::{self, schema},
+    db::{
+        self, categories::models::DbCategory, schema, words::models::WordWithCategories,
+        words_categories::models::DbWordCategory,
+    },
     models::{pagination::DbQueryResult, query_options::QueryOptions, word::Word},
 };
 use diesel::{expression::expression_types::NotSelectable, prelude::*, sqlite::Sqlite};
@@ -36,7 +39,7 @@ pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<DbWord, DbEr
 pub fn select_all_with_filter(
     conn: &mut SqliteConnection,
     query: QueryOptions,
-) -> Result<DbQueryResult<DbWord>, DbError> {
+) -> Result<DbQueryResult<WordWithCategories>, DbError> {
     use crate::db::schema::words::dsl;
 
     let order_by = || -> Box<dyn BoxableExpression<dsl::words, Sqlite, SqlType = NotSelectable>> {
@@ -93,13 +96,29 @@ pub fn select_all_with_filter(
         .select(diesel::dsl::count_star())
         .first::<i64>(conn)?;
 
-    let result = apply_filters()
+    let words = apply_filters()
         .order(order_by())
         .offset(query.get_offset())
         .limit(query.get_limit())
         .load::<DbWord>(conn)?;
 
-    return Ok(DbQueryResult { count, result });
+    let words_with_categories = words
+        .into_iter()
+        .map(|word| {
+            let categories = DbWordCategory::belonging_to(&word)
+                .inner_join(schema::categories::table)
+                .select(schema::categories::all_columns)
+                .load::<DbCategory>(conn)
+                .expect("Error loading categories");
+
+            WordWithCategories::new(word, categories)
+        })
+        .collect::<Vec<WordWithCategories>>();
+
+    return Ok(DbQueryResult {
+        count,
+        result: words_with_categories,
+    });
 }
 
 pub fn update(
