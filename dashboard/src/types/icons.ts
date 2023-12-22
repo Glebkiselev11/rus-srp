@@ -42,4 +42,5 @@ export type IconName =
   "done" |
   "edit_note" |
   "error" |
-  "restart_alt";
+  "restart_alt" |
+  "remove";
