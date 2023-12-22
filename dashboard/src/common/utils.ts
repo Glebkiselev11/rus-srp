@@ -15,7 +15,7 @@ export function isAnyFieldHasChanged(
 	current: Record<string, unknown>,
 	original: Record<string, unknown>,
 ): boolean {
-	return Object.keys(current).some(key => current[key] !== original[key]);
+	return JSON.stringify(current) !== JSON.stringify(original);
 }
 
 export function translationPreview(obj: {
