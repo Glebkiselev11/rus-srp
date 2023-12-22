@@ -11,23 +11,27 @@ pub async fn create(
     pool: web::Data<DbPool>,
     body: web::Json<WordBody>,
 ) -> actix_web::Result<impl Responder> {
-    let category_ids = body.added_category_ids.clone();
+    let category_ids = body.category_ids.clone();
     let new_word = Word::from(body.into_inner());
 
     // use web::block to offload blocking Diesel code without blocking server thread
     let word = web::block(move || {
         let mut conn = pool.get()?;
 
-        let word = db::words::methods::insert(new_word, &mut conn);
+        let word_result = db::words::methods::insert(new_word, &mut conn);
 
         // Insert word into each category
-        if let Ok(w) = &word {
+        if let Ok(w) = &word_result {
             for category_id in &category_ids {
                 db::words_categories::methods::insert(*category_id, w.id, &mut conn)?;
             }
+
+            if category_ids.len() > 0 {
+                return db::words::methods::select_by_id(w.id, &mut conn);
+            }
         }
 
-        word
+        word_result
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -75,8 +79,7 @@ pub async fn update(
     id: web::Path<i32>,
     body: web::Json<WordBody>,
 ) -> actix_web::Result<impl Responder> {
-    let added_category_ids = body.added_category_ids.clone();
-    let removed_category_ids = body.removed_category_ids.clone();
+    let category_ids = body.category_ids.clone();
 
     let word = Word::from(body.into_inner());
     let id = id.into_inner();
@@ -84,14 +87,7 @@ pub async fn update(
     let word = web::block(move || {
         let mut conn = pool.get()?;
 
-        for category_id in &added_category_ids {
-            db::words_categories::methods::insert(*category_id, id, &mut conn)?;
-        }
-
-        for category_id in &removed_category_ids {
-            db::words_categories::methods::delete(*category_id, id, &mut conn)?;
-        }
-
+        db::words_categories::methods::sync_categories_with_word(&category_ids, id, &mut conn)?;
         db::words::methods::update(word, id, &mut conn)
     })
     .await?

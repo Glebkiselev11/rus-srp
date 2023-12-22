@@ -48,3 +48,38 @@ pub fn get_words_ids_by_category_id(
 
     Ok(relations.iter().map(|r| r.word_id).collect())
 }
+
+pub fn sync_categories_with_word(
+    category_ids: &[i32],
+    word_id: i32,
+    conn: &mut SqliteConnection,
+) -> Result<(), DbError> {
+    use crate::db::schema::words_categories::dsl;
+
+    let current_categories_ids: Vec<i32> = dsl::words_categories
+        .filter(dsl::word_id.eq(word_id))
+        .select(dsl::category_id)
+        .load::<i32>(conn)?;
+
+    let categories_to_add: Vec<i32> = category_ids
+        .iter()
+        .filter(|id| !current_categories_ids.contains(id))
+        .map(|id| *id)
+        .collect();
+
+    let categories_to_delete: Vec<i32> = current_categories_ids
+        .iter()
+        .filter(|id| !category_ids.contains(id))
+        .map(|id| *id)
+        .collect();
+
+    for category_id in categories_to_add {
+        insert(category_id, word_id, conn)?;
+    }
+
+    for category_id in categories_to_delete {
+        delete(category_id, word_id, conn)?;
+    }
+
+    Ok(())
+}
