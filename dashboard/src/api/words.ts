@@ -13,7 +13,7 @@ export const WordsApi = {
 	getById(id: Id): Promise<AxiosResponse<Word>> {
 		return axios.get(`${this.ENDPOINT}/${id}`);
 	},
-	update(id: Id, data: Word | DraftWord): Promise<AxiosResponse<Word>> {
+	update(id: Id, data: DraftWord): Promise<AxiosResponse<Word>> {
 		return axios.put(`${this.ENDPOINT}/${id}`, data);
 	},
 	delete(id: Id): Promise<AxiosResponse<void>> {

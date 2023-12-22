@@ -2,6 +2,7 @@ import type { Id, RequestParams } from "@/types/api";
 import { defineStore } from "pinia";
 import { WordsApi } from "@/api";
 import type { DraftWord, Word } from "@/types/words";
+import { convertWordToDraftWord } from "@/common/utils";
 
 export const useWordsStore = defineStore("words", {
 	state: () => ({
@@ -40,7 +41,7 @@ export const useWordsStore = defineStore("words", {
 
 		async updateWord(id: Id, word: Word | DraftWord) {
 			try {
-				const { data } = await WordsApi.update(id, word);
+				const { data } = await WordsApi.update(id, convertWordToDraftWord(word));
 				this.words = this.words.map((w) => (w.id === id ? data : w));
 			} catch (error) {
 				console.error(error);

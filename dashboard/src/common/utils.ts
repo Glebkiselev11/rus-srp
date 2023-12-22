@@ -1,3 +1,5 @@
+import type { Word, DraftWord } from "@/types/words";
+
 export function highlighTextByQuery(text: string, query: string): string {
 	const regex = new RegExp(query, "gi");
 	return text.replace(regex, match => `<mark>${match}</mark>`);
@@ -31,4 +33,17 @@ export function translationPreview(obj: {
 		obj.srp_cyrillic]
 		.map(x => Boolean(x) ? x : " ? ")
 		.join(" — ");
+}
+
+export function convertWordToDraftWord(word: Word | DraftWord): DraftWord {
+	return {
+		rus: word.rus,
+		eng: word.eng,
+		srp_latin: word.srp_latin,
+		srp_cyrillic: word.srp_cyrillic,
+		image: word.image,
+		category_ids: "categories" in word 
+			? word.categories.map(category => category.id) 
+			: word.category_ids,
+	};
 }

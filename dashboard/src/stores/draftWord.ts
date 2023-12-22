@@ -1,6 +1,6 @@
 import type { DraftWord, Word } from "@/types/words";
 import { defineStore } from "pinia";
-import { isAnyFieldHasChanged } from "@/common/utils";
+import { convertWordToDraftWord, isAnyFieldHasChanged } from "@/common/utils";
 import { autoTranslate } from "@/common/translations";
 
 function _initDraftWord(): DraftWord {
@@ -54,14 +54,7 @@ export const useDraftWordStore = defineStore("draftWord", {
 	actions: {
 		initDraftWord(word: Word | null = null) {
 			if (word) {
-				const _word: DraftWord = {
-					rus: word.rus,
-					eng: word.eng,
-					srp_cyrillic: word.srp_cyrillic,
-					srp_latin: word.srp_latin,
-					image: word.image,
-					category_ids: word.categories.map(x => x.id),
-				};
+				const _word = convertWordToDraftWord(word);
 
 				this.draftWord = { ..._word };
 				this.initialWord = { ..._word };
