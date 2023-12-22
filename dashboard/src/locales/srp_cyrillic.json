@@ -83,5 +83,8 @@
   "image": "Слика",
   "new-word": "Нова реч",
   "word-already-exists": "Реч са овим именом већ постоји",
-  "create-and-add-next": "Направите и додајте још једну"
+  "create-and-add-next": "Направите и додајте још једну",
+  "all-categories": "Све категорије",
+  "add-to-category": "Додајте у категорију",
+  "remove-from-category": "Уклоните из категорије"
 }

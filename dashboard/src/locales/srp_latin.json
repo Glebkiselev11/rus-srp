@@ -83,5 +83,8 @@
   "image": "Slika",
   "new-word": "Nova reč",
   "word-already-exists": "Reč sa ovim imenom već postoji",
-  "create-and-add-next": "Napravite i dodajte još jednu"
+  "create-and-add-next": "Napravite i dodajte još jednu",
+  "all-categories": "Sve kategorije",
+  "add-to-category": "Dodaj u kategoriju",
+  "remove-from-category": "Uklonite iz kategorije"
 }

@@ -83,5 +83,8 @@
   "image": "Image",
   "new-word": "New word",
   "word-already-exists": "Word with this name already exists",
-  "create-and-add-next": "Create and add another"
+  "create-and-add-next": "Create and add another",
+  "all-categories": "All categories",
+  "add-to-category": "Add to category",
+  "remove-from-category": "Remove from category"
 }

@@ -5,12 +5,12 @@ import { autoTranslate } from "@/common/translations";
 
 function _initDraftWord(): DraftWord {
 	return {
-		id: undefined,
 		rus: "",
 		eng: "",
 		srp_latin: "",
 		srp_cyrillic: "",
 		image: null,
+		category_ids: [],
 	};
 }
 
@@ -18,7 +18,7 @@ export const useDraftWordStore = defineStore("draftWord", {
 	state: () => ({
 		draftWord: _initDraftWord(),
 		// if we are in editing mode, we need to store the initial word
-		initialWord: null as Word | null,
+		initialWord: null as DraftWord | null,
 	}), 
 
 	getters: {
@@ -54,8 +54,17 @@ export const useDraftWordStore = defineStore("draftWord", {
 	actions: {
 		initDraftWord(word: Word | null = null) {
 			if (word) {
-				this.draftWord = { ...word };
-				this.initialWord = word;
+				const _word: DraftWord = {
+					rus: word.rus,
+					eng: word.eng,
+					srp_cyrillic: word.srp_cyrillic,
+					srp_latin: word.srp_latin,
+					image: word.image,
+					category_ids: word.categories.map(x => x.id),
+				};
+
+				this.draftWord = { ..._word };
+				this.initialWord = { ..._word };
 			} else {
 				this.draftWord = _initDraftWord();
 				this.initialWord = null;

@@ -83,5 +83,8 @@
   "image": "Изображение",
   "new-word": "Новое слово",
   "word-already-exists": "Такое слово уже есть в базе",
-  "create-and-add-next": "Создать и добавить другое"
+  "create-and-add-next": "Создать и добавить другое",
+  "all-categories": "Все категории",
+  "add-to-category": "Добавить в категорию",
+  "remove-from-category": "Удалить из категории"
 }
