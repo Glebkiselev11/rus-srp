@@ -1,11 +1,16 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 
+type Tab = {
+	name: string;
+	error: boolean;
+}
+
 export default defineComponent({
 	name: "TabsComp",
 	props: {
 		tabs: {
-			type: Array as PropType<string[]>,
+			type: Array as PropType<Tab[]>,
 			required: true,
 		},
 		selectedTabIndex: {
@@ -37,11 +42,14 @@ export default defineComponent({
 			v-for="(tab, i) in tabs"
 			:key="i"
 			class="tabs__button"
-			:class="{ 'tabs__button--active': i === selectedTabIndex }"
+			:class="{ 
+				'tabs__button--active': i === selectedTabIndex, 
+				'tabs__button--error': tab.error 
+			}"
 			:disabled="i === selectedTabIndex"
 			@click.stop="handleClick(i)"
 		>
-			{{ tab }}
+			{{ tab.name }}
 		</button>
 	</div>
 </template>
@@ -63,6 +71,7 @@ export default defineComponent({
 		cursor: pointer;
 		padding-block-end: 8px;
 		padding-inline: 0px;
+		position: relative;
 
 		&:focus-visible {
 			outline: none;
@@ -91,6 +100,21 @@ export default defineComponent({
 
 			&:focus-visible {
 				outline: none;
+			}
+		}
+
+		&--error {
+			margin-inline-end: 20px;
+		
+			&::after {
+				content: "";
+				position: absolute;
+				width: 6px;
+				height: 6px;
+				background: $color-icon-negative;
+				right: -18px;
+				top: 10px;
+				border-radius: 50%;
 			}
 		}
 

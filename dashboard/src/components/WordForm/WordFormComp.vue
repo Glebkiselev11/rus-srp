@@ -33,7 +33,6 @@ export default defineComponent({
 			srpLatinValidationError: undefined as string | undefined,
 			srpCyrillicValidationError: undefined as string | undefined,
 			currentTab: 0,
-			tabs: [this.$t("translation"), this.$t("categories")],
 		};
 	},
 	computed: {
@@ -46,6 +45,27 @@ export default defineComponent({
 		},
 		isValidToSave(): boolean {
 			return this.allTranslationsFilled && !this.uniqueWordError;
+		},
+		anyTranslationError(){
+			return Boolean(
+				this.rusValidationError || 
+				this.engValidationError || 
+				this.srpLatinValidationError || 
+				this.srpCyrillicValidationError || 
+				this.uniqueWordError,
+			);
+		},
+		tabs() {
+			return [
+				{
+					name: this.$t("translation"),
+					error: this.anyTranslationError,
+				},
+				{
+					name: this.$t("categories"),
+					error: false,
+				},
+			]; 
 		},
 	},
 	watch: {
