@@ -1,23 +1,22 @@
-import type { ListResponse, OptionalRequestParams } from "@/types/api";
+import type { Id, ListResponse, OptionalRequestParams } from "@/types/api";
 import type { DraftWord, Word } from "@/types/words";
 import axios, { type AxiosResponse } from "axios";
 
 export const WordsApi = {
 	ENDPOINT: "/api/v1/words",
-
+	create(data: DraftWord): Promise<AxiosResponse<Word>> {
+		return axios.post(`${this.ENDPOINT}/create`, data);
+	},
 	query(params: OptionalRequestParams): Promise<AxiosResponse<ListResponse<Word>>> {
 		return axios.get(this.ENDPOINT, { params }); 
 	},
-	getById(id: string): Promise<AxiosResponse<Word>> {
+	getById(id: Id): Promise<AxiosResponse<Word>> {
 		return axios.get(`${this.ENDPOINT}/${id}`);
 	},
-	create(data: DraftWord): Promise<AxiosResponse<Word>> {
-		return axios.post(this.ENDPOINT, data);
+	update(id: Id, data: DraftWord): Promise<AxiosResponse<Word>> {
+		return axios.put(`${this.ENDPOINT}/${id}`, data);
 	},
-	update(data: Word): Promise<AxiosResponse<Word>> {
-		return axios.put(`${this.ENDPOINT}/${data.id}`, data);
-	},
-	delete(id: number): Promise<AxiosResponse<void>> {
+	delete(id: Id): Promise<AxiosResponse<void>> {
 		return axios.delete(`${this.ENDPOINT}/${id}`);
 	},
 };

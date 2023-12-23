@@ -1,23 +1,19 @@
-import type { ListResponse, OptionalRequestParams } from "@/types/api";
+import type { Id, ListResponse, OptionalRequestParams } from "@/types/api";
 import type { Category, DraftCategory } from "@/types/categories";
 import axios, { type AxiosResponse } from "axios";
 
 export const CategoriesApi = {
 	ENDPOINT: "/api/v1/categories",
-
-	query(params: OptionalRequestParams): Promise<AxiosResponse<ListResponse<Category>>> {
-		return axios.get(this.ENDPOINT, { params }); 
-	},
-
-	update(id: number, data: Category | DraftCategory): Promise<AxiosResponse<Category>> {
-		return axios.put(`${this.ENDPOINT}/${id}`, data);
-	},
-
 	create(data: DraftCategory): Promise<AxiosResponse<Category>> {
 		return axios.post(`${this.ENDPOINT}/create`, data);
 	},
-
-	delete(id: number): Promise<AxiosResponse<void>> {
+	query(params: OptionalRequestParams): Promise<AxiosResponse<ListResponse<Category>>> {
+		return axios.get(this.ENDPOINT, { params }); 
+	},
+	update(id: Id, data: Category | DraftCategory): Promise<AxiosResponse<Category>> {
+		return axios.put(`${this.ENDPOINT}/${id}`, data);
+	},
+	delete(id: Id): Promise<AxiosResponse<void>> {
 		return axios.delete(`${this.ENDPOINT}/${id}`);
 	},
 };

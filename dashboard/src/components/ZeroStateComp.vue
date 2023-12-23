@@ -71,7 +71,8 @@ export default defineComponent({
 	}
 
 	&__description {
-		@extend .text-color-secondary, .text-body-2;
+		@include text-body-2;
+		@extend .text-color-secondary;
 	}
 }
 

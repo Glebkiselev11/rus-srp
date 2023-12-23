@@ -31,7 +31,7 @@ export default defineComponent({
 		},
 		defaultImageSearchQuery: {
 			type: String,
-			default: null,
+			default: "",
 		},
 		size: {
 			type: String as PropType<PreviewSize>,
@@ -83,7 +83,7 @@ export default defineComponent({
 <template>
 	<button
 		class="image-preview"
-		:style="{ width: size, height: size }"
+		:style="{ width: size, height: size, minWidth: size, minHeight: size }"
 		@click="handleClick"
 	>
 		<img

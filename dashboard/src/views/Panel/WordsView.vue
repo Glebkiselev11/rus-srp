@@ -2,7 +2,7 @@
 import { defineComponent } from "vue";
 import { mapActions, mapState } from "pinia";
 import { useWordsStore } from "@/stores/words";
-import type { Order, RequestParams } from "@/types/api";
+import type { Id, Order, RequestParams } from "@/types/api";
 
 import CategoriesComp from "@/components/Categories/CategoriesComp.vue";
 import TopBarComp from "@/components/TopBarComp.vue";
@@ -20,6 +20,7 @@ import { highlighTextByQuery } from "@/common/utils";
 
 import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/types/translations";
+import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
 
 const LIMIT_DEFAULT = 25;
 
@@ -38,6 +39,7 @@ export default defineComponent({
 		ZeroStateComp,
 		CategoriesComp,
 		WordsPageCategoryTitleComp,
+		WordFormModalComp,
 	},
 	data() {
 		return {
@@ -69,6 +71,8 @@ export default defineComponent({
 				order: "-created_at" as Order,
 				category_id: undefined,
 			},
+			showWordForm: false,
+			editingWordId: undefined as Id | undefined,
 		};
 	},
 	computed: {
@@ -157,8 +161,9 @@ export default defineComponent({
 		updateOrder(order: Order) {
 			this.filter = { ...this.filter, order };
 		},
-		openNewWordPage() {
-			console.log("openNewWordPage");
+		openCreationWordForm() {
+			this.editingWordId = undefined;
+			this.showWordForm = true;
 		},
 		async removeWord(word: Word) {
 			const key = this.$i18n.locale as LanguageCode;
@@ -167,14 +172,15 @@ export default defineComponent({
 				this.deleteWord(word.id);
 			}
 		},
-		editWord(id: number) {
-			console.log("editWord", id);
+		openEditingWordForm(id: Id) {
+			this.editingWordId = id;
+			this.showWordForm = true;
 		},
 		extractWordPreview(word: Word): string {
 			return `${word.rus} — ${word.eng} — ${word.srp_latin} — ${word.srp_cyrillic}`;
 		},
 		updateWordImage(word: Word, src: string) {
-			this.updateWord({ ...word, image: src });
+			this.updateWord(word.id, { ...word, image: src });
 		},
 	},
 });
@@ -195,8 +201,8 @@ export default defineComponent({
 				<template #right>
 					<ButtonComp
 						icon="add"
-						:label="$t('add-word')"
-						@click="openNewWordPage"
+						:label="$t('create-word')"
+						@click="openCreationWordForm"
 					/>
 				</template>
 			</TopBarComp>
@@ -209,6 +215,7 @@ export default defineComponent({
 						:placeholder="$t('find-word')"
 						left-icon="search"
 						debounce
+						width="360px"
 					/>	
 
 					<SelectComp
@@ -255,7 +262,7 @@ export default defineComponent({
 										{ 
 											label: $t('edit'),
 											icon: 'edit',
-											handler: () => editWord(word.id)
+											handler: () => openEditingWordForm(word.id)
 										},
 										'separator',
 										{ 
@@ -305,6 +312,12 @@ export default defineComponent({
 			</div>
 		</div>
 	</div>
+
+	<WordFormModalComp
+		v-if="showWordForm"
+		:word-id="editingWordId"
+		@close="showWordForm = false"
+	/>
 </template>
 
 <style scoped lang="scss">

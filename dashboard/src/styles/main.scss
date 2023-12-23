@@ -13,7 +13,6 @@ hr {
   height: 1px;
   background: $color-separator-primary;
   border: none;
-  margin-block: 6px;
 }
 
 
@@ -22,6 +21,7 @@ hr {
   width: 4px;
   background: $color-background;
 }
+
 *::-webkit-scrollbar-thumb {
   border: 2px solid transparent;
   border-radius: 100px;

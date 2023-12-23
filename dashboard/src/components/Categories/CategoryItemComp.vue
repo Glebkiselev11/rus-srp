@@ -134,7 +134,7 @@ export default defineComponent({
 	}
 
 	&__label {
-		@extend .text-body-2;
+		@include text-body-2;
 		&::first-letter {
 			text-transform: uppercase;
 		}

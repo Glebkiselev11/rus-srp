@@ -1,19 +1,20 @@
 use super::models::{DbNewWord, DbWord};
 use crate::{
-    db::{self, schema},
-    // db::words_categories::models::DbWordCategory,
-    models::{
-        pagination::DbQueryResult,
-        query_options::QueryOptions,
-        word::{NewWord, UpdateWordBody},
+    db::{
+        self, categories::models::DbCategory, schema, words::models::DbWordWithCategories,
+        words_categories::models::DbWordCategory,
     },
+    models::{pagination::DbQueryResult, query_options::QueryOptions, word::Word},
 };
 use diesel::{expression::expression_types::NotSelectable, prelude::*, sqlite::Sqlite};
 
 use crate::db::error_type::DbError;
 
 /// Run query using Diesel to insert a new database row and return the result.
-pub fn insert(new_word: NewWord, conn: &mut SqliteConnection) -> Result<DbWord, DbError> {
+pub fn insert(
+    new_word: Word,
+    conn: &mut SqliteConnection,
+) -> Result<DbWordWithCategories, DbError> {
     use crate::db::schema::words::dsl;
 
     let new_word = DbNewWord::from(new_word);
@@ -22,11 +23,11 @@ pub fn insert(new_word: NewWord, conn: &mut SqliteConnection) -> Result<DbWord, 
         .values(&new_word)
         .get_result::<DbWord>(conn)?;
 
-    Ok(word)
+    join_word_with_categories(word, conn)
 }
 
 /// Run query using Diesel to find word by uid and return it.
-pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<DbWord, DbError> {
+pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<DbWordWithCategories, DbError> {
     use crate::db::schema::words::dsl;
 
     let word = dsl::words
@@ -35,13 +36,13 @@ pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<DbWord, DbEr
         .optional()?
         .ok_or(diesel::result::Error::NotFound)?;
 
-    Ok(word)
+    join_word_with_categories(word, conn)
 }
 
 pub fn select_all_with_filter(
     conn: &mut SqliteConnection,
     query: QueryOptions,
-) -> Result<DbQueryResult<DbWord>, DbError> {
+) -> Result<DbQueryResult<DbWordWithCategories>, DbError> {
     use crate::db::schema::words::dsl;
 
     let order_by = || -> Box<dyn BoxableExpression<dsl::words, Sqlite, SqlType = NotSelectable>> {
@@ -98,29 +99,37 @@ pub fn select_all_with_filter(
         .select(diesel::dsl::count_star())
         .first::<i64>(conn)?;
 
-    let result = apply_filters()
+    let words = apply_filters()
         .order(order_by())
         .offset(query.get_offset())
         .limit(query.get_limit())
         .load::<DbWord>(conn)?;
 
-    return Ok(DbQueryResult { count, result });
+    let words_with_categories = words
+        .into_iter()
+        .map(|word| join_word_with_categories(word, conn).unwrap())
+        .collect::<Vec<DbWordWithCategories>>();
+
+    return Ok(DbQueryResult {
+        count,
+        result: words_with_categories,
+    });
 }
 
 pub fn update(
-    payload: UpdateWordBody,
+    payload: Word,
     id: i32,
     conn: &mut SqliteConnection,
-) -> Result<Option<DbWord>, DbError> {
+) -> Result<DbWordWithCategories, DbError> {
     use crate::db::schema::words::dsl;
 
-    let word: DbWord = select_by_id(id, conn)?.with_update(payload);
+    let word: DbWord = select_by_id(id, conn)?.to_dbword().with_update(payload);
 
     diesel::update(dsl::words.find(id))
         .set(word.clone())
         .execute(conn)?;
 
-    Ok(Some(word))
+    select_by_id(id, conn)
 }
 
 pub fn delete(id: i32, conn: &mut SqliteConnection) -> Result<(), DbError> {
@@ -130,4 +139,17 @@ pub fn delete(id: i32, conn: &mut SqliteConnection) -> Result<(), DbError> {
     diesel::delete(dsl::words.filter(dsl::id.eq(id))).execute(conn)?;
 
     Ok(())
+}
+
+fn join_word_with_categories(
+    word: DbWord,
+    conn: &mut SqliteConnection,
+) -> Result<DbWordWithCategories, DbError> {
+    let categories = DbWordCategory::belonging_to(&word)
+        .inner_join(schema::categories::table)
+        .select(schema::categories::all_columns)
+        .load::<DbCategory>(conn)
+        .expect("Error on join_word_with_categories");
+
+    Ok(DbWordWithCategories::new(word, categories))
 }

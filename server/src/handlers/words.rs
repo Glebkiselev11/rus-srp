@@ -3,20 +3,35 @@ use crate::db;
 use crate::db::error_type::DbError;
 use crate::models::pagination::Pagination;
 use crate::models::query_options::QueryOptions;
-use crate::models::word::{NewWord, NewWordBody, UpdateWordBody};
+use crate::models::word::{Word, WordBody};
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 
 pub async fn create(
     pool: web::Data<DbPool>,
-    body: web::Json<NewWordBody>,
+    body: web::Json<WordBody>,
 ) -> actix_web::Result<impl Responder> {
-    let new_word = NewWord::from(body.into_inner());
+    let category_ids = body.category_ids.clone();
+    let new_word = Word::from(body.into_inner());
 
     // use web::block to offload blocking Diesel code without blocking server thread
     let word = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::methods::insert(new_word, &mut conn)
+
+        let word_result = db::words::methods::insert(new_word, &mut conn);
+
+        // Insert word into each category
+        if let Ok(w) = &word_result {
+            for category_id in &category_ids {
+                db::words_categories::methods::insert(*category_id, w.id, &mut conn)?;
+            }
+
+            if category_ids.len() > 0 {
+                return db::words::methods::select_by_id(w.id, &mut conn);
+            }
+        }
+
+        word_result
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
@@ -62,13 +77,18 @@ pub async fn get_by_id(
 pub async fn update(
     pool: web::Data<DbPool>,
     id: web::Path<i32>,
-    body: web::Json<UpdateWordBody>,
+    body: web::Json<WordBody>,
 ) -> actix_web::Result<impl Responder> {
-    let word = body.into_inner();
+    let category_ids = body.category_ids.clone();
+
+    let word = Word::from(body.into_inner());
+    let id = id.into_inner();
 
     let word = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::methods::update(word, id.into_inner(), &mut conn)
+
+        db::words_categories::methods::sync_categories_with_word(&category_ids, id, &mut conn)?;
+        db::words::methods::update(word, id, &mut conn)
     })
     .await?
     .map_err(_convert_db_error_to_http_error)?;

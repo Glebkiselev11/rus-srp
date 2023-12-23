@@ -1,4 +1,7 @@
-export type DraftWord = {
+import type { Id } from "./api";
+import type { Category } from "./categories";
+
+type WordBase = {
   rus: string;
   eng: string;
   srp_latin: string;
@@ -6,8 +9,13 @@ export type DraftWord = {
   image: string | null;
 }
 
+export type DraftWord = {
+  category_ids: Id[]; 
+} & WordBase;
+
 export type Word = {
-  id: number;
+  id: Id;
   created_at: string;
   updated_at: string;
-} & DraftWord;
+  categories: Category[];
+} & WordBase;

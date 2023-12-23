@@ -92,7 +92,6 @@ export default defineComponent({
 
 .modal {
 	border-radius: 16px;
-	padding: 8px;
 	background: $color-background-content-primary;
 	border: 1px solid $color-separator-primary;
 	box-shadow: 0px 4px 16px 0px rgba(2, 18, 38, 0.08), 0px 0px 2px 0px rgba(2, 18, 38, 0.08);

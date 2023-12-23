@@ -68,7 +68,7 @@ export default defineComponent({
 }
 
 .tooltip {
-  @extend .text-caption-2;
+  @include text-caption-2;
   position: absolute;
   z-index: 2;
   background: $color-background-tooltip;

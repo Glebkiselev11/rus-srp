@@ -1,12 +1,15 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto);
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
 
 * {
   font-family: Roboto;
   font-style: normal;
 }
 
-h1, h2, h3, h4 {
-  font-weight: 600;
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 500;
 }
 
 h1 {
@@ -16,12 +19,12 @@ h1 {
 
 h2 {
   font-size: 24px;
-  line-height: 28px; 
+  line-height: 32px;
 }
 
 h3 {
   font-size: 20px;
-  line-height: 24px;
+  line-height: 28px;
 }
 
 h4 {
@@ -29,89 +32,85 @@ h4 {
   line-height: 24px;
 }
 
-.text {
-  &-subtitle-1 {
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 24px;
-    letter-spacing: 0.1px;
-  }
-
-  &-subtitle-2 {
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 20px;
-    letter-spacing: 0.2px;
-  }
-
-  &-body-1 {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-    letter-spacing: 0.1px;
-  }
-
-  &-body-2 {
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 20px; 
-    letter-spacing: 0.2px;
-  }
-
-  &-caption-1 {
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 16px;
-    letter-spacing: 0.3px;
-  }
-
-  &-caption-2 {
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 16px;
-    letter-spacing: 0.2px;
-  }
+@mixin text-subtitle-1 {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0.1px;
 }
 
-.text-color {
+@mixin text-subtitle-2 {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0.2px;
+}
 
-  &-primary {
-    color: $color-text-primary;
-  }
+@mixin text-body-1 {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.1px;
+}
 
-  &-secondary {
-    color: $color-text-secondary;
-  }
+@mixin text-body-2 {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.2px;
+}
 
-  &-tertiary {
-    color: $color-text-tertiary;
-  }
+@mixin text-caption-1 {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.3px;
+}
 
-  &-subhead {
-    color: $color-text-subhead;
-  }
+@mixin text-caption-2 {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.2px;
+}
 
-  &-contrast {
-    color: $color-text-contrast;
-  }
 
-  &-accent-primary {
-    color: $color-text-accent-primary;
-  }
+.text-color-primary {
+  color: $color-text-primary;
+}
 
-  &-accent-secondary {
-    color: $color-text-accent-secondary;
-  }
+.text-color-secondary {
+  color: $color-text-secondary;
+}
 
-  &-positive {
-    color: $color-text-positive;
-  }
+.text-color-tertiary {
+  color: $color-text-tertiary;
+}
 
-  &-negative {
-    color: $color-text-negative;
-  }
+.text-color-subhead {
+  color: $color-text-subhead;
+}
 
-  &-warning {
-    color: $color-text-warning;
-  }
+.text-color-contrast {
+  color: $color-text-contrast;
+}
+
+.text-color-accent-primary {
+  color: $color-text-accent-primary;
+}
+
+.text-color-accent-secondary {
+  color: $color-text-accent-secondary;
+}
+
+.text-color-positive {
+  color: $color-text-positive;
+}
+
+.text-color-negative {
+  color: $color-text-negative;
+}
+
+.text-color-warning {
+  color: $color-text-warning;
 }

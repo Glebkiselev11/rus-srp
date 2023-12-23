@@ -1,8 +1,8 @@
 <script lang="ts">
-import { defineComponent } from "vue";
-import ImagePreviewComp from "./ImagePreviewComp.vue";
-import { useCategoriesStore } from "@/stores/categories";
-import { mapActions, mapState } from "pinia";
+import { defineComponent, type PropType } from "vue";
+import ImageSectionComp from "./ImageSectionComp.vue";
+import { useCategoriesActions } from "@/stores/categories/actions";
+import { mapActions } from "pinia";
 import type { Category, DraftCategory } from "@/types/categories";
 import { LanguageList } from "@/i18n";
 import type { LanguageCode } from "@/types/translations";
@@ -10,26 +10,36 @@ import InputComp from "./InputComp.vue";
 import ButtonComp from "./ButtonComp.vue";
 import { translate } from "@/common/translations";
 import { CategoriesApi } from "@/api/categories";
+import { getLanguageName } from "@/common/translations";
+import { isAnyFieldHasChanged } from "@/common/utils";
+
+function initDraftCategory(): DraftCategory {
+	return {
+		rus: "",
+		eng: "",
+		srp_latin: "",
+		srp_cyrillic: "",
+		image: null,
+	};
+}
 
 export default defineComponent({
 	name: "CategoryFormComp",
-	components: { ImagePreviewComp, InputComp, ButtonComp },
+	components: { 
+		ImageSectionComp,
+		InputComp, 
+		ButtonComp, 
+	},
 	props: {
-		categoryId: {
-			type: Number,
+		category: {
+			type: Object as PropType<Category>,
 			default: undefined,
 		},
 	},
 	emits: ["saved", "close", "set-changed-status"],
 	data() {
 		return {
-			draftCategory: {
-				rus: "",
-				eng: "",
-				srp_latin: "",
-				srp_cyrillic: "",
-				image: null,
-			} as DraftCategory,
+			draftCategory: initDraftCategory(),
 			categoryNameValidationErrors: [] as string[],
 			rusValidationError: undefined as string | undefined,
 			engValidationError: undefined as string | undefined,
@@ -39,10 +49,6 @@ export default defineComponent({
 	},
 
 	computed: {
-		...mapState(useCategoriesStore, ["getCategoryById"]),
-		category(): Category | undefined {
-			return this.categoryId ? this.getCategoryById(this.categoryId) : undefined;
-		},
 		selectedLanguage(): LanguageCode {
 			return this.$i18n.locale as LanguageCode;
 		},
@@ -53,7 +59,7 @@ export default defineComponent({
 			return this.draftCategory.eng;
 		},
 		saveButtonLabel(): string {
-			return this.categoryId ? this.$t("save-changes") : this.$t("create");
+			return this.category ? this.$t("save-changes") : this.$t("create");
 		},
 		showFillAutoButton(): boolean {
 			const draftCategoryName = this.draftCategory[this.selectedLanguage];
@@ -102,10 +108,8 @@ export default defineComponent({
 		}
 	},
 	methods: {
-		...mapActions(useCategoriesStore, ["createCategory", "updateCategory"]),
-		getLabelByKey(key: LanguageCode): string {
-			return LanguageList.find(({ value }) => value === key)?.label || "Not found label";
-		},
+		...mapActions(useCategoriesActions, ["createCategory", "updateCategory"]),
+		getLanguageName,
 		removeCategoryNameErrorValidation(error: string): void {
 			this.categoryNameValidationErrors = this.categoryNameValidationErrors.filter(
 				(x) => x !== error,
@@ -190,7 +194,7 @@ export default defineComponent({
 			const target = LanguageList
 				.filter(({ value }) => value !== from).map(({ value }) => value);
 
-			translate(from, target, this.draftCategory[from]).then((translations) => {
+			translate(from, this.draftCategory[from], target).then((translations) => {
 				translations.forEach(({ to, text }) => {
 					this.draftCategory[to] = text.toLowerCase();
 				});
@@ -200,22 +204,11 @@ export default defineComponent({
 			this.$emit("close");
 		},
 		updateChangeStatus() {
-			const getFields = (category: Category | DraftCategory) => [
-				category.rus,
-				category.eng,
-				category.srp_latin,
-				category.srp_cyrillic,
-				category.image,
-			];
-
-			if (!this.categoryId) {
-				const isAnyFilled = getFields(this.draftCategory).some((x) => x);
-				this.$emit("set-changed-status", isAnyFilled);
-			} else if (this.category) {
-				const categoryFields = getFields(this.category);
-				const draftCategoryFields = getFields(this.draftCategory);
-				const isAnyChanged = categoryFields.some((x, i) => x !== draftCategoryFields[i]);
-				this.$emit("set-changed-status", isAnyChanged);
+			const emit = "set-changed-status";
+			if (this.category) {
+				this.$emit(emit, isAnyFieldHasChanged(this.category, this.draftCategory));
+			} else {
+				this.$emit(emit, isAnyFieldHasChanged(initDraftCategory(), this.draftCategory));
 			}
 		},
 	},
@@ -225,15 +218,12 @@ export default defineComponent({
 
 <template>
 	<div class="category-form">
-		<div class="category-form__preview">
-			<ImagePreviewComp
-				size="96px"
-				:src="draftCategory.image"
-				:image-search-modal-subtitle="categoryName"
-				:default-image-search-query="defaultImageSearchQuery"
-				@update:src="draftCategory.image = $event"
-			/>
-
+		<ImageSectionComp
+			:src="draftCategory.image"
+			:image-search-modal-subtitle="categoryName"
+			:default-image-search-query="defaultImageSearchQuery"
+			@update:src="draftCategory.image = $event"	
+		>
 			<InputComp
 				v-model="draftCategory[selectedLanguage]"
 				:label="$t('category-name')"
@@ -245,7 +235,7 @@ export default defineComponent({
 				:reset-value="category?.[selectedLanguage]"
 				@focusout="triggerCategoryNameUniqueValidation"
 			/>
-		</div>
+		</ImageSectionComp>
 
 		<div class="category-form__row">
 			<div>
@@ -274,7 +264,7 @@ export default defineComponent({
 			:error="rusValidationError"
 			:reset-value="category?.rus"
 			clear-button
-			:label="getLabelByKey('rus')"
+			:label="getLanguageName('rus')"
 			class="category-form__translation-input"
 		/>
 
@@ -286,7 +276,7 @@ export default defineComponent({
 			clear-button
 			:reset-value="category?.eng"
 			:error="engValidationError"
-			:label="getLabelByKey('eng')"
+			:label="getLanguageName('eng')"
 			class="category-form__translation-input"
 		/>
 
@@ -298,7 +288,7 @@ export default defineComponent({
 			clear-button
 			:reset-value="category?.srp_latin"
 			:error="srp_latinValidationError"
-			:label="getLabelByKey('srp_latin')"
+			:label="getLanguageName('srp_latin')"
 			class="category-form__translation-input"
 		/>
 
@@ -310,7 +300,7 @@ export default defineComponent({
 			clear-button
 			:reset-value="category?.srp_cyrillic"
 			:error="srp_cyrillicValidationError"
-			:label="getLabelByKey('srp_cyrillic')"
+			:label="getLanguageName('srp_cyrillic')"
 			class="category-form__translation-input"
 		/>
 
@@ -335,16 +325,6 @@ export default defineComponent({
 	padding-inline: 16px;
 	padding-block-end: 20px;
 	width: 598px;
-
-	&__preview {
-		display: flex;
-		column-gap: 24px;
-		width: 100%;
-		height: 144px;
-		padding: 24px;
-		background: $color-background;
-		border-radius: 16px;
-	}
 
 	&__row {
 		display: flex;

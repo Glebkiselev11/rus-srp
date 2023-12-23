@@ -20,6 +20,8 @@
     "description": "Entered changes will not be saved",
     "edit-category-title": "Stop editing the category?",
     "creation-category-title": "Stop creating the category?",
+    "edit-word-title": "Stop editing the word?",
+    "creation-word-title": "Stop creating the word?",
     "continue-creation": "Continue creation",
     "continue-editing": "Continue editing",
     "confirm": "Yes, stop"
@@ -42,6 +44,7 @@
     "description": "Enter a word in the corresponding language"
   },
   "add-word": "Add word",
+  "create-word": "Create word",
   "search": "Search",
   "find-word": "Find the word",
   "find-category": "Find category",
@@ -70,9 +73,18 @@
   "add-image": "Adding an image",
   "editing-category": "Editing a category",
   "creation-category": "Creating a category",
+  "creation-word": "Creating a word",
+  "editing-word": "Editing a word",
   "selected": "Selected",
   "search-by-query": "Search for “{query}”",
   "image-search-title": "To find an image, enter a query in English",
   "image-search-description": "This can be a direct translation or a synonym of the added word",
-  "to-sort": "Sort"
+  "to-sort": "Sort",
+  "image": "Image",
+  "new-word": "New word",
+  "word-already-exists": "Word with this name already exists",
+  "create-and-add-next": "Create and add another",
+  "all-categories": "All categories",
+  "add-to-category": "Add to category",
+  "remove-from-category": "Remove from category"
 }

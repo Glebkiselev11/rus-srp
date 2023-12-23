@@ -124,7 +124,7 @@ export default defineComponent({
 	}
 
 	.count-info {
-		@extend .text-subtitle-2;
+		@include text-subtitle-2;
 		color: $color-text-secondary;
 	}
 
@@ -133,7 +133,7 @@ export default defineComponent({
 		align-items: center;
 
 		&__text {
-			@extend .text-body-2;
+			@include text-body-2;
 			color: $color-text-secondary;
 			margin-inline-end: 8px;
 		}
@@ -144,7 +144,7 @@ export default defineComponent({
 		align-items: center;
 
 		&--text {
-			@extend .text-body-2;
+			@include text-body-2;
 			color: $color-text-secondary;
 			margin-inline-end: 8px;
 		}

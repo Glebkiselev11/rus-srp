@@ -190,6 +190,7 @@ export default defineComponent({
 		object-fit: cover;
 		border-radius: 12px;
 		cursor: pointer;
+		border: 1px solid $color-image-border;
 	}
 
 	&--skeleton-item {
@@ -201,7 +202,7 @@ export default defineComponent({
 	position: relative;
 
 	&--badge {
-		@extend .text-caption-2;
+		@include text-caption-2;
 
 		position: absolute;
 		height: 28px;

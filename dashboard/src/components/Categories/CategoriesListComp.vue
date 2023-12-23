@@ -3,7 +3,7 @@ import { defineComponent } from "vue";
 import CategoryItemComp from "./CategoryItemComp.vue";
 import ListItemComp from "@/components/ListItemComp.vue";
 import AllWordsCategoryImageComp from "./AllWordsCategoryImageComp.vue";
-import { useCategoriesStore } from "@/stores/categories";
+import { usePageCategoriesStore } from "@/stores/categories/pageCategories";
 import { mapState } from "pinia";
 import ZeroStateComp from "../ZeroStateComp.vue";
 
@@ -27,7 +27,7 @@ export default defineComponent({
 	},
 	emits: ["selectCateogry", "select-category-for-editing"],
 	computed: {
-		...mapState(useCategoriesStore, ["categories", "loadState", "count"]),
+		...mapState(usePageCategoriesStore, ["categories", "loadState", "count"]),
 		notFoundTitle(): string {
 			return this.$t("not-found", { search: this.searchQuary });
 		},
@@ -58,7 +58,7 @@ export default defineComponent({
 				<div class="categories-list__all-words-item">
 					<AllWordsCategoryImageComp size="24px" />
 
-					<span class="text-body-2">{{ $t('all-words') }}</span>
+					<span>{{ $t('all-words') }}</span>
 				</div>
 			</ListItemComp>
 		</div>
@@ -94,20 +94,24 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
+@import "@/styles/main.scss";
 
 .categories-list {
 	&__all-words-item {
 		display: flex;
 		align-items: center;
 		column-gap: 8px;
+		@include text-body-2;
 	}
 
 	&__items {
-		margin-inline: 12px;
-		margin-block: 12px;
+		padding-inline: 12px;
+		padding-block: 12px;
 		display: flex;
 		flex-direction: column;
 		row-gap: 4px;
+		max-height: calc(100vh - 170px);
+		overflow: auto;
 	}
 
 	&__zero-state {

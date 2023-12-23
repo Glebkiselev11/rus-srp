@@ -76,7 +76,7 @@ export default defineComponent({
 	}
 
 	&__label {
-		@extend .text-body-2;
+		@include text-body-2;
 		color: $color-text-primary;
 
 		&--active {

@@ -14,6 +14,8 @@
     "description": "Внесенные изменения не сохранятся",
     "edit-category-title": "Прекратить изменение категории?",
     "creation-category-title": "Прекратить создание категории?",
+    "edit-word-title": "Прекратить изменение слова?",
+    "creation-word-title": "Прекратить создание слова?",
     "continue-creation": "Продолжить создание",
     "continue-editing": "Продолжить изменение",
     "confirm": "Да, прекратить"
@@ -38,6 +40,7 @@
   "words": "Слова",
   "all-words": "Все слова",
   "add-word": "Добавить слово",
+  "create-word": "Создать слово",
   "adding-word": {
     "title": "Добавление слова",
     "description": "Введите слово на соответствующем языке"
@@ -70,9 +73,18 @@
   "add-image": "Добавление изображения",
   "editing-category": "Изменение категории",
   "creation-category": "Создание категории",
+  "creation-word": "Создание слова",
+  "editing-word": "Изменение слова",
   "selected": "Выбрано",
   "search-by-query": "Искать “{query}”",
   "image-search-title": "Чтобы найти изображение, введите запрос на английском",
   "image-search-description": "Это может быть прямой перевод или синоним добавляемого слова",
-  "to-sort": "Сортировать"
+  "to-sort": "Сортировать",
+  "image": "Изображение",
+  "new-word": "Новое слово",
+  "word-already-exists": "Такое слово уже есть в базе",
+  "create-and-add-next": "Создать и добавить другое",
+  "all-categories": "Все категории",
+  "add-to-category": "Добавить в категорию",
+  "remove-from-category": "Удалить из категории"
 }

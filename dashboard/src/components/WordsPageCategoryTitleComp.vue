@@ -1,7 +1,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import AllWordsCategoryImageComp from "./Categories/AllWordsCategoryImageComp.vue";
-import { useCategoriesStore } from "@/stores/categories";
+import { usePageCategoriesStore } from "@/stores/categories/pageCategories";
+import { useCategoriesActions } from "@/stores/categories/actions";
 import { mapActions, mapState } from "pinia";
 import type { Category } from "@/types/categories";
 import type { LanguageCode } from "@/types/translations";
@@ -34,13 +35,13 @@ export default defineComponent({
 		};
 	},
 	computed: {
-		...mapState(useCategoriesStore, ["categories"]),
+		...mapState(usePageCategoriesStore, ["categories"]),
 		category(): Category | undefined {
 			return this.categories.find(category => category.id === this.categoryId);
 		},	
 	},
 	methods: {
-		...mapActions(useCategoriesStore, ["updateCategory"]),
+		...mapActions(useCategoriesActions, ["updateCategory"]),
 		getCategoryName(category: Category) {
 			return category[this.$i18n.locale as LanguageCode];
 		},

@@ -26,6 +26,8 @@
     "description": "Унете измене неће бити сачуване",
     "edit-category-title": "Прекинути измену категорије?",
     "creation-category-title": "Прекинути стварање категорије?",
+    "edit-word-title": "Прекинути измену речи?",
+    "creation-word-title": "Прекинути стварање речи?",
     "continue-creation": "Настави стварање",
     "continue-editing": "Настави измену",
     "confirm": "Да, прекини"
@@ -38,6 +40,7 @@
   "words": "Речи",
   "all-words": "Све речи",
   "add-word": "Додајте реч",
+  "create-word": "Креирајте реч",
   "adding-word": {
     "title": "Додавање речи",
     "description": "Унесите реч на одговарајућем језику"
@@ -70,9 +73,18 @@
   "add-image": "Додавање слике",
   "editing-category": "Уређивање категорије",
   "creation-category": "Креирање категорије",
+  "creation-word": "Креирање речи",
+  "editing-word": "Уређивање речи",
   "selected": "Изабрано",
   "search-by-query": "Тражи “{query}”",
   "image-search-title": "Да бисте пронашли слику, унесите упит на енглеском",
   "image-search-description": "Ово може бити директан превод или синоним додане речи",
-  "to-sort": "Сортирати"
+  "to-sort": "Сортирати",
+  "image": "Слика",
+  "new-word": "Нова реч",
+  "word-already-exists": "Реч са овим именом већ постоји",
+  "create-and-add-next": "Направите и додајте још једну",
+  "all-categories": "Све категорије",
+  "add-to-category": "Додајте у категорију",
+  "remove-from-category": "Уклоните из категорије"
 }

@@ -4,6 +4,8 @@ export type ListResponse<T> = {
   result: Array<T>;
 }
 
+export type Id = number | string;
+
 export type Order = 
   "created_at" | 
   "-created_at" | 

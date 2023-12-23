@@ -22,7 +22,7 @@ impl Language {
             Language::Ru => "ru",
             Language::En => "en",
             Language::SrpCyrillic => "sr-Cyrl",
-            Language::SrpLatin => "hr",
+            Language::SrpLatin => "sr-Latn",
         }
     }
 }
@@ -88,7 +88,7 @@ pub async fn translate(body: web::Json<TranslatePayload>) -> actix_web::Result<i
                                 "ru" => "rus",
                                 "en" => "eng",
                                 "sr-Cyrl" => "srp_cyrillic",
-                                "hr" => "srp_latin",
+                                "sr-Latn" => "srp_latin",
                                 _ => "unknown",
                             })
                             .to_string(),

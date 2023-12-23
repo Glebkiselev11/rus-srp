@@ -1,5 +1,5 @@
-use crate::models::word::NewWord;
-use crate::{db::schema::words, models::word::UpdateWordBody};
+use crate::db::{categories::models::DbCategory, schema::words};
+use crate::models::word::Word;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, Queryable, Insertable)]
@@ -13,8 +13,8 @@ pub struct DbNewWord {
     pub image: Option<String>,
 }
 
-impl From<NewWord> for DbNewWord {
-    fn from(new_word: NewWord) -> Self {
+impl From<Word> for DbNewWord {
+    fn from(new_word: Word) -> Self {
         DbNewWord {
             rus: new_word.rus,
             srp_latin: new_word.srp_latin,
@@ -50,7 +50,7 @@ pub struct DbWord {
 }
 
 impl DbWord {
-    pub fn with_update(&self, payload: UpdateWordBody) -> DbWord {
+    pub fn with_update(&self, payload: Word) -> DbWord {
         DbWord {
             id: self.id,
             created_at: self.created_at,
@@ -60,6 +60,48 @@ impl DbWord {
             srp_cyrillic: payload.srp_cyrillic,
             updated_at: Some(chrono::Utc::now().naive_utc()),
             image: payload.image,
+        }
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DbWordWithCategories {
+    pub id: i32,
+    pub rus: String,
+    pub eng: String,
+    pub srp_latin: String,
+    pub srp_cyrillic: String,
+    pub created_at: chrono::NaiveDateTime,
+    pub updated_at: Option<chrono::NaiveDateTime>,
+    pub image: Option<String>,
+    pub categories: Vec<DbCategory>,
+}
+
+impl DbWordWithCategories {
+    pub fn new(word: DbWord, categories: Vec<DbCategory>) -> Self {
+        DbWordWithCategories {
+            id: word.id,
+            rus: word.rus,
+            eng: word.eng,
+            srp_latin: word.srp_latin,
+            srp_cyrillic: word.srp_cyrillic,
+            created_at: word.created_at,
+            updated_at: word.updated_at,
+            image: word.image,
+            categories,
+        }
+    }
+
+    pub fn to_dbword(&self) -> DbWord {
+        DbWord {
+            id: self.id,
+            rus: self.rus.clone(),
+            eng: self.eng.clone(),
+            srp_latin: self.srp_latin.clone(),
+            srp_cyrillic: self.srp_cyrillic.clone(),
+            created_at: self.created_at,
+            updated_at: self.updated_at,
+            image: self.image.clone(),
         }
     }
 }

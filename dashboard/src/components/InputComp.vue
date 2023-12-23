@@ -92,11 +92,21 @@ export default defineComponent({
 	data() {
 		return {
 			focusOnInput: false,
+			value: this.modelValue,
 		};
 	},
 	computed: {
 		errorLabel() {
 			return this.disableErrorLabel ? undefined : this.error;
+		},
+		leftIconColor() {
+			return this.focusOnInput ? "accent-primary" : "tertiary" ;
+		},
+	},
+	watch: {
+		// This only need with autofill case
+		modelValue(value: string | number) {
+			this.value = value;
 		},
 	},
 	mounted() {
@@ -123,17 +133,14 @@ export default defineComponent({
 		emitValue(value: unknown) {
 			this.$emit("update:modelValue", value);
 		},
-		handleInput(event: Event) {
-			const value = (event.target as HTMLInputElement).value;
-
+		handleInput() {
 			if (
-				this.max && Number(value) > this.max || 
-				this.min && Number(value) < this.min
+				this.max && Number(this.value) > this.max || 
+				this.min && Number(this.value) < this.min
 			) {
 				return;
 			}
-
-			this.debounce ? this.debounceEmit(value) : this.emitValue(value);
+			this.debounce ? this.debounceEmit(this.value) : this.emitValue(this.value);
 		},
 		setFocus() {
 			const input = this.$refs.input as HTMLInputElement;
@@ -158,6 +165,7 @@ export default defineComponent({
 		:label="label"
 		:error="errorLabel"
 		for="input"
+		:style="{ width }"
 	>
 		<div
 			class="input"
@@ -166,12 +174,13 @@ export default defineComponent({
 				v-if="leftIcon"
 				class="input--left-icon"
 				:name="leftIcon"
-				color="tertiary"
+				:color="leftIconColor"
 			/>
 
 			<input
 				id="input"
 				ref="input"
+				v-model="value"
 				class="input__field"
 				:class="[
 					`input__field--size-${size}`,
@@ -179,12 +188,12 @@ export default defineComponent({
 				]"
 				:style="{ width }"
 				:type="type"
-				:value="modelValue"
 				:placeholder="placeholder"
 				:disabled="disabled"
 				:error="error !== null"
 				:max="max"
 				:min="min"
+				autocomplete="off"
 				@input="handleInput"
 			>
 
@@ -249,12 +258,12 @@ export default defineComponent({
 
 		&--size {
 			&-regular {
-				@extend .text-body-1;
+				@include text-body-1;
 				height: 40px;
 			}
 
 			&-compact {
-				@extend .text-body-2;
+				@include text-body-2;
 				height: 32px;
 			}
 		}
@@ -286,7 +295,7 @@ export default defineComponent({
 		}
 
 		&::placeholder {
-			@extend .text-body-1;
+			@include text-body-1;
 			color: $color-text-tertiary;
 		}
 

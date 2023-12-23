@@ -1,5 +1,6 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import type { Id } from "@/types/api";
+import { defineComponent, type PropType } from "vue";
 
 export default defineComponent({
 	name: "TableRowComp",
@@ -9,7 +10,7 @@ export default defineComponent({
 			default: false,
 		},
 		id: {
-			type: Number,
+			type: [String, Number] as PropType<Id>,
 			default: null,
 		},
 	},
