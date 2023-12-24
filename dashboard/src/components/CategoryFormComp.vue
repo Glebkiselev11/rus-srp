@@ -4,13 +4,12 @@ import ImageSectionComp from "./ImageSectionComp.vue";
 import { useCategoriesActions } from "@/stores/categories/actions";
 import { mapActions } from "pinia";
 import type { Category, DraftCategory } from "@/types/categories";
-import { LanguageList } from "@/i18n";
 import type { LanguageCode } from "@/types/translations";
 import InputComp from "./InputComp.vue";
 import ButtonComp from "./ButtonComp.vue";
 import { translate } from "@/common/translations";
 import { CategoriesApi } from "@/api/categories";
-import { getLanguageName } from "@/common/translations";
+import { getLanguageLabel, getLanguageList, getLanguageCodesOrder } from "@/common/translations";
 import { isAnyFieldHasChanged } from "@/common/utils";
 
 function initDraftCategory(): DraftCategory {
@@ -52,6 +51,10 @@ export default defineComponent({
 		selectedLanguage(): LanguageCode {
 			return this.$i18n.locale as LanguageCode;
 		},
+		nonSelectedLanguages(): LanguageCode[] {
+			return getLanguageCodesOrder()
+				.filter((code) => code !== this.selectedLanguage);
+		},
 		categoryName(): string {
 			return this.draftCategory[this.selectedLanguage];
 		},	
@@ -74,7 +77,7 @@ export default defineComponent({
 				return true;
 			}
 
-			const isAllFieldsFilled = LanguageList.every(({ value }) => 
+			const isAllFieldsFilled = getLanguageList().every(({ value }) => 
 				this.draftCategory[value] !== "");
 
 			if (isAllFieldsFilled) {
@@ -109,7 +112,7 @@ export default defineComponent({
 	},
 	methods: {
 		...mapActions(useCategoriesActions, ["createCategory", "updateCategory"]),
-		getLanguageName,
+		getLanguageLabel,
 		removeCategoryNameErrorValidation(error: string): void {
 			this.categoryNameValidationErrors = this.categoryNameValidationErrors.filter(
 				(x) => x !== error,
@@ -191,8 +194,9 @@ export default defineComponent({
 		},
 		autoFill() {
 			const from = this.selectedLanguage;
-			const target = LanguageList
-				.filter(({ value }) => value !== from).map(({ value }) => value);
+			const target = getLanguageList()
+				.filter(({ value }) => value !== from)
+				.map(({ value }) => value);
 
 			translate(from, this.draftCategory[from], target).then((translations) => {
 				translations.forEach(({ to, text }) => {
@@ -209,6 +213,18 @@ export default defineComponent({
 				this.$emit(emit, isAnyFieldHasChanged(this.category, this.draftCategory));
 			} else {
 				this.$emit(emit, isAnyFieldHasChanged(initDraftCategory(), this.draftCategory));
+			}
+		},
+		getValidationError(code: LanguageCode) {
+			switch (code) {
+			case "eng":
+				return this.engValidationError;
+			case "rus":
+				return this.rusValidationError;
+			case "srp_latin":
+				return this.srp_latinValidationError;
+			case "srp_cyrillic":
+				return this.srp_cyrillicValidationError;
 			}
 		},
 	},
@@ -257,50 +273,15 @@ export default defineComponent({
 		</div>
 
 		<InputComp
-			v-if="selectedLanguage !== 'rus'"
-			v-model="draftCategory.rus"
-			appearance="outline"
-			disable-error-label
-			:error="rusValidationError"
-			:reset-value="category?.rus"
-			clear-button
-			:label="getLanguageName('rus')"
-			class="category-form__translation-input"
-		/>
-
-		<InputComp
-			v-if="selectedLanguage !== 'eng'"
-			v-model="draftCategory.eng"
+			v-for="code in nonSelectedLanguages"
+			:key="code"
+			v-model="draftCategory[code]"
 			appearance="outline"
 			disable-error-label
 			clear-button
-			:reset-value="category?.eng"
-			:error="engValidationError"
-			:label="getLanguageName('eng')"
-			class="category-form__translation-input"
-		/>
-
-		<InputComp
-			v-if="selectedLanguage !== 'srp_latin'"
-			v-model="draftCategory.srp_latin"
-			appearance="outline"
-			disable-error-label
-			clear-button
-			:reset-value="category?.srp_latin"
-			:error="srp_latinValidationError"
-			:label="getLanguageName('srp_latin')"
-			class="category-form__translation-input"
-		/>
-
-		<InputComp
-			v-if="selectedLanguage !== 'srp_cyrillic'"
-			v-model="draftCategory.srp_cyrillic"
-			appearance="outline"
-			disable-error-label
-			clear-button
-			:reset-value="category?.srp_cyrillic"
-			:error="srp_cyrillicValidationError"
-			:label="getLanguageName('srp_cyrillic')"
+			:reset-value="category?.[code]"
+			:error="getValidationError(code)"
+			:label="getLanguageLabel(code)"
 			class="category-form__translation-input"
 		/>
 

@@ -20,21 +20,6 @@ export function isAnyFieldHasChanged(
 	return JSON.stringify(current) !== JSON.stringify(original);
 }
 
-export function translationPreview(obj: {
-	rus: string;
-	eng: string;
-	srp_latin: string;
-	srp_cyrillic: string;
-}): string {
-	return [
-		obj.rus, 
-		obj.eng, 
-		obj.srp_latin, 
-		obj.srp_cyrillic]
-		.map(x => Boolean(x) ? x : " ? ")
-		.join(" — ");
-}
-
 export function convertWordToDraftWord(word: Word | DraftWord): DraftWord {
 	return {
 		rus: word.rus,

@@ -21,6 +21,7 @@ import { highlighTextByQuery } from "@/common/utils";
 import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/types/translations";
 import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
+import { getLanguageCodesOrder, getLanguageLabel } from "@/common/translations";
 
 const LIMIT_DEFAULT = 25;
 
@@ -43,18 +44,6 @@ export default defineComponent({
 	},
 	data() {
 		return {
-			columns: [
-				{ sortable: true, sort_key: "image", 
-					icon: { 
-						name: "image", 
-						color: "tertiary", 
-					} as const, width: "40px" },
-				{ label: "Русский", sortable: true, sort_key: "rus", width: "200px" }, 
-				{ label: "English", sortable: true, sort_key: "eng", width: "200px" }, 
-				{ label: "Srpski", sortable: true, sort_key: "srp_latin", width: "200px" }, 
-				{ label: "Српски", sortable: true, sort_key: "srp_cyrillic" },
-				{ sortable: false, width: "50px" },
-			],
 			limitOptions: [
 				{ value: LIMIT_DEFAULT, label: String(LIMIT_DEFAULT) },
 				{ value: 50, label: "50" },
@@ -77,6 +66,30 @@ export default defineComponent({
 	},
 	computed: {
 		...mapState(useWordsStore, ["words", "count"]),
+		translationColumns() {
+			return getLanguageCodesOrder()
+				.map((code) => ({
+					label: getLanguageLabel(code),
+					sortable: true,
+					sort_key: code,
+					width: "200px",
+				}));
+		},
+		columns() {
+			return [
+				{ 
+					sortable: true, 
+					sort_key: "image", 
+					icon: { 
+						name: "image", 
+						color: "tertiary", 
+					} as const, 
+					width: "40px", 
+				},
+				...this.translationColumns,
+				{ sortable: false, width: "50px" },
+			];
+		},
 		filter: {
 			get(): RequestParams {
 				const { search, offset, limit, order, category_id } = this.defaultFilter;
@@ -251,10 +264,13 @@ export default defineComponent({
 									@update:src="src => updateWordImage(word, src)"
 								/>
 							</td>
-							<td v-html="highlighTextByQuery(word.rus, search)" />
-							<td v-html="highlighTextByQuery(word.eng, search)" />
-							<td v-html="highlighTextByQuery(word.srp_latin, search)" />
-							<td v-html="highlighTextByQuery(word.srp_cyrillic, search)" />
+
+							<td
+								v-for="(translation, i) in translationColumns"
+								:key="`${word.id}-${i}`"
+								v-html="highlighTextByQuery(word[translation.sort_key], search)"
+							/>
+
 							<td style="margin-inline-start: auto">
 								<DropdownMenuComp 
 									v-slot="{ isMenuOpen }"

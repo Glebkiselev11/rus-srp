@@ -1,7 +1,42 @@
 import type { LanguageCode, Translation } from "@/types/translations";
 import type { TranslateRequest } from "@/types/translations";
 import { TranslationsApi } from "@/api";
-import { LanguageList, LanguageCodes } from "@/i18n";
+import i18n from "@/i18n";
+
+export function getLanguageCodesOrder(): LanguageCode[] {
+	const currentLanguage = i18n.global.locale as LanguageCode;
+	switch (currentLanguage) {
+	case "eng":
+		return ["eng", "srp_latin", "srp_cyrillic", "rus"];
+	case "rus":
+		return ["rus",  "srp_cyrillic", "srp_latin", "eng"];
+	case "srp_latin":
+		return ["srp_latin", "eng", "srp_cyrillic", "rus"];
+	case "srp_cyrillic":
+		return ["srp_cyrillic", "rus", "srp_latin", "eng"];
+	}
+}
+
+export function getLanguageLabel(key: LanguageCode): string {
+	return { eng: "English", rus: "Русский", srp_latin: "Srpski", srp_cyrillic: "Српски" }[key];
+}
+
+export function getLanguageList() {
+	return getLanguageCodesOrder()
+		.map((value) => ({ value, label: getLanguageLabel(value) }));
+} 
+
+export function translationPreview(obj: {
+	rus: string;
+	eng: string;
+	srp_latin: string;
+	srp_cyrillic: string;
+}): string {
+	return getLanguageCodesOrder()
+		.map((key) => obj[key])
+		.map(x => Boolean(x) ? x : " ? ")
+		.join(" — ");
+}
 
 export async function translate(
 	from: LanguageCode, 
@@ -44,7 +79,7 @@ export async function autoTranslate(params: AutoTranslateParams): Promise<AutoTr
 		to: [] as LanguageCode[],
 	};
 
-	const { from, text, to } = LanguageCodes.reduce((obj, lang) => {
+	const { from, text, to } = getLanguageCodesOrder().reduce((obj, lang) => {
 		if (!params[lang]) {
 			obj.to.push(lang);
 		} else if (!obj.from) {
@@ -63,8 +98,4 @@ export async function autoTranslate(params: AutoTranslateParams): Promise<AutoTr
 			obj[to] = text;
 			return obj;
 		}, { ...params }));
-}
-
-export function getLanguageName(key: LanguageCode): string {
-	return LanguageList.find(({ value }) => value === key)?.label || "Not found label";
 }

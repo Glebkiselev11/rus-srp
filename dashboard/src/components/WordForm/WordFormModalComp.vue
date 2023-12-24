@@ -7,7 +7,7 @@ import { useWordsStore } from "@/stores/words";
 import type { Word } from "@/types/words";
 import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";
-import { translationPreview } from "@/common/utils";
+import { translationPreview } from "@/common/translations";
 
 export default defineComponent({
 	name: "WordFormModalComp",
