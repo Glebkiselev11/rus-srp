@@ -4,13 +4,12 @@ import ImageSectionComp from "./ImageSectionComp.vue";
 import { useCategoriesActions } from "@/stores/categories/actions";
 import { mapActions } from "pinia";
 import type { Category, DraftCategory } from "@/types/categories";
-import { getLanguageList } from "@/common/translations";
 import type { LanguageCode } from "@/types/translations";
 import InputComp from "./InputComp.vue";
 import ButtonComp from "./ButtonComp.vue";
 import { translate } from "@/common/translations";
 import { CategoriesApi } from "@/api/categories";
-import { getLanguageLabel } from "@/common/translations";
+import { getLanguageLabel, getLanguageList, getLanguageCodesOrder } from "@/common/translations";
 import { isAnyFieldHasChanged } from "@/common/utils";
 
 function initDraftCategory(): DraftCategory {
@@ -51,6 +50,10 @@ export default defineComponent({
 	computed: {
 		selectedLanguage(): LanguageCode {
 			return this.$i18n.locale as LanguageCode;
+		},
+		nonSelectedLanguages(): LanguageCode[] {
+			return getLanguageCodesOrder()
+				.filter((code) => code !== this.selectedLanguage);
 		},
 		categoryName(): string {
 			return this.draftCategory[this.selectedLanguage];
@@ -212,6 +215,18 @@ export default defineComponent({
 				this.$emit(emit, isAnyFieldHasChanged(initDraftCategory(), this.draftCategory));
 			}
 		},
+		getValidationError(code: LanguageCode) {
+			switch (code) {
+			case "eng":
+				return this.engValidationError;
+			case "rus":
+				return this.rusValidationError;
+			case "srp_latin":
+				return this.srp_latinValidationError;
+			case "srp_cyrillic":
+				return this.srp_cyrillicValidationError;
+			}
+		},
 	},
 
 });
@@ -258,50 +273,15 @@ export default defineComponent({
 		</div>
 
 		<InputComp
-			v-if="selectedLanguage !== 'rus'"
-			v-model="draftCategory.rus"
-			appearance="outline"
-			disable-error-label
-			:error="rusValidationError"
-			:reset-value="category?.rus"
-			clear-button
-			:label="getLanguageLabel('rus')"
-			class="category-form__translation-input"
-		/>
-
-		<InputComp
-			v-if="selectedLanguage !== 'eng'"
-			v-model="draftCategory.eng"
+			v-for="code in nonSelectedLanguages"
+			:key="code"
+			v-model="draftCategory[code]"
 			appearance="outline"
 			disable-error-label
 			clear-button
-			:reset-value="category?.eng"
-			:error="engValidationError"
-			:label="getLanguageLabel('eng')"
-			class="category-form__translation-input"
-		/>
-
-		<InputComp
-			v-if="selectedLanguage !== 'srp_latin'"
-			v-model="draftCategory.srp_latin"
-			appearance="outline"
-			disable-error-label
-			clear-button
-			:reset-value="category?.srp_latin"
-			:error="srp_latinValidationError"
-			:label="getLanguageLabel('srp_latin')"
-			class="category-form__translation-input"
-		/>
-
-		<InputComp
-			v-if="selectedLanguage !== 'srp_cyrillic'"
-			v-model="draftCategory.srp_cyrillic"
-			appearance="outline"
-			disable-error-label
-			clear-button
-			:reset-value="category?.srp_cyrillic"
-			:error="srp_cyrillicValidationError"
-			:label="getLanguageLabel('srp_cyrillic')"
+			:reset-value="category?.[code]"
+			:error="getValidationError(code)"
+			:label="getLanguageLabel(code)"
 			class="category-form__translation-input"
 		/>
 
