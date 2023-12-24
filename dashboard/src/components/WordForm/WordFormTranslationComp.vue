@@ -4,8 +4,9 @@ import ImageSectionComp from "../ImageSectionComp.vue";
 import InputComp from "../InputComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";
 import { mapActions, mapState } from "pinia";
-import { getLanguageLabel, translationPreview } from "@/common/translations";
+import { getLanguageLabel, translationPreview, getLanguageCodesOrder } from "@/common/translations";
 import ButtonComp from "../ButtonComp.vue";
+import type { LanguageCode } from "@/types/translations";
 
 export default defineComponent({
 	name: "WordFormTranslationComp",
@@ -53,6 +54,19 @@ export default defineComponent({
 			"autoFillTranslations",
 		]),
 		getLanguageLabel,
+		getLanguageCodesOrder,
+		getValidationError(code: LanguageCode) {
+			switch (code) {
+			case "eng":
+				return this.engValidationError;
+			case "rus":
+				return this.rusValidationError;
+			case "srp_latin":
+				return this.srpLatinValidationError;
+			case "srp_cyrillic":
+				return this.srpCyrillicValidationError;
+			}
+		},
 	},
 });
 
@@ -94,38 +108,13 @@ export default defineComponent({
 		</div>
 
 		<InputComp
-			v-model="draftWord.rus"
+			v-for="code in getLanguageCodesOrder()"
+			:key="code"
+			v-model="draftWord[code]"
 			appearance="outline"
+			:error="getValidationError(code)"
 			clear-button
-			:error="rusValidationError"
-			:label="getLanguageLabel('rus')"
-			class="word-form-translation__input"
-		/>
-
-		<InputComp
-			v-model="draftWord.eng"
-			appearance="outline"
-			:error="engValidationError"
-			clear-button
-			:label="getLanguageLabel('eng')"
-			class="word-form-translation__input"
-		/>
-
-		<InputComp
-			v-model="draftWord.srp_latin"
-			appearance="outline"
-			:error="srpLatinValidationError"
-			clear-button
-			:label="getLanguageLabel('srp_latin')"
-			class="word-form-translation__input"
-		/>
-
-		<InputComp
-			v-model="draftWord.srp_cyrillic"
-			appearance="outline"
-			:error="srpCyrillicValidationError"
-			clear-button
-			:label="getLanguageLabel('srp_cyrillic')"
+			:label="getLanguageLabel(code)"
 			class="word-form-translation__input"
 		/>
 	</div>
