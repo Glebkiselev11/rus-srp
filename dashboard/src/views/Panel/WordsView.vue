@@ -21,6 +21,7 @@ import { highlighTextByQuery } from "@/common/utils";
 import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/types/translations";
 import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
+import { getLanguageCodesOrder, getLanguageLabel } from "@/common/translations";
 
 const LIMIT_DEFAULT = 25;
 
@@ -66,12 +67,13 @@ export default defineComponent({
 	computed: {
 		...mapState(useWordsStore, ["words", "count"]),
 		translationColumns() {
-			return [
-				{ label: "Русский", sortable: true, sort_key: "rus", width: "200px" }, 
-				{ label: "English", sortable: true, sort_key: "eng", width: "200px" }, 
-				{ label: "Srpski", sortable: true, sort_key: "srp_latin", width: "200px" }, 
-				{ label: "Српски", sortable: true, sort_key: "srp_cyrillic", width: "200px" },
-			] as const;
+			return getLanguageCodesOrder()
+				.map((code) => ({
+					label: getLanguageLabel(code),
+					sortable: true,
+					sort_key: code,
+					width: "200px",
+				}));
 		},
 		columns() {
 			return [
@@ -265,7 +267,7 @@ export default defineComponent({
 
 							<td
 								v-for="(translation, i) in translationColumns"
-								:key="word.id + i"
+								:key="`${word.id}-${i}`"
 								v-html="highlighTextByQuery(word[translation.sort_key], search)"
 							/>
 

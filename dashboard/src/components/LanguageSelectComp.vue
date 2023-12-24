@@ -1,7 +1,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import SelectComp from "./SelectComp.vue";
-import { LanguageList, STORAGE_KEY } from "@/i18n";
+import { STORAGE_KEY } from "@/i18n";
+import { LanguageList } from "@/common/translations";
 
 export default defineComponent({
 	name: "LanguageSelectComp",

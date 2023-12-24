@@ -4,7 +4,7 @@ import ImageSectionComp from "./ImageSectionComp.vue";
 import { useCategoriesActions } from "@/stores/categories/actions";
 import { mapActions } from "pinia";
 import type { Category, DraftCategory } from "@/types/categories";
-import { LanguageList } from "@/i18n";
+import { LanguageList } from "@/common/translations";
 import type { LanguageCode } from "@/types/translations";
 import InputComp from "./InputComp.vue";
 import ButtonComp from "./ButtonComp.vue";
