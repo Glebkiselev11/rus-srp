@@ -5,7 +5,7 @@ import InputComp from "../InputComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";
 import { mapActions, mapState } from "pinia";
 import { translationPreview } from "@/common/utils";
-import { getLanguageName } from "@/common/translations";
+import { getLanguageLabel } from "@/common/translations";
 import ButtonComp from "../ButtonComp.vue";
 
 export default defineComponent({
@@ -53,7 +53,7 @@ export default defineComponent({
 		...mapActions(useDraftWordStore, [
 			"autoFillTranslations",
 		]),
-		getLanguageName,
+		getLanguageLabel,
 	},
 });
 
@@ -99,7 +99,7 @@ export default defineComponent({
 			appearance="outline"
 			clear-button
 			:error="rusValidationError"
-			:label="getLanguageName('rus')"
+			:label="getLanguageLabel('rus')"
 			class="word-form-translation__input"
 		/>
 
@@ -108,7 +108,7 @@ export default defineComponent({
 			appearance="outline"
 			:error="engValidationError"
 			clear-button
-			:label="getLanguageName('eng')"
+			:label="getLanguageLabel('eng')"
 			class="word-form-translation__input"
 		/>
 
@@ -117,7 +117,7 @@ export default defineComponent({
 			appearance="outline"
 			:error="srpLatinValidationError"
 			clear-button
-			:label="getLanguageName('srp_latin')"
+			:label="getLanguageLabel('srp_latin')"
 			class="word-form-translation__input"
 		/>
 
@@ -126,7 +126,7 @@ export default defineComponent({
 			appearance="outline"
 			:error="srpCyrillicValidationError"
 			clear-button
-			:label="getLanguageName('srp_cyrillic')"
+			:label="getLanguageLabel('srp_cyrillic')"
 			class="word-form-translation__input"
 		/>
 	</div>

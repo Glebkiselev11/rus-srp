@@ -4,13 +4,13 @@ import ImageSectionComp from "./ImageSectionComp.vue";
 import { useCategoriesActions } from "@/stores/categories/actions";
 import { mapActions } from "pinia";
 import type { Category, DraftCategory } from "@/types/categories";
-import { LanguageList } from "@/common/translations";
+import { getLanguageList } from "@/common/translations";
 import type { LanguageCode } from "@/types/translations";
 import InputComp from "./InputComp.vue";
 import ButtonComp from "./ButtonComp.vue";
 import { translate } from "@/common/translations";
 import { CategoriesApi } from "@/api/categories";
-import { getLanguageName } from "@/common/translations";
+import { getLanguageLabel } from "@/common/translations";
 import { isAnyFieldHasChanged } from "@/common/utils";
 
 function initDraftCategory(): DraftCategory {
@@ -74,7 +74,7 @@ export default defineComponent({
 				return true;
 			}
 
-			const isAllFieldsFilled = LanguageList.every(({ value }) => 
+			const isAllFieldsFilled = getLanguageList().every(({ value }) => 
 				this.draftCategory[value] !== "");
 
 			if (isAllFieldsFilled) {
@@ -109,7 +109,7 @@ export default defineComponent({
 	},
 	methods: {
 		...mapActions(useCategoriesActions, ["createCategory", "updateCategory"]),
-		getLanguageName,
+		getLanguageLabel,
 		removeCategoryNameErrorValidation(error: string): void {
 			this.categoryNameValidationErrors = this.categoryNameValidationErrors.filter(
 				(x) => x !== error,
@@ -191,8 +191,9 @@ export default defineComponent({
 		},
 		autoFill() {
 			const from = this.selectedLanguage;
-			const target = LanguageList
-				.filter(({ value }) => value !== from).map(({ value }) => value);
+			const target = getLanguageList()
+				.filter(({ value }) => value !== from)
+				.map(({ value }) => value);
 
 			translate(from, this.draftCategory[from], target).then((translations) => {
 				translations.forEach(({ to, text }) => {
@@ -264,7 +265,7 @@ export default defineComponent({
 			:error="rusValidationError"
 			:reset-value="category?.rus"
 			clear-button
-			:label="getLanguageName('rus')"
+			:label="getLanguageLabel('rus')"
 			class="category-form__translation-input"
 		/>
 
@@ -276,7 +277,7 @@ export default defineComponent({
 			clear-button
 			:reset-value="category?.eng"
 			:error="engValidationError"
-			:label="getLanguageName('eng')"
+			:label="getLanguageLabel('eng')"
 			class="category-form__translation-input"
 		/>
 
@@ -288,7 +289,7 @@ export default defineComponent({
 			clear-button
 			:reset-value="category?.srp_latin"
 			:error="srp_latinValidationError"
-			:label="getLanguageName('srp_latin')"
+			:label="getLanguageLabel('srp_latin')"
 			class="category-form__translation-input"
 		/>
 
@@ -300,7 +301,7 @@ export default defineComponent({
 			clear-button
 			:reset-value="category?.srp_cyrillic"
 			:error="srp_cyrillicValidationError"
-			:label="getLanguageName('srp_cyrillic')"
+			:label="getLanguageLabel('srp_cyrillic')"
 			class="category-form__translation-input"
 		/>
 

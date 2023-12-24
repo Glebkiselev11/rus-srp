@@ -18,15 +18,13 @@ export function getLanguageCodesOrder(): LanguageCode[] {
 }
 
 export function getLanguageLabel(key: LanguageCode): string {
-	return LanguageList.find(({ value }) => value === key)?.label || "Not found label";
+	return { eng: "English", rus: "Русский", srp_latin: "Srpski", srp_cyrillic: "Српски" }[key];
 }
 
-export const LanguageList = [
-	{ value: "eng", label: "English" },
-	{ value: "rus", label: "Русский" },
-	{ value: "srp_latin", label: "Srpski" },
-	{ value: "srp_cyrillic", label: "Српски" },
-] as { value: LanguageCode; label: string }[];
+export function getLanguageList() {
+	return getLanguageCodesOrder()
+		.map((value) => ({ value, label: getLanguageLabel(value) }));
+} 
 
 export async function translate(
 	from: LanguageCode, 
@@ -88,8 +86,4 @@ export async function autoTranslate(params: AutoTranslateParams): Promise<AutoTr
 			obj[to] = text;
 			return obj;
 		}, { ...params }));
-}
-
-export function getLanguageName(key: LanguageCode): string {
-	return LanguageList.find(({ value }) => value === key)?.label || "Not found label";
 }

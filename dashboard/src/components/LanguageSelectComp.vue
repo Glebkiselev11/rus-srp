@@ -2,7 +2,7 @@
 import { defineComponent } from "vue";
 import SelectComp from "./SelectComp.vue";
 import { STORAGE_KEY } from "@/i18n";
-import { LanguageList } from "@/common/translations";
+import { getLanguageList } from "@/common/translations";
 
 export default defineComponent({
 	name: "LanguageSelectComp",
@@ -11,7 +11,7 @@ export default defineComponent({
 	},
 	data() {
 		return {
-			options: LanguageList,
+			options: getLanguageList(),
 		};
 	},
 	computed: {
