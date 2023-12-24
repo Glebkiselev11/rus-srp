@@ -26,6 +26,18 @@ export function getLanguageList() {
 		.map((value) => ({ value, label: getLanguageLabel(value) }));
 } 
 
+export function translationPreview(obj: {
+	rus: string;
+	eng: string;
+	srp_latin: string;
+	srp_cyrillic: string;
+}): string {
+	return getLanguageCodesOrder()
+		.map((key) => obj[key])
+		.map(x => Boolean(x) ? x : " ? ")
+		.join(" — ");
+}
+
 export async function translate(
 	from: LanguageCode, 
 	text: string,

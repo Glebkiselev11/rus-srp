@@ -4,8 +4,7 @@ import ImageSectionComp from "../ImageSectionComp.vue";
 import InputComp from "../InputComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";
 import { mapActions, mapState } from "pinia";
-import { translationPreview } from "@/common/utils";
-import { getLanguageLabel } from "@/common/translations";
+import { getLanguageLabel, translationPreview } from "@/common/translations";
 import ButtonComp from "../ButtonComp.vue";
 
 export default defineComponent({
