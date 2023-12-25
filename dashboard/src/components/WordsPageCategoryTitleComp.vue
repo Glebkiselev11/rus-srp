@@ -5,12 +5,12 @@ import { usePageCategoriesStore } from "@/stores/categories/pageCategories";
 import { useCategoriesActions } from "@/stores/categories/actions";
 import { mapActions, mapState } from "pinia";
 import type { Category } from "@/types/categories";
-import type { LanguageCode } from "@/types/translations";
 import ImagePreviewComp from "./ImagePreviewComp.vue";
 import DropdownMenuComp from "./DropdownMenuComp.vue";
 import ButtonComp from "./ButtonComp.vue";
 import RemoveCategoryModalComp from "./Categories/RemoveCategoryModalComp.vue";
 import CategoryFormModalComp from "./CategoryFormModalComp.vue";
+import { extractCurrentLanguageTranslation } from "@/common/translations";
 
 export default defineComponent({
 	name: "WordsPageCategoryTitleComp",
@@ -42,9 +42,7 @@ export default defineComponent({
 	},
 	methods: {
 		...mapActions(useCategoriesActions, ["updateCategory"]),
-		getCategoryName(category: Category) {
-			return category[this.$i18n.locale as LanguageCode];
-		},
+		extractCurrentLanguageTranslation,
 		updateCategoryImage(src: string) {
 			if (this.category && src) {
 				this.updateCategory(this.category.id, {
@@ -72,12 +70,12 @@ export default defineComponent({
 		<ImagePreviewComp
 			size="56px"
 			:src="category.image"
-			:image-search-modal-subtitle="getCategoryName(category)"
+			:image-search-modal-subtitle="extractCurrentLanguageTranslation(category)"
 			:default-image-search-query="category.eng"
 			@update:src="src => updateCategoryImage(src)"
 		/>
 		<h2>
-			{{ getCategoryName(category) }}
+			{{ extractCurrentLanguageTranslation(category) }}
 		</h2>
 
 		<DropdownMenuComp

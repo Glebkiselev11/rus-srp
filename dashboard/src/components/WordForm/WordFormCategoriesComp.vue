@@ -12,7 +12,6 @@ import { mapActions, mapState } from "pinia";
 import type { Category } from "@/types/categories";
 import { useModalCategoriesStore } from "@/stores/categories/modalCategories";
 import type { Order } from "@/types/api";
-import type { LanguageCode } from "@/types/translations";
 
 export default defineComponent({
 	name: "WordFormCategoriesComp",
@@ -70,9 +69,6 @@ export default defineComponent({
 	},
 	methods: {
 		...mapActions(useModalCategoriesStore, ["fetchModalCategories"]),
-		extractCategoryPreview(category: Category) {
-			return category[this.$i18n.locale as LanguageCode];
-		},
 		addCategory(categoryId: number) {
 			this.draftWord.category_ids.push(categoryId);
 		},
