@@ -13,6 +13,10 @@ export default defineComponent({
 			type: [String, Number] as PropType<Id>,
 			default: null,
 		},
+		gridTemplateColumns: {
+			type: String,
+			required: true,
+		},
 	},
 	emits: ["checked", "unchecked"],
 	data() {
@@ -36,7 +40,10 @@ export default defineComponent({
 </script>
 
 <template>
-	<tr class="table-row">
+	<tr
+		class="table-row"
+		:style="{ gridTemplateColumns }"
+	>
 		<td v-if="checkable">
 			<input
 				v-model="checked"
@@ -48,8 +55,13 @@ export default defineComponent({
 </template>
 
 <style lang="scss">
+@import "@/styles/main.scss";
+
 .table-row {
   height: 72px;
+	display: grid;
+	align-items: center;
+	border-block-end: 1px solid $color-separator-primary;
 
   td {
     padding-inline: 16px;

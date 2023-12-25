@@ -84,11 +84,16 @@ export default defineComponent({
 						name: "image", 
 						color: "tertiary", 
 					} as const, 
-					width: "40px", 
+					width: "100px", 
 				},
 				...this.translationColumns,
-				{ sortable: false, width: "50px" },
+				{ sortable: false, width: "auto" },
 			];
+		},
+		gridTemplateColumns() {
+			return this.columns
+				.map((col) => col.width ?? "auto")
+				.join(" ");
 		},
 		filter: {
 			get(): RequestParams {
@@ -245,6 +250,7 @@ export default defineComponent({
 					:count="count"
 					:columns="columns"
 					:order="filter.order"
+					:grid-template-columns="gridTemplateColumns"
 					@update:order="updateOrder"
 				>
 					<template
@@ -255,6 +261,7 @@ export default defineComponent({
 							v-for="word in words"
 							:id="word.id"
 							:key="word.id"
+							:grid-template-columns="gridTemplateColumns"	
 						>
 							<td>
 								<ImagePreviewComp
