@@ -16,6 +16,7 @@ import DropdownMenuComp from "@/components/DropdownMenuComp.vue";
 import PaginationBarComp from "@/components/PaginationBarComp.vue";
 import ZeroStateComp from "@/components/ZeroStateComp.vue";
 import WordsPageCategoryTitleComp from "@/components/WordsPageCategoryTitleComp.vue";
+import CategoriesPreviewBadgesComp from "@/components/CategoriesPreviewBadgesComp.vue";
 import { highlighTextByQuery } from "@/common/utils";
 
 import type { Word } from "@/types/words";
@@ -41,6 +42,7 @@ export default defineComponent({
 		CategoriesComp,
 		WordsPageCategoryTitleComp,
 		WordFormModalComp,
+		CategoriesPreviewBadgesComp,
 	},
 	data() {
 		return {
@@ -72,7 +74,7 @@ export default defineComponent({
 					label: getLanguageLabel(code),
 					sortable: true,
 					sort_key: code,
-					width: "200px",
+					width: "180px",
 				}));
 		},
 		columns() {
@@ -87,6 +89,7 @@ export default defineComponent({
 					width: "100px", 
 				},
 				...this.translationColumns,
+				{ sortable: false, width: "200px", label: this.$t("categories") },
 				{ sortable: false, width: "auto" },
 			];
 		},
@@ -277,6 +280,12 @@ export default defineComponent({
 								:key="`${word.id}-${i}`"
 								v-html="highlighTextByQuery(word[translation.sort_key], search)"
 							/>
+
+							<td>
+								<CategoriesPreviewBadgesComp
+									:categories="word.categories"
+								/>
+							</td>
 
 							<td style="margin-inline-start: auto">
 								<DropdownMenuComp 
