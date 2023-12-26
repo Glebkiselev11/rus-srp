@@ -74,7 +74,7 @@ export default defineComponent({
 					label: getLanguageLabel(code),
 					sortable: true,
 					sort_key: code,
-					width: "180px",
+					width: "148px",
 				}));
 		},
 		columns() {
@@ -89,7 +89,7 @@ export default defineComponent({
 					width: "100px", 
 				},
 				...this.translationColumns,
-				{ sortable: false, width: "200px", label: this.$t("categories") },
+				{ sortable: false, width: "350px", label: this.$t("categories") },
 				{ sortable: false, width: "auto" },
 			];
 		},
