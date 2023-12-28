@@ -155,6 +155,7 @@ export default defineComponent({
 	align-items: center;
 	justify-content: center;
 	position: relative;
+	cursor: inherit;
 
 	img {
 		width: inherit;
