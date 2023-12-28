@@ -4,12 +4,14 @@ import type { Category } from "@/types/categories";
 import { extractCurrentLanguageTranslation } from "@/common/translations";
 import ImagePreviewComp from "./ImagePreviewComp.vue";
 import TooltipComp from "./TooltipComp.vue";
+import ButtonComp from "./ButtonComp.vue";
 
 export default defineComponent({
 	name: "CategoriesPreviewBadgesComp",
 	components: {
 		ImagePreviewComp,
 		TooltipComp,
+		ButtonComp,
 	},
 	props: {
 		categories: {
@@ -17,6 +19,7 @@ export default defineComponent({
 			required: true,
 		},
 	},
+	emits: ["click"],
 	data() {
 		return {
 			maxImages: 3,
@@ -37,12 +40,18 @@ export default defineComponent({
 			return this.categories.length - this.maxImages;
 		},
 	},
+	methods: {
+		click(e: MouseEvent) {
+			this.$emit("click", e);
+		},
+	},
 });
 
 </script>
 
 <template>
 	<TooltipComp
+		v-if="categories.length > 0"
 		:text="categoryNames"
 		position="bottom"
 		max-width="100%"
@@ -50,7 +59,10 @@ export default defineComponent({
 		color="light"
 		:hidden="images.length <= 1"
 	>
-		<div class="categories-preview-badges">
+		<button
+			class="categories-preview-badges"
+			@click="click"
+		>
 			<div class="categories-preview-badges__images">
 				<div
 					v-for="(src, i) in images"
@@ -72,8 +84,17 @@ export default defineComponent({
 			</div>
 
 			<span class="categories-preview-badges__names">{{ categoryNames }}</span>
-		</div>
+		</button>
 	</TooltipComp>
+
+	<ButtonComp
+		v-else
+		:label="$t('add')"
+		icon="add"
+		appearance="inline"
+		size="compact"
+		@click="click"
+	/>
 </template>
 
 <style lang="scss" scoped>
@@ -84,6 +105,12 @@ export default defineComponent({
   align-items: center;
 	width: 100%;
   overflow: hidden;
+	border: none;
+	background: transparent;
+
+	&:hover {
+		cursor: pointer;
+	}
 
   &__images {
     margin-right: 14px;

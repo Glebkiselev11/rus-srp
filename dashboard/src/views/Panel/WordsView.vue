@@ -284,6 +284,7 @@ export default defineComponent({
 							<td>
 								<CategoriesPreviewBadgesComp
 									:categories="word.categories"
+									@click="openEditingWordForm(word.id)"
 								/>
 							</td>
 
