@@ -3,11 +3,13 @@ import { defineComponent, type PropType } from "vue";
 import type { Category } from "@/types/categories";
 import { extractCurrentLanguageTranslation } from "@/common/translations";
 import ImagePreviewComp from "./ImagePreviewComp.vue";
+import TooltipComp from "./TooltipComp.vue";
 
 export default defineComponent({
 	name: "CategoriesPreviewBadgesComp",
 	components: {
 		ImagePreviewComp,
+		TooltipComp,
 	},
 	props: {
 		categories: {
@@ -40,29 +42,38 @@ export default defineComponent({
 </script>
 
 <template>
-	<div class="categories-preview-badges">
-		<div class="categories-preview-badges__images">
-			<div
-				v-for="(src, i) in images"
-				:key="i"
-			>
-				<ImagePreviewComp
-					:src="src"
-					size="24px"
-					static
-				/>
+	<TooltipComp
+		:text="categoryNames"
+		position="bottom"
+		max-width="100%"
+		text-wrap
+		color="light"
+		:hidden="images.length <= 1"
+	>
+		<div class="categories-preview-badges">
+			<div class="categories-preview-badges__images">
+				<div
+					v-for="(src, i) in images"
+					:key="i"
+				>
+					<ImagePreviewComp
+						:src="src"
+						size="24px"
+						static
+					/>
+				</div>
+
+				<div
+					v-if="howManyMoreImages > 0"
+					class="categories-preview-badges__more-images-label"
+				>
+					+{{ howManyMoreImages }}
+				</div>
 			</div>
 
-			<div
-				v-if="howManyMoreImages > 0"
-				class="categories-preview-badges__more-images-label"
-			>
-				+{{ howManyMoreImages }}
-			</div>
+			<span class="categories-preview-badges__names">{{ categoryNames }}</span>
 		</div>
-
-		<span class="categories-preview-badges__names">{{ categoryNames }}</span>
-	</div>
+	</TooltipComp>
 </template>
 
 <style lang="scss" scoped>

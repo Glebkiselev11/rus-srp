@@ -12,6 +12,22 @@ export default defineComponent({
 			type: String as PropType<"top" | "bottom" | "left" | "right">,
 			default: "bottom",
 		},
+		maxWidth: {
+			type: String,
+			default: "auto",
+		},
+		textWrap: {
+			type: Boolean,
+			default: false,
+		},
+		hidden: {
+			type: Boolean,
+			default: false,
+		},
+		color: {
+			type: String as PropType<"dark" | "light">,
+			default: "dark",
+		},
 	},
 	data() {
 		return {
@@ -41,9 +57,14 @@ export default defineComponent({
 		</div>
 
 		<span
-			v-show="showTooltip"
+			v-show="showTooltip && !hidden"
 			class="tooltip"
-			:class="`tooltip--${position}`"
+			:class="[
+				`tooltip--${position}`, 
+				`tooltip--color-${color}`,
+				textWrap ? 'tooltip--wrap' : ''
+			]"
+			:style="{ maxWidth }"
 		>
 			{{ text }}
 		</span>
@@ -52,6 +73,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
+$shadow: rgba(2, 18, 38, 0.08);
 
 .tooltip__container {
   position: relative;
@@ -65,17 +87,31 @@ export default defineComponent({
   rotate: 45deg;
   background: inherit;
   border-radius: 2px;
+  box-shadow: -2px -2px 2px -1px $shadow;
 }
 
 .tooltip {
   @include text-caption-2;
   position: absolute;
   z-index: 2;
-  background: $color-background-tooltip;
-  color: $color-text-contrast;
   border-radius: 8px;
   padding: 8px 12px;
   text-wrap: nowrap;
+  box-shadow: 0px 4px 16px 0px $shadow, 0px 0px 2px 0px $shadow;
+
+  &--wrap {
+    text-wrap: wrap!important;
+  }
+
+  &--color-dark {
+    background: $color-background-tooltip;
+    color: $color-text-contrast;
+  }
+
+  &--color-light {
+    background: $color-background-content-primary;
+    color: $color-text-primary;
+  }
 
   &--bottom {
     top: calc(100% + 10px);
