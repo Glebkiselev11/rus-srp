@@ -23,6 +23,7 @@ import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/types/translations";
 import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
 import { getLanguageCodesOrder, getLanguageLabel, translationPreview } from "@/common/translations";
+import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 
 const LIMIT_DEFAULT = 25;
 
@@ -178,6 +179,7 @@ export default defineComponent({
 	},
 	methods: {
 		...mapActions(useWordsStore, ["fetchWords", "deleteWord", "updateWord"]),
+		...mapActions(useWordFormTabsStore, ["setCurrentTabToCategories"]),
 		highlighTextByQuery,
 		translationPreview,
 		updateOrder(order: Order) {
@@ -197,6 +199,10 @@ export default defineComponent({
 		openEditingWordForm(id: Id) {
 			this.editingWordId = id;
 			this.showWordForm = true;
+		},
+		openEditingWordFormOnCategoriesTab(id: Id) {
+			this.openEditingWordForm(id);
+			this.setCurrentTabToCategories();
 		},
 		updateWordImage(word: Word, src: string) {
 			this.updateWord(word.id, { ...word, image: src });
@@ -282,7 +288,7 @@ export default defineComponent({
 							<td>
 								<CategoriesPreviewBadgesComp
 									:categories="word.categories"
-									@click="openEditingWordForm(word.id)"
+									@click="openEditingWordFormOnCategoriesTab(word.id)"
 								/>
 							</td>
 

@@ -30,6 +30,12 @@ export const useWordFormTabsStore = defineStore("wordFormTabs", {
 		setTranslationsTabError(error: boolean) {
 			this.tabs[0].error = error;
 		},
+		setCurrentTabToCategories() {
+			this.currentTabIndex = 1;
+		},
+		resetCurrentTab() {
+			this.currentTabIndex = 0;
+		},
 		setCurrentTabIndex(index: number) {
 			this.currentTabIndex = index;
 		},

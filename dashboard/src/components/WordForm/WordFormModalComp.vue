@@ -2,8 +2,9 @@
 import { defineComponent, type PropType } from "vue";
 import ModalComp from "../ModalComp.vue";
 import WordFormComp from "./WordFormComp.vue";
-import { mapState } from "pinia";
+import { mapActions, mapState } from "pinia";
 import { useWordsStore } from "@/stores/words";
+import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 import type { Word } from "@/types/words";
 import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";
@@ -59,8 +60,10 @@ export default defineComponent({
 		},
 	},
 	methods: {
+		...mapActions(useWordFormTabsStore, ["resetCurrentTab"]),
 		close() {
 			this.$emit("close");
+			this.resetCurrentTab();
 		},
 		tryClose() {
 			if (this.isChanged) {
