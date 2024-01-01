@@ -22,7 +22,7 @@ import { highlighTextByQuery } from "@/common/utils";
 import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/types/translations";
 import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
-import { getLanguageCodesOrder, getLanguageLabel } from "@/common/translations";
+import { getLanguageCodesOrder, getLanguageLabel, translationPreview } from "@/common/translations";
 
 const LIMIT_DEFAULT = 25;
 
@@ -179,6 +179,7 @@ export default defineComponent({
 	methods: {
 		...mapActions(useWordsStore, ["fetchWords", "deleteWord", "updateWord"]),
 		highlighTextByQuery,
+		translationPreview,
 		updateOrder(order: Order) {
 			this.filter = { ...this.filter, order };
 		},
@@ -196,9 +197,6 @@ export default defineComponent({
 		openEditingWordForm(id: Id) {
 			this.editingWordId = id;
 			this.showWordForm = true;
-		},
-		extractWordPreview(word: Word): string {
-			return `${word.rus} — ${word.eng} — ${word.srp_latin} — ${word.srp_cyrillic}`;
 		},
 		updateWordImage(word: Word, src: string) {
 			this.updateWord(word.id, { ...word, image: src });
@@ -269,7 +267,7 @@ export default defineComponent({
 							<td>
 								<ImagePreviewComp
 									:src="word.image"
-									:image-search-modal-subtitle="extractWordPreview(word)"
+									:image-search-modal-subtitle="translationPreview(word)"
 									:default-image-search-query="word.eng"
 									@update:src="src => updateWordImage(word, src)"
 								/>
