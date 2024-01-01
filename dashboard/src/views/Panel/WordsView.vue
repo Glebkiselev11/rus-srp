@@ -65,6 +65,7 @@ export default defineComponent({
 			},
 			showWordForm: false,
 			editingWordId: undefined as Id | undefined,
+			hoverOnWordId: undefined as Id | undefined,
 		};
 	},
 	computed: {
@@ -207,6 +208,9 @@ export default defineComponent({
 		updateWordImage(word: Word, src: string) {
 			this.updateWord(word.id, { ...word, image: src });
 		},
+		setHoveredWordId(id: Id, hovered: boolean) {
+			this.hoverOnWordId = hovered ? id : undefined;
+		},
 	},
 });
 </script>
@@ -269,6 +273,7 @@ export default defineComponent({
 							:id="word.id"
 							:key="word.id"
 							:grid-template-columns="gridTemplateColumns"	
+							@hover="setHoveredWordId(word.id, $event)"
 						>
 							<td>
 								<ImagePreviewComp
@@ -288,6 +293,7 @@ export default defineComponent({
 							<td>
 								<CategoriesPreviewBadgesComp
 									:categories="word.categories"
+									:show-add-button="hoverOnWordId === word.id"
 									@click="openEditingWordFormOnCategoriesTab(word.id)"
 								/>
 							</td>

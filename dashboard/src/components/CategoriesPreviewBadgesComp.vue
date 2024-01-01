@@ -18,6 +18,10 @@ export default defineComponent({
 			type: Array as PropType<Category[]>,
 			required: true,
 		},
+		showAddButton: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	emits: ["click"],
 	data() {
@@ -88,7 +92,7 @@ export default defineComponent({
 	</TooltipComp>
 
 	<ButtonComp
-		v-else
+		v-else-if="showAddButton"
 		:label="$t('add')"
 		icon="add"
 		appearance="inline"
