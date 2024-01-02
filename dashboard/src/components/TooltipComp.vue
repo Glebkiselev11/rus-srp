@@ -12,10 +12,6 @@ export default defineComponent({
 			type: String as PropType<"top" | "bottom" | "left" | "right">,
 			default: "bottom",
 		},
-		maxWidth: {
-			type: String,
-			default: "auto",
-		},
 		textWrap: {
 			type: Boolean,
 			default: false,
@@ -64,7 +60,6 @@ export default defineComponent({
 				`tooltip--color-${color}`,
 				textWrap ? 'tooltip--wrap' : ''
 			]"
-			:style="{ maxWidth }"
 		>
 			{{ text }}
 		</span>
@@ -95,6 +90,7 @@ $shadow: rgba(2, 18, 38, 0.08);
 .tooltip {
   @include text-caption-2;
   position: absolute;
+  min-width: 100%;
   z-index: 2;
   border-radius: 8px;
   padding: 8px 12px;
@@ -102,7 +98,7 @@ $shadow: rgba(2, 18, 38, 0.08);
   box-shadow: 0px 4px 16px 0px $shadow, 0px 0px 2px 0px $shadow;
 
   &--wrap {
-    text-wrap: wrap!important;
+    text-wrap: wrap;
   }
 
   &--color-dark {

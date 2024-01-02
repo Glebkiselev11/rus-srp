@@ -58,7 +58,6 @@ export default defineComponent({
 		v-if="categories.length > 0"
 		:text="categoryNames"
 		position="bottom"
-		max-width="100%"
 		text-wrap
 		color="light"
 		:hidden="images.length <= 1"
