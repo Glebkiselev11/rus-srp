@@ -128,7 +128,7 @@ $padding: 8px;
   }
 
   &__label {
-		@include text-subtitle-2;
+		@include text-body-2;
     color: $color-text-secondary;
 
 		&--active-sort {
