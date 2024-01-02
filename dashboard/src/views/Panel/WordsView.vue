@@ -91,7 +91,12 @@ export default defineComponent({
 					width: "100px", 
 				},
 				...this.translationColumns,
-				{ sortable: false, width: "350px", label: this.$t("categories") },
+				{ 
+					sortable: true, 
+					sort_key: "category_count", 
+					width: "350px", 
+					label: this.$t("categories"), 
+				},
 				{ sortable: false, width: "auto" },
 			];
 		},

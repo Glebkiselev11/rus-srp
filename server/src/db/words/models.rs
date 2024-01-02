@@ -47,6 +47,7 @@ pub struct DbWord {
     pub created_at: chrono::NaiveDateTime,
     pub updated_at: Option<chrono::NaiveDateTime>,
     pub image: Option<String>,
+    pub category_count: i32,
 }
 
 impl DbWord {
@@ -60,6 +61,7 @@ impl DbWord {
             srp_cyrillic: payload.srp_cyrillic,
             updated_at: Some(chrono::Utc::now().naive_utc()),
             image: payload.image,
+            category_count: self.category_count,
         }
     }
 }
@@ -102,6 +104,7 @@ impl DbWordWithCategories {
             created_at: self.created_at,
             updated_at: self.updated_at,
             image: self.image.clone(),
+            category_count: self.categories.len() as i32,
         }
     }
 }
