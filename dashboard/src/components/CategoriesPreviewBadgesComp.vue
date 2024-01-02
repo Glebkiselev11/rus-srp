@@ -120,6 +120,7 @@ export default defineComponent({
   overflow: hidden;
 	border: none;
 	padding: 4px;
+	padding-inline-end: 12px;
 	border-radius: $radius;
 	background: transparent;
 
