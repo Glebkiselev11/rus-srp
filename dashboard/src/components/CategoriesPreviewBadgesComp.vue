@@ -48,6 +48,10 @@ export default defineComponent({
 		click(e: MouseEvent) {
 			this.$emit("click", e);
 		},
+		isOverflowing() {
+			const element = this.$refs.names as HTMLSpanElement | undefined;
+			return element && element.scrollWidth > element.clientWidth;
+		},
 	},
 });
 
@@ -60,7 +64,7 @@ export default defineComponent({
 		position="bottom"
 		text-wrap
 		color="light"
-		:hidden="images.length <= 1"
+		:hidden="!isOverflowing()"
 	>
 		<button
 			class="categories-preview-badges"
@@ -86,7 +90,11 @@ export default defineComponent({
 				</div>
 			</div>
 
-			<span class="categories-preview-badges__names">{{ categoryNames }}</span>
+			<span
+				ref="names"
+				class="categories-preview-badges__names"
+				v-text="categoryNames"
+			/>
 		</button>
 	</TooltipComp>
 
