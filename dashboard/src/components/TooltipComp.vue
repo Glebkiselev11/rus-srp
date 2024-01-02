@@ -77,6 +77,8 @@ $shadow: rgba(2, 18, 38, 0.08);
 
 .tooltip__container {
   position: relative;
+  display: inline-block;
+  max-width: 100%;
 }
 
 .tooltip__triangle {

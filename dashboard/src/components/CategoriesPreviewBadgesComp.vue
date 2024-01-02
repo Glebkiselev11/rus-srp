@@ -105,15 +105,20 @@ export default defineComponent({
 @import "@/styles/main.scss";
 
 .categories-preview-badges {
+	$radius: 8px;
+
   display: flex;
   align-items: center;
 	width: 100%;
   overflow: hidden;
 	border: none;
+	padding: 4px;
+	border-radius: $radius;
 	background: transparent;
 
 	&:hover {
 		cursor: pointer;
+		background: $color-background-content-primary-hovered;
 	}
 
   &__images {
@@ -132,7 +137,7 @@ export default defineComponent({
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border-radius: 8px;
+		border-radius: $radius;
 		border: 1px solid $color-image-border;
 		background: $color-image-placeholder;
 		color: $color-text-primary;
