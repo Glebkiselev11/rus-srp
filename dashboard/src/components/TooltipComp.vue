@@ -90,6 +90,7 @@ $shadow: rgba(2, 18, 38, 0.08);
 .tooltip {
   @include text-caption-2;
   position: absolute;
+  text-align: center;
   min-width: 100%;
   z-index: 2;
   border-radius: 8px;
