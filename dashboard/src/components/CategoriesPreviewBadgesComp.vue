@@ -132,11 +132,12 @@ export default defineComponent({
 
   &__more-images-label {
 		@include text-caption-2;
-    width: 24px;
+    min-width: 24px;
     height: 24px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		padding-inline: 4px;
 		border-radius: $radius;
 		border: 1px solid $color-image-border;
 		background: $color-image-placeholder;
