@@ -9,6 +9,7 @@ import { useWordsStore } from "@/stores/words";
 import { mapActions, mapState } from "pinia";
 import { WordsApi } from "@/api/words";
 import { useDraftWordStore } from "@/stores/draftWord";
+import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 
 export default defineComponent({
 	name: "WordFormComp",
@@ -32,13 +33,18 @@ export default defineComponent({
 			engValidationError: undefined as string | undefined,
 			srpLatinValidationError: undefined as string | undefined,
 			srpCyrillicValidationError: undefined as string | undefined,
-			currentTab: 0,
 		};
 	},
 	computed: {
 		...mapState(useDraftWordStore, [
 			"draftWord", 
 			"allTranslationsFilled",
+		]),
+		...mapState(useWordFormTabsStore, [
+			"tabs", 
+			"currentTabIndex", 
+			"isCategoriesTabOpen", 
+			"isTranslationsTabOpen",
 		]),
 		saveButtonLabel(): string {
 			return this.word ? this.$t("save-changes") : this.$t("create");
@@ -54,18 +60,6 @@ export default defineComponent({
 				this.srpCyrillicValidationError || 
 				this.uniqueWordError,
 			);
-		},
-		tabs() {
-			return [
-				{
-					name: this.$t("translation"),
-					error: this.anyTranslationError,
-				},
-				{
-					name: this.$t("categories"),
-					error: false,
-				},
-			]; 
 		},
 	},
 	watch: {
@@ -85,7 +79,9 @@ export default defineComponent({
 			this.srpCyrillicValidationError = undefined;
 			this.uniqueWordError = false;
 		},
-
+		anyTranslationError(state) {
+			this.setTranslationsTabError(state);
+		},
 	},
 	created() {
 		this.initDraftWord(this.word);
@@ -96,6 +92,7 @@ export default defineComponent({
 			"initDraftWord", 
 			"resetDraftWord", 
 		]),
+		...mapActions(useWordFormTabsStore, ["setCurrentTabIndex", "setTranslationsTabError"]),
 		close() {
 			this.$emit("close");
 		},
@@ -168,15 +165,15 @@ export default defineComponent({
 	<TabsComp 
 		:tabs="tabs" 
 		padding-inline="16px"
-		:selected-tab-index="currentTab"		
+		:selected-tab-index="currentTabIndex"		
 		class="word-form__tabs"
-		@update:selected-tab-index="currentTab = $event"
+		@update:selected-tab-index="setCurrentTabIndex"
 	/>
 
 	<div class="word-form">
 		<div class="word-form__content">
 			<WordFormTranslationComp
-				v-show="currentTab === 0"
+				v-show="isTranslationsTabOpen"
 				:unique-word-error="uniqueWordError"
 				:rus-validation-error="rusValidationError"
 				:eng-validation-error="engValidationError"
@@ -184,7 +181,7 @@ export default defineComponent({
 				:srp-latin-validation-error="srpLatinValidationError"
 			/>
 		
-			<WordFormCategoriesComp v-show="currentTab === 1" />
+			<WordFormCategoriesComp v-show="isCategoriesTabOpen" />
 		</div>
 
 		<div class="word-form__footer">

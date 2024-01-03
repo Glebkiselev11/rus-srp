@@ -56,8 +56,8 @@ export const useDraftWordStore = defineStore("draftWord", {
 			if (word) {
 				const _word = convertWordToDraftWord(word);
 
-				this.draftWord = { ..._word };
-				this.initialWord = { ..._word };
+				this.draftWord = structuredClone(_word);
+				this.initialWord = structuredClone(_word);
 			} else {
 				this.draftWord = _initDraftWord();
 				this.initialWord = null;

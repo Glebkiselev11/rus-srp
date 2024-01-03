@@ -1,10 +1,10 @@
 <script lang="ts">
 import type { Category } from "@/types/categories";
 import { defineComponent, type PropType } from "vue";
-import type { LanguageCode } from "@/types/translations";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import ListItemComp from "@/components/ListItemComp.vue";
 import { highlighTextByQuery } from "@/common/utils";
+import { extractCurrentLanguageTranslation } from "@/common/translations";
 
 export default defineComponent({
 	name: "WordFormCategoryItemComp",
@@ -25,9 +25,7 @@ export default defineComponent({
 	emits: ["selectCateogry"],
 	methods: {
 		highlighTextByQuery,
-		extractCategoryPreview(category: Category) {
-			return category[this.$i18n.locale as LanguageCode];
-		},
+		extractCurrentLanguageTranslation,
 		selectCategory() {
 			this.$emit("selectCateogry", this.category.id);
 		},
@@ -54,7 +52,7 @@ export default defineComponent({
 
 				<span
 					class="word-form-category-item__label"
-					v-html="highlighTextByQuery(extractCategoryPreview(category), query)"
+					v-html="highlighTextByQuery(extractCurrentLanguageTranslation(category), query)"
 				/>
 			</div>
 

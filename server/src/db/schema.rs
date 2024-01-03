@@ -33,6 +33,7 @@ diesel::table! {
         created_at -> Timestamp,
         updated_at -> Nullable<Timestamp>,
         image -> Nullable<Text>,
+        category_count -> Integer,
     }
 }
 

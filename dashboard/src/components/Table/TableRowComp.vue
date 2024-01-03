@@ -1,9 +1,13 @@
 <script lang="ts">
 import type { Id } from "@/types/api";
+import { vElementHover } from "@vueuse/components";
 import { defineComponent, type PropType } from "vue";
 
 export default defineComponent({
 	name: "TableRowComp",
+	directives: {
+		elementHover: vElementHover,
+	},
 	props: {
 		checkable: {
 			type: Boolean,
@@ -13,8 +17,12 @@ export default defineComponent({
 			type: [String, Number] as PropType<Id>,
 			default: null,
 		},
+		gridTemplateColumns: {
+			type: String,
+			required: true,
+		},
 	},
-	emits: ["checked", "unchecked"],
+	emits: ["checked", "unchecked", "hover"],
 	data() {
 		return {
 			checked: false,
@@ -31,12 +39,20 @@ export default defineComponent({
 			}
 		},
 	},
+	methods: {
+		onHover(x: boolean) {
+			this.$emit("hover", x);
+		},
+	},
 });
-
 </script>
 
 <template>
-	<tr class="table-row">
+	<tr
+		v-element-hover="onHover"
+		class="table-row"
+		:style="{ gridTemplateColumns }"
+	>
 		<td v-if="checkable">
 			<input
 				v-model="checked"
@@ -48,12 +64,17 @@ export default defineComponent({
 </template>
 
 <style lang="scss">
-.table-row {
-  height: 72px;
+@import "@/styles/main.scss";
 
-  td {
-    padding-inline: 16px;
-  }
+.table-row {
+	height: 72px;
+	display: grid;
+	align-items: center;
+	border-block-end: 1px solid $color-separator-primary;
+
+	td {
+		padding-inline: 16px;
+	}
 }
 
 </style>

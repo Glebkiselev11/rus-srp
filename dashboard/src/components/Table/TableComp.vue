@@ -1,19 +1,8 @@
 <script lang="ts">
-import type { IconColor, IconName } from "../../types/icons";
 import { defineComponent, type PropType } from "vue";
 import TableColumnTitleComp from "./TableColumnTitleComp.vue";
 import type { Order } from "../../types/api";
-
-type Column = {
-	sort_key?: string;
-	sortable: boolean;
-	width?: string;
-  label?: string;
-	icon?: {
-		name: IconName;
-		color: IconColor;
-	};
-}
+import type { TableColumn } from "@/types/table";
 
 export default defineComponent({
 	name: "TableComp",
@@ -22,7 +11,11 @@ export default defineComponent({
 	},
 	props: {
 		columns: {
-			type: Array as PropType<Column[]>,
+			type: Array as PropType<TableColumn[]>,
+			required: true,
+		},
+		gridTemplateColumns: {
+			type: String,
 			required: true,
 		},
 		checkable: {
@@ -80,7 +73,7 @@ export default defineComponent({
 				class="table__header"
 				:class="{ 'table__header--scrollable-body': isContentBodyScrollable }"	
 			>
-				<tr>
+				<tr :style="{ gridTemplateColumns }">
 					<th v-if="checkable">
 						<input
 							v-model="checked"
@@ -115,7 +108,6 @@ export default defineComponent({
 
 <style  lang="scss">
 @import "@/styles/main.scss";
-$column-template: repeat(auto-fit, minmax(100px, 1fr));
 $extra-space: 270px;
 
 .table-wrap {
@@ -137,7 +129,6 @@ $extra-space: 270px;
 		tr {
 			display: grid;
 			align-items: center;
-			grid-template-columns: $column-template;
 			height: inherit;
 
 			th {
@@ -156,17 +147,10 @@ $extra-space: 270px;
 		height: calc(100vh - $extra-space);
 		position: relative;
 
-		tr {
-			display: grid;
-			align-items: center;
-			grid-template-columns: $column-template;
-			border-block-end: 1px solid $color-separator-primary;
-		}
-
 		tr:last-child {
 			border-block-end: none;
 		}
 	}
-
 }
+
 </style>

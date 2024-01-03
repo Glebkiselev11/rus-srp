@@ -16,12 +16,14 @@ import DropdownMenuComp from "@/components/DropdownMenuComp.vue";
 import PaginationBarComp from "@/components/PaginationBarComp.vue";
 import ZeroStateComp from "@/components/ZeroStateComp.vue";
 import WordsPageCategoryTitleComp from "@/components/WordsPageCategoryTitleComp.vue";
+import CategoriesPreviewBadgesComp from "@/components/CategoriesPreviewBadgesComp.vue";
 import { highlighTextByQuery } from "@/common/utils";
 
 import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/types/translations";
 import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
-import { getLanguageCodesOrder, getLanguageLabel } from "@/common/translations";
+import { getLanguageCodesOrder, getLanguageLabel, translationPreview } from "@/common/translations";
+import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 
 const LIMIT_DEFAULT = 25;
 
@@ -41,6 +43,7 @@ export default defineComponent({
 		CategoriesComp,
 		WordsPageCategoryTitleComp,
 		WordFormModalComp,
+		CategoriesPreviewBadgesComp,
 	},
 	data() {
 		return {
@@ -62,6 +65,7 @@ export default defineComponent({
 			},
 			showWordForm: false,
 			editingWordId: undefined as Id | undefined,
+			hoverOnWordId: undefined as Id | undefined,
 		};
 	},
 	computed: {
@@ -72,7 +76,7 @@ export default defineComponent({
 					label: getLanguageLabel(code),
 					sortable: true,
 					sort_key: code,
-					width: "200px",
+					width: "148px",
 				}));
 		},
 		columns() {
@@ -84,11 +88,22 @@ export default defineComponent({
 						name: "image", 
 						color: "tertiary", 
 					} as const, 
-					width: "40px", 
+					width: "100px", 
 				},
 				...this.translationColumns,
-				{ sortable: false, width: "50px" },
+				{ 
+					sortable: true, 
+					sort_key: "category_count", 
+					width: "350px", 
+					label: this.$t("categories"), 
+				},
+				{ sortable: false, width: "auto" },
 			];
+		},
+		gridTemplateColumns() {
+			return this.columns
+				.map((col) => col.width ?? "auto")
+				.join(" ");
 		},
 		filter: {
 			get(): RequestParams {
@@ -170,7 +185,9 @@ export default defineComponent({
 	},
 	methods: {
 		...mapActions(useWordsStore, ["fetchWords", "deleteWord", "updateWord"]),
+		...mapActions(useWordFormTabsStore, ["setCurrentTabToCategories"]),
 		highlighTextByQuery,
+		translationPreview,
 		updateOrder(order: Order) {
 			this.filter = { ...this.filter, order };
 		},
@@ -189,11 +206,15 @@ export default defineComponent({
 			this.editingWordId = id;
 			this.showWordForm = true;
 		},
-		extractWordPreview(word: Word): string {
-			return `${word.rus} — ${word.eng} — ${word.srp_latin} — ${word.srp_cyrillic}`;
+		openEditingWordFormOnCategoriesTab(id: Id) {
+			this.openEditingWordForm(id);
+			this.setCurrentTabToCategories();
 		},
 		updateWordImage(word: Word, src: string) {
 			this.updateWord(word.id, { ...word, image: src });
+		},
+		setHoveredWordId(id: Id, hovered: boolean) {
+			this.hoverOnWordId = hovered ? id : undefined;
 		},
 	},
 });
@@ -245,6 +266,7 @@ export default defineComponent({
 					:count="count"
 					:columns="columns"
 					:order="filter.order"
+					:grid-template-columns="gridTemplateColumns"
 					@update:order="updateOrder"
 				>
 					<template
@@ -255,11 +277,13 @@ export default defineComponent({
 							v-for="word in words"
 							:id="word.id"
 							:key="word.id"
+							:grid-template-columns="gridTemplateColumns"	
+							@hover="setHoveredWordId(word.id, $event)"
 						>
 							<td>
 								<ImagePreviewComp
 									:src="word.image"
-									:image-search-modal-subtitle="extractWordPreview(word)"
+									:image-search-modal-subtitle="translationPreview(word)"
 									:default-image-search-query="word.eng"
 									@update:src="src => updateWordImage(word, src)"
 								/>
@@ -270,6 +294,14 @@ export default defineComponent({
 								:key="`${word.id}-${i}`"
 								v-html="highlighTextByQuery(word[translation.sort_key], search)"
 							/>
+
+							<td>
+								<CategoriesPreviewBadgesComp
+									:categories="word.categories"
+									:show-add-button="hoverOnWordId === word.id"
+									@click="openEditingWordFormOnCategoriesTab(word.id)"
+								/>
+							</td>
 
 							<td style="margin-inline-start: auto">
 								<DropdownMenuComp 

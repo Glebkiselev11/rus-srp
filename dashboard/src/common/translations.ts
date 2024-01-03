@@ -3,6 +3,10 @@ import type { TranslateRequest } from "@/types/translations";
 import { TranslationsApi } from "@/api";
 import i18n from "@/i18n";
 
+type TranslationObject = {
+	[key in LanguageCode]: string;
+}
+
 export function getLanguageCodesOrder(): LanguageCode[] {
 	const currentLanguage = i18n.global.locale as LanguageCode;
 	switch (currentLanguage) {
@@ -26,16 +30,16 @@ export function getLanguageList() {
 		.map((value) => ({ value, label: getLanguageLabel(value) }));
 } 
 
-export function translationPreview(obj: {
-	rus: string;
-	eng: string;
-	srp_latin: string;
-	srp_cyrillic: string;
-}): string {
+export function translationPreview(obj: TranslationObject): string {
 	return getLanguageCodesOrder()
 		.map((key) => obj[key])
 		.map(x => Boolean(x) ? x : " ? ")
 		.join(" — ");
+}
+
+export function extractCurrentLanguageTranslation(obj: TranslationObject): string {
+	const currentLanguage = i18n.global.locale as LanguageCode;
+	return obj[currentLanguage];
 }
 
 export async function translate(
@@ -64,15 +68,8 @@ export async function translate(
 		return [];
 	}
 }
-
-type AutoTranslateParams = {
-	eng: string;
-	rus: string;
-	srp_latin: string;
-	srp_cyrillic: string;
-}
  
-export async function autoTranslate(params: AutoTranslateParams): Promise<AutoTranslateParams> {
+export async function autoTranslate(params: TranslationObject): Promise<TranslationObject> {
 	const init = {
 		from: null as LanguageCode | null,
 		text: "",

@@ -147,7 +147,7 @@ export default defineComponent({
 @import "@/styles/main.scss";
 
 .image-preview {
-	border: none;
+	border: 1px solid $color-image-border;
 	border-radius: 8px;
 	overflow: hidden;
 	background-color: $color-image-placeholder;
@@ -155,6 +155,7 @@ export default defineComponent({
 	align-items: center;
 	justify-content: center;
 	position: relative;
+	cursor: inherit;
 
 	img {
 		width: inherit;

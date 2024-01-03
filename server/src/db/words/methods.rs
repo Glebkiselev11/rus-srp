@@ -62,6 +62,8 @@ pub fn select_all_with_filter(
                 "-created_at" => Box::new(dsl::created_at.desc()),
                 "updated_at" => Box::new(dsl::updated_at.asc()),
                 "-updated_at" => Box::new(dsl::updated_at.desc()),
+                "category_count" => Box::new(dsl::category_count.asc()),
+                "-category_count" => Box::new(dsl::category_count.desc()),
                 _ => Box::new(dsl::created_at.desc()),
             }
         } else {
