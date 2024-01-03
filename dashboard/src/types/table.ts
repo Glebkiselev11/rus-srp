@@ -4,7 +4,7 @@ export type TableColumn = {
 	sort_key?: string;
 	sortable: boolean;
 	width?: string;
-  label?: string;
+	label?: string;
 	icon?: {
 		name: IconName;
 		color: IconColor;

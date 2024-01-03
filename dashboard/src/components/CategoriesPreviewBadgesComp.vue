@@ -111,10 +111,10 @@ export default defineComponent({
 .categories-preview-badges {
 	$radius: 8px;
 
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 	width: 100%;
-  overflow: hidden;
+	overflow: hidden;
 	border: none;
 	padding: 4px;
 	padding-inline-end: 12px;
@@ -126,19 +126,19 @@ export default defineComponent({
 		background: $color-background-content-primary-hovered;
 	}
 
-  &__images {
-    margin-right: 14px;
-    display: flex;
+	&__images {
+		margin-right: 14px;
+		display: flex;
 
-    div {
-      margin-right: -6px;
-    }
-  }
+		div {
+			margin-right: -6px;
+		}
+	}
 
-  &__more-images-label {
+	&__more-images-label {
 		@include text-caption-2;
-    min-width: 24px;
-    height: 24px;
+		min-width: 24px;
+		height: 24px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -148,7 +148,7 @@ export default defineComponent({
 		background: $color-image-placeholder;
 		color: $color-text-primary;
 		z-index: 1;
-  }
+	}
 
 	&__names {
 		@include text-body-2;

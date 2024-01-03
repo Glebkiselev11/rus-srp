@@ -112,29 +112,29 @@ $padding: 8px;
 }
 
 .table-column-title {
-  display: flex;
-  align-items: center;
-  column-gap: 4px;
+	display: flex;
+	align-items: center;
+	column-gap: 4px;
 	border-radius: 8px;
 	padding: $padding;
 	border: none;
 	background: transparent;
 
-  &--sortable {
-    cursor: pointer;
-		&:hover {
-			background-color: $color-background-content-primary-hovered;
-		}
-  }
+	&--sortable {
+		cursor: pointer;
+			&:hover {
+				background-color: $color-background-content-primary-hovered;
+			}
+	}
 
-  &__label {
+	&__label {
 		@include text-body-2;
-    color: $color-text-secondary;
+		color: $color-text-secondary;
 
 		&--active-sort {
 			color: $color-text-accent-primary;
 		}
-  }
+	}
 }
 
 </style>

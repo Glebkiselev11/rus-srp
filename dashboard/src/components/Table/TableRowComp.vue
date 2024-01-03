@@ -45,7 +45,6 @@ export default defineComponent({
 		},
 	},
 });
-
 </script>
 
 <template>
@@ -68,14 +67,14 @@ export default defineComponent({
 @import "@/styles/main.scss";
 
 .table-row {
-  height: 72px;
+	height: 72px;
 	display: grid;
 	align-items: center;
 	border-block-end: 1px solid $color-separator-primary;
 
-  td {
-    padding-inline: 16px;
-  }
+	td {
+		padding-inline: 16px;
+	}
 }
 
 </style>
