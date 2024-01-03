@@ -6,6 +6,8 @@ import ImagePreviewComp from "./ImagePreviewComp.vue";
 import TooltipComp from "./TooltipComp.vue";
 import ButtonComp from "./ButtonComp.vue";
 
+const MAX_IMAGES = 3;
+
 export default defineComponent({
 	name: "CategoriesPreviewBadgesComp",
 	components: {
@@ -24,16 +26,11 @@ export default defineComponent({
 		},
 	},
 	emits: ["click"],
-	data() {
-		return {
-			maxImages: 3,
-		};
-	},
 	computed: {
 		images() {
 			return this.categories
 				.map((category) => category.image)
-				.slice(0, this.maxImages);
+				.slice(0, MAX_IMAGES);
 		},
 		categoryNames() {
 			return this.categories
@@ -41,7 +38,7 @@ export default defineComponent({
 				.join(", ");
 		},
 		howManyMoreImages() {
-			return this.categories.length - this.maxImages;
+			return this.categories.length - MAX_IMAGES;
 		},
 	},
 	methods: {
