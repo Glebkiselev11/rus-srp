@@ -179,6 +179,9 @@ export default defineComponent({
 		notFoundTitle(): string {
 			return this.$t("not-found", { search: this.search });
 		},
+		showAddToCategoryButton(): boolean {
+			return this.filter.category_id !== undefined;
+		},
 	},
 	mounted() {
 		this.fetchWords(this.filter);
@@ -210,6 +213,9 @@ export default defineComponent({
 			this.openEditingWordForm(id);
 			this.setCurrentTabToCategories();
 		},
+		openWordsListModal() {
+			console.log("openWordsListModal");
+		},
 		updateWordImage(word: Word, src: string) {
 			this.updateWord(word.id, { ...word, image: src });
 		},
@@ -233,6 +239,13 @@ export default defineComponent({
 					<WordsPageCategoryTitleComp :category-id="filter.category_id" />
 				</template>
 				<template #right>
+					<ButtonComp
+						v-show="showAddToCategoryButton"
+						:label="$t('add-to-category')"
+						appearance="inline"
+						class="words-view__add-to-category-button"
+						@click="openWordsListModal"
+					/>
 					<ButtonComp
 						icon="add"
 						:label="$t('create-word')"
@@ -385,6 +398,10 @@ export default defineComponent({
 	
 	&__content {
 		padding-inline: 16px;
+	}
+
+	&__add-to-category-button {
+		margin-inline-end: 16px;
 	}
 }
 </style>

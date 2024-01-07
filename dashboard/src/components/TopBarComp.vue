@@ -38,6 +38,11 @@ export default defineComponent({
 		justify-content: space-between;
 		width: 100%;
 		height: 56px;
+
+		div {
+			display: inherit;
+			align-items: inherit
+		}
 	}
 }
 
