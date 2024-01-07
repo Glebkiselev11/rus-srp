@@ -1,4 +1,4 @@
-use crate::models::category::{CategoryBody, NewCategory};
+use crate::models::category::{CategoryBody, CategoryWordsBody, NewCategory};
 use crate::models::pagination::Pagination;
 use crate::models::query_options::QueryOptions;
 use crate::DbPool;
@@ -92,20 +92,28 @@ pub async fn delete(
     Ok(HttpResponse::Ok().finish())
 }
 
-pub async fn add_word(
+pub async fn add_words(
     pool: web::Data<DbPool>,
-    path: web::Path<(i32, i32)>,
+    category_id: web::Path<i32>,
+    body: web::Json<CategoryWordsBody>,
 ) -> actix_web::Result<impl Responder> {
-    let (category_id, word_id) = path.into_inner();
+    let word_ids = body.into_inner().word_ids;
+    let category_id = category_id.into_inner();
 
     let word_category_relation = web::block(move || {
         let mut conn = pool.get()?;
 
-        // Check if category & word exists
+        // Check if category exists
         db::categories::methods::select_by_id(category_id, &mut conn)?;
-        db::words::methods::select_by_id(word_id, &mut conn)?;
 
-        db::words_categories::methods::insert(category_id, word_id, &mut conn)
+        word_ids
+            .iter()
+            .map(|word_id| {
+                // Check if word exists
+                db::words::methods::select_by_id(*word_id, &mut conn)?;
+                db::words_categories::methods::insert(category_id, *word_id, &mut conn)
+            })
+            .collect::<Result<Vec<_>, _>>()
     })
     .await?
     .map_err(|db_error| {
@@ -119,16 +127,21 @@ pub async fn add_word(
     Ok(HttpResponse::Ok().json(word_category_relation))
 }
 
-pub async fn delete_word(
+pub async fn delete_words(
     pool: web::Data<DbPool>,
-    path: web::Path<(i32, i32)>,
+    path: web::Path<i32>,
+    body: web::Json<CategoryWordsBody>,
 ) -> actix_web::Result<impl Responder> {
-    let (category_id, word_id) = path.into_inner();
+    let category_id = path.into_inner();
+    let word_ids = body.into_inner().word_ids;
 
     web::block(move || {
         let mut conn = pool.get()?;
 
-        db::words_categories::methods::delete(category_id, word_id, &mut conn)
+        word_ids
+            .iter()
+            .map(|word_id| db::words_categories::methods::delete(category_id, *word_id, &mut conn))
+            .collect::<Result<Vec<_>, _>>()
     })
     .await?
     .map_err(|db_error| {
