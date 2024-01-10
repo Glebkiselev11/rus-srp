@@ -87,5 +87,6 @@
   "create-and-add-next": "Создать и добавить другое",
   "all-categories": "Все категории",
   "add-to-category": "Добавить в категорию",
-  "remove-from-category": "Удалить из категории"
+  "remove-from-category": "Удалить из категории",
+  "adding-words-into-category": "Добавление слов в категорию"
 }

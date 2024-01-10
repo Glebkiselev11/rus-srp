@@ -87,5 +87,6 @@
   "create-and-add-next": "Create and add another",
   "all-categories": "All categories",
   "add-to-category": "Add to category",
-  "remove-from-category": "Remove from category"
+  "remove-from-category": "Remove from category",
+  "adding-words-into-category": "Adding words into category"
 }

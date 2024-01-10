@@ -87,5 +87,6 @@
   "create-and-add-next": "Направите и додајте још једну",
   "all-categories": "Све категорије",
   "add-to-category": "Додајте у категорију",
-  "remove-from-category": "Уклоните из категорије"
+  "remove-from-category": "Уклоните из категорије",
+  "adding-words-into-category": "Додавање речи у категорију"
 }

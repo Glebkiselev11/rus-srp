@@ -17,6 +17,8 @@ import PaginationBarComp from "@/components/PaginationBarComp.vue";
 import ZeroStateComp from "@/components/ZeroStateComp.vue";
 import WordsPageCategoryTitleComp from "@/components/WordsPageCategoryTitleComp.vue";
 import CategoriesPreviewBadgesComp from "@/components/CategoriesPreviewBadgesComp.vue";
+// eslint-disable-next-line max-len
+import CategoryWordsInsertModalComp from "@/components/CategoryWordsInsert/CategoryWordsInsertModalComp.vue";
 import { highlighTextByQuery } from "@/common/utils";
 
 import type { Word } from "@/types/words";
@@ -44,6 +46,7 @@ export default defineComponent({
 		WordsPageCategoryTitleComp,
 		WordFormModalComp,
 		CategoriesPreviewBadgesComp,
+		CategoryWordsInsertModalComp,
 	},
 	data() {
 		return {
@@ -64,6 +67,7 @@ export default defineComponent({
 				category_id: undefined,
 			},
 			showWordForm: false,
+			showCategoryWordsInsertModal: false,
 			editingWordId: undefined as Id | undefined,
 			hoverOnWordId: undefined as Id | undefined,
 		};
@@ -214,7 +218,7 @@ export default defineComponent({
 			this.setCurrentTabToCategories();
 		},
 		openWordsListModal() {
-			console.log("openWordsListModal");
+			this.showCategoryWordsInsertModal = true;
 		},
 		updateWordImage(word: Word, src: string) {
 			this.updateWord(word.id, { ...word, image: src });
@@ -378,6 +382,12 @@ export default defineComponent({
 		v-if="showWordForm"
 		:word-id="editingWordId"
 		@close="showWordForm = false"
+	/>
+
+	<CategoryWordsInsertModalComp
+		v-if="showCategoryWordsInsertModal && filter.category_id"
+		:category-id="filter.category_id"
+		@close="showCategoryWordsInsertModal = false"
 	/>
 </template>
 
