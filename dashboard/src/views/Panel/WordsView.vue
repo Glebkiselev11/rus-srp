@@ -1,7 +1,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { mapActions, mapState } from "pinia";
-import { useWordsStore } from "@/stores/words";
+import { useWordsActionsStore } from "@/stores/words/actions";
+import { usePageWordsStore } from "@/stores/words/pageWords";
 import type { Id, Order, RequestParams } from "@/types/api";
 
 import CategoriesComp from "@/components/Categories/CategoriesComp.vue";
@@ -73,7 +74,7 @@ export default defineComponent({
 		};
 	},
 	computed: {
-		...mapState(useWordsStore, ["words", "count"]),
+		...mapState(usePageWordsStore, ["words", "count"]),
 		translationColumns() {
 			return getLanguageCodesOrder()
 				.map((code) => ({
@@ -131,7 +132,7 @@ export default defineComponent({
 						category_id: params.category_id,
 					},
 				}).then(() => {
-					this.fetchWords(params);
+					this.fetchPageWords(params);
 				});
 			},
 		},
@@ -188,10 +189,11 @@ export default defineComponent({
 		},
 	},
 	mounted() {
-		this.fetchWords(this.filter);
+		this.fetchPageWords(this.filter);
 	},
 	methods: {
-		...mapActions(useWordsStore, ["fetchWords", "deleteWord", "updateWord"]),
+		...mapActions(useWordsActionsStore, ["deleteWord", "updateWord"]),
+		...mapActions(usePageWordsStore, ["fetchPageWords"]),
 		...mapActions(useWordFormTabsStore, ["setCurrentTabToCategories"]),
 		highlighTextByQuery,
 		translationPreview,
