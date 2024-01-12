@@ -5,14 +5,16 @@ import ModalComp from "../ModalComp.vue";
 import { mapState } from "pinia";
 import { useCategoriesActions } from "@/stores/categories/actions";
 import { addCropImagaeParamsToUrl } from "@/common/utils";
-import ImagePreviewComp from "../ImagePreviewComp.vue";
 import { extractCurrentLanguageTranslation } from "@/common/translations";
+import ImagePreviewComp from "../ImagePreviewComp.vue";
+import CategoryWordsInsertComp from "./CategoryWordsInsertComp.vue";
 
 export default defineComponent({
 	name: "CategoryWordsInsertModalComp",
 	components: {
 		ModalComp,
 		ImagePreviewComp,
+		CategoryWordsInsertComp,
 	},
 	props: {
 		categoryId: {
@@ -56,7 +58,9 @@ export default defineComponent({
 			/>
 		</template>
 		<template #content>
-			<div>.....</div>
+			<CategoryWordsInsertComp
+				:category-id="categoryId"
+			/>
 		</template>
 	</ModalComp>
 </template>
