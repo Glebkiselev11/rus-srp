@@ -4,13 +4,17 @@ import { WordsApi } from "@/api";
 import type { DraftWord, Word } from "@/types/words";
 import { convertWordToDraftWord } from "@/common/utils";
 import { usePageWordsStore } from "./pageWords";
+import { useModalWordsStore } from "./modalWords";
 
 export const useWordsActionsStore = defineStore("wordsActions", {
 	getters: {
 		getWordById() {
 			return (id: Id) => {
 				const pageState = usePageWordsStore();
-				return pageState.words.find((w) => w.id === id);
+				const modalState = useModalWordsStore();
+				const findFn = (w: Word) => w.id === id;
+
+				return pageState.words.find(findFn) || modalState.words.find(findFn);
 			};
 		},
 	},
@@ -25,9 +29,13 @@ export const useWordsActionsStore = defineStore("wordsActions", {
 
 		async updateWord(id: Id, word: Word | DraftWord) {
 			const pageState = usePageWordsStore();
+			const modalState = useModalWordsStore();
+
 			try {
 				const { data } = await WordsApi.update(id, convertWordToDraftWord(word));
-				pageState.words = pageState.words.map((w) => (w.id === id ? data : w));
+				const mapFn = (w: Word) => (w.id === id ? data : w);
+				pageState.words = pageState.words.map(mapFn);
+				modalState.words = modalState.words.map(mapFn);
 			} catch (error) {
 				console.error(error);
 				alert(error);
@@ -36,9 +44,12 @@ export const useWordsActionsStore = defineStore("wordsActions", {
 
 		async deleteWord(id: Id) {
 			const pageState = usePageWordsStore();
+			const modalState = useModalWordsStore();
 			try {
 				await WordsApi.delete(id);
-				pageState.words = pageState.words.filter((word) => word.id !== id);
+				const filterFn = (w: Word) => w.id !== id;
+				pageState.words = pageState.words.filter(filterFn);
+				modalState.words = modalState.words.filter(filterFn);
 			} catch (error) {
 				console.error(error);
 				alert(error);
