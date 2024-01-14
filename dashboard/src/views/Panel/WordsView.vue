@@ -282,7 +282,6 @@ export default defineComponent({
 					/>
 				</div>
 				<TableComp
-					:count="count"
 					:columns="columns"
 					:order="filter.order"
 					:grid-template-columns="gridTemplateColumns"
