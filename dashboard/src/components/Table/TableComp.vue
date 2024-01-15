@@ -112,7 +112,7 @@ $extra-space: 270px;
 
 .table-wrap {
 	border: 1px solid $color-separator-primary;
-	border-radius: 16px;
+	border-radius: 8px;
 	overflow: hidden;
 }
 
