@@ -3,6 +3,13 @@ import { defineComponent } from "vue";
 import InputComp from "../InputComp.vue";
 import ButtonComp from "../ButtonComp.vue";
 import WordFormModalComp from "../WordForm/WordFormModalComp.vue";
+import { mapActions, mapState } from "pinia";
+import { useModalWordsStore } from "@/stores/words/modalWords";
+import  TableComp from "@/components/Table/TableComp.vue";
+import TableRowComp from "../Table/TableRowComp.vue";
+import ImagePreviewComp from "../ImagePreviewComp.vue";
+import { highlighTextByQuery } from "@/common/utils";
+import { getLanguageCodesOrder } from "@/common/translations";
 
 export default defineComponent({
 	name: "CategoryWordsInsertComp",
@@ -10,6 +17,9 @@ export default defineComponent({
 		InputComp,
 		ButtonComp,
 		WordFormModalComp,
+		TableComp,
+		TableRowComp,
+		ImagePreviewComp,
 	},
 	props: {
 		categoryId: {
@@ -21,7 +31,28 @@ export default defineComponent({
 		return {
 			showWordForm: false,
 			search: "",
+			offset: 0,
+			limit: 50,
+			translationOrder: getLanguageCodesOrder(),
+			gridTemplateColumns: "64px 1fr 1fr 1fr 1fr",
 		};
+	},
+	computed: {
+		...mapState(useModalWordsStore, ["words", "loadState", "count"]),
+		requestParams() {
+			return {
+				search: this.search,
+				offset: this.offset,
+				limit: this.limit,
+			};
+		},
+	},
+	created() {
+		this.fetchModalWords(this.requestParams);
+	},
+	methods: {
+		...mapActions(useModalWordsStore, ["fetchModalWords"]),
+		highlighTextByQuery,
 	},
 });
 
@@ -29,7 +60,7 @@ export default defineComponent({
 
 <template>
 	<div class="category-words-insert">
-		<div class="category-words-insert__row">
+		<div class="category-words-insert__panel">
 			<InputComp
 				v-model="search"
 				appearance="outline"
@@ -48,6 +79,32 @@ export default defineComponent({
 				@click="showWordForm = true"
 			/>
 		</div>
+
+		<TableComp 
+			:checkable="true"
+			:grid-template-columns="gridTemplateColumns"
+		>
+			<template #body>
+				<TableRowComp
+					v-for="word in words"
+					:key="word.id"
+					:grid-template-columns="gridTemplateColumns"
+				>
+					<td>
+						<ImagePreviewComp
+							:src="word.image"
+							static
+						/>
+					</td>
+
+					<td
+						v-for="(langCode, i) in translationOrder"
+						:key="`${word.id}-${i}`"
+						v-html="highlighTextByQuery(word[langCode], search)"
+					/>
+				</TableRowComp>
+			</template>
+		</TableComp>
 	</div>
 
 	<WordFormModalComp
@@ -62,9 +119,10 @@ export default defineComponent({
 	padding: 20px;
 	width: 704px;
 
-	&__row {
+	&__panel {
 		display: flex;
 		align-items: center;
+		margin-block-end: 16px;
 	}
 
 	&__search-input {

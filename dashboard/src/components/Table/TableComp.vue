@@ -12,7 +12,7 @@ export default defineComponent({
 	props: {
 		columns: {
 			type: Array as PropType<TableColumn[]>,
-			required: true,
+			default: () => [],
 		},
 		gridTemplateColumns: {
 			type: String,
