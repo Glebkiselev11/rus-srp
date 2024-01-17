@@ -47,12 +47,25 @@ export default defineComponent({
 			};
 		},
 	},
-	created() {
-		this.fetchModalWords(this.requestParams);
+	watch: {
+		search() {
+			this.offset = 0;
+			this.clearModalWords();
+			this.fetchModalWords(this.requestParams);
+		},
+	},
+	async created() {
+		await this.fetchModalWords(this.requestParams);
 	},
 	methods: {
-		...mapActions(useModalWordsStore, ["fetchModalWords"]),
+		...mapActions(useModalWordsStore, ["fetchModalWords", "clearModalWords"]),
 		highlighTextByQuery,
+		loadMore() {
+			if (this.loadState === "loading" || this.offset >= this.count) return;
+			this.offset += this.limit;
+
+			this.fetchModalWords(this.requestParams);
+		},
 	},
 });
 
@@ -83,26 +96,50 @@ export default defineComponent({
 		<TableComp 
 			:checkable="true"
 			:grid-template-columns="gridTemplateColumns"
+			:infinite-scroll-config="{ distance: 100 }"
+			@scroll-to-bottom="loadMore"
 		>
 			<template #body>
-				<TableRowComp
-					v-for="word in words"
-					:key="word.id"
-					:grid-template-columns="gridTemplateColumns"
-				>
-					<td>
-						<ImagePreviewComp
-							:src="word.image"
-							static
-						/>
-					</td>
+				<section>
+					<TableRowComp
+						v-for="word in words"
+						:key="word.id"
+						:grid-template-columns="gridTemplateColumns"
+					>
+						<td>
+							<ImagePreviewComp
+								:src="word.image"
+								static
+							/>
+						</td>
 
-					<td
-						v-for="(langCode, i) in translationOrder"
-						:key="`${word.id}-${i}`"
-						v-html="highlighTextByQuery(word[langCode], search)"
-					/>
-				</TableRowComp>
+						<td
+							v-for="(langCode, i) in translationOrder"
+							:key="`${word.id}-${i}`"
+							v-html="highlighTextByQuery(word[langCode], search)"
+						/>
+					</TableRowComp>
+				</section>
+
+				<template v-if="loadState === 'loading'">
+					<TableRowComp
+						v-for="row in limit"
+						:key="row"
+						:grid-template-columns="gridTemplateColumns"
+					>
+						<td
+							class="category-words-insert__skeleton-cell"
+							style="height: 40px;"
+						/>
+
+						<td 
+							v-for="col in translationOrder.length"
+							:key="`${row}-${col}`"
+							class="category-words-insert__skeleton-cell"
+							style="height: 20px;"
+						/>
+					</TableRowComp>
+				</template>
 			</template>
 		</TableComp>
 	</div>
@@ -114,6 +151,7 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
+@import "@/styles/main.scss";
 
 .category-words-insert {
 	padding: 20px;
@@ -132,6 +170,14 @@ export default defineComponent({
 	&__create-word-button {
 		flex-shrink: 0;
 		margin-inline-start: 16px;
+	}
+
+	&__skeleton-cell {
+		background: $color-background-content-tertiary;
+		margin-inline-start: 16px;
+		margin-inline-end: 8px;
+		display: flex;
+		align-items: center;
 	}
 }
 

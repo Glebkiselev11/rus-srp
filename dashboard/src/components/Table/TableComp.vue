@@ -3,9 +3,14 @@ import { defineComponent, type PropType } from "vue";
 import TableColumnTitleComp from "./TableColumnTitleComp.vue";
 import type { Order } from "../../types/api";
 import type { TableColumn } from "@/types/table";
+import { vInfiniteScroll } from "@vueuse/components";
+import type { UseInfiniteScrollOptions } from "@vueuse/core";
 
 export default defineComponent({
 	name: "TableComp",
+	directives: {
+		infiniteScroll: vInfiniteScroll,
+	},
 	components: {
 		TableColumnTitleComp,
 	},
@@ -26,9 +31,16 @@ export default defineComponent({
 			type: String as PropType<Order>,
 			default: null,
 		},
+		infiniteScrollConfig: {
+			type: Object as PropType<UseInfiniteScrollOptions>,
+			default: () => ({
+				// it will disable the interval for the case when we don't need to infinite scroll
+				interval: 9999999,
+			}),
+		},
 	},
 
-	emits: ["checked", "unchecked", "update:order"],
+	emits: ["checked", "unchecked", "update:order", "scrollToBottom"],
 	data() {
 		return {
 			checked: false,
@@ -56,6 +68,9 @@ export default defineComponent({
 			}
 
 			this.isContentBodyScrollable = tableBody.scrollHeight > tableBody.clientHeight;
+		},
+		handleScrollToBottom() {
+			this.$emit("scrollToBottom");
 		},
 	},
 });
@@ -96,6 +111,7 @@ export default defineComponent({
 			</thead>
 			<tbody
 				ref="tableBody"
+				v-infinite-scroll="[handleScrollToBottom, infiniteScrollConfig]"
 				class="table__body"
 			>
 				<slot name="body" />
