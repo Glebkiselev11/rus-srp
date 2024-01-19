@@ -23,10 +23,6 @@ export default defineComponent({
 			type: String,
 			required: true,
 		},
-		checkable: {
-			type: Boolean,
-			default: false,
-		},
 		order: {
 			type: String as PropType<Order>,
 			default: null,
@@ -40,21 +36,11 @@ export default defineComponent({
 		},
 	},
 
-	emits: ["checked", "unchecked", "update:order", "scrollToBottom"],
+	emits: ["update:order", "scrollToBottom"],
 	data() {
 		return {
-			checked: false,
 			isContentBodyScrollable: null as boolean | null,
 		};
-	},
-	watch: {
-		checked(checked: boolean) {
-			if (checked) {
-				this.$emit("checked");
-			} else {
-				this.$emit("unchecked");
-			}
-		},
 	},
 	updated() {
 		this.setStateForTableBody();
@@ -89,12 +75,6 @@ export default defineComponent({
 				:class="{ 'table__header--scrollable-body': isContentBodyScrollable }"	
 			>
 				<tr :style="{ gridTemplateColumns }">
-					<th v-if="checkable">
-						<input
-							v-model="checked"
-							type="checkbox"
-						>
-					</th>
 					<TableColumnTitleComp
 						v-for="col in columns"
 						:key="col.sort_key"

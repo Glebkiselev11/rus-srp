@@ -94,7 +94,7 @@ export default defineComponent({
 		</div>
 
 		<TableComp 
-			:checkable="true"
+			checkable
 			:grid-template-columns="gridTemplateColumns"
 			:infinite-scroll-config="{ distance: 100 }"
 			@scroll-to-bottom="loadMore"
