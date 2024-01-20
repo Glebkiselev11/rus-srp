@@ -228,6 +228,9 @@ export default defineComponent({
 		setHoveredWordId(id: Id, hovered: boolean) {
 			this.hoverOnWordId = hovered ? id : undefined;
 		},
+		refetch() {
+			this.fetchPageWords(this.filter);
+		},
 	},
 });
 </script>
@@ -389,6 +392,7 @@ export default defineComponent({
 		v-if="showCategoryWordsInsertModal && filter.category_id"
 		:category-id="filter.category_id"
 		@close="showCategoryWordsInsertModal = false"
+		@refetch="refetch"
 	/>
 </template>
 

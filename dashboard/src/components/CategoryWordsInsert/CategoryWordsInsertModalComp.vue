@@ -23,7 +23,7 @@ export default defineComponent({
 			required: true,
 		},
 	},
-	emits: ["close"],	
+	emits: ["close", "refetch"],	
 	computed: {
 		...mapState(useCategoriesActions, ["getCategoryById"]),
 		category() {
@@ -42,6 +42,10 @@ export default defineComponent({
 		close() {
 			this.$emit("close");
 			this.clearModalWords();
+		},
+		handleWordsInserted() {
+			this.$emit("refetch");
+			this.close();
 		},
 	},
 });
@@ -63,6 +67,8 @@ export default defineComponent({
 		<template #content>
 			<CategoryWordsInsertComp
 				:category-id="categoryId"
+				@close="close"
+				@words-inserted="handleWordsInserted"
 			/>
 		</template>
 	</ModalComp>

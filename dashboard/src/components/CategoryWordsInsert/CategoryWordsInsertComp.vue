@@ -12,6 +12,8 @@ import { highlighTextByQuery } from "@/common/utils";
 import { getLanguageCodesOrder } from "@/common/translations";
 import type { Id } from "@/types/api";
 import type { Checkbox } from "@/types";
+import CounterComp from "../CounterComp.vue";
+import { useCategoriesActions } from "@/stores/categories/actions";
 
 export default defineComponent({
 	name: "CategoryWordsInsertComp",
@@ -22,6 +24,7 @@ export default defineComponent({
 		TableComp,
 		TableRowComp,
 		ImagePreviewComp,
+		CounterComp,
 	},
 	props: {
 		categoryId: {
@@ -29,6 +32,7 @@ export default defineComponent({
 			required: true,
 		},
 	},
+	emits: ["close", "words-inserted"],
 	data() {
 		return {
 			showWordForm: false,
@@ -67,6 +71,7 @@ export default defineComponent({
 	},
 	methods: {
 		...mapActions(useModalWordsStore, ["fetchModalWords", "clearModalWords"]),
+		...mapActions(useCategoriesActions, ["addWordsToCategory"]),
 		highlighTextByQuery,
 		loadMore() {
 			if (this.loadState === "loading" || this.offset >= this.count) return;
@@ -97,6 +102,13 @@ export default defineComponent({
 			} else {
 				this.wordIdsToInsert = this.wordIdsToInsert.filter((id) => id !== wordId);
 			}
+		},
+		async clickAddButton() {
+			await this.addWordsToCategory(this.categoryId, this.wordIdsToInsert);
+			this.$emit("words-inserted");
+		},
+		close() {
+			this.$emit("close");
 		},
 	},
 });
@@ -177,6 +189,27 @@ export default defineComponent({
 				</template>
 			</template>
 		</TableComp>
+
+		<div class="category-words-insert__footer">
+			<ButtonComp
+				:label="$t('cancel')"
+				appearance="secondary"
+				@click="close"
+			/>
+
+			<ButtonComp
+				:label="$t('add')"
+				:disabled="wordIdsToInsert.length === 0"
+				@click="clickAddButton"
+			>
+				<template
+					v-if="wordIdsToInsert.length"
+					#right
+				>
+					<CounterComp :count="wordIdsToInsert.length" />	
+				</template>
+			</ButtonComp>
+		</div>
 	</div>
 
 	<WordFormModalComp
@@ -213,6 +246,14 @@ export default defineComponent({
 		margin-inline-end: 8px;
 		display: flex;
 		align-items: center;
+	}
+
+	&__footer {
+		display: flex;
+		justify-content: flex-end;
+		column-gap: 8px;
+		margin-block-start: 20px;
+		height: 40px;
 	}
 }
 

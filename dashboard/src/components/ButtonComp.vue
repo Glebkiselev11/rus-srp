@@ -97,6 +97,8 @@ export default defineComponent({
 		<template v-if="label">
 			{{ label }}
 		</template>
+
+		<slot name="right" />
 	</button>
 </template>
 
