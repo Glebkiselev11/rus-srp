@@ -10,6 +10,8 @@ import TableRowComp from "../Table/TableRowComp.vue";
 import ImagePreviewComp from "../ImagePreviewComp.vue";
 import { highlighTextByQuery } from "@/common/utils";
 import { getLanguageCodesOrder } from "@/common/translations";
+import type { Id } from "@/types/api";
+import type { Checkbox } from "@/types";
 
 export default defineComponent({
 	name: "CategoryWordsInsertComp",
@@ -35,6 +37,7 @@ export default defineComponent({
 			limit: 50,
 			translationOrder: getLanguageCodesOrder(),
 			gridTemplateColumns: "64px 1fr 1fr 1fr 1fr",
+			wordIdsToInsert: [] as Id[],
 		};
 	},
 	computed: {
@@ -45,6 +48,11 @@ export default defineComponent({
 				offset: this.offset,
 				limit: this.limit,
 			};
+		},
+		alreadyAddedWordIds() {
+			return this.words
+				.filter(({ categories }) => categories.some(({ id }) => id === this.categoryId))
+				.map(({ id }) => id);
 		},
 	},
 	watch: {
@@ -65,6 +73,30 @@ export default defineComponent({
 			this.offset += this.limit;
 
 			this.fetchModalWords(this.requestParams);
+		},
+		getCheckboxState(wordId: Id): Checkbox {
+			const isWordAlreadyAdded = this.alreadyAddedWordIds.includes(wordId);
+
+			if (isWordAlreadyAdded) {
+				return {
+					checked: true,
+					disabled: true,
+					indeterminated: false,
+				};
+			} else {
+				return {
+					checked: this.wordIdsToInsert.includes(wordId),
+					disabled: false,
+					indeterminated: false,
+				};
+			}
+		},
+		updateChecked(wordId: Id, checked: boolean) {
+			if (checked) {
+				this.wordIdsToInsert.push(wordId);
+			} else {
+				this.wordIdsToInsert = this.wordIdsToInsert.filter((id) => id !== wordId);
+			}
 		},
 	},
 });
@@ -105,6 +137,9 @@ export default defineComponent({
 						v-for="word in words"
 						:key="word.id"
 						:grid-template-columns="gridTemplateColumns"
+						checkable
+						:checkbox="getCheckboxState(word.id)"
+						@checked:update="updateChecked(word.id, $event)"
 					>
 						<td>
 							<ImagePreviewComp

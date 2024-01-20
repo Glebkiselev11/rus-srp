@@ -7,3 +7,9 @@ export type NavItem = {
 	active: boolean;
 }
 
+export type Checkbox = {
+	checked: boolean;
+	indeterminated: boolean;
+	disabled: boolean;
+} 
+

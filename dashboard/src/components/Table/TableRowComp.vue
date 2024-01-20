@@ -2,9 +2,14 @@
 import type { Id } from "@/types/api";
 import { vElementHover } from "@vueuse/components";
 import { defineComponent, type PropType } from "vue";
+import CheckboxComp from "../CheckboxComp.vue";
+import type { Checkbox } from "@/types";
 
 export default defineComponent({
 	name: "TableRowComp",
+	components: {
+		CheckboxComp,
+	},
 	directives: {
 		elementHover: vElementHover,
 	},
@@ -21,27 +26,27 @@ export default defineComponent({
 			type: String,
 			required: true,
 		},
+		checkbox: {
+			type: Object as PropType<Checkbox>,
+			default: () => ({
+				checked: false,
+				indeterminated: false,
+				disabled: false,
+			}),
+		},
 	},
-	emits: ["checked", "unchecked", "hover"],
-	data() {
-		return {
-			checked: false,
-		};
-	},
-	watch: {
-		checked(checked: boolean) {
-			if (this.id === null) return console.warn("TableRow: id is null. Cannot emit event");
-
-			if (checked) {
-				this.$emit("checked", this.id);
-			} else {
-				this.$emit("unchecked", this.id);
-			}
+	emits: ["checked:update", "unchecked", "hover"],
+	computed: {
+		gridTemplateColumnsWithCheckbox() {
+			return this.checkable ? `48px ${this.gridTemplateColumns}` : this.gridTemplateColumns;
 		},
 	},
 	methods: {
 		onHover(x: boolean) {
 			this.$emit("hover", x);
+		},
+		updateChecked(x: boolean) {
+			this.$emit("checked:update", x);
 		},
 	},
 });
@@ -51,13 +56,18 @@ export default defineComponent({
 	<tr
 		v-element-hover="onHover"
 		class="table-row"
-		:style="{ gridTemplateColumns }"
+		:style="{ gridTemplateColumns: gridTemplateColumnsWithCheckbox }"
 	>
-		<td v-if="checkable">
-			<input
-				v-model="checked"
-				type="checkbox"
-			>
+		<td
+			v-if="checkable"
+			class="table-row__checkbox-wrap"
+		>
+			<CheckboxComp
+				:model-value="checkbox.checked"
+				:disabled="checkbox.disabled"
+				:indeterminated="checkbox.indeterminated"
+				@update:model-value="updateChecked"
+			/>
 		</td>
 		<slot />
 	</tr>
@@ -74,6 +84,10 @@ export default defineComponent({
 
 	td {
 		padding-inline: 16px;
+	}
+
+	&__checkbox-wrap {
+		padding-inline: 4px!important;
 	}
 }
 
