@@ -2,12 +2,13 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import ModalComp from "../ModalComp.vue";
-import { mapState } from "pinia";
+import { mapActions, mapState } from "pinia";
 import { useCategoriesActions } from "@/stores/categories/actions";
 import { addCropImagaeParamsToUrl } from "@/common/utils";
 import { extractCurrentLanguageTranslation } from "@/common/translations";
 import ImagePreviewComp from "../ImagePreviewComp.vue";
 import CategoryWordsInsertComp from "./CategoryWordsInsertComp.vue";
+import { useModalWordsStore } from "@/stores/words/modalWords";
 
 export default defineComponent({
 	name: "CategoryWordsInsertModalComp",
@@ -37,8 +38,10 @@ export default defineComponent({
 		},
 	},
 	methods: {
+		...mapActions(useModalWordsStore, ["clearModalWords"]),
 		close() {
 			this.$emit("close");
+			this.clearModalWords();
 		},
 	},
 });
