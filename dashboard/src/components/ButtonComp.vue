@@ -45,6 +45,10 @@ export default defineComponent({
 	},
 	computed: {
 		_iconColor(): IconColor {
+			if (this.disabled) {
+				return "disabled";
+			}
+
 			if (this.iconColor) {
 				return this.iconColor;
 			}
@@ -292,8 +296,12 @@ export default defineComponent({
 	}
 
 	&:disabled {
-		opacity: 0.5;
 		pointer-events: none;
+		color: $color-text-disabled;
+
+		&.button--appearance-secondary, &.button--appearance-primary {
+			background: $color-background-disabled;
+		}
 	}
 }
 </style>
