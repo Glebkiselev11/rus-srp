@@ -9,13 +9,15 @@ import { extractCurrentLanguageTranslation } from "@/common/translations";
 import ImagePreviewComp from "../ImagePreviewComp.vue";
 import CategoryWordsInsertComp from "./CategoryWordsInsertComp.vue";
 import { useModalWordsStore } from "@/stores/words/modalWords";
+import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vue";
 
 export default defineComponent({
 	name: "CategoryWordsInsertModalComp",
 	components: {
 		ModalComp,
 		ImagePreviewComp,
-		CategoryWordsInsertComp,
+		CategoryWordsInsertComp, 
+		FormCloseConfirmationModalComp,
 	},
 	props: {
 		categoryId: {
@@ -24,8 +26,14 @@ export default defineComponent({
 		},
 	},
 	emits: ["close", "refetch"],	
+	data() {
+		return {
+			showCloseConfirmationModal: false,
+		};
+	},
 	computed: {
 		...mapState(useCategoriesActions, ["getCategoryById"]),
+		...mapState(useModalWordsStore, ["isAnyWordSelected"]),
 		category() {
 			return this.getCategoryById(this.categoryId);
 		},
@@ -39,6 +47,13 @@ export default defineComponent({
 	},
 	methods: {
 		...mapActions(useModalWordsStore, ["clearModalWords"]),
+		tryClose() {
+			if (this.isAnyWordSelected) {
+				this.showCloseConfirmationModal = true;
+			} else {
+				this.close();
+			}
+		},
 		close() {
 			this.$emit("close");
 			this.clearModalWords();
@@ -56,7 +71,7 @@ export default defineComponent({
 	<ModalComp
 		:title="$t('adding-words-into-category')"
 		:subtitle="subtitle"
-		@close="close"
+		@close="tryClose"
 	>
 		<template #header-left>
 			<ImagePreviewComp
@@ -67,9 +82,17 @@ export default defineComponent({
 		<template #content>
 			<CategoryWordsInsertComp
 				:category-id="categoryId"
-				@close="close"
+				@close="tryClose"
 				@words-inserted="handleWordsInserted"
 			/>
 		</template>
 	</ModalComp>
+
+	<FormCloseConfirmationModalComp
+		v-if="showCloseConfirmationModal"
+		:title="$t('modal-exit-confirmation.adding-words-in-category-title')"
+		:cancel-button-label="$t('modal-exit-confirmation.continue-editing')"
+		@close="showCloseConfirmationModal = false"
+		@confirm="close"
+	/>
 </template>
