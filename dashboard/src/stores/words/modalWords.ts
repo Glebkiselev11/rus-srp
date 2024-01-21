@@ -31,6 +31,7 @@ export const useModalWordsStore = defineStore("modalWords", {
 		clearModalWords() {
 			this.words = [];
 			this.count = 0;
+			this.selectedWordIds = [];
 		},
 		updateSelectedWordIds(id: Id, select: boolean) {
 			if (select) {
