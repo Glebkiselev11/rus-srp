@@ -13,7 +13,6 @@ import { getLanguageCodesOrder } from "@/common/translations";
 import type { Id } from "@/types/api";
 import type { Checkbox } from "@/types";
 import CounterComp from "../CounterComp.vue";
-import { useCategoriesActions } from "@/stores/categories/actions";
 
 export default defineComponent({
 	name: "CategoryWordsInsertComp",
@@ -41,11 +40,16 @@ export default defineComponent({
 			limit: 50,
 			translationOrder: getLanguageCodesOrder(),
 			gridTemplateColumns: "64px 1fr 1fr 1fr 1fr",
-			wordIdsToInsert: [] as Id[],
 		};
 	},
 	computed: {
-		...mapState(useModalWordsStore, ["words", "loadState", "count"]),
+		...mapState(useModalWordsStore, [
+			"words", 
+			"loadState", 
+			"count", 
+			"selectedWordIds", 
+			"isAnyWordSelected",
+		]),
 		requestParams() {
 			return {
 				search: this.search,
@@ -70,8 +74,12 @@ export default defineComponent({
 		await this.fetchModalWords(this.requestParams);
 	},
 	methods: {
-		...mapActions(useModalWordsStore, ["fetchModalWords", "clearModalWords"]),
-		...mapActions(useCategoriesActions, ["addWordsToCategory"]),
+		...mapActions(useModalWordsStore, [
+			"fetchModalWords", 
+			"clearModalWords", 
+			"updateSelectedWordIds",
+			"addSelectedWordsToCategory",
+		]),
 		highlighTextByQuery,
 		loadMore() {
 			if (this.loadState === "loading" || this.offset >= this.count) return;
@@ -90,21 +98,14 @@ export default defineComponent({
 				};
 			} else {
 				return {
-					checked: this.wordIdsToInsert.includes(wordId),
+					checked: this.selectedWordIds.includes(wordId),
 					disabled: false,
 					indeterminated: false,
 				};
 			}
 		},
-		updateChecked(wordId: Id, checked: boolean) {
-			if (checked) {
-				this.wordIdsToInsert.push(wordId);
-			} else {
-				this.wordIdsToInsert = this.wordIdsToInsert.filter((id) => id !== wordId);
-			}
-		},
 		async clickAddButton() {
-			await this.addWordsToCategory(this.categoryId, this.wordIdsToInsert);
+			await this.addSelectedWordsToCategory(this.categoryId);
 			this.$emit("words-inserted");
 		},
 		close() {
@@ -151,7 +152,7 @@ export default defineComponent({
 						:grid-template-columns="gridTemplateColumns"
 						checkable
 						:checkbox="getCheckboxState(word.id)"
-						@checked:update="updateChecked(word.id, $event)"
+						@checked:update="(checked) => updateSelectedWordIds(word.id, checked)"
 					>
 						<td>
 							<ImagePreviewComp
@@ -199,14 +200,14 @@ export default defineComponent({
 
 			<ButtonComp
 				:label="$t('add')"
-				:disabled="wordIdsToInsert.length === 0"
+				:disabled="!isAnyWordSelected"
 				@click="clickAddButton"
 			>
 				<template
-					v-if="wordIdsToInsert.length"
+					v-if="isAnyWordSelected"
 					#right
 				>
-					<CounterComp :count="wordIdsToInsert.length" />	
+					<CounterComp :count="selectedWordIds.length" />	
 				</template>
 			</ButtonComp>
 		</div>

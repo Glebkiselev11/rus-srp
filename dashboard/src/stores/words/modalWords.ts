@@ -1,6 +1,6 @@
-import type { Load, RequestParams } from "@/types/api";
+import type { Id, Load, RequestParams } from "@/types/api";
 import { defineStore } from "pinia";
-import { WordsApi } from "@/api";
+import { CategoriesApi, WordsApi } from "@/api";
 import type { Word } from "@/types/words";
 
 export const useModalWordsStore = defineStore("modalWords", {
@@ -8,7 +8,13 @@ export const useModalWordsStore = defineStore("modalWords", {
 		words: [] as Array<Word>,
 		count: 0,
 		loadState: "initial" as Load,
+		selectedWordIds: [] as Array<Id>,
 	}),
+	getters: {
+		isAnyWordSelected(): boolean {
+			return this.selectedWordIds.length > 0;
+		},
+	},
 	actions: {
 		async fetchModalWords(params: RequestParams) {
 			try {
@@ -25,6 +31,20 @@ export const useModalWordsStore = defineStore("modalWords", {
 		clearModalWords() {
 			this.words = [];
 			this.count = 0;
+		},
+		updateSelectedWordIds(id: Id, select: boolean) {
+			if (select) {
+				this.selectedWordIds.push(id);
+			} else {
+				this.selectedWordIds = this.selectedWordIds.filter((i) => i !== id);
+			}
+		},
+		async addSelectedWordsToCategory(categoryId: Id) {
+			try {
+				await CategoriesApi.addWords(categoryId, this.selectedWordIds);
+			} catch (error) {
+				console.error(error);
+			}
 		},
 	},
 });

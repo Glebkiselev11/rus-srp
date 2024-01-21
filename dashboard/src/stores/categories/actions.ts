@@ -63,13 +63,6 @@ export const useCategoriesActions = defineStore("categoriesActions", {
 			}
 		},
 
-		async addWordsToCategory(categoryId: Id, wordIds: Id[]) {
-			try {
-				await CategoriesApi.addWords(categoryId, wordIds);
-			} catch (error) {
-				console.error(error);
-			}
-		},
 	}, 
 
 });
