@@ -12,7 +12,8 @@ export type IconColor =
   "warning" |
   "link" |
   "transparent" |
-  "disabled";
+  "disabled" |
+  "current-color";
 
 export type IconName = 
   "admin_panel_settings" | 

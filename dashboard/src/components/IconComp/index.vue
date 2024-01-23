@@ -163,6 +163,10 @@ export default defineComponent({
 	&--transparent {
 		fill: transparent;
 	}
+
+	&--current-color {
+		fill: currentColor;
+	}
 }
 
 </style>

@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import IconComp from "./IconComp/index.vue";
-import type { IconColor, IconName } from "@/types/icons";
+import type { IconName } from "@/types/icons";
 
 export default defineComponent({
 	name: "CheckboxComp",
@@ -33,17 +33,6 @@ export default defineComponent({
 				return "checkbox_outline_blank";
 			}
 		},
-		iconColor(): IconColor {
-			if (this.disabled) {
-				return "disabled";
-			}
-			
-			if (this.modelValue || this.indeterminated) {
-				return "accent-primary";
-			} else {
-				return "secondary";
-			}
-		},
 	},
 	methods: {
 		toggleChecked() {
@@ -57,7 +46,11 @@ export default defineComponent({
 <template>
 	<label 
 		class="checkbox"
-		:class="{ 'checkbox--disabled': disabled }"
+		:class="[
+			{ 'checkbox--disabled': disabled }, 
+			{ 'checkbox--indeterminated': indeterminated }, 
+			{ 'checkbox--checked': modelValue }
+		]"
 	>
 		<input
 			type="checkbox"
@@ -72,7 +65,7 @@ export default defineComponent({
 		>
 			<IconComp 
 				:name="iconName"
-				:color="iconColor"
+				color="current-color"
 			/>
 		</div>
 	</label>
@@ -87,17 +80,24 @@ export default defineComponent({
   align-items: center;
   width: 40px;
   height: 40px;
+	color: $color-icon-secondary;
 
   &:hover {
     cursor: pointer;
-
-		&__fake-input {
-			background: $color-background-content-tertiary;
-		}
+		color: $color-icon-primary;
   }
 
-  &--disabled {
+	&--indeterminated, 
+	&--checked {
+		color: $color-icon-accent-primary;	
+		&:hover {
+			color: $color-background-accent-primary-hovered;
+		}
+	}
+
+	&--disabled {
     pointer-events: none;
+		color: $color-icon-disabled;
   }
 
   input {
