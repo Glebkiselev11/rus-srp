@@ -28,9 +28,14 @@ hr {
   background: $color-background-secondary-active;
 }
 
+@mixin focus-visible {
+  outline: 2px solid $color-stroke-accent;
+  outline-offset: 1px;
+}
+
 /* Focus */
 *:focus-visible {
-  outline: 2px solid $color-stroke-accent;
+  @include focus-visible;
 }
 
 /* Highlight */
