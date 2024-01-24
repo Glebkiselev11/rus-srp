@@ -83,6 +83,7 @@ export default defineComponent({
 <template>
 	<button
 		class="image-preview"
+		:disabled="static"
 		:style="{ width: size, height: size, minWidth: size, minHeight: size }"
 		@click="handleClick"
 	>
