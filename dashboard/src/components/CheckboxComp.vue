@@ -59,10 +59,7 @@ export default defineComponent({
 			@change="toggleChecked"
 		>
 
-		<div
-			tabindex="0"
-			class="checkbox__fake-input"
-		>
+		<div class="checkbox__fake-input">
 			<IconComp 
 				:name="iconName"
 				color="current-color"
@@ -104,7 +101,10 @@ export default defineComponent({
     width: 0;
     height: 0;
     opacity: 0;
-    display: none;
+		&:focus-visible ~.checkbox__fake-input {
+			@include focus-visible;
+			outline-offset: -3px;
+    }
   }
 
 	&__fake-input {
