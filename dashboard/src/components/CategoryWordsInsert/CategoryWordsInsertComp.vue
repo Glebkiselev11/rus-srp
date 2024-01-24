@@ -13,6 +13,7 @@ import { getLanguageCodesOrder } from "@/common/translations";
 import type { Id } from "@/types/api";
 import type { Checkbox } from "@/types";
 import CounterComp from "../CounterComp.vue";
+import SwitchComp from "../SwitchComp.vue";
 
 export default defineComponent({
 	name: "CategoryWordsInsertComp",
@@ -24,6 +25,7 @@ export default defineComponent({
 		TableRowComp,
 		ImagePreviewComp,
 		CounterComp,
+		SwitchComp,
 	},
 	props: {
 		categoryId: {
@@ -40,6 +42,7 @@ export default defineComponent({
 			limit: 50,
 			translationOrder: getLanguageCodesOrder(),
 			gridTemplateColumns: "64px 1fr 1fr 1fr 1fr",
+			showOnlySelected: false,
 		};
 	},
 	computed: {
@@ -62,6 +65,13 @@ export default defineComponent({
 				.filter(({ categories }) => categories.some(({ id }) => id === this.categoryId))
 				.map(({ id }) => id);
 		},
+		filteredWords() {
+			if (this.showOnlySelected) {
+				return this.words.filter(({ id }) => this.selectedWordIds.includes(id));
+			} else {
+				return this.words;
+			}
+		},
 	},
 	watch: {
 		search() {
@@ -69,6 +79,11 @@ export default defineComponent({
 			this.clearModalWords();
 			this.fetchModalWords(this.requestParams);
 		},
+		selectedWordIds(ids: Id[]) {
+			if (ids.length === 0) {
+				this.showOnlySelected = false;
+			}
+		},	
 	},
 	async created() {
 		await this.fetchModalWords(this.requestParams);
@@ -147,7 +162,7 @@ export default defineComponent({
 			<template #body>
 				<section>
 					<TableRowComp
-						v-for="word in words"
+						v-for="word in filteredWords"
 						:key="word.id"
 						:grid-template-columns="gridTemplateColumns"
 						checkable
@@ -192,24 +207,36 @@ export default defineComponent({
 		</TableComp>
 
 		<div class="category-words-insert__footer">
-			<ButtonComp
-				:label="$t('cancel')"
-				appearance="secondary"
-				@click="close"
-			/>
+			<div v-show="isAnyWordSelected">
+				<span v-text="$t('show-only-selected')" />
+				<SwitchComp
+					v-model="showOnlySelected"
+				/>
+			</div>
 
-			<ButtonComp
-				:label="$t('add')"
-				:disabled="!isAnyWordSelected"
-				@click="clickAddButton"
-			>
-				<template
-					v-if="isAnyWordSelected"
-					#right
+			<!-- This extra div needed for make sure that save buttos always right -->
+			<div />
+
+			<div>
+				<ButtonComp
+					:label="$t('cancel')"
+					appearance="secondary"
+					@click="close"
+				/>
+
+				<ButtonComp
+					:label="$t('add')"
+					:disabled="!isAnyWordSelected"
+					@click="clickAddButton"
 				>
-					<CounterComp :count="selectedWordIds.length" />	
-				</template>
-			</ButtonComp>
+					<template
+						v-if="isAnyWordSelected"
+						#right
+					>
+						<CounterComp :count="selectedWordIds.length" />	
+					</template>
+				</ButtonComp>
+			</div>
 		</div>
 	</div>
 
@@ -251,10 +278,15 @@ export default defineComponent({
 
 	&__footer {
 		display: flex;
-		justify-content: flex-end;
-		column-gap: 8px;
+		justify-content: space-between;
 		margin-block-start: 20px;
 		height: 40px;
+
+		& > div {
+			display: flex;
+			column-gap: 8px;
+			align-items: center;
+		}
 	}
 }
 

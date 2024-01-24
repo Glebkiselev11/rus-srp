@@ -89,5 +89,6 @@
   "all-categories": "Все категории",
   "add-to-category": "Добавить в категорию",
   "remove-from-category": "Удалить из категории",
-  "adding-words-into-category": "Добавление слов в категорию"
+  "adding-words-into-category": "Добавление слов в категорию",
+  "show-only-selected": "Показать только выбранные"
 }
