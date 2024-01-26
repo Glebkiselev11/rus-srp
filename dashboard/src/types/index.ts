@@ -6,10 +6,3 @@ export type NavItem = {
 	icon: IconName;
 	active: boolean;
 }
-
-export type Checkbox = {
-	checked: boolean;
-	indeterminated: boolean;
-	disabled: boolean;
-} 
-

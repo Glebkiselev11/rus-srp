@@ -11,10 +11,10 @@ import ImagePreviewComp from "../ImagePreviewComp.vue";
 import { highlighTextByQuery } from "@/common/utils";
 import { getLanguageCodesOrder } from "@/common/translations";
 import type { Id } from "@/types/api";
-import type { Checkbox } from "@/types";
 import CounterComp from "../CounterComp.vue";
 import SwitchComp from "../SwitchComp.vue";
 import ZeroStateComp from "../ZeroStateComp.vue";
+import CheckboxComp from "../CheckboxComp.vue";
 
 export default defineComponent({
 	name: "CategoryWordsInsertComp",
@@ -28,6 +28,7 @@ export default defineComponent({
 		CounterComp,
 		SwitchComp,
 		ZeroStateComp,
+		CheckboxComp,
 	},
 	props: {
 		categoryId: {
@@ -43,7 +44,7 @@ export default defineComponent({
 			offset: 0,
 			limit: 50,
 			translationOrder: getLanguageCodesOrder(),
-			gridTemplateColumns: "64px 1fr 1fr 1fr 1fr",
+			gridTemplateColumns: "48px 64px 1fr 1fr 1fr 1fr",
 			showOnlySelected: false,
 		};
 	},
@@ -107,22 +108,12 @@ export default defineComponent({
 
 			this.fetchModalWords(this.requestParams);
 		},
-		getCheckboxState(wordId: Id): Checkbox {
-			const isWordAlreadyAdded = this.alreadyAddedWordIds.includes(wordId);
-
-			if (isWordAlreadyAdded) {
-				return {
-					checked: true,
-					disabled: true,
-					indeterminated: false,
-				};
-			} else {
-				return {
-					checked: this.selectedWordIds.includes(wordId),
-					disabled: false,
-					indeterminated: false,
-				};
-			}
+		isWordChecked(wordId: Id): boolean {
+			return this.selectedWordIds.includes(wordId) || 
+				this.alreadyAddedWordIds.includes(wordId);
+		},
+		isWordDisabled(wordId: Id): boolean {
+			return this.alreadyAddedWordIds.includes(wordId);
 		},
 		async clickAddButton() {
 			await this.addSelectedWordsToCategory(this.categoryId);
@@ -159,7 +150,6 @@ export default defineComponent({
 		</div>
 
 		<TableComp 
-			checkable
 			:grid-template-columns="gridTemplateColumns"
 			:infinite-scroll-config="{ distance: 100 }"
 			@scroll-to-bottom="loadMore"
@@ -184,10 +174,15 @@ export default defineComponent({
 						v-for="word in filteredWords"
 						:key="word.id"
 						:grid-template-columns="gridTemplateColumns"
-						checkable
-						:checkbox="getCheckboxState(word.id)"
-						@checked:update="(checked) => updateSelectedWordIds(word.id, checked)"
 					>
+						<td>
+							<CheckboxComp
+								:model-value="isWordChecked(word.id)"
+								:disabled="isWordDisabled(word.id)"
+								@update:model-value="(x) => updateSelectedWordIds(word.id, x)"
+							/>
+						</td>
+
 						<td>
 							<ImagePreviewComp
 								:src="word.image"
