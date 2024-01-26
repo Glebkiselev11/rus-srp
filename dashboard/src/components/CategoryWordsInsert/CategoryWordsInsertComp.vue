@@ -14,6 +14,7 @@ import type { Id } from "@/types/api";
 import type { Checkbox } from "@/types";
 import CounterComp from "../CounterComp.vue";
 import SwitchComp from "../SwitchComp.vue";
+import ZeroStateComp from "../ZeroStateComp.vue";
 
 export default defineComponent({
 	name: "CategoryWordsInsertComp",
@@ -26,6 +27,7 @@ export default defineComponent({
 		ImagePreviewComp,
 		CounterComp,
 		SwitchComp,
+		ZeroStateComp,
 	},
 	props: {
 		categoryId: {
@@ -71,6 +73,9 @@ export default defineComponent({
 			} else {
 				return this.words;
 			}
+		},
+		nothingWereFound() {
+			return this.filteredWords.length === 0 && this.loadState === "loaded";
 		},
 	},
 	watch: {
@@ -159,7 +164,21 @@ export default defineComponent({
 			:infinite-scroll-config="{ distance: 100 }"
 			@scroll-to-bottom="loadMore"
 		>
-			<template #body>
+			<template
+				v-if="nothingWereFound"
+				#body
+			>
+				<ZeroStateComp
+					icon="search"
+					:title="$t('not-found', { search })"
+					:description="$t('not-found-description')"
+				/>
+			</template>
+
+			<template
+				v-else
+				#body
+			>
 				<section>
 					<TableRowComp
 						v-for="word in filteredWords"
