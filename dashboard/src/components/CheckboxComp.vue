@@ -75,8 +75,6 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px;
-  height: 40px;
 	color: $color-icon-secondary;
 
   &:hover {
