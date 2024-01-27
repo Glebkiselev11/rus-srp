@@ -72,15 +72,15 @@ export default defineComponent({
 @import "@/styles/main.scss";
 
 .checkbox {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	color: $color-icon-secondary;
 
-  &:hover {
-    cursor: pointer;
+	&:hover {
+		cursor: pointer;
 		color: $color-icon-primary;
-  }
+	}
 
 	&--indeterminated, 
 	&--checked {
@@ -91,19 +91,19 @@ export default defineComponent({
 	}
 
 	&--disabled {
-    pointer-events: none;
+		pointer-events: none;
 		color: $color-icon-disabled;
-  }
+	}
 
-  input {
-    width: 0;
-    height: 0;
-    opacity: 0;
+	input[type="checkbox"] {
+		width: 0;
+		height: 0;
+		opacity: 0;
 		&:focus-visible ~.checkbox__fake-input {
 			@include focus-visible;
 			outline-offset: -3px;
-    }
-  }
+		}
+	}
 
 	&__fake-input {
 		width: 24px;
