@@ -9,7 +9,7 @@ export default defineComponent({
 			required: true,
 		},
 		position: {
-			type: String as PropType<"top" | "bottom" | "left" | "right">,
+			type: String as PropType<"top" | "bottom" | "left" | "right" | "bottom-right">,
 			default: "bottom",
 		},
 		textWrap: {
@@ -131,6 +131,17 @@ $shadow: rgba(2, 18, 38, 0.08);
       @extend .tooltip__triangle;
       @extend .tooltip--right;
       left: -4px;
+    }
+  }
+
+  &--bottom-right {
+    top: calc(100% + 10px);
+    left: calc(100% + 10px);
+    translate: -38px 4px;
+    &::before {
+      @extend .tooltip__triangle;
+      top: -4px;
+      left: 16px;
     }
   }
 
