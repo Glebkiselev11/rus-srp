@@ -1,1 +1,0 @@
-export const HEADER_SIZE = "56px";
