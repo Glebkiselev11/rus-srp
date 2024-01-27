@@ -34,6 +34,10 @@ export default defineComponent({
 				interval: 9999999,
 			}),
 		},
+		bodyHeight: {
+			type: String,
+			default: "calc(100vh - 270px)",
+		},
 	},
 
 	emits: ["update:order", "scrollToBottom"],
@@ -92,6 +96,7 @@ export default defineComponent({
 			<tbody
 				ref="tableBody"
 				v-infinite-scroll="[handleScrollToBottom, infiniteScrollConfig]"
+				:style="{ height: bodyHeight }"
 				class="table__body"
 			>
 				<slot name="body" />
@@ -104,7 +109,6 @@ export default defineComponent({
 
 <style  lang="scss">
 @import "@/styles/main.scss";
-$extra-space: 270px;
 
 .table-wrap {
 	border: 1px solid $color-separator-primary;
@@ -140,7 +144,6 @@ $extra-space: 270px;
 	&__body {
 		display: block;
 		overflow-y: auto;
-		height: calc(100vh - $extra-space);
 		position: relative;
 
 		tr:last-child {

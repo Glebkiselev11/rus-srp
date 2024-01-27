@@ -165,6 +165,7 @@ export default defineComponent({
 		<TableComp 
 			:grid-template-columns="gridTemplateColumns"
 			:infinite-scroll-config="{ distance: 100 }"
+			body-height="550px"
 			@scroll-to-bottom="loadMore"
 		>
 			<template
