@@ -4,41 +4,41 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
-  margin: 0;
+	box-sizing: border-box;
+	margin: 0;
 }
 
 /* Separator */
 hr {
-  height: 1px;
-  background: $color-separator-primary;
-  border: none;
+	height: 1px;
+	background: $color-separator-primary;
+	border: none;
 }
 
 
 /* Scrollbar */
 *::-webkit-scrollbar {
-  width: 4px;
-  background: $color-background;
+	width: 4px;
+	background: $color-background;
 }
 
 *::-webkit-scrollbar-thumb {
-  border: 2px solid transparent;
-  border-radius: 100px;
-  background: $color-background-secondary-active;
+	border: 2px solid transparent;
+	border-radius: 100px;
+	background: $color-background-secondary-active;
 }
 
 @mixin focus-visible {
-  outline: 2px solid $color-stroke-accent;
-  outline-offset: 1px;
+	outline: 2px solid $color-stroke-accent;
+	outline-offset: 1px;
 }
 
 /* Focus */
 *:focus-visible {
-  @include focus-visible;
+	@include focus-visible;
 }
 
 /* Highlight */
 mark {
-  background: $color-text-highlight;
+	background: $color-text-highlight;
 }

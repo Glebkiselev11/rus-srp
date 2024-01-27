@@ -1,116 +1,116 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
 
 * {
-  font-family: Roboto;
-  font-style: normal;
+	font-family: Roboto;
+	font-style: normal;
 }
 
 h1,
 h2,
 h3,
 h4 {
-  font-weight: 500;
+	font-weight: 500;
 }
 
 h1 {
-  font-size: 34px;
-  line-height: 40px;
+	font-size: 34px;
+	line-height: 40px;
 }
 
 h2 {
-  font-size: 24px;
-  line-height: 32px;
+	font-size: 24px;
+	line-height: 32px;
 }
 
 h3 {
-  font-size: 20px;
-  line-height: 28px;
+	font-size: 20px;
+	line-height: 28px;
 }
 
 h4 {
-  font-size: 18px;
-  line-height: 24px;
+	font-size: 18px;
+	line-height: 24px;
 }
 
 @mixin text-subtitle-1 {
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px;
-  letter-spacing: 0.1px;
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 24px;
+	letter-spacing: 0.1px;
 }
 
 @mixin text-subtitle-2 {
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 20px;
-  letter-spacing: 0.2px;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 20px;
+	letter-spacing: 0.2px;
 }
 
 @mixin text-body-1 {
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 24px;
-  letter-spacing: 0.1px;
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 24px;
+	letter-spacing: 0.1px;
 }
 
 @mixin text-body-2 {
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20px;
-  letter-spacing: 0.2px;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 20px;
+	letter-spacing: 0.2px;
 }
 
 @mixin text-caption-1 {
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 16px;
-  letter-spacing: 0.3px;
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 16px;
+	letter-spacing: 0.3px;
 }
 
 @mixin text-caption-2 {
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 16px;
-  letter-spacing: 0.2px;
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 16px;
+	letter-spacing: 0.2px;
 }
 
 
 .text-color-primary {
-  color: $color-text-primary;
+	color: $color-text-primary;
 }
 
 .text-color-secondary {
-  color: $color-text-secondary;
+	color: $color-text-secondary;
 }
 
 .text-color-tertiary {
-  color: $color-text-tertiary;
+	color: $color-text-tertiary;
 }
 
 .text-color-subhead {
-  color: $color-text-subhead;
+	color: $color-text-subhead;
 }
 
 .text-color-contrast {
-  color: $color-text-contrast;
+	color: $color-text-contrast;
 }
 
 .text-color-accent-primary {
-  color: $color-text-accent-primary;
+	color: $color-text-accent-primary;
 }
 
 .text-color-accent-secondary {
-  color: $color-text-accent-secondary;
+	color: $color-text-accent-secondary;
 }
 
 .text-color-positive {
-  color: $color-text-positive;
+	color: $color-text-positive;
 }
 
 .text-color-negative {
-  color: $color-text-negative;
+	color: $color-text-negative;
 }
 
 .text-color-warning {
-  color: $color-text-warning;
+	color: $color-text-warning;
 }
