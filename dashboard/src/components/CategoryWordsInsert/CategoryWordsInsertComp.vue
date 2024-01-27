@@ -15,6 +15,7 @@ import CounterComp from "../CounterComp.vue";
 import SwitchComp from "../SwitchComp.vue";
 import ZeroStateComp from "../ZeroStateComp.vue";
 import CheckboxComp from "../CheckboxComp.vue";
+import TooltipComp from "../TooltipComp.vue";
 
 export default defineComponent({
 	name: "CategoryWordsInsertComp",
@@ -29,6 +30,7 @@ export default defineComponent({
 		SwitchComp,
 		ZeroStateComp,
 		CheckboxComp,
+		TooltipComp,
 	},
 	props: {
 		categoryId: {
@@ -115,6 +117,17 @@ export default defineComponent({
 		isWordDisabled(wordId: Id): boolean {
 			return this.alreadyAddedWordIds.includes(wordId);
 		},
+		getTooltipText(wordId: Id): string {
+			if (this.isWordDisabled(wordId)) {
+				return this.$t("included-in-the-category");
+			} 
+
+			if (this.isWordChecked(wordId)) {
+				return this.$t("dont-add-to-category");
+			}
+
+			return this.$t("add-to-category");
+		},
 		async clickAddButton() {
 			await this.addSelectedWordsToCategory(this.categoryId);
 			this.$emit("words-inserted");
@@ -176,11 +189,16 @@ export default defineComponent({
 						:grid-template-columns="gridTemplateColumns"
 					>
 						<td>
-							<CheckboxComp
-								:model-value="isWordChecked(word.id)"
-								:disabled="isWordDisabled(word.id)"
-								@update:model-value="(x) => updateSelectedWordIds(word.id, x)"
-							/>
+							<TooltipComp
+								:text="getTooltipText(word.id)"	
+								position="bottom-right"
+							>
+								<CheckboxComp
+									:model-value="isWordChecked(word.id)"
+									:disabled="isWordDisabled(word.id)"
+									@update:model-value="(x) => updateSelectedWordIds(word.id, x)"
+								/>
+							</TooltipComp>
 						</td>
 
 						<td>

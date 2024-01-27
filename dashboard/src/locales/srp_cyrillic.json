@@ -90,5 +90,7 @@
   "add-to-category": "Додајте у категорију",
   "remove-from-category": "Уклоните из категорије",
   "adding-words-into-category": "Додавање речи у категорију",
-  "show-only-selected": "Прикажи само изабрано"
+  "show-only-selected": "Прикажи само изабрано",
+  "included-in-the-category": "Укључено у категорију",
+  "dont-add-to-category": "Не додајте у категорију"
 }

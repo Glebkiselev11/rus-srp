@@ -90,5 +90,7 @@
   "add-to-category": "Add to category",
   "remove-from-category": "Remove from category",
   "adding-words-into-category": "Adding words into category",
-  "show-only-selected": "Show only selected"
+  "show-only-selected": "Show only selected",
+  "included-in-the-category": "Included in the category",
+  "dont-add-to-category": "Do not add to category"
 }

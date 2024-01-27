@@ -90,5 +90,7 @@
   "add-to-category": "Добавить в категорию",
   "remove-from-category": "Удалить из категории",
   "adding-words-into-category": "Добавление слов в категорию",
-  "show-only-selected": "Показать только выбранные"
+  "show-only-selected": "Показать только выбранные",
+  "included-in-the-category": "Состоит в категории",
+  "dont-add-to-category": "Не добавлять в категорию"
 }
