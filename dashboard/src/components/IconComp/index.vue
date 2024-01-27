@@ -32,6 +32,9 @@ import EditNoteIcon from "./EditNoteIcon.vue";
 import ErrorIcon from "./ErrorIcon.vue";
 import RestartAltIcon from "./RestartAltIcon.vue";
 import RemoveIcon from "./RemoveIcon.vue";
+import IndeterminateCheckboxIcon from "./IndeterminateCheckboxIcon.vue";
+import CheckboxIcon from "./CheckboxIcon.vue";
+import CheckboxOutlineBlankIcon from "./CheckboxOutlineBlankIcon.vue";
 
 export default defineComponent({
 	name: "IconComp",
@@ -82,6 +85,9 @@ export default defineComponent({
 				"error": ErrorIcon,
 				"restart_alt": RestartAltIcon,
 				"remove": RemoveIcon,
+				"indeterminate_checkbox": IndeterminateCheckboxIcon,
+				"checkbox": CheckboxIcon,
+				"checkbox_outline_blank": CheckboxOutlineBlankIcon,
 			}[this.name];
 		},
 		convertedSize(): string {
@@ -102,7 +108,6 @@ export default defineComponent({
 		:is="icon"
 		:class="[`icon--${color}`]"
 		:size="convertedSize"
-		:color="color"
 	/>
 </template>
 
@@ -151,8 +156,16 @@ export default defineComponent({
 		fill: $color-icon-link;
 	}
 
+	&--disabled {
+		fill: $color-icon-disabled;
+	}
+
 	&--transparent {
 		fill: transparent;
+	}
+
+	&--current-color {
+		fill: currentColor;
 	}
 }
 

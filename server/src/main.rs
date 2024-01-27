@@ -62,12 +62,12 @@ async fn main() -> std::io::Result<()> {
                             .route("/{id}", web::put().to(handler::categories::update))
                             .route("/{id}", web::delete().to(handler::categories::delete))
                             .route(
-                                "/{category_id}/words/{word_id}",
-                                web::put().to(handler::categories::add_word),
+                                "/{category_id}/add-words",
+                                web::put().to(handler::categories::add_words),
                             )
                             .route(
-                                "/{category_id}/words/{word_id}",
-                                web::delete().to(handler::categories::delete_word),
+                                "/{category_id}/delete-words",
+                                web::delete().to(handler::categories::delete_words),
                             ),
                     )
                     .service(

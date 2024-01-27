@@ -11,7 +11,9 @@ export type IconColor =
   "negative" |
   "warning" |
   "link" |
-  "transparent";
+  "transparent" |
+  "disabled" |
+  "current-color";
 
 export type IconName = 
   "admin_panel_settings" | 
@@ -43,4 +45,7 @@ export type IconName =
   "edit_note" |
   "error" |
   "restart_alt" |
-  "remove";
+  "remove" |
+  "indeterminate_checkbox" |
+  "checkbox_outline_blank" |
+  "checkbox";

@@ -40,3 +40,8 @@ pub struct CategoryBody {
     pub srp_cyrillic: String,
     pub image: Option<String>,
 }
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CategoryWordsBody {
+    pub word_ids: Vec<i32>,
+}

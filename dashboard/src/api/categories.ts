@@ -16,4 +16,7 @@ export const CategoriesApi = {
 	delete(id: Id): Promise<AxiosResponse<void>> {
 		return axios.delete(`${this.ENDPOINT}/${id}`);
 	},
+	addWords(id: Id, word_ids: Id[]): Promise<AxiosResponse<void>> {
+		return axios.put(`${this.ENDPOINT}/${id}/add-words`, { word_ids });
+	},
 };

@@ -101,7 +101,7 @@ export default defineComponent({
 
 	&__subtitle {
 		@include text-body-2;
-		color: $color-text-secondary;
+		color: $color-text-primary;
 	}
 }
 

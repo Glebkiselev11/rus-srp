@@ -9,10 +9,6 @@ export default defineComponent({
 		elementHover: vElementHover,
 	},
 	props: {
-		checkable: {
-			type: Boolean,
-			default: false,
-		},
 		id: {
 			type: [String, Number] as PropType<Id>,
 			default: null,
@@ -22,23 +18,7 @@ export default defineComponent({
 			required: true,
 		},
 	},
-	emits: ["checked", "unchecked", "hover"],
-	data() {
-		return {
-			checked: false,
-		};
-	},
-	watch: {
-		checked(checked: boolean) {
-			if (this.id === null) return console.warn("TableRow: id is null. Cannot emit event");
-
-			if (checked) {
-				this.$emit("checked", this.id);
-			} else {
-				this.$emit("unchecked", this.id);
-			}
-		},
-	},
+	emits: ["hover"],
 	methods: {
 		onHover(x: boolean) {
 			this.$emit("hover", x);
@@ -51,14 +31,8 @@ export default defineComponent({
 	<tr
 		v-element-hover="onHover"
 		class="table-row"
-		:style="{ gridTemplateColumns }"
+		:style="{ gridTemplateColumns}"
 	>
-		<td v-if="checkable">
-			<input
-				v-model="checked"
-				type="checkbox"
-			>
-		</td>
 		<slot />
 	</tr>
 </template>

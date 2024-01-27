@@ -3,46 +3,48 @@ import { defineComponent, type PropType } from "vue";
 import TableColumnTitleComp from "./TableColumnTitleComp.vue";
 import type { Order } from "../../types/api";
 import type { TableColumn } from "@/types/table";
+import { vInfiniteScroll } from "@vueuse/components";
+import type { UseInfiniteScrollOptions } from "@vueuse/core";
 
 export default defineComponent({
 	name: "TableComp",
+	directives: {
+		infiniteScroll: vInfiniteScroll,
+	},
 	components: {
 		TableColumnTitleComp,
 	},
 	props: {
 		columns: {
 			type: Array as PropType<TableColumn[]>,
-			required: true,
+			default: () => [],
 		},
 		gridTemplateColumns: {
 			type: String,
 			required: true,
 		},
-		checkable: {
-			type: Boolean,
-			default: false,
-		},
 		order: {
 			type: String as PropType<Order>,
 			default: null,
 		},
+		infiniteScrollConfig: {
+			type: Object as PropType<UseInfiniteScrollOptions>,
+			default: () => ({
+				// it will disable the interval for the case when we don't need to infinite scroll
+				interval: 9999999,
+			}),
+		},
+		bodyHeight: {
+			type: String,
+			default: "calc(100vh - 270px)",
+		},
 	},
 
-	emits: ["checked", "unchecked", "update:order"],
+	emits: ["update:order", "scrollToBottom"],
 	data() {
 		return {
-			checked: false,
 			isContentBodyScrollable: null as boolean | null,
 		};
-	},
-	watch: {
-		checked(checked: boolean) {
-			if (checked) {
-				this.$emit("checked");
-			} else {
-				this.$emit("unchecked");
-			}
-		},
 	},
 	updated() {
 		this.setStateForTableBody();
@@ -56,6 +58,9 @@ export default defineComponent({
 			}
 
 			this.isContentBodyScrollable = tableBody.scrollHeight > tableBody.clientHeight;
+		},
+		handleScrollToBottom() {
+			this.$emit("scrollToBottom");
 		},
 	},
 });
@@ -74,12 +79,6 @@ export default defineComponent({
 				:class="{ 'table__header--scrollable-body': isContentBodyScrollable }"	
 			>
 				<tr :style="{ gridTemplateColumns }">
-					<th v-if="checkable">
-						<input
-							v-model="checked"
-							type="checkbox"
-						>
-					</th>
 					<TableColumnTitleComp
 						v-for="col in columns"
 						:key="col.sort_key"
@@ -96,6 +95,8 @@ export default defineComponent({
 			</thead>
 			<tbody
 				ref="tableBody"
+				v-infinite-scroll="[handleScrollToBottom, infiniteScrollConfig]"
+				:style="{ height: bodyHeight }"
 				class="table__body"
 			>
 				<slot name="body" />
@@ -108,11 +109,10 @@ export default defineComponent({
 
 <style  lang="scss">
 @import "@/styles/main.scss";
-$extra-space: 270px;
 
 .table-wrap {
 	border: 1px solid $color-separator-primary;
-	border-radius: 16px;
+	border-radius: 8px;
 	overflow: hidden;
 }
 
@@ -144,7 +144,6 @@ $extra-space: 270px;
 	&__body {
 		display: block;
 		overflow-y: auto;
-		height: calc(100vh - $extra-space);
 		position: relative;
 
 		tr:last-child {

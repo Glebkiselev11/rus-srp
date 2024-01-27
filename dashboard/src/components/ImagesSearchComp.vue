@@ -54,6 +54,9 @@ export default defineComponent({
 		areImagesContainSavedLink(): boolean {
 			return this.images.some(({ src }) => src === this.savedLink);
 		},
+		canLoadMore(): boolean {
+			return this.loadState === "loading" || this.offset >= this.count;
+		},
 	}, 
 	watch: {
 		searchQuery() {

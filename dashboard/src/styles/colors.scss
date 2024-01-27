@@ -28,6 +28,7 @@ $color-background-negative-active: #A10F08;
 $color-background-secondary-active: #C0C4C9;
 $color-background-tertiary-active: #DEE0E3;
 $color-background-content-primary-active: #EBECEE;
+$color-background-disabled: #F5F5F6;
 
 // Text
 $color-text-primary: #021226;
@@ -47,7 +48,7 @@ $color-text-disabled: #C0C4C9;
 
 // Icon
 $color-icon-primary: #021226;
-$color-icon-secondary: #586370;
+$color-icon-secondary: #67717D;
 $color-icon-tertiary: #A4AAB1;
 $color-icon-subhead: #3C4958;
 $color-icon-contrast: #FFFFFF;
@@ -57,6 +58,9 @@ $color-icon-positive: #067D3B;
 $color-icon-negative: #E3150B;
 $color-icon-warning: #E3810B;
 $color-icon-link: #0A63CF;
+
+// Icon states
+$color-icon-disabled: #C0C4C9;
 
 // Stroke
 $color-separator-primary: #EBECEE;

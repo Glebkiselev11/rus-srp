@@ -6,4 +6,3 @@ export type NavItem = {
 	icon: IconName;
 	active: boolean;
 }
-

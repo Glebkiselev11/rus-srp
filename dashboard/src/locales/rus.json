@@ -16,6 +16,7 @@
     "creation-category-title": "Прекратить создание категории?",
     "edit-word-title": "Прекратить изменение слова?",
     "creation-word-title": "Прекратить создание слова?",
+    "adding-words-in-category-title": "Прекратить добавление слов в категорию?",
     "continue-creation": "Продолжить создание",
     "continue-editing": "Продолжить изменение",
     "confirm": "Да, прекратить"
@@ -87,5 +88,9 @@
   "create-and-add-next": "Создать и добавить другое",
   "all-categories": "Все категории",
   "add-to-category": "Добавить в категорию",
-  "remove-from-category": "Удалить из категории"
+  "remove-from-category": "Удалить из категории",
+  "adding-words-into-category": "Добавление слов в категорию",
+  "show-only-selected": "Показать только выбранные",
+  "included-in-the-category": "Состоит в категории",
+  "dont-add-to-category": "Не добавлять в категорию"
 }

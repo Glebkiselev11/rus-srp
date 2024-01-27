@@ -22,6 +22,7 @@
     "creation-category-title": "Stop creating the category?",
     "edit-word-title": "Stop editing the word?",
     "creation-word-title": "Stop creating the word?",
+    "adding-words-in-category-title": "Stop adding words in the category?",
     "continue-creation": "Continue creation",
     "continue-editing": "Continue editing",
     "confirm": "Yes, stop"
@@ -87,5 +88,9 @@
   "create-and-add-next": "Create and add another",
   "all-categories": "All categories",
   "add-to-category": "Add to category",
-  "remove-from-category": "Remove from category"
+  "remove-from-category": "Remove from category",
+  "adding-words-into-category": "Adding words into category",
+  "show-only-selected": "Show only selected",
+  "included-in-the-category": "Included in the category",
+  "dont-add-to-category": "Do not add to category"
 }

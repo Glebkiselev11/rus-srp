@@ -1,7 +1,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { mapActions, mapState } from "pinia";
-import { useWordsStore } from "@/stores/words";
+import { useWordsActionsStore } from "@/stores/words/actions";
+import { usePageWordsStore } from "@/stores/words/pageWords";
 import type { Id, Order, RequestParams } from "@/types/api";
 
 import CategoriesComp from "@/components/Categories/CategoriesComp.vue";
@@ -17,6 +18,8 @@ import PaginationBarComp from "@/components/PaginationBarComp.vue";
 import ZeroStateComp from "@/components/ZeroStateComp.vue";
 import WordsPageCategoryTitleComp from "@/components/WordsPageCategoryTitleComp.vue";
 import CategoriesPreviewBadgesComp from "@/components/CategoriesPreviewBadgesComp.vue";
+// eslint-disable-next-line max-len
+import CategoryWordsInsertModalComp from "@/components/CategoryWordsInsert/CategoryWordsInsertModalComp.vue";
 import { highlighTextByQuery } from "@/common/utils";
 
 import type { Word } from "@/types/words";
@@ -44,6 +47,7 @@ export default defineComponent({
 		WordsPageCategoryTitleComp,
 		WordFormModalComp,
 		CategoriesPreviewBadgesComp,
+		CategoryWordsInsertModalComp,
 	},
 	data() {
 		return {
@@ -64,12 +68,13 @@ export default defineComponent({
 				category_id: undefined,
 			},
 			showWordForm: false,
+			showCategoryWordsInsertModal: false,
 			editingWordId: undefined as Id | undefined,
 			hoverOnWordId: undefined as Id | undefined,
 		};
 	},
 	computed: {
-		...mapState(useWordsStore, ["words", "count"]),
+		...mapState(usePageWordsStore, ["words", "count"]),
 		translationColumns() {
 			return getLanguageCodesOrder()
 				.map((code) => ({
@@ -127,7 +132,7 @@ export default defineComponent({
 						category_id: params.category_id,
 					},
 				}).then(() => {
-					this.fetchWords(params);
+					this.fetchPageWords(params);
 				});
 			},
 		},
@@ -179,12 +184,16 @@ export default defineComponent({
 		notFoundTitle(): string {
 			return this.$t("not-found", { search: this.search });
 		},
+		showAddToCategoryButton(): boolean {
+			return this.filter.category_id !== undefined;
+		},
 	},
 	mounted() {
-		this.fetchWords(this.filter);
+		this.fetchPageWords(this.filter);
 	},
 	methods: {
-		...mapActions(useWordsStore, ["fetchWords", "deleteWord", "updateWord"]),
+		...mapActions(useWordsActionsStore, ["deleteWord", "updateWord"]),
+		...mapActions(usePageWordsStore, ["fetchPageWords"]),
 		...mapActions(useWordFormTabsStore, ["setCurrentTabToCategories"]),
 		highlighTextByQuery,
 		translationPreview,
@@ -210,11 +219,17 @@ export default defineComponent({
 			this.openEditingWordForm(id);
 			this.setCurrentTabToCategories();
 		},
+		openWordsListModal() {
+			this.showCategoryWordsInsertModal = true;
+		},
 		updateWordImage(word: Word, src: string) {
 			this.updateWord(word.id, { ...word, image: src });
 		},
 		setHoveredWordId(id: Id, hovered: boolean) {
 			this.hoverOnWordId = hovered ? id : undefined;
+		},
+		refetch() {
+			this.fetchPageWords(this.filter);
 		},
 	},
 });
@@ -233,6 +248,13 @@ export default defineComponent({
 					<WordsPageCategoryTitleComp :category-id="filter.category_id" />
 				</template>
 				<template #right>
+					<ButtonComp
+						v-show="showAddToCategoryButton"
+						:label="$t('add-to-category')"
+						appearance="inline"
+						class="words-view__add-to-category-button"
+						@click="openWordsListModal"
+					/>
 					<ButtonComp
 						icon="add"
 						:label="$t('create-word')"
@@ -263,7 +285,6 @@ export default defineComponent({
 					/>
 				</div>
 				<TableComp
-					:count="count"
 					:columns="columns"
 					:order="filter.order"
 					:grid-template-columns="gridTemplateColumns"
@@ -366,6 +387,13 @@ export default defineComponent({
 		:word-id="editingWordId"
 		@close="showWordForm = false"
 	/>
+
+	<CategoryWordsInsertModalComp
+		v-if="showCategoryWordsInsertModal && filter.category_id"
+		:category-id="filter.category_id"
+		@close="showCategoryWordsInsertModal = false"
+		@refetch="refetch"
+	/>
 </template>
 
 <style scoped lang="scss">
@@ -385,6 +413,10 @@ export default defineComponent({
 	
 	&__content {
 		padding-inline: 16px;
+	}
+
+	&__add-to-category-button {
+		margin-inline-end: 16px;
 	}
 }
 </style>

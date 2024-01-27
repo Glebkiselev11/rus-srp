@@ -3,7 +3,7 @@ import { defineComponent, type PropType } from "vue";
 import ModalComp from "../ModalComp.vue";
 import WordFormComp from "./WordFormComp.vue";
 import { mapActions, mapState } from "pinia";
-import { useWordsStore } from "@/stores/words";
+import { useWordsActionsStore } from "@/stores/words/actions";
 import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 import type { Word } from "@/types/words";
 import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vue";
@@ -31,7 +31,7 @@ export default defineComponent({
 		};
 	},
 	computed: {
-		...mapState(useWordsStore, ["getWordById"]),
+		...mapState(useWordsActionsStore, ["getWordById"]),
 		...mapState(useDraftWordStore, ["anyTranslationFilled", "draftWord", "isChanged"]),
 		word(): Word | undefined {
 			return this.wordId ? this.getWordById(this.wordId) : undefined;

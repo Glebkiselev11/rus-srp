@@ -5,7 +5,7 @@ import ButtonComp from "../ButtonComp.vue";
 import TabsComp from "../TabsComp.vue";
 import WordFormTranslationComp from "./WordFormTranslationComp.vue";
 import WordFormCategoriesComp from "./WordFormCategoriesComp.vue";
-import { useWordsStore } from "@/stores/words";
+import { useWordsActionsStore } from "@/stores/words/actions";
 import { mapActions, mapState } from "pinia";
 import { WordsApi } from "@/api/words";
 import { useDraftWordStore } from "@/stores/draftWord";
@@ -87,7 +87,7 @@ export default defineComponent({
 		this.initDraftWord(this.word);
 	},
 	methods: {
-		...mapActions(useWordsStore, ["createWord", "updateWord"]),
+		...mapActions(useWordsActionsStore, ["createWord", "updateWord"]),
 		...mapActions(useDraftWordStore, [
 			"initDraftWord", 
 			"resetDraftWord", 

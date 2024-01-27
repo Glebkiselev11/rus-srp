@@ -28,6 +28,7 @@
     "creation-category-title": "Prekinuti stvaranje kategorije?",
     "edit-word-title": "Prekinuti izmenu reči?",
     "creation-word-title": "Prekinuti stvaranje reči?",
+    "adding-words-in-category-title": "Prekinuti dodavanje reči u kategoriju?",
     "continue-creation": "Nastavi stvaranje",
     "continue-editing": "Nastavi izmenu",
     "confirm": "Da, prekini"
@@ -87,5 +88,9 @@
   "create-and-add-next": "Napravite i dodajte još jednu",
   "all-categories": "Sve kategorije",
   "add-to-category": "Dodaj u kategoriju",
-  "remove-from-category": "Uklonite iz kategorije"
+  "remove-from-category": "Uklonite iz kategorije",
+  "adding-words-into-category": "Dodavanje reči u kategoriju",
+  "show-only-selected": "Prikaži samo izabrano",
+  "included-in-the-category": "Uključeno u kategoriju",
+  "dont-add-to-category": "Ne dodajte u kategoriju"
 }

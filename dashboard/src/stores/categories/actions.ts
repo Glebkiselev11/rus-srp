@@ -62,6 +62,7 @@ export const useCategoriesActions = defineStore("categoriesActions", {
 				console.error(error);
 			}
 		},
+
 	}, 
 
 });
