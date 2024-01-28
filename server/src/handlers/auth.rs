@@ -8,6 +8,7 @@ use super::custom_http_error::{CustomHttpError, ErrorMessagesBuilder};
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 use bcrypt::verify;
+use chrono::{Duration, Utc};
 use jsonwebtoken::{encode, EncodingKey, Header};
 
 pub async fn register(
@@ -68,10 +69,14 @@ pub async fn login(
         Err(e) => return Err(actix_web::error::ErrorInternalServerError(e)),
     }
 
+    let expiration = Utc::now() + Duration::days(1);
+
     let claims = Claims {
         sub: user.username.clone(),
         iss: "localhost".into(),
+        exp: expiration.timestamp(),
     };
+
     let token = encode(
         &Header::default(),
         &claims,

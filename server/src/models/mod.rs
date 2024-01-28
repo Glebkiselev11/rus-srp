@@ -10,6 +10,7 @@ use serde::{Deserialize, Serialize};
 pub struct Claims {
     pub sub: String,
     pub iss: String,
+    pub exp: i64,
 }
 
 #[derive(Serialize, Deserialize)]
