@@ -73,7 +73,7 @@ pub async fn login(
 
     let claims = Claims {
         sub: user.username.clone(),
-        iss: "localhost".into(),
+        iss: "main".into(),
         exp: expiration.timestamp(),
     };
 
