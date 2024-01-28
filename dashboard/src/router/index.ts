@@ -20,12 +20,6 @@ const router = createRouter({
 
 			],
 		},
-		{
-			path: "/word",
-			name: "edit-word",
-			component: () => import("../views/EditWordView.vue"),
-		},
-
 	],
 });
 
