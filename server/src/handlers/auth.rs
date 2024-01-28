@@ -77,10 +77,12 @@ pub async fn login(
         exp: expiration.timestamp(),
     };
 
+    let secret = std::env::var("AUTH_SECRET").expect("AUTH_SECRET env");
+
     let token = encode(
         &Header::default(),
         &claims,
-        &EncodingKey::from_secret("secret".as_ref()),
+        &EncodingKey::from_secret(secret.as_ref()),
     )
     .map_err(actix_web::error::ErrorInternalServerError)?;
 

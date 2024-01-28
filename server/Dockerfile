@@ -17,7 +17,7 @@ WORKDIR /server
 COPY ./Cargo.toml ./Cargo.toml
 COPY ./Cargo.lock ./Cargo.lock
 COPY ./diesel.toml ./diesel.toml
-COPY .env ./
+COPY ./.env ./.env
 
 # Install necessary dependencies for development
 RUN cargo install cargo-watch
