@@ -51,43 +51,45 @@ async fn main() -> std::io::Result<()> {
                             .route("/login", web::post().to(handler::auth::login)),
                     )
                     .service(
-                        web::scope("/words")
-                            .wrap(auth.clone())
-                            .route("/create", web::post().to(handler::words::create))
-                            .route("", web::get().to(handler::words::get_list_by_query))
-                            .route("/{id}", web::get().to(handler::words::get_by_id))
-                            .route("/{id}", web::put().to(handler::words::update))
-                            .route("/{id}", web::delete().to(handler::words::delete)),
-                    )
-                    .service(
-                        web::scope("/categories")
-                            .wrap(auth.clone())
-                            .route("/create", web::post().to(handler::categories::create))
-                            .route("", web::get().to(handler::categories::get_list_by_query))
-                            .route("/{id}", web::get().to(handler::categories::get_by_id))
-                            .route("/{id}", web::put().to(handler::categories::update))
-                            .route("/{id}", web::delete().to(handler::categories::delete))
-                            .route(
-                                "/{category_id}/add-words",
-                                web::put().to(handler::categories::add_words),
-                            )
-                            .route(
-                                "/{category_id}/delete-words",
-                                web::delete().to(handler::categories::delete_words),
-                            ),
-                    )
-                    .service(
-                        web::scope("/services")
-                            .wrap(auth.clone())
-                            .service(web::scope("/translation").route(
-                                "/translate",
-                                web::post().to(handler::services::translation::translate),
-                            ))
+                        web::scope("/private")
+                            .wrap(auth)
                             .service(
-                                web::scope("/images").route(
-                                    "/query",
-                                    web::get().to(handler::services::images::query),
-                                ),
+                                web::scope("/words")
+                                    .route("/create", web::post().to(handler::words::create))
+                                    .route("", web::get().to(handler::words::get_list_by_query))
+                                    .route("/{id}", web::get().to(handler::words::get_by_id))
+                                    .route("/{id}", web::put().to(handler::words::update))
+                                    .route("/{id}", web::delete().to(handler::words::delete)),
+                            )
+                            .service(
+                                web::scope("/categories")
+                                    .route("/create", web::post().to(handler::categories::create))
+                                    .route(
+                                        "",
+                                        web::get().to(handler::categories::get_list_by_query),
+                                    )
+                                    .route("/{id}", web::get().to(handler::categories::get_by_id))
+                                    .route("/{id}", web::put().to(handler::categories::update))
+                                    .route("/{id}", web::delete().to(handler::categories::delete))
+                                    .route(
+                                        "/{category_id}/add-words",
+                                        web::put().to(handler::categories::add_words),
+                                    )
+                                    .route(
+                                        "/{category_id}/delete-words",
+                                        web::delete().to(handler::categories::delete_words),
+                                    ),
+                            )
+                            .service(
+                                web::scope("/services")
+                                    .service(web::scope("/translation").route(
+                                        "/translate",
+                                        web::post().to(handler::services::translation::translate),
+                                    ))
+                                    .service(web::scope("/images").route(
+                                        "/query",
+                                        web::get().to(handler::services::images::query),
+                                    )),
                             ),
                     ),
             )

@@ -3,7 +3,7 @@ import type { DraftWord, Word } from "@/types/words";
 import axios, { type AxiosResponse } from "axios";
 
 export const WordsApi = {
-	ENDPOINT: "/api/v1/words",
+	ENDPOINT: "/api/v1/private/words",
 	create(data: DraftWord): Promise<AxiosResponse<Word>> {
 		return axios.post(`${this.ENDPOINT}/create`, data);
 	},
