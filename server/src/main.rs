@@ -3,6 +3,7 @@ extern crate diesel;
 
 use actix_cors::Cors;
 use actix_web::{http, web, App, HttpServer};
+use actix_web_httpauth::middleware::HttpAuthentication;
 use diesel::prelude::*;
 use diesel::r2d2::{self, ConnectionManager};
 
@@ -35,7 +36,10 @@ async fn main() -> std::io::Result<()> {
         let cors = Cors::default()
             .allow_any_origin()
             .allowed_methods(vec!["GET", "POST", "DELETE", "PUT"])
-            .allowed_header(http::header::CONTENT_TYPE);
+            .allowed_header(http::header::CONTENT_TYPE)
+            .allowed_header(http::header::AUTHORIZATION);
+
+        let auth = HttpAuthentication::bearer(utils::auth::validator);
         App::new()
             .app_data(web::Data::new(pool.clone()))
             .wrap(cors)
@@ -48,6 +52,7 @@ async fn main() -> std::io::Result<()> {
                     )
                     .service(
                         web::scope("/words")
+                            .wrap(auth.clone())
                             .route("/create", web::post().to(handler::words::create))
                             .route("", web::get().to(handler::words::get_list_by_query))
                             .route("/{id}", web::get().to(handler::words::get_by_id))
@@ -56,6 +61,7 @@ async fn main() -> std::io::Result<()> {
                     )
                     .service(
                         web::scope("/categories")
+                            .wrap(auth.clone())
                             .route("/create", web::post().to(handler::categories::create))
                             .route("", web::get().to(handler::categories::get_list_by_query))
                             .route("/{id}", web::get().to(handler::categories::get_by_id))
@@ -72,6 +78,7 @@ async fn main() -> std::io::Result<()> {
                     )
                     .service(
                         web::scope("/services")
+                            .wrap(auth.clone())
                             .service(web::scope("/translation").route(
                                 "/translate",
                                 web::post().to(handler::services::translation::translate),

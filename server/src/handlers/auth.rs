@@ -69,7 +69,7 @@ pub async fn login(
         Err(e) => return Err(actix_web::error::ErrorInternalServerError(e)),
     }
 
-    let expiration = Utc::now() + Duration::days(1);
+    let expiration = Utc::now() + Duration::days(7);
 
     let claims = Claims {
         sub: user.username.clone(),
