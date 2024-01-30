@@ -42,6 +42,10 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
+		fullWidth: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	computed: {
 		_iconColor(): IconColor {
@@ -84,7 +88,8 @@ export default defineComponent({
 			{ 'button--icon-and-label' : icon && label},
 			{ 'button--only-icon' : icon && !label},
 			{ 'button--only-label': label && !icon},
-			{ 'button--pressed': pressed }
+			{ 'button--pressed': pressed },
+			{ 'button--full-width': fullWidth },
 		]"
 		:disabled="disabled"
 	>
@@ -234,6 +239,10 @@ export default defineComponent({
 				color: $color-text-primary;
 			}
 		}
+	}
+
+	&--full-width {
+		width: 100%;
 	}
 
 	&:hover {
