@@ -39,7 +39,7 @@ async fn main() -> std::io::Result<()> {
             .allowed_header(http::header::CONTENT_TYPE)
             .allowed_header(http::header::AUTHORIZATION);
 
-        let auth = HttpAuthentication::bearer(utils::auth::validator);
+        let auth_guard = HttpAuthentication::bearer(utils::auth::validator);
         App::new()
             .app_data(web::Data::new(pool.clone()))
             .wrap(cors)
@@ -52,7 +52,7 @@ async fn main() -> std::io::Result<()> {
                     )
                     .service(
                         web::scope("/private")
-                            .wrap(auth)
+                            .wrap(auth_guard)
                             .service(
                                 web::scope("/words")
                                     .route("/create", web::post().to(handler::words::create))
