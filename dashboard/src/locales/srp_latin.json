@@ -92,5 +92,9 @@
   "adding-words-into-category": "Dodavanje reči u kategoriju",
   "show-only-selected": "Prikaži samo izabrano",
   "included-in-the-category": "Uključeno u kategoriju",
-  "dont-add-to-category": "Ne dodajte u kategoriju"
+  "dont-add-to-category": "Ne dodajte u kategoriju",
+  "login-to-word-database" : "Prijavite se u bazu reči",
+  "to-login": "Prijavite se",
+  "login": "Login",
+  "password": "Lozinka"
 }

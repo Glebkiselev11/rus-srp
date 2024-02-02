@@ -2,6 +2,7 @@
 import { RouterView } from "vue-router";
 import { defineComponent } from "vue";
 import axios from "axios";
+import { TOKEN_KEY } from "./common/auth";
 
 export default defineComponent({
 	name: "App",
@@ -10,7 +11,7 @@ export default defineComponent({
 	},
 	created() {
 		axios.interceptors.request.use((config) => {
-			const token = localStorage.getItem("auth_token");
+			const token = localStorage.getItem(TOKEN_KEY);
 			if (token) {
 				config.headers.Authorization = `Bearer ${token}`;
 			}

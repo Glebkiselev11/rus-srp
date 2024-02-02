@@ -5,3 +5,4 @@ export * from "./words";
 export * from "./images";
 export * from "./categories";
 export * from "./translations";
+export * from "./auth";
