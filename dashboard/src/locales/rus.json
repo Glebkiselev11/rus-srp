@@ -96,5 +96,6 @@
   "login-to-word-database" : "Вход в базу слов",
   "to-login": "Войти",
   "login": "Логин",
-  "password": "Пароль"
+  "password": "Пароль",
+  "login-failed": "Неправильный логин или пароль"
 }

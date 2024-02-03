@@ -96,5 +96,6 @@
   "login-to-word-database" : "Login to word database",
   "to-login": "Sign in",
   "login": "Login",
-  "password": "Password"
+  "password": "Password",
+  "login-failed": "Incorrect login or password"
 }

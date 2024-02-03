@@ -96,5 +96,6 @@
   "login-to-word-database" : "Prijavite se u bazu reči",
   "to-login": "Prijavite se",
   "login": "Login",
-  "password": "Lozinka"
+  "password": "Lozinka",
+  "login-failed": "Neispravno korisničko ime ili lozinka"
 }

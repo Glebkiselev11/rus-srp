@@ -2,6 +2,7 @@
 import { defineComponent } from "vue";
 import InputComp from "@/components/InputComp.vue";
 import ButtonComp from "@/components/ButtonComp.vue";
+import ErrorComp from "@/components/ErrorComp.vue";
 import { login } from "@/common/auth";
 
 export default defineComponent({
@@ -9,11 +10,13 @@ export default defineComponent({
 	components: {
 		InputComp,
 		ButtonComp,
+		ErrorComp,
 	},
 	data() {
 		return {
 			username: "",
 			password: "",
+			authError: undefined as string | undefined,
 			usernameError: undefined as string | undefined,
 			passwordError: undefined as string | undefined,
 		};
@@ -21,9 +24,11 @@ export default defineComponent({
 	watch: {
 		username() {
 			this.usernameError = undefined;
+			this.authError = undefined;
 		},
 		password() {
 			this.passwordError = undefined;
+			this.authError = undefined;
 		},
 	},
 	methods: {
@@ -42,7 +47,7 @@ export default defineComponent({
 				});
 				this.$router.push({ name: "words" });
 			} catch (error) {
-				console.error(error);	
+				this.authError = this.$t("login-failed");
 			}
 		},
 		triggerValidation() {
@@ -63,6 +68,11 @@ export default defineComponent({
 	<div class="login-view">
 		<div class="login-view__container">
 			<h1>{{ $t('login-to-word-database') }}</h1>
+
+			<ErrorComp
+				v-if="authError"
+				:text="authError"
+			/>
 
 			<InputComp
 				v-model="username"
@@ -89,6 +99,7 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
+@import "@/styles/main.scss";
 
 .login-view {
   display: flex;
@@ -102,10 +113,7 @@ export default defineComponent({
     align-items: center;
     width: 496px;
     padding: 20px;
-
-    * {
-      margin-block-end: 20px;
-    }
+		row-gap: 20px;
   }
 }
 
