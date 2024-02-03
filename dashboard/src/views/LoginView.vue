@@ -14,11 +14,27 @@ export default defineComponent({
 		return {
 			username: "",
 			password: "",
+			usernameError: undefined as string | undefined,
+			passwordError: undefined as string | undefined,
 		};
+	},
+	watch: {
+		username() {
+			this.usernameError = undefined;
+		},
+		password() {
+			this.passwordError = undefined;
+		},
 	},
 	methods: {
 		login,
 		async tryLogin() {
+			this.triggerValidation();
+
+			if (this.usernameError || this.passwordError) {
+				return;
+			}
+
 			try {
 				await login({
 					username: this.username,
@@ -27,6 +43,15 @@ export default defineComponent({
 				this.$router.push({ name: "words" });
 			} catch (error) {
 				console.error(error);	
+			}
+		},
+		triggerValidation() {
+			const error = this.$t("required");
+			if (!this.username) {
+				this.usernameError = error;
+			}
+			if (!this.password) {
+				this.passwordError = error;
 			}
 		},
 	},
@@ -42,14 +67,16 @@ export default defineComponent({
 			<InputComp
 				v-model="username"
 				:label="$t('login')"
+				:error="usernameError"
 				input-id="username"
 			/>
 
 			<InputComp
 				v-model="password"
+				:label="$t('password')"
+				:error="passwordError"
 				type="password"
 				input-id="password"
-				:label="$t('password')"
 			/>
 
 			<ButtonComp
