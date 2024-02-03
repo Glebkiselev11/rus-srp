@@ -226,13 +226,6 @@ export default defineComponent({
 						@click="resetInput"
 					/>
 				</TooltipComp>
-
-				<IconComp 
-					v-show="error !== null"
-					color="negative"
-					name="error"
-					:size="size"
-				/>
 			</div>
 		</div>
 	</InputWrapperComp>
