@@ -92,6 +92,7 @@ export default defineComponent({
 			/>
 
 			<ButtonComp
+				class="login-view__login-button"
 				:label="$t('to-login')"
 				full-width
 				@click="tryLogin"
@@ -117,6 +118,10 @@ export default defineComponent({
     padding: 20px;
 		row-gap: 20px;
   }
+
+	&__login-button {
+		margin-block-start: 12px;
+	}
 }
 
 </style>
