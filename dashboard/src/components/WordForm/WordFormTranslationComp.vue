@@ -112,7 +112,7 @@ export default defineComponent({
 			:key="code"
 			v-model="draftWord[code]"
 			appearance="outline"
-			:error="getValidationError(code)"
+			:error-text="getValidationError(code)"
 			clear-button
 			:label="getLanguageLabel(code)"
 			class="word-form-translation__input"

@@ -246,7 +246,7 @@ export default defineComponent({
 				width="400px"
 				appearance="outline"
 				:focus-on-mount="!category"
-				:error="categoryNameValidationErrors[0]"
+				:error-text="categoryNameValidationErrors[0]"
 				clear-button
 				:reset-value="category?.[selectedLanguage]"
 				@focusout="triggerCategoryNameUniqueValidation"
@@ -277,10 +277,9 @@ export default defineComponent({
 			:key="code"
 			v-model="draftCategory[code]"
 			appearance="outline"
-			disable-error-label
 			clear-button
 			:reset-value="category?.[code]"
-			:error="getValidationError(code)"
+			:error-text="getValidationError(code)"
 			:label="getLanguageLabel(code)"
 			class="category-form__translation-input"
 		/>

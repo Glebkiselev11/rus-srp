@@ -77,14 +77,16 @@ export default defineComponent({
 			<InputComp
 				v-model="username"
 				:label="$t('login')"
-				:error="usernameError"
+				:error-text="usernameError"
+				:error="Boolean(authError)"
 				input-id="username"
 			/>
 
 			<InputComp
 				v-model="password"
 				:label="$t('password')"
-				:error="passwordError"
+				:error-text="passwordError"
+				:error="Boolean(authError)"
 				type="password"
 				input-id="password"
 			/>

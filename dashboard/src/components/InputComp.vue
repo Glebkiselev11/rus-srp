@@ -47,12 +47,12 @@ export default defineComponent({
 			default: false,
 		},
 		error: {
-			type: String,
-			default: null,
-		},
-		disableErrorLabel: {
 			type: Boolean,
 			default: false,
+		},
+		errorText: {
+			type: String,
+			default: null,
 		},
 		leftIcon: {
 			type: String as PropType<IconName>,
@@ -100,9 +100,6 @@ export default defineComponent({
 		};
 	},
 	computed: {
-		errorLabel() {
-			return this.disableErrorLabel ? undefined : this.error;
-		},
 		leftIconColor() {
 			return this.focusOnInput ? "accent-primary" : "tertiary" ;
 		},
@@ -167,7 +164,7 @@ export default defineComponent({
 	<InputWrapperComp
 		ref="wrapper"
 		:label="label"
-		:error="errorLabel"
+		:error="errorText"
 		:for="inputId"
 		:style="{ width }"
 	>
@@ -194,7 +191,7 @@ export default defineComponent({
 				:type="type"
 				:placeholder="placeholder"
 				:disabled="disabled"
-				:error="error !== null"
+				:error="error || Boolean(errorText)"
 				:max="max"
 				:min="min"
 				autocomplete="off"
