@@ -2,6 +2,7 @@
 import { defineComponent } from "vue";
 import InputComp from "@/components/InputComp.vue";
 import ButtonComp from "@/components/ButtonComp.vue";
+import AllWordsCategoryImageComp from "@/components/Categories/AllWordsCategoryImageComp.vue";
 import ErrorComp from "@/components/ErrorComp.vue";
 import { login } from "@/common/auth";
 
@@ -11,6 +12,7 @@ export default defineComponent({
 		InputComp,
 		ButtonComp,
 		ErrorComp,
+		AllWordsCategoryImageComp,
 	},
 	data() {
 		return {
@@ -67,12 +69,15 @@ export default defineComponent({
 <template>
 	<div class="login-view">
 		<div class="login-view__container">
-			<h1>{{ $t('login-to-word-database') }}</h1>
+			<div class="login-view__header">
+				<AllWordsCategoryImageComp size="56px" />
+				<h1>{{ $t('login-to-word-database') }}</h1>
 
-			<ErrorComp
-				v-if="authError"
-				:text="authError"
-			/>
+				<ErrorComp
+					v-if="authError"
+					:text="authError"
+				/>
+			</div>
 
 			<InputComp
 				v-model="username"
@@ -118,6 +123,13 @@ export default defineComponent({
     padding: 20px;
 		row-gap: 20px;
   }
+
+	&__header {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		row-gap: 12px;
+	}
 
 	&__login-button {
 		margin-block-start: 12px;
