@@ -42,11 +42,13 @@ export default defineComponent({
 			<InputComp
 				v-model="username"
 				:label="$t('login')"
+				input-id="username"
 			/>
 
 			<InputComp
 				v-model="password"
 				type="password"
+				input-id="password"
 				:label="$t('password')"
 			/>
 

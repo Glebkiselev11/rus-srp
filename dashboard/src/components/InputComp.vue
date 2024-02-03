@@ -22,6 +22,10 @@ export default defineComponent({
 			type: String,
 			default: null,
 		},
+		inputId: {
+			type: String,
+			default: "input-id",
+		},
 		type: {
 			type: String,
 			default: "text",
@@ -164,7 +168,7 @@ export default defineComponent({
 		ref="wrapper"
 		:label="label"
 		:error="errorLabel"
-		for="input"
+		:for="inputId"
 		:style="{ width }"
 	>
 		<div
@@ -178,7 +182,7 @@ export default defineComponent({
 			/>
 
 			<input
-				id="input"
+				:id="inputId"
 				ref="input"
 				v-model="value"
 				class="input__field"
