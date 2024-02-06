@@ -45,25 +45,25 @@ export default defineComponent({
 @import "@/styles/main.scss";
 
 .error {
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 
-  &__text {
-    margin-inline-start: 8px;
+	&__text {
+		margin-inline-start: 8px;
 		color: $color-text-negative;
 
-    &--small {
-      @include text-caption-2;
-    }
+		&--small {
+			@include text-caption-2;
+		}
 
-    &--compact {
-      @include text-body-2;
-    }
+		&--compact {
+			@include text-body-2;
+		}
 
-    &--regular {
-      @include text-body-1;
-    }
-  }
+		&--regular {
+			@include text-body-1;
+		}
+	}
 }
 
 </style>

@@ -110,19 +110,19 @@ export default defineComponent({
 @import "@/styles/main.scss";
 
 .login-view {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100dvh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100dvh;
 
-  &__container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 496px;
-    padding: 20px;
+	&__container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 496px;
+		padding: 20px;
 		row-gap: 20px;
-  }
+	}
 
 	&__header {
 		display: flex;
