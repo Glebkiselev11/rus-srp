@@ -11,7 +11,7 @@ export default defineComponent({
 	props: {
 		active: {
 			type: Boolean,
-			required: true,
+			default: false,
 		},
 		iconName: {
 			type: String as PropType<IconName>,

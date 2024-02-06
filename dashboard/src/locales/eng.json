@@ -97,5 +97,6 @@
   "to-login": "Sign in",
   "login": "Login",
   "password": "Password",
-  "login-failed": "Incorrect login or password"
+  "login-failed": "Incorrect login or password",
+  "logout": "Logout"
 }

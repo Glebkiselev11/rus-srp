@@ -97,5 +97,6 @@
   "to-login": "Prijavite se",
   "login": "Login",
   "password": "Lozinka",
-  "login-failed": "Neispravno korisničko ime ili lozinka"
+  "login-failed": "Neispravno korisničko ime ili lozinka",
+  "logout": "Odjaviti se"
 }

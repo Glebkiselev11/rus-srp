@@ -17,11 +17,6 @@ export default defineComponent({
 		},
 	},
 	emits: ["clickOnItem"],
-	data() {
-		return {
-			isExpanded: false,
-		};
-	},
 	methods: {
 		handleClick(item: NavItem) {
 			this.$emit("clickOnItem", item);
@@ -33,22 +28,26 @@ export default defineComponent({
 <template>
 	<aside
 		class="navbar"
-		:class="{ 'navbar--expanded': isExpanded}"
 	>
-		<TooltipComp
-			v-for="item in items"
-			:key="item.name"
-			:text="$t(item.name)"
-			position="right"
-		>
-			<NavbarItemComp
-				:label="item.label"
-				:active="item.active"
-				:icon-name="item.icon"
-				:show-labels="isExpanded"
-				@click="handleClick(item)"
-			/>
-		</TooltipComp>
+		<div class="navbar__list">
+			<TooltipComp
+				v-for="item in items"
+				:key="item.name"
+				:text="$t(item.name)"
+				position="right"
+			>
+				<NavbarItemComp
+					:label="item.label"
+					:active="item.active"
+					:icon-name="item.icon"
+					@click="handleClick(item)"
+				/>
+			</TooltipComp>
+		</div>
+
+		<div class="navbar__list">
+			<slot name="bottom" />
+		</div>
 	</aside>
 </template>
 
@@ -56,18 +55,20 @@ export default defineComponent({
 @import "@/styles/main.scss";
 
 .navbar {
-	padding-block-start: 10px;
+	padding-block: 10px;
 	width: 72px;
 	height: 100%;
 	background-color: $color-background-content-primary;
 	border-inline-end: 1px solid $color-separator-primary;
 	display: flex;
 	flex-direction: column;
-	row-gap: 4px;
+	justify-content: space-between;
 	padding-inline: 12px;
 
-	&--expanded {
-		width: 256px;
+	&__list {
+		display: flex;
+		flex-direction: column;
+		row-gap: 4px;	
 	}
 }
 

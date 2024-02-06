@@ -1,14 +1,18 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import NavbarComp from "@/components/NavbarComp.vue";
+import NavbarItemComp from "@/components/NavbarItemComp.vue";
 import { RouterView } from "vue-router";
 import type { NavItem } from "../../types";
+import TooltipComp from "@/components/TooltipComp.vue";
 
 export default defineComponent({
 	name: "PanelView",
 	components: {
 		RouterView,
 		NavbarComp,
+		TooltipComp,
+		NavbarItemComp,
 	},
 	data() {
 		return {
@@ -39,6 +43,9 @@ export default defineComponent({
 		changePage(item: NavItem) {
 			this.$router.push({ name: item.name });
 		},
+		logout() {
+			this.$router.push({ name: "login" });
+		},
 	},
 });
 </script>
@@ -48,7 +55,20 @@ export default defineComponent({
 		<NavbarComp
 			:items="panelPages"
 			@click-on-item="changePage"
-		/>
+		>
+			<template #bottom>
+				<TooltipComp
+					:text="$t('logout')"
+					position="right"
+				>
+					<NavbarItemComp
+						:label="$t('logout')"
+						icon-name="logout"
+						@click="logout"
+					/>
+				</TooltipComp>
+			</template>
+		</NavbarComp>
 		<RouterView />
 	</div>
 </template>
