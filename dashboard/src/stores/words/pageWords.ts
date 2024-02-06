@@ -16,7 +16,6 @@ export const usePageWordsStore = defineStore("pageWords", {
 				this.count = data.count;
 			} catch (error) {
 				console.error(error);
-				alert(error);
 			}
 		},
 	},
