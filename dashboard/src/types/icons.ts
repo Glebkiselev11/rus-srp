@@ -48,4 +48,5 @@ export type IconName =
   "remove" |
   "indeterminate_checkbox" |
   "checkbox_outline_blank" |
-  "checkbox";
+  "checkbox" |
+  "logout";
