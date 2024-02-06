@@ -5,6 +5,7 @@ import NavbarItemComp from "@/components/NavbarItemComp.vue";
 import { RouterView } from "vue-router";
 import type { NavItem } from "../../types";
 import TooltipComp from "@/components/TooltipComp.vue";
+import { logout } from "@/common/auth";
 
 export default defineComponent({
 	name: "PanelView",
@@ -43,7 +44,8 @@ export default defineComponent({
 		changePage(item: NavItem) {
 			this.$router.push({ name: item.name });
 		},
-		logout() {
+		handleLogout() {
+			logout();
 			this.$router.push({ name: "login" });
 		},
 	},
@@ -64,7 +66,7 @@ export default defineComponent({
 					<NavbarItemComp
 						:label="$t('logout')"
 						icon-name="logout"
-						@click="logout"
+						@click="handleLogout"
 					/>
 				</TooltipComp>
 			</template>

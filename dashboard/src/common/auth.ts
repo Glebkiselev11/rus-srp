@@ -13,3 +13,7 @@ export async function login(data: Login) {
 		throw e;
 	}
 }
+
+export function logout() {
+	localStorage.removeItem(TOKEN_KEY);
+}
