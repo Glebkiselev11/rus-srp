@@ -3,7 +3,7 @@ import type { Category, DraftCategory } from "@/types/categories";
 import axios, { type AxiosResponse } from "axios";
 
 export const CategoriesApi = {
-	ENDPOINT: "/api/v1/categories",
+	ENDPOINT: "/api/v1/private/categories",
 	create(data: DraftCategory): Promise<AxiosResponse<Category>> {
 		return axios.post(`${this.ENDPOINT}/create`, data);
 	},

@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
-	history: createWebHistory("/admin"),
+	history: createWebHistory("/dashboard"),
 	routes: [
 		{
 			path: "/",
@@ -21,11 +21,10 @@ const router = createRouter({
 			],
 		},
 		{
-			path: "/word",
-			name: "edit-word",
-			component: () => import("../views/EditWordView.vue"),
+			path: "/login",
+			name: "login",
+			component: () => import("../views/LoginView.vue"),
 		},
-
 	],
 });
 

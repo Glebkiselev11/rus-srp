@@ -1,8 +1,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
+import ErrorComp from "./ErrorComp.vue";
 
 export default defineComponent({
 	name: "InputWrapperComp",
+	components: { ErrorComp },
 	props: {
 		label: {
 			type: String,
@@ -21,13 +23,11 @@ export default defineComponent({
 		selectInput() {
 			const target = this.$refs.target as HTMLElement;
 			const element = target.querySelector(`#${this.for}`) as HTMLElement;
-
 			if (element) {
 				element.tagName === "BUTTON" ? element.click() : element.focus();
 			}
 		},
 	},
-
 });
 
 </script>
@@ -46,12 +46,11 @@ export default defineComponent({
 			<slot />
 		</div>
 
-		<span
+		<ErrorComp 
 			v-if="error"
-			class="input-wrapper__error"
-		>
-			{{ error }}
-		</span>
+			:text="error"
+			size="small"
+		/>
 	</div>
 </template>
 
@@ -67,11 +66,6 @@ export default defineComponent({
 		&::first-letter {
 			text-transform: uppercase;
 		}
-	}
-
-	&__error {
-		@include text-caption-2;
-		color: $color-text-negative;
 	}
 }
 

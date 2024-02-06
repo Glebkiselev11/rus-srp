@@ -22,6 +22,10 @@ export default defineComponent({
 			type: String,
 			default: null,
 		},
+		inputId: {
+			type: String,
+			default: "input-id",
+		},
 		type: {
 			type: String,
 			default: "text",
@@ -43,12 +47,12 @@ export default defineComponent({
 			default: false,
 		},
 		error: {
-			type: String,
-			default: null,
-		},
-		disableErrorLabel: {
 			type: Boolean,
 			default: false,
+		},
+		errorText: {
+			type: String,
+			default: null,
 		},
 		leftIcon: {
 			type: String as PropType<IconName>,
@@ -96,9 +100,6 @@ export default defineComponent({
 		};
 	},
 	computed: {
-		errorLabel() {
-			return this.disableErrorLabel ? undefined : this.error;
-		},
 		leftIconColor() {
 			return this.focusOnInput ? "accent-primary" : "tertiary" ;
 		},
@@ -163,8 +164,8 @@ export default defineComponent({
 	<InputWrapperComp
 		ref="wrapper"
 		:label="label"
-		:error="errorLabel"
-		for="input"
+		:error="errorText"
+		:for="inputId"
 		:style="{ width }"
 	>
 		<div
@@ -178,7 +179,7 @@ export default defineComponent({
 			/>
 
 			<input
-				id="input"
+				:id="inputId"
 				ref="input"
 				v-model="value"
 				class="input__field"
@@ -190,7 +191,7 @@ export default defineComponent({
 				:type="type"
 				:placeholder="placeholder"
 				:disabled="disabled"
-				:error="error !== null"
+				:error="error || Boolean(errorText)"
 				:max="max"
 				:min="min"
 				autocomplete="off"
@@ -222,13 +223,6 @@ export default defineComponent({
 						@click="resetInput"
 					/>
 				</TooltipComp>
-
-				<IconComp 
-					v-show="error !== null"
-					color="negative"
-					name="error"
-					:size="size"
-				/>
 			</div>
 		</div>
 	</InputWrapperComp>

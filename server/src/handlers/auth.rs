@@ -8,6 +8,7 @@ use super::custom_http_error::{CustomHttpError, ErrorMessagesBuilder};
 use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 use bcrypt::verify;
+use chrono::{Duration, Utc};
 use jsonwebtoken::{encode, EncodingKey, Header};
 
 pub async fn register(
@@ -68,14 +69,20 @@ pub async fn login(
         Err(e) => return Err(actix_web::error::ErrorInternalServerError(e)),
     }
 
+    let expiration = Utc::now() + Duration::days(7);
+
     let claims = Claims {
         sub: user.username.clone(),
-        iss: "localhost".into(),
+        iss: "main".into(),
+        exp: expiration.timestamp(),
     };
+
+    let secret = std::env::var("AUTH_SECRET").expect("AUTH_SECRET env");
+
     let token = encode(
         &Header::default(),
         &claims,
-        &EncodingKey::from_secret("secret".as_ref()),
+        &EncodingKey::from_secret(secret.as_ref()),
     )
     .map_err(actix_web::error::ErrorInternalServerError)?;
 

@@ -3,6 +3,7 @@ extern crate diesel;
 
 use actix_cors::Cors;
 use actix_web::{http, web, App, HttpServer};
+use actix_web_httpauth::middleware::HttpAuthentication;
 use diesel::prelude::*;
 use diesel::r2d2::{self, ConnectionManager};
 
@@ -35,7 +36,10 @@ async fn main() -> std::io::Result<()> {
         let cors = Cors::default()
             .allow_any_origin()
             .allowed_methods(vec!["GET", "POST", "DELETE", "PUT"])
-            .allowed_header(http::header::CONTENT_TYPE);
+            .allowed_header(http::header::CONTENT_TYPE)
+            .allowed_header(http::header::AUTHORIZATION);
+
+        let auth_guard = HttpAuthentication::bearer(utils::auth::validator);
         App::new()
             .app_data(web::Data::new(pool.clone()))
             .wrap(cors)
@@ -47,40 +51,45 @@ async fn main() -> std::io::Result<()> {
                             .route("/login", web::post().to(handler::auth::login)),
                     )
                     .service(
-                        web::scope("/words")
-                            .route("/create", web::post().to(handler::words::create))
-                            .route("", web::get().to(handler::words::get_list_by_query))
-                            .route("/{id}", web::get().to(handler::words::get_by_id))
-                            .route("/{id}", web::put().to(handler::words::update))
-                            .route("/{id}", web::delete().to(handler::words::delete)),
-                    )
-                    .service(
-                        web::scope("/categories")
-                            .route("/create", web::post().to(handler::categories::create))
-                            .route("", web::get().to(handler::categories::get_list_by_query))
-                            .route("/{id}", web::get().to(handler::categories::get_by_id))
-                            .route("/{id}", web::put().to(handler::categories::update))
-                            .route("/{id}", web::delete().to(handler::categories::delete))
-                            .route(
-                                "/{category_id}/add-words",
-                                web::put().to(handler::categories::add_words),
-                            )
-                            .route(
-                                "/{category_id}/delete-words",
-                                web::delete().to(handler::categories::delete_words),
-                            ),
-                    )
-                    .service(
-                        web::scope("/services")
-                            .service(web::scope("/translation").route(
-                                "/translate",
-                                web::post().to(handler::services::translation::translate),
-                            ))
+                        web::scope("/private")
+                            .wrap(auth_guard)
                             .service(
-                                web::scope("/images").route(
-                                    "/query",
-                                    web::get().to(handler::services::images::query),
-                                ),
+                                web::scope("/words")
+                                    .route("/create", web::post().to(handler::words::create))
+                                    .route("", web::get().to(handler::words::get_list_by_query))
+                                    .route("/{id}", web::get().to(handler::words::get_by_id))
+                                    .route("/{id}", web::put().to(handler::words::update))
+                                    .route("/{id}", web::delete().to(handler::words::delete)),
+                            )
+                            .service(
+                                web::scope("/categories")
+                                    .route("/create", web::post().to(handler::categories::create))
+                                    .route(
+                                        "",
+                                        web::get().to(handler::categories::get_list_by_query),
+                                    )
+                                    .route("/{id}", web::get().to(handler::categories::get_by_id))
+                                    .route("/{id}", web::put().to(handler::categories::update))
+                                    .route("/{id}", web::delete().to(handler::categories::delete))
+                                    .route(
+                                        "/{category_id}/add-words",
+                                        web::put().to(handler::categories::add_words),
+                                    )
+                                    .route(
+                                        "/{category_id}/delete-words",
+                                        web::delete().to(handler::categories::delete_words),
+                                    ),
+                            )
+                            .service(
+                                web::scope("/services")
+                                    .service(web::scope("/translation").route(
+                                        "/translate",
+                                        web::post().to(handler::services::translation::translate),
+                                    ))
+                                    .service(web::scope("/images").route(
+                                        "/query",
+                                        web::get().to(handler::services::images::query),
+                                    )),
                             ),
                     ),
             )

@@ -35,6 +35,7 @@ import RemoveIcon from "./RemoveIcon.vue";
 import IndeterminateCheckboxIcon from "./IndeterminateCheckboxIcon.vue";
 import CheckboxIcon from "./CheckboxIcon.vue";
 import CheckboxOutlineBlankIcon from "./CheckboxOutlineBlankIcon.vue";
+import LogoutIcon from "./LogoutIcon.vue";
 
 export default defineComponent({
 	name: "IconComp",
@@ -88,6 +89,7 @@ export default defineComponent({
 				"indeterminate_checkbox": IndeterminateCheckboxIcon,
 				"checkbox": CheckboxIcon,
 				"checkbox_outline_blank": CheckboxOutlineBlankIcon,
+				"logout": LogoutIcon,
 			}[this.name];
 		},
 		convertedSize(): string {
