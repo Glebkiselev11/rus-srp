@@ -2,6 +2,7 @@
 extern crate diesel;
 
 use actix_cors::Cors;
+use actix_files as fs;
 use actix_web::{http, web, App, HttpServer};
 use actix_web_httpauth::middleware::HttpAuthentication;
 use diesel::prelude::*;
@@ -92,6 +93,12 @@ async fn main() -> std::io::Result<()> {
                                     )),
                             ),
                     ),
+            )
+            // SPA Route: Serve index.html at the root
+            .service(fs::Files::new("/", "./static").index_file("index.html"))
+            // Catch-All Route: Redirect all non-matched routes to index.html
+            .default_service(
+                web::get().to(|| async { actix_files::NamedFile::open("./static/index.html") }),
             )
     })
     .bind(API_URL)?

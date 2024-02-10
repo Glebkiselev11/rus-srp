@@ -1,0 +1,53 @@
+# Start from the latest Ubuntu base image
+FROM ubuntu:22.04
+
+# Install curl and gnupg2, and build-essential for C compiler
+RUN apt-get update -y \
+    && apt-get install curl gnupg2 build-essential libwayland-dev sqlite3 libsqlite3-dev -y
+
+    # Install the latest Node.js version using NodeSource's binary distributions
+RUN curl -fsSL https://deb.nodesource.com/setup_current.x | bash - \
+    && apt-get install -y nodejs
+
+# Verify Node.js and npm installations
+RUN node --version \
+    && npm --version
+
+# Install Rust
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+# Create a new empty shell project
+RUN USER=root cargo new --bin server
+WORKDIR /project-root/server
+
+# Copy over your manifests
+COPY server/Cargo.toml ./Cargo.toml
+COPY server/Cargo.lock ./Cargo.lock
+COPY server/diesel.toml ./diesel.toml
+COPY server/.env ./.env
+
+# Install necessary dependencies for development
+RUN cargo install cargo-watch
+RUN cargo install diesel_cli --no-default-features --features sqlite
+
+# Copy your source tree and migrations
+COPY server/src ./src
+COPY server/database.db ./database.db
+COPY server/migrations ./migrations
+
+# Copy and build the Vue app
+WORKDIR /project-root/dashboard
+COPY dashboard/package.json ./package.json
+COPY dashboard/package-lock.json ./package-lock.json
+RUN npm install
+COPY dashboard/ ./
+RUN npm run build
+
+# Copy built Vue app to a directory from which your Rust server can serve static files
+RUN cp -r dist /project-root/server/static
+
+WORKDIR /project-root/server
+
+# Use cargo watch to run the server, it will rebuild and rerun on source changes
+CMD diesel migration run && cargo watch -x run
