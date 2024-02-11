@@ -1,0 +1,12 @@
+version: '3'
+services:
+  server:
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./database.db:/server/database.db
+      - ./migrations:/server/migrations
+      - ./src:/server/src

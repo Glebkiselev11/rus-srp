@@ -12,22 +12,22 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Create a new empty shell project
 RUN USER=root cargo new --bin server
-WORKDIR /project-root/server
+WORKDIR /server
 
 # Copy over your manifests
-COPY server/Cargo.toml ./Cargo.toml
-COPY server/Cargo.lock ./Cargo.lock
-COPY server/diesel.toml ./diesel.toml
-COPY server/.env ./.env
+COPY ./Cargo.toml ./Cargo.toml
+COPY ./Cargo.lock ./Cargo.lock
+COPY ./diesel.toml ./diesel.toml
+COPY ./.env ./.env
 
 # Install necessary dependencies for development
 RUN cargo install cargo-watch
 RUN cargo install diesel_cli --no-default-features --features sqlite
 
 # Copy your source tree and migrations
-COPY server/src ./src
-COPY server/database.db ./database.db
-COPY server/migrations ./migrations
+COPY ./src ./src
+COPY ./database.db ./database.db
+COPY ./migrations ./migrations
 
 # Set the environment variable to indicate this is a development build
 ENV ENVIRONMENT=dev

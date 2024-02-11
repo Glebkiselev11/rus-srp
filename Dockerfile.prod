@@ -25,7 +25,6 @@ WORKDIR /project-root/server
 COPY server/Cargo.toml ./Cargo.toml
 COPY server/Cargo.lock ./Cargo.lock
 COPY server/diesel.toml ./diesel.toml
-COPY server/.env ./.env
 
 # Install necessary dependencies for development
 RUN cargo install cargo-watch
@@ -46,6 +45,7 @@ RUN npm run build
 
 # Copy built Vue app to a directory from which your Rust server can serve static files
 RUN cp -r dist /project-root/server/static
+RUN rm -rf /project-root/dashboard
 
 WORKDIR /project-root/server
 
