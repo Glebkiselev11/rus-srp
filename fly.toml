@@ -7,7 +7,7 @@ app = 'vokabularijum'
 primary_region = 'otp'
 
 [build]
-dockerfile = "Dockerfile.prod"
+dockerfile = 'Dockerfile.prod'
 
 
 [http_service]
