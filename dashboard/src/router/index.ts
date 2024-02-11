@@ -6,6 +6,7 @@ const router = createRouter({
 		{
 			path: "/",
 			component: () => import("../views/Panel/index.vue"),
+			redirect: "/words",
 			children: [
 				{
 					path: "/words",

@@ -2,6 +2,7 @@
 extern crate diesel;
 
 use actix_cors::Cors;
+use actix_files as fs;
 use actix_web::{http, web, App, HttpServer};
 use actix_web_httpauth::middleware::HttpAuthentication;
 use diesel::prelude::*;
@@ -40,7 +41,8 @@ async fn main() -> std::io::Result<()> {
             .allowed_header(http::header::AUTHORIZATION);
 
         let auth_guard = HttpAuthentication::bearer(utils::auth::validator);
-        App::new()
+
+        let app = App::new()
             .app_data(web::Data::new(pool.clone()))
             .wrap(cors)
             .service(
@@ -92,7 +94,21 @@ async fn main() -> std::io::Result<()> {
                                     )),
                             ),
                     ),
-            )
+            );
+
+        let environment = std::env::var("ENVIRONMENT").unwrap_or_else(|_| "dev".to_string());
+
+        let app = match environment.as_str() {
+            "dev" => app, // Sharing SPA files need only in production
+            _ => app
+                .service(fs::Files::new("/", "./static").index_file("index.html"))
+                // Catch-All Route: Redirect all non-matched routes to index.html
+                .default_service(
+                    web::get().to(|| async { actix_files::NamedFile::open("./static/index.html") }),
+                ),
+        };
+
+        app
     })
     .bind(API_URL)?
     .run()
