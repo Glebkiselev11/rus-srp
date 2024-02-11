@@ -44,6 +44,7 @@ RUN npm run build
 # Copy built Vue app to a directory from which your Rust server can serve static files
 RUN cp -r dist /project-root/server/static
 RUN rm -rf /project-root/dashboard
+RUN rm -rf /var/lib/apt/lists/*
 
 WORKDIR /project-root/server
 
