@@ -26,8 +26,6 @@ COPY server/Cargo.toml ./Cargo.toml
 COPY server/Cargo.lock ./Cargo.lock
 COPY server/diesel.toml ./diesel.toml
 
-# Install necessary dependencies for development
-RUN cargo install cargo-watch
 RUN cargo install diesel_cli --no-default-features --features sqlite
 
 # Copy your source tree and migrations
