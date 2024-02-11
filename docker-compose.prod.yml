@@ -3,7 +3,7 @@ services:
   server:
     build:
       context: . # This now correctly points to the project root where the Dockerfile is located
-      dockerfile: Dockerfile # Updated to reflect the Dockerfile's new location
+      dockerfile: Dockerfile.prod # Updated to reflect the Dockerfile's new location
     ports:
       - "8080:8080"
     volumes:

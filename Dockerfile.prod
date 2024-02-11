@@ -49,5 +49,8 @@ RUN cp -r dist /project-root/server/static
 
 WORKDIR /project-root/server
 
+# Set the environment variable to indicate this is a production build
+ENV ENVIRONMENT=prod
+
 # Use cargo watch to run the server, it will rebuild and rerun on source changes
-CMD diesel migration run && cargo watch -x run
+CMD diesel migration run && cargo build --release && ./target/release/server
