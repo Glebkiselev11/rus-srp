@@ -22,3 +22,10 @@ processes = ['app']
 cpu_kind = 'shared'
 cpus = 1
 memory_mb = 2048
+
+[[http_service.checks]]
+grace_period = "900s"
+interval = "90s"
+method = "GET"
+timeout = "5s"
+path = "/"
