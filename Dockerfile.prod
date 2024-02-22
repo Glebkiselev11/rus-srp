@@ -4,9 +4,6 @@ FROM rust:latest as rust-builder
 # Create app directory
 WORKDIR /usr/src/myapp
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y ca-certificates fuse3 libwayland-dev sqlite3 libsqlite3-dev && rm -rf /var/lib/apt/lists/*
-
 # Copy Rust project files
 COPY server/Cargo.toml server/Cargo.lock ./
 COPY server/diesel.toml ./
@@ -42,7 +39,7 @@ RUN npm run build
 FROM ubuntu:22.04
 
 # Install runtime dependencies
-RUN apt-get update && apt-get install -y libwayland-dev sqlite3 libsqlite3-dev && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y ca-certificates libwayland-dev sqlite3 libsqlite3-dev && rm -rf /var/lib/apt/lists/*
 
 COPY --from=flyio/litefs:latest /usr/local/bin/litefs /usr/local/bin/litefs
 
