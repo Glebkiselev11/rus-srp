@@ -35,6 +35,7 @@ RUN npm install
 
 # Copy the rest of the Vue app and build it
 COPY dashboard/ ./
+ENV VITE_API_URL=https://0.0.0.0:8080/
 RUN npm run build
 
 # Final stage: Create the runtime image
