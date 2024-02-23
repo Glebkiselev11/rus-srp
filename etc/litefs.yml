@@ -22,7 +22,7 @@ exit-on-error: false
 proxy:
   addr: ":8080"
   target: "localhost:8081"
-  db: "db"
+  db: "database.db"
   passthrough:
     - "*.ico"
     - "*.png"
