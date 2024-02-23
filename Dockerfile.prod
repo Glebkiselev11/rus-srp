@@ -39,7 +39,6 @@ RUN npm run build
 FROM alpine
 
 # Install runtime dependencies
-# RUN apt-get update && apt-get install -y ca-certificates fuse3 libwayland-dev sqlite3 libsqlite3-dev && rm -rf /var/lib/apt/lists/*
 RUN apk add bash fuse3 sqlite ca-certificates curl
 
 COPY --from=flyio/litefs:0.5 /usr/local/bin/litefs /usr/local/bin/litefs
