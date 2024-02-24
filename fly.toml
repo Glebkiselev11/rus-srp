@@ -23,6 +23,10 @@ cpu_kind = 'shared'
 cpus = 1
 memory_mb = 2048
 
+[[services]]
+internal_port = 8080
+protocol = "tcp"
+
 [[http_service.checks]]
 grace_period = "900s"
 interval = "90s"
