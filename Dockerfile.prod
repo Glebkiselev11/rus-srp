@@ -57,6 +57,7 @@ COPY --from=rust-builder /usr/src/myapp/target/release/server .
 COPY --from=rust-builder /usr/local/cargo/bin/diesel /usr/local/bin/diesel
 RUN ls /usr/local/bin
 RUN ls -l /usr/local/bin/diesel
+RUN /usr/local/bin/diesel --version
 
 # Copy the built Vue app to the directory from which your Rust server will serve static files
 COPY --from=vue-builder /app/dist ./static

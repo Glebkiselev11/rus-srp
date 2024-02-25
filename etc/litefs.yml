@@ -32,8 +32,8 @@ proxy:
 # the last command to be long-running (e.g. an application server). When the
 # last command exits, LiteFS is shut down.
 exec:
-  - cmd: "/usr/local/bin/diesel migration run"
-    if-candidate: true
+  # - cmd: "/usr/local/bin/diesel migration run"
+  #   if-candidate: true
 
   - cmd: "server"
 
