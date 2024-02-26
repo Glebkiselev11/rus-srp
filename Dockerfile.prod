@@ -70,7 +70,7 @@ COPY --from=vue-builder /app/dist ./static
 ENV ENVIRONMENT=prod
 
 # Expose port
-EXPOSE 8080
+# EXPOSE 8080
 
 # # Command to run
 # CMD ["server"]
