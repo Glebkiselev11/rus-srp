@@ -35,7 +35,7 @@ RUN npm install
 
 # Copy the rest of the Vue app and build it
 COPY dashboard/ ./
-ENV VITE_API_URL=https://0.0.0.0:8080/
+ENV VITE_API_URL=https://vokabularijum.fly.dev/
 RUN npm run build
 
 # Final stage: Create the runtime image
@@ -70,9 +70,9 @@ COPY --from=vue-builder /app/dist ./static
 ENV ENVIRONMENT=prod
 
 # Expose port
-# EXPOSE 8080
+EXPOSE 8080
 
 # # Command to run
-# CMD ["server"]
+CMD ["server"]
 
-ENTRYPOINT litefs mount
+# ENTRYPOINT litefs mount
