@@ -22,7 +22,7 @@ exit-on-error: false
 proxy:
   addr: ":8080"
   target: "localhost:8081"
-  db: "database.db"
+  db: "db"
   passthrough:
     - "*.ico"
     - "*.png"
@@ -49,4 +49,4 @@ lease:
 
   consul:
     url: "${FLY_CONSUL_URL}"
-    key: "litefs/${FLY_APP_NAME}-v3"
+    key: "litefs/${FLY_APP_NAME}"
