@@ -42,7 +42,9 @@ RUN npm run build
 FROM debian:latest
 
 # Install runtime dependencies
-RUN apt-get update -y && apt-get install bash fuse3 sqlite3 ca-certificates curl libsqlite3-dev -y
+RUN apt-get update -y && apt-get install bash fuse3 sqlite3 ca-certificates curl libsqlite3-dev consul -y
+
+RUN echo $FLY_CONSUL_URL
 
 COPY --from=flyio/litefs:0.5 /usr/local/bin/litefs /usr/local/bin/litefs
 
