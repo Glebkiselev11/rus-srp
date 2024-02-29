@@ -20,8 +20,8 @@ exit-on-error: false
 # This proxy can handle primary forwarding & replica consistency
 # for applications that use a single SQLite database.
 proxy:
-  addr: ":8080"
-  target: "localhost:8081"
+  addr: ":8081"
+  target: "localhost:8082"
   db: "db"
   passthrough:
     - "*.ico"
@@ -49,4 +49,4 @@ lease:
 
   consul:
     url: "${FLY_CONSUL_URL}"
-    key: "litefs/${FLY_APP_NAME}"
+    key: "litefs/${FLY_APP_NAME}-v4"
