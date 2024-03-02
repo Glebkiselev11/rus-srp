@@ -1,55 +1,72 @@
-# Start from the latest Ubuntu base image
-FROM ubuntu:22.04
+# Stage 1: Build Rust backend
+FROM rust:latest as rust-builder
 
-# Install curl and gnupg2, and build-essential for C compiler
-RUN apt-get update -y \
-    && apt-get install curl gnupg2 build-essential libwayland-dev sqlite3 libsqlite3-dev -y
+# Create app directory
+WORKDIR /usr/src/myapp
 
-    # Install the latest Node.js version using NodeSource's binary distributions
-RUN curl -fsSL https://deb.nodesource.com/setup_current.x | bash - \
-    && apt-get install -y nodejs
+# Copy Rust project files
+COPY server/Cargo.toml server/Cargo.lock ./
+COPY server/diesel.toml ./
+COPY server/database.db ./
+COPY server/database.db-wal ./
+COPY server/database.db-shm ./
 
-# Verify Node.js and npm installations
-RUN node --version \
-    && npm --version
-
-# Install Rust
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-ENV PATH="/root/.cargo/bin:${PATH}"
-
-# Create a new empty shell project
-RUN USER=root cargo new --bin server
-WORKDIR /project-root/server
-
-# Copy over your manifests
-COPY server/Cargo.toml ./Cargo.toml
-COPY server/Cargo.lock ./Cargo.lock
-COPY server/diesel.toml ./diesel.toml
-
+# Cache dependencies
+RUN mkdir src && echo "fn main() {}" > src/main.rs
+RUN cargo fetch
 RUN cargo install diesel_cli --no-default-features --features sqlite
 
-# Copy your source tree and migrations
+# Copy source code and build
 COPY server/src ./src
-COPY server/database.db ./database.db
 COPY server/migrations ./migrations
+RUN cargo build --release
 
-# Copy and build the Vue app
-WORKDIR /project-root/dashboard
-COPY dashboard/package.json ./package.json
-COPY dashboard/package-lock.json ./package-lock.json
+# Stage 2: Build Vue frontend
+FROM node:current-slim as vue-builder
+
+# Set working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY dashboard/package*.json ./
+
+# Install dependencies
 RUN npm install
+
+# Copy the rest of the Vue app and build it
 COPY dashboard/ ./
+ENV VITE_API_URL=https://vokabularijum.fly.dev/
 RUN npm run build
 
-# Copy built Vue app to a directory from which your Rust server can serve static files
-RUN cp -r dist /project-root/server/static
-RUN rm -rf /project-root/dashboard
-RUN rm -rf /var/lib/apt/lists/*
+# Final stage: Create the runtime image
+FROM debian:latest
 
-WORKDIR /project-root/server
+# Install runtime dependencies
+RUN apt-get update -y && apt-get install bash fuse3 sqlite3 ca-certificates curl libsqlite3-dev -y
 
-# Set the environment variable to indicate this is a production build
+COPY --from=flyio/litefs:0.5 /usr/local/bin/litefs /usr/local/bin/litefs
+
+ARG LITEFS_CONFIG=litefs.yml
+
+# Copy the possible LiteFS configurations.
+ADD etc/litefs.yml /tmp/litefs.yml
+
+RUN cp /tmp/$LITEFS_CONFIG /etc/litefs.yml
+
+WORKDIR /usr/local/bin
+
+# Copy the built Rust executable
+COPY --from=rust-builder /usr/src/myapp/target/release/server .
+COPY --from=rust-builder /usr/local/cargo/bin/diesel /usr/local/bin/diesel
+COPY --from=rust-builder /usr/src/myapp/migrations ./migrations
+COPY --from=rust-builder /usr/src/myapp/database.db ./
+COPY --from=rust-builder /usr/src/myapp/database.db-wal ./
+COPY --from=rust-builder /usr/src/myapp/database.db-shm ./
+
+# Copy the built Vue app to the directory from which your Rust server will serve static files
+COPY --from=vue-builder /app/dist ./static
+
+# Set environment variable
 ENV ENVIRONMENT=prod
 
-# Use cargo watch to run the server, it will rebuild and rerun on source changes
-CMD diesel migration run && cargo build --release && ./target/release/server
+ENTRYPOINT litefs mount

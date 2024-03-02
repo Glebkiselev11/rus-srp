@@ -20,5 +20,20 @@ processes = ['app']
 
 [vm]
 cpu_kind = 'shared'
-cpus = 1
+cpus = 2
 memory_mb = 2048
+
+[[services]]
+internal_port = 8080
+protocol = "tcp"
+
+[[http_service.checks]]
+grace_period = "900s"
+interval = "90s"
+method = "GET"
+timeout = "5s"
+path = "/"
+
+[mounts]
+source = "litefs"
+destination = "/var/lib/litefs"

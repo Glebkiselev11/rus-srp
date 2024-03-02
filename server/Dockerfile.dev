@@ -1,5 +1,5 @@
 # Start from the latest Ubuntu base image
-FROM ubuntu:22.04
+FROM debian:latest
 
 # Install curl and gnupg2, and build-essential for C compiler
 RUN apt-get update -y \
