@@ -59,6 +59,7 @@ WORKDIR /usr/local/bin
 COPY --from=rust-builder /usr/src/myapp/target/release/server .
 COPY --from=rust-builder /usr/local/cargo/bin/diesel /usr/local/bin/diesel
 COPY --from=rust-builder /usr/src/myapp/migrations ./migrations
+COPY --from=rust-builder /usr/src/myapp/database.db ./
 COPY --from=rust-builder /usr/src/myapp/database.db-wal ./
 COPY --from=rust-builder /usr/src/myapp/database.db-shm ./
 
