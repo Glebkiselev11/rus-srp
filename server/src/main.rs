@@ -26,7 +26,6 @@ async fn main() -> std::io::Result<()> {
 
     // set up database connection pool
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    println!("DATABASE_URL: {}", database_url);
     let manager = ConnectionManager::<PgConnection>::new(database_url);
     let pool = Pool::builder()
         .build(manager)
