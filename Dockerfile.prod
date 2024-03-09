@@ -7,9 +7,6 @@ WORKDIR /usr/src/myapp
 # Copy Rust project files
 COPY server/Cargo.toml server/Cargo.lock ./
 COPY server/diesel.toml ./
-COPY server/database.db ./
-COPY server/database.db-wal ./
-COPY server/database.db-shm ./
 
 # Cache dependencies
 RUN mkdir src && echo "fn main() {}" > src/main.rs
