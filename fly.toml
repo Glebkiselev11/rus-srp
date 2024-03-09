@@ -1,39 +1,72 @@
-# fly.toml app configuration file generated for vokabularijum on 2024-02-11T12:05:14+01:00
+# fly.toml app configuration file generated for vokabularijum-db on 2024-03-07T19:51:53+01:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'vokabularijum'
+app = 'vokabularijum-db'
 primary_region = 'otp'
 
 [build]
 dockerfile = 'Dockerfile.prod'
 
-
-[http_service]
-internal_port = 8080
-force_https = true
-auto_stop_machines = true
-auto_start_machines = true
-min_machines_running = 0
-processes = ['app']
-
-[vm]
-cpu_kind = 'shared'
-cpus = 2
-memory_mb = 2048
-
-[[services]]
-internal_port = 8080
-protocol = "tcp"
-
-[[http_service.checks]]
-grace_period = "900s"
-interval = "90s"
-method = "GET"
-timeout = "5s"
-path = "/"
+[env]
+FLY_SCALE_TO_ZERO = '1h'
+PRIMARY_REGION = 'otp'
 
 [mounts]
-source = "litefs"
-destination = "/var/lib/litefs"
+source = 'pg_data'
+destination = '/data'
+
+[[services]]
+protocol = 'tcp'
+internal_port = 5432
+auto_start_machines = true
+
+[[services.ports]]
+port = 5432
+handlers = ['pg_tls']
+
+[services.concurrency]
+type = 'connections'
+hard_limit = 1000
+soft_limit = 1000
+
+[[services]]
+protocol = 'tcp'
+internal_port = 5433
+auto_start_machines = true
+
+[[services.ports]]
+port = 5433
+handlers = ['pg_tls']
+
+[services.concurrency]
+type = 'connections'
+hard_limit = 1000
+soft_limit = 1000
+
+[checks]
+[checks.pg]
+port = 5500
+type = 'http'
+interval = '15s'
+timeout = '10s'
+path = '/flycheck/pg'
+
+[checks.role]
+port = 5500
+type = 'http'
+interval = '15s'
+timeout = '10s'
+path = '/flycheck/role'
+
+[checks.vm]
+port = 5500
+type = 'http'
+interval = '15s'
+timeout = '10s'
+path = '/flycheck/vm'
+
+[[metrics]]
+port = 9187
+path = '/metrics'

@@ -1,12 +1,11 @@
 use super::models::{DbNewUser, DbUser};
 use crate::db::error_type::DbError;
 use diesel::prelude::*;
-use diesel::SqliteConnection;
 
 pub fn add(
     username: String,
     salted_password: String,
-    conn: &mut SqliteConnection,
+    conn: &mut PgConnection,
 ) -> Result<DbUser, DbError> {
     use crate::db::schema::users::dsl;
 
@@ -19,7 +18,7 @@ pub fn add(
     Ok(user)
 }
 
-pub fn select(username: &str, conn: &mut SqliteConnection) -> Result<DbUser, DbError> {
+pub fn select(username: &str, conn: &mut PgConnection) -> Result<DbUser, DbError> {
     use crate::db::schema::users::dsl;
 
     let user = dsl::users

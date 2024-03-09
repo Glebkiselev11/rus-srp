@@ -1,12 +1,14 @@
 #[macro_use]
 extern crate diesel;
 
+use std::env;
+
 use actix_cors::Cors;
 use actix_files as fs;
 use actix_web::{http, web, App, HttpServer};
 use actix_web_httpauth::middleware::HttpAuthentication;
-use diesel::prelude::*;
-use diesel::r2d2::{self, ConnectionManager};
+use diesel::pg::PgConnection;
+use diesel::r2d2::{ConnectionManager, Pool};
 
 mod db;
 mod handlers;
@@ -14,8 +16,6 @@ mod models;
 mod utils;
 
 use crate::handlers as handler;
-
-pub type DbPool = r2d2::Pool<ConnectionManager<SqliteConnection>>;
 
 const API_URL: (&str, u16) = ("0.0.0.0", 8080);
 
@@ -25,9 +25,10 @@ async fn main() -> std::io::Result<()> {
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
     // set up database connection pool
-    let conn_spec = std::env::var("DATABASE_URL").expect("DATABASE_URL");
-    let manager = ConnectionManager::<SqliteConnection>::new(conn_spec);
-    let pool = r2d2::Pool::builder()
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    println!("DATABASE_URL: {}", database_url);
+    let manager = ConnectionManager::<PgConnection>::new(database_url);
+    let pool = Pool::builder()
         .build(manager)
         .expect("Failed to create pool.");
 

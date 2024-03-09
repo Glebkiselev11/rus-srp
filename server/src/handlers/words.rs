@@ -4,11 +4,10 @@ use crate::db::error_type::DbError;
 use crate::models::pagination::Pagination;
 use crate::models::query_options::QueryOptions;
 use crate::models::word::{Word, WordBody};
-use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 
 pub async fn create(
-    pool: web::Data<DbPool>,
+    pool: web::Data<db::PgPool>,
     body: web::Json<WordBody>,
 ) -> actix_web::Result<impl Responder> {
     let category_ids = body.category_ids.clone();
@@ -40,7 +39,7 @@ pub async fn create(
 }
 
 pub async fn get_list_by_query(
-    pool: web::Data<DbPool>,
+    pool: web::Data<db::PgPool>,
     query: web::Query<QueryOptions>,
 ) -> actix_web::Result<impl Responder> {
     let query = query.into_inner();
@@ -61,7 +60,7 @@ pub async fn get_list_by_query(
 }
 
 pub async fn get_by_id(
-    pool: web::Data<DbPool>,
+    pool: web::Data<db::PgPool>,
     id: web::Path<i32>,
 ) -> actix_web::Result<impl Responder> {
     let words = web::block(move || {
@@ -75,7 +74,7 @@ pub async fn get_by_id(
 }
 
 pub async fn update(
-    pool: web::Data<DbPool>,
+    pool: web::Data<db::PgPool>,
     id: web::Path<i32>,
     body: web::Json<WordBody>,
 ) -> actix_web::Result<impl Responder> {
@@ -97,7 +96,7 @@ pub async fn update(
 }
 
 pub async fn delete(
-    pool: web::Data<DbPool>,
+    pool: web::Data<db::PgPool>,
     id: web::Path<i32>,
 ) -> actix_web::Result<impl Responder> {
     web::block(move || {

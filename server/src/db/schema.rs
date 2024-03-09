@@ -2,11 +2,11 @@
 
 diesel::table! {
     categories (id) {
-        id -> Integer,
-        eng -> Text,
-        rus -> Text,
-        srp_latin -> Text,
-        srp_cyrillic -> Text,
+        id -> Int4,
+        eng -> Varchar,
+        rus -> Varchar,
+        srp_latin -> Varchar,
+        srp_cyrillic -> Varchar,
         created_at -> Timestamp,
         updated_at -> Nullable<Timestamp>,
         image -> Nullable<Text>,
@@ -15,9 +15,9 @@ diesel::table! {
 
 diesel::table! {
     users (id) {
-        id -> Integer,
-        username -> Text,
-        password -> Text,
+        id -> Int4,
+        username -> Varchar,
+        password -> Varchar,
         created_at -> Timestamp,
         updated_at -> Nullable<Timestamp>,
     }
@@ -25,22 +25,22 @@ diesel::table! {
 
 diesel::table! {
     words (id) {
-        id -> Integer,
-        rus -> Text,
-        eng -> Text,
-        srp_latin -> Text,
-        srp_cyrillic -> Text,
+        id -> Int4,
+        eng -> Varchar,
+        rus -> Varchar,
+        srp_latin -> Varchar,
+        srp_cyrillic -> Varchar,
         created_at -> Timestamp,
         updated_at -> Nullable<Timestamp>,
         image -> Nullable<Text>,
-        category_count -> Integer,
+        category_count -> Int4,
     }
 }
 
 diesel::table! {
     words_categories (word_id, category_id) {
-        word_id -> Integer,
-        category_id -> Integer,
+        word_id -> Int4,
+        category_id -> Int4,
         created_at -> Timestamp,
     }
 }

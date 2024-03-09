@@ -5,14 +5,13 @@ use crate::utils::hash::hash_password;
 
 use super::custom_http_error::{CustomHttpError, ErrorMessagesBuilder};
 
-use crate::DbPool;
 use actix_web::{web, HttpResponse, Responder};
 use bcrypt::verify;
 use chrono::{Duration, Utc};
 use jsonwebtoken::{encode, EncodingKey, Header};
 
 pub async fn register(
-    pool: web::Data<DbPool>,
+    pool: web::Data<db::PgPool>,
     body: web::Json<UserBody>,
 ) -> actix_web::Result<impl Responder> {
     let username = body.username.clone();
@@ -42,7 +41,7 @@ pub async fn register(
 }
 
 pub async fn login(
-    pool: web::Data<DbPool>,
+    pool: web::Data<db::PgPool>,
     body: web::Json<UserBody>,
 ) -> actix_web::Result<impl Responder> {
     let password = body.password.clone();
