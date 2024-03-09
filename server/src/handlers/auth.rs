@@ -68,7 +68,15 @@ pub async fn login(
         Err(e) => return Err(actix_web::error::ErrorInternalServerError(e)),
     }
 
-    let expiration = Utc::now() + Duration::days(7);
+    let plus_days = if let Some(days) = Duration::try_days(7) {
+        days
+    } else {
+        return Err(actix_web::error::ErrorInternalServerError(
+            "Failed to create token",
+        ));
+    };
+
+    let expiration = Utc::now() + plus_days;
 
     let claims = Claims {
         sub: user.username.clone(),
