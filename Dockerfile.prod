@@ -32,7 +32,6 @@ RUN npm install
 
 # Copy the rest of the Vue app and build it
 COPY dashboard/ ./
-ENV VITE_API_URL=https://vokabularijum.fly.dev/
 RUN npm run build
 
 # Final stage: Create the runtime image
@@ -51,9 +50,5 @@ COPY --from=rust-builder /usr/src/myapp/migrations ./migrations
 # Copy the built Vue app to the directory from which your Rust server will serve static files
 COPY --from=vue-builder /app/dist ./static
 
-# Set environment variable
-ENV ENVIRONMENT=prod
-
 # Run the server
 CMD diesel migration run && ./server
-
