@@ -39,6 +39,7 @@ export default defineComponent({
 	data() {
 		return {
 			draftCategory: initDraftCategory(),
+			autoFillTranslationsLoading: false,
 			categoryNameValidationErrors: [] as string[],
 			rusValidationError: undefined as string | undefined,
 			engValidationError: undefined as string | undefined,
@@ -193,6 +194,10 @@ export default defineComponent({
 			this.$emit("saved");
 		},
 		autoFill() {
+			if (this.autoFillTranslationsLoading) {
+				return;
+			}
+
 			const from = this.selectedLanguage;
 			const targets = getLanguageList()
 				.filter(({ value }) => value !== from)
@@ -202,6 +207,8 @@ export default defineComponent({
 					return acc;
 				}, {} as Record<LanguageCode, string>);
 			
+			this.autoFillTranslationsLoading = true;
+			
 			translate({
 				[from]: this.draftCategory[from],
 				...targets,
@@ -210,6 +217,8 @@ export default defineComponent({
 					...this.draftCategory,
 					...translations,
 				};
+			}).finally(() => {
+				this.autoFillTranslationsLoading = false;
 			});
 		},
 		close() {

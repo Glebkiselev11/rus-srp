@@ -33,6 +33,11 @@ export default defineComponent({
 			default: undefined,
 		},
 	},
+	data() {
+		return {
+			autoFillTranslationsLoading: false,
+		};
+	},
 	computed: {
 		...mapState(useDraftWordStore, [
 			"draftWord", 
@@ -67,6 +72,19 @@ export default defineComponent({
 				return this.srpCyrillicValidationError;
 			}
 		},
+		async _autoFillTranslations() {
+			if (this.autoFillTranslationsLoading) {
+				return;
+			}
+
+			try {
+				this.autoFillTranslationsLoading = true;
+				await this.autoFillTranslations();
+			} finally {
+				this.autoFillTranslationsLoading = false;
+			}
+		},
+
 	},
 });
 
@@ -103,7 +121,7 @@ export default defineComponent({
 				appearance="inline"
 				size="compact"
 				:label="$t('fill-in-auto')"
-				@click="autoFillTranslations"
+				@click="_autoFillTranslations"
 			/>
 		</div>
 
