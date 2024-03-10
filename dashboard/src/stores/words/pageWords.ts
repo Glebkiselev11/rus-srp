@@ -7,9 +7,12 @@ export const usePageWordsStore = defineStore("pageWords", {
 	state: () => ({
 		words: [] as Array<Word>,
 		count: 0,
+		lastFilters: {} as RequestParams,
 	}),
 	actions: {
 		async fetchPageWords(params: RequestParams) {
+			this.lastFilters = params;
+
 			try {
 				const { data } = await WordsApi.query(params);
 				this.words = data.result;
@@ -17,6 +20,9 @@ export const usePageWordsStore = defineStore("pageWords", {
 			} catch (error) {
 				console.error(error);
 			}
+		},
+		async refetchPageWords() {
+			await this.fetchPageWords(this.lastFilters);
 		},
 	},
 });

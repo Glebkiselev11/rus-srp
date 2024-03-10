@@ -9,6 +9,7 @@ import type { Word } from "@/types/words";
 import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";
 import { translationPreview } from "@/common/translations";
+import { usePageWordsStore } from "@/stores/words/pageWords";
 
 export default defineComponent({
 	name: "WordFormModalComp",
@@ -61,9 +62,11 @@ export default defineComponent({
 	},
 	methods: {
 		...mapActions(useWordFormTabsStore, ["resetCurrentTab"]),
+		...mapActions(usePageWordsStore, ["refetchPageWords"]),
 		close() {
 			this.$emit("close");
 			this.resetCurrentTab();
+			this.refetchPageWords();
 		},
 		tryClose() {
 			if (this.isChanged) {
