@@ -1,7 +1,7 @@
 import type { DraftWord, Word } from "@/types/words";
 import { defineStore } from "pinia";
 import { convertWordToDraftWord, isAnyFieldHasChanged } from "@/common/utils";
-import { autoTranslate } from "@/common/translations";
+import { translate } from "@/common/translations";
 
 function _initDraftWord(): DraftWord {
 	return {
@@ -67,7 +67,7 @@ export const useDraftWordStore = defineStore("draftWord", {
 			this.initDraftWord();
 		},
 		async autoFillTranslations() {
-			const fields = await autoTranslate(this.draftWord);
+			const fields = await translate(this.draftWord);
 			this.draftWord = {
 				...this.draftWord,
 				...fields,
