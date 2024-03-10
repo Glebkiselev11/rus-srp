@@ -16,3 +16,7 @@ export type Translation = {
 export type TranslateResponse = {
   translations: Array<Translation>;
 }
+
+export type TranslationObject = {
+	[key in LanguageCode]: string;
+}

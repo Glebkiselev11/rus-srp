@@ -1,11 +1,7 @@
-import type { LanguageCode, Translation } from "@/types/translations";
+import type { LanguageCode, Translation, TranslationObject } from "@/types/translations";
 import type { TranslateRequest } from "@/types/translations";
 import { TranslationsApi } from "@/api";
 import i18n from "@/i18n";
-
-type TranslationObject = {
-	[key in LanguageCode]: string;
-}
 
 export function getLanguageCodesOrder(): LanguageCode[] {
 	const currentLanguage = i18n.global.locale as LanguageCode;
@@ -69,7 +65,21 @@ export async function translate(
 	}
 }
  
-export async function autoTranslate(params: TranslationObject): Promise<TranslationObject> {
+export async function autoTranslate(
+	params: TranslationObject, withAI = true,
+): Promise<TranslationObject> {
+	if (withAI) {
+		try {
+			const { data } = await TranslationsApi.fillEmptyTranslations(params);
+			return data;
+		} catch (error) {
+			console.error(error);
+			return params;
+		}
+	}
+
+	// TODO: Deprecated part
+
 	const init = {
 		from: null as LanguageCode | null,
 		text: "",

@@ -1,4 +1,4 @@
-import type { TranslateRequest, TranslateResponse } from "@/types/translations";
+import type { TranslateRequest, TranslateResponse, TranslationObject } from "@/types/translations";
 import axios, { type AxiosResponse } from "axios";
 
 export const TranslationsApi = {
@@ -6,5 +6,8 @@ export const TranslationsApi = {
 
 	translate(params: TranslateRequest): Promise<AxiosResponse<TranslateResponse>> {
 		return axios.post(`${this.ENDPOINT}/translate`, params);
+	},
+	fillEmptyTranslations(params: TranslationObject): Promise<AxiosResponse<TranslationObject>> {
+		return axios.post(`${this.ENDPOINT}/ai-translate`, params);	
 	},
 };
