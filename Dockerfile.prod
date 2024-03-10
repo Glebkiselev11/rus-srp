@@ -7,14 +7,11 @@ WORKDIR /usr/src/myapp
 # Copy Rust project files
 COPY server/Cargo.toml server/Cargo.lock ./
 COPY server/diesel.toml ./
-COPY server/database.db ./
-COPY server/database.db-wal ./
-COPY server/database.db-shm ./
 
 # Cache dependencies
 RUN mkdir src && echo "fn main() {}" > src/main.rs
 RUN cargo fetch
-RUN cargo install diesel_cli --no-default-features --features sqlite
+RUN cargo install diesel_cli --no-default-features --features postgres
 
 # Copy source code and build
 COPY server/src ./src
@@ -35,23 +32,13 @@ RUN npm install
 
 # Copy the rest of the Vue app and build it
 COPY dashboard/ ./
-ENV VITE_API_URL=https://vokabularijum.fly.dev/
 RUN npm run build
 
 # Final stage: Create the runtime image
 FROM debian:latest
 
 # Install runtime dependencies
-RUN apt-get update -y && apt-get install bash fuse3 sqlite3 ca-certificates curl libsqlite3-dev -y
-
-COPY --from=flyio/litefs:0.5 /usr/local/bin/litefs /usr/local/bin/litefs
-
-ARG LITEFS_CONFIG=litefs.yml
-
-# Copy the possible LiteFS configurations.
-ADD etc/litefs.yml /tmp/litefs.yml
-
-RUN cp /tmp/$LITEFS_CONFIG /etc/litefs.yml
+RUN apt-get update -y && apt-get install bash postgresql-15 ca-certificates curl libpq-dev libwayland-dev -y
 
 WORKDIR /usr/local/bin
 
@@ -59,14 +46,9 @@ WORKDIR /usr/local/bin
 COPY --from=rust-builder /usr/src/myapp/target/release/server .
 COPY --from=rust-builder /usr/local/cargo/bin/diesel /usr/local/bin/diesel
 COPY --from=rust-builder /usr/src/myapp/migrations ./migrations
-COPY --from=rust-builder /usr/src/myapp/database.db ./
-COPY --from=rust-builder /usr/src/myapp/database.db-wal ./
-COPY --from=rust-builder /usr/src/myapp/database.db-shm ./
 
 # Copy the built Vue app to the directory from which your Rust server will serve static files
 COPY --from=vue-builder /app/dist ./static
 
-# Set environment variable
-ENV ENVIRONMENT=prod
-
-ENTRYPOINT litefs mount
+# Run the server
+CMD diesel migration run && ./server

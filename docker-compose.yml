@@ -14,7 +14,6 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./server/database.db:/project-root/server/database.db
       - ./server/migrations:/project-root/server/migrations
       - ./server/src:/project-root/server/src
       - ./dashboard:/project-root/dashboard 

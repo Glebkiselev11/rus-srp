@@ -3,7 +3,7 @@ FROM debian:latest
 
 # Install curl and gnupg2, and build-essential for C compiler
 RUN apt-get update -y \
-    && apt-get install curl gnupg2 build-essential libwayland-dev sqlite3 libsqlite3-dev -y
+    && apt-get install curl gnupg2 build-essential libwayland-dev postgresql-15 libpq-dev -y
 
 
 # Install Rust
@@ -22,11 +22,10 @@ COPY ./.env ./.env
 
 # Install necessary dependencies for development
 RUN cargo install cargo-watch
-RUN cargo install diesel_cli --no-default-features --features sqlite
+RUN cargo install diesel_cli --no-default-features --features postgres
 
 # Copy your source tree and migrations
 COPY ./src ./src
-COPY ./database.db ./database.db
 COPY ./migrations ./migrations
 
 # Set the environment variable to indicate this is a development build

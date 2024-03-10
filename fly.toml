@@ -33,7 +33,3 @@ interval = "90s"
 method = "GET"
 timeout = "5s"
 path = "/"
-
-[mounts]
-source = "litefs"
-destination = "/var/lib/litefs"

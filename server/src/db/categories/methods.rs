@@ -6,13 +6,10 @@ use crate::models::{
     category::CategoryBody, pagination::DbQueryResult, query_options::QueryOptions,
 };
 use diesel::expression::expression_types::NotSelectable;
+use diesel::pg::Pg;
 use diesel::prelude::*;
-use diesel::sqlite::Sqlite;
 
-pub fn insert(
-    new_category: NewCategory,
-    conn: &mut SqliteConnection,
-) -> Result<DbCategory, DbError> {
+pub fn insert(new_category: NewCategory, conn: &mut PgConnection) -> Result<DbCategory, DbError> {
     use crate::db::schema::categories::dsl;
 
     let new_category = DbNewCategory::from(new_category);
@@ -24,7 +21,7 @@ pub fn insert(
     Ok(category)
 }
 
-pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<DbCategory, DbError> {
+pub fn select_by_id(id: i32, conn: &mut PgConnection) -> Result<DbCategory, DbError> {
     use crate::db::schema::categories::dsl;
 
     let category = dsl::categories
@@ -37,13 +34,13 @@ pub fn select_by_id(id: i32, conn: &mut SqliteConnection) -> Result<DbCategory, 
 }
 
 pub fn select_all_with_filter(
-    conn: &mut SqliteConnection,
+    conn: &mut PgConnection,
     query: QueryOptions,
 ) -> Result<DbQueryResult<DbCategory>, DbError> {
     use crate::db::schema::categories::dsl;
 
     let order_by =
-        || -> Box<dyn BoxableExpression<dsl::categories, Sqlite, SqlType = NotSelectable>> {
+        || -> Box<dyn BoxableExpression<dsl::categories, Pg, SqlType = NotSelectable>> {
             if let Some(o) = &query.order {
                 match o.as_str() {
                     "rus" => Box::new(dsl::rus.asc()),
@@ -94,7 +91,7 @@ pub fn select_all_with_filter(
 pub fn update(
     payload: CategoryBody,
     id: i32,
-    conn: &mut SqliteConnection,
+    conn: &mut PgConnection,
 ) -> Result<Option<DbCategory>, DbError> {
     use crate::db::schema::categories::dsl;
 
@@ -107,11 +104,8 @@ pub fn update(
     Ok(Some(category))
 }
 
-pub fn delete(id: i32, conn: &mut SqliteConnection) -> Result<(), DbError> {
+pub fn delete(id: i32, conn: &mut PgConnection) -> Result<(), DbError> {
     use crate::db::schema::categories::dsl;
-    // This need for enable cascade delete for words_categories table
-    diesel::sql_query("PRAGMA foreign_keys = ON").execute(conn)?;
-
     diesel::delete(dsl::categories.filter(dsl::id.eq(id))).execute(conn)?;
 
     Ok(())

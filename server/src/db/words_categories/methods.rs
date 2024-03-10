@@ -6,7 +6,7 @@ use super::models::DbWordCategory;
 pub fn insert(
     category_id: i32,
     word_id: i32,
-    conn: &mut SqliteConnection,
+    conn: &mut PgConnection,
 ) -> Result<DbWordCategory, DbError> {
     use crate::db::schema::words_categories::dsl;
 
@@ -19,7 +19,7 @@ pub fn insert(
     Ok(word_category_relation)
 }
 
-pub fn delete(category_id: i32, word_id: i32, conn: &mut SqliteConnection) -> Result<(), DbError> {
+pub fn delete(category_id: i32, word_id: i32, conn: &mut PgConnection) -> Result<(), DbError> {
     use crate::db::schema::words_categories::dsl;
 
     let deleted_rows = diesel::delete(
@@ -38,7 +38,7 @@ pub fn delete(category_id: i32, word_id: i32, conn: &mut SqliteConnection) -> Re
 
 pub fn get_words_ids_by_category_id(
     category_id: i32,
-    conn: &mut SqliteConnection,
+    conn: &mut PgConnection,
 ) -> Result<Vec<i32>, DbError> {
     use crate::db::schema::words_categories::dsl;
 
@@ -52,7 +52,7 @@ pub fn get_words_ids_by_category_id(
 pub fn sync_categories_with_word(
     category_ids: &[i32],
     word_id: i32,
-    conn: &mut SqliteConnection,
+    conn: &mut PgConnection,
 ) -> Result<(), DbError> {
     use crate::db::schema::words_categories::dsl;
 

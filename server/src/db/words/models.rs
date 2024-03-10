@@ -5,8 +5,8 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, Serialize, Deserialize, Queryable, Insertable)]
 #[diesel(table_name = words)]
 pub struct DbNewWord {
-    pub rus: String,
     pub eng: String,
+    pub rus: String,
     pub srp_latin: String,
     pub srp_cyrillic: String,
     pub created_at: chrono::NaiveDateTime,
@@ -16,10 +16,10 @@ pub struct DbNewWord {
 impl From<Word> for DbNewWord {
     fn from(new_word: Word) -> Self {
         DbNewWord {
+            eng: new_word.eng,
             rus: new_word.rus,
             srp_latin: new_word.srp_latin,
             srp_cyrillic: new_word.srp_cyrillic,
-            eng: new_word.eng,
             created_at: chrono::Utc::now().naive_utc(),
             image: new_word.image,
         }
@@ -40,8 +40,8 @@ impl From<Word> for DbNewWord {
 #[diesel(table_name = words)]
 pub struct DbWord {
     pub id: i32,
-    pub rus: String,
     pub eng: String,
+    pub rus: String,
     pub srp_latin: String,
     pub srp_cyrillic: String,
     pub created_at: chrono::NaiveDateTime,

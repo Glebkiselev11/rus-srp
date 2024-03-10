@@ -1,14 +1,13 @@
 use crate::models::category::{CategoryBody, CategoryWordsBody, NewCategory};
 use crate::models::pagination::Pagination;
 use crate::models::query_options::QueryOptions;
-use crate::DbPool;
 use crate::{db, models::category::NewCategoryBody};
 use actix_web::{web, HttpResponse, Responder};
 
 use super::custom_http_error::{CustomHttpError, ErrorMessagesBuilder};
 
 pub async fn create(
-    pool: web::Data<DbPool>,
+    pool: web::Data<db::PgPool>,
     body: web::Json<NewCategoryBody>,
 ) -> actix_web::Result<impl Responder> {
     let new_category = NewCategory::from(body.into_inner());
@@ -24,7 +23,7 @@ pub async fn create(
 }
 
 pub async fn get_by_id(
-    pool: web::Data<DbPool>,
+    pool: web::Data<db::PgPool>,
     id: web::Path<i32>,
 ) -> actix_web::Result<impl Responder> {
     let category = web::block(move || {
@@ -38,7 +37,7 @@ pub async fn get_by_id(
 }
 
 pub async fn get_list_by_query(
-    pool: web::Data<DbPool>,
+    pool: web::Data<db::PgPool>,
     query: web::Query<QueryOptions>,
 ) -> actix_web::Result<impl Responder> {
     let query = query.into_inner();
@@ -59,7 +58,7 @@ pub async fn get_list_by_query(
 }
 
 pub async fn update(
-    pool: web::Data<DbPool>,
+    pool: web::Data<db::PgPool>,
     id: web::Path<i32>,
     body: web::Json<CategoryBody>,
 ) -> actix_web::Result<impl Responder> {
@@ -79,7 +78,7 @@ pub async fn update(
 }
 
 pub async fn delete(
-    pool: web::Data<DbPool>,
+    pool: web::Data<db::PgPool>,
     id: web::Path<i32>,
 ) -> actix_web::Result<impl Responder> {
     web::block(move || {
@@ -93,7 +92,7 @@ pub async fn delete(
 }
 
 pub async fn add_words(
-    pool: web::Data<DbPool>,
+    pool: web::Data<db::PgPool>,
     category_id: web::Path<i32>,
     body: web::Json<CategoryWordsBody>,
 ) -> actix_web::Result<impl Responder> {
@@ -128,7 +127,7 @@ pub async fn add_words(
 }
 
 pub async fn delete_words(
-    pool: web::Data<DbPool>,
+    pool: web::Data<db::PgPool>,
     path: web::Path<i32>,
     body: web::Json<CategoryWordsBody>,
 ) -> actix_web::Result<impl Responder> {

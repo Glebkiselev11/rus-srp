@@ -21,8 +21,8 @@ impl From<NewCategory> for DbNewCategory {
         DbNewCategory {
             eng: category.eng,
             rus: category.rus,
-            srp_cyrillic: category.srp_cyrillic,
             srp_latin: category.srp_latin,
+            srp_cyrillic: category.srp_cyrillic,
             image: category.image,
             created_at: chrono::Utc::now().naive_utc(),
         }
