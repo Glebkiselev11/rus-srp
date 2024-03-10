@@ -28,10 +28,6 @@ struct Choice {
 
 #[derive(Deserialize, Serialize, Debug)]
 struct ResponseData {
-    id: String,
-    object: String,
-    created: i64,
-    model: String,
     choices: Vec<Choice>,
 }
 
@@ -56,12 +52,10 @@ pub async fn translate(body: web::Json<AiTranslatePayload>) -> actix_web::Result
     match res {
         Ok(resp) => {
             let data: ResponseData = resp.json().await.unwrap();
+            let content = &data.choices[0].message.content;
+            let translation_result = serde_json::from_str::<serde_json::Value>(&content).unwrap();
 
-            let message =
-                serde_json::from_str::<serde_json::Value>(&data.choices[0].message.content)
-                    .unwrap();
-
-            Ok(HttpResponse::Ok().json(message))
+            Ok(HttpResponse::Ok().json(translation_result))
         }
         Err(e) => Err(actix_web::error::ErrorInternalServerError(e)),
     }
