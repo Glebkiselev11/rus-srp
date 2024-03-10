@@ -225,20 +225,31 @@ export default defineComponent({
 						:key="row"
 						:grid-template-columns="gridTemplateColumns"
 					>
-						<td style="height: 20px;">
-							<SkeletonItemComp />
+						<td>
+							<SkeletonItemComp
+								height="20px"
+								width="20px"
+								border-radius="2px"
+							/>
 						</td>
 
-						<td style="height: 40px">
-							<SkeletonItemComp />
+						<td>
+							<SkeletonItemComp
+								height="40px"
+								width="40px"
+								border-radius="8px"
+							/>
 						</td>
 
 						<td
 							v-for="col in translationOrder.length"
 							:key="`${row}-${col}`"
-							style="height: 20px"
 						>
-							<SkeletonItemComp />
+							<SkeletonItemComp 
+								height="20px"
+								random-width
+								border-radius="4px"
+							/>
 						</td>
 					</TableRowComp>
 				</template>

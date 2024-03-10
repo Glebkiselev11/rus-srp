@@ -18,6 +18,7 @@ import PaginationBarComp from "@/components/PaginationBarComp.vue";
 import ZeroStateComp from "@/components/ZeroStateComp.vue";
 import WordsPageCategoryTitleComp from "@/components/WordsPageCategoryTitleComp.vue";
 import CategoriesPreviewBadgesComp from "@/components/CategoriesPreviewBadgesComp.vue";
+import SkeletonItemComp from "@/components/SkeletonItemComp.vue";
 // eslint-disable-next-line max-len
 import CategoryWordsInsertModalComp from "@/components/CategoryWordsInsert/CategoryWordsInsertModalComp.vue";
 import { highlighTextByQuery } from "@/common/utils";
@@ -48,6 +49,7 @@ export default defineComponent({
 		WordFormModalComp,
 		CategoriesPreviewBadgesComp,
 		CategoryWordsInsertModalComp,
+		SkeletonItemComp,
 	},
 	data() {
 		return {
@@ -74,7 +76,7 @@ export default defineComponent({
 		};
 	},
 	computed: {
-		...mapState(usePageWordsStore, ["words", "count"]),
+		...mapState(usePageWordsStore, ["words", "count", "loadState"]),
 		translationColumns() {
 			return getLanguageCodesOrder()
 				.map((code) => ({
@@ -291,7 +293,7 @@ export default defineComponent({
 					@update:order="updateOrder"
 				>
 					<template
-						v-if="words.length"
+						v-if="words.length && loadState === 'loaded'"
 						#body
 					>
 						<TableRowComp
@@ -349,6 +351,44 @@ export default defineComponent({
 										:pressed="isMenuOpen"
 									/>
 								</DropdownMenuComp>
+							</td>
+						</TableRowComp>
+					</template>
+
+					<template
+						v-else-if="loadState === 'loading'"
+						#body
+					>
+						<TableRowComp
+							v-for="row in limit"
+							:key="row"
+							:grid-template-columns="gridTemplateColumns"
+						>
+							<td>
+								<SkeletonItemComp
+									width="40px"
+									height="40px"
+									border-radius="8px"
+								/>
+							</td>
+
+							<td
+								v-for="col in translationColumns.length"
+								:key="`${row}-${col}`"
+							>
+								<SkeletonItemComp
+									height="20px"
+									random-width
+									border-radius="4px"
+								/>
+							</td>
+
+							<td>
+								<SkeletonItemComp
+									height="20px"
+									random-width
+									border-radius="4px"
+								/>
 							</td>
 						</TableRowComp>
 					</template>
