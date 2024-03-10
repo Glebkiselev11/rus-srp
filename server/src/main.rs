@@ -84,10 +84,20 @@ async fn main() -> std::io::Result<()> {
                             )
                             .service(
                                 web::scope("/services")
-                                    .service(web::scope("/translation").route(
-                                        "/translate",
-                                        web::post().to(handler::services::translation::translate),
-                                    ))
+                                    .service(
+                                        web::scope("/translation")
+                                            .route(
+                                                "/translate",
+                                                web::post()
+                                                    .to(handler::services::translation::translate),
+                                            )
+                                            .route(
+                                                "/ai-translate",
+                                                web::post().to(
+                                                    handler::services::ai_translation::translate,
+                                                ),
+                                            ),
+                                    )
                                     .service(web::scope("/images").route(
                                         "/query",
                                         web::get().to(handler::services::images::query),
