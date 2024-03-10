@@ -194,14 +194,22 @@ export default defineComponent({
 		},
 		autoFill() {
 			const from = this.selectedLanguage;
-			const target = getLanguageList()
+			const targets = getLanguageList()
 				.filter(({ value }) => value !== from)
-				.map(({ value }) => value);
-
-			translate(from, this.draftCategory[from], target).then((translations) => {
-				translations.forEach(({ to, text }) => {
-					this.draftCategory[to] = text.toLowerCase();
-				});
+				.map(({ value }) => value)
+				.reduce((acc, cur) => {
+					acc[cur] = this.draftCategory[cur];
+					return acc;
+				}, {} as Record<LanguageCode, string>);
+			
+			translate({
+				[from]: this.draftCategory[from],
+				...targets,
+			}).then((translations) => {
+				this.draftCategory = {
+					...this.draftCategory,
+					...translations,
+				};
 			});
 		},
 		close() {
