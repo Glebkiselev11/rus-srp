@@ -53,8 +53,8 @@ pub fn select_all_with_filter(
                     "-srp_cyrillic" => Box::new(dsl::srp_cyrillic.desc()),
                     "created_at" => Box::new(dsl::created_at.asc()),
                     "-created_at" => Box::new(dsl::created_at.desc()),
-                    "updated_at" => Box::new(dsl::updated_at.asc()),
-                    "-updated_at" => Box::new(dsl::updated_at.desc()),
+                    "updated_at" => Box::new(dsl::updated_at.asc().nulls_first()),
+                    "-updated_at" => Box::new(dsl::updated_at.desc().nulls_last()),
                     _ => Box::new(dsl::created_at.desc()),
                 }
             } else {
