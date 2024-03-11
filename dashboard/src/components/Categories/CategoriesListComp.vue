@@ -6,6 +6,7 @@ import AllWordsCategoryImageComp from "./AllWordsCategoryImageComp.vue";
 import { usePageCategoriesStore } from "@/stores/categories/pageCategories";
 import { mapState } from "pinia";
 import ZeroStateComp from "../ZeroStateComp.vue";
+import SkeletonItemComp from "../SkeletonItemComp.vue";
 
 export default defineComponent({
 	name: "CategoriesListComp",
@@ -14,6 +15,7 @@ export default defineComponent({
 		ListItemComp,
 		AllWordsCategoryImageComp,
 		ZeroStateComp,
+		SkeletonItemComp,
 	},
 	props: {
 		selectedCategoryId: {
@@ -81,7 +83,29 @@ export default defineComponent({
 		</div>
 
 		<div
-			v-if="loadState === 'loaded' && count === 0"
+			v-else-if="loadState === 'loading'"
+			class="categories-list__items"
+		>
+			<div 
+				v-for="i in 15"
+				:key="i"
+				class="categories-list__skeleton-item"
+			>
+				<SkeletonItemComp
+					height="24px"
+					width="24px"
+					border-radius="8px"
+				/>				
+				<SkeletonItemComp
+					height="20px"
+					random-width
+					border-radius="4px"
+				/>
+			</div>
+		</div>
+
+		<div
+			v-else-if="loadState === 'loaded' && count === 0"
 			class="categories-list__zero-state"
 		>
 			<ZeroStateComp
@@ -105,13 +129,19 @@ export default defineComponent({
 	}
 
 	&__items {
-		padding-inline: 12px;
-		padding-block: 12px;
+		padding: 12px;
 		display: flex;
 		flex-direction: column;
 		row-gap: 4px;
 		max-height: calc(100vh - 170px);
 		overflow: auto;
+	}
+
+	&__skeleton-item {
+		display: flex;
+		align-items: center;
+		column-gap: 8px;
+		padding: 8px;
 	}
 
 	&__zero-state {

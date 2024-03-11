@@ -16,6 +16,7 @@ import SwitchComp from "../SwitchComp.vue";
 import ZeroStateComp from "../ZeroStateComp.vue";
 import CheckboxComp from "../CheckboxComp.vue";
 import TooltipComp from "../TooltipComp.vue";
+import SkeletonItemComp from "../SkeletonItemComp.vue";
 
 export default defineComponent({
 	name: "CategoryWordsInsertComp",
@@ -31,6 +32,7 @@ export default defineComponent({
 		ZeroStateComp,
 		CheckboxComp,
 		TooltipComp,
+		SkeletonItemComp,
 	},
 	props: {
 		categoryId: {
@@ -223,17 +225,32 @@ export default defineComponent({
 						:key="row"
 						:grid-template-columns="gridTemplateColumns"
 					>
-						<td
-							class="category-words-insert__skeleton-cell"
-							style="height: 40px;"
-						/>
+						<td>
+							<SkeletonItemComp
+								height="20px"
+								width="20px"
+								border-radius="2px"
+							/>
+						</td>
 
-						<td 
+						<td>
+							<SkeletonItemComp
+								height="40px"
+								width="40px"
+								border-radius="8px"
+							/>
+						</td>
+
+						<td
 							v-for="col in translationOrder.length"
 							:key="`${row}-${col}`"
-							class="category-words-insert__skeleton-cell"
-							style="height: 20px;"
-						/>
+						>
+							<SkeletonItemComp 
+								height="20px"
+								random-width
+								border-radius="4px"
+							/>
+						</td>
 					</TableRowComp>
 				</template>
 			</template>
@@ -299,14 +316,6 @@ export default defineComponent({
 	&__create-word-button {
 		flex-shrink: 0;
 		margin-inline-start: 16px;
-	}
-
-	&__skeleton-cell {
-		background: $color-background-content-tertiary;
-		margin-inline-start: 16px;
-		margin-inline-end: 8px;
-		display: flex;
-		align-items: center;
 	}
 
 	&__footer {

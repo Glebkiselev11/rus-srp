@@ -9,6 +9,7 @@ import type { RequestParams } from "@/types/api";
 import { vInfiniteScroll } from "@vueuse/components";
 import ButtonComp from "./ButtonComp.vue";
 import ZeroStateComp from "./ZeroStateComp.vue";
+import SkeletonItemComp from "./SkeletonItemComp.vue";
 
 export default defineComponent({
 	name: "ImagesSearchComp",
@@ -17,6 +18,7 @@ export default defineComponent({
 		IconComp,
 		ButtonComp,
 		ZeroStateComp,
+		SkeletonItemComp,
 	},
 	directives: {
 		infiniteScroll: vInfiniteScroll,
@@ -160,8 +162,10 @@ export default defineComponent({
 				<div
 					v-for="i in limit"
 					:key="i"
-					class="image-search-list--image image-search-list--skeleton-item"
-				/>
+					class="image-search-list--image"
+				>
+					<SkeletonItemComp />
+				</div>
 			</template>
 		</section>
 	</div>
@@ -196,9 +200,6 @@ export default defineComponent({
 		border: 1px solid $color-image-border;
 	}
 
-	&--skeleton-item {
-		background: $color-background-content-tertiary;
-	}
 }
 
 .selected-image {
