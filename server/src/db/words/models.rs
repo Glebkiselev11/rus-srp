@@ -11,6 +11,7 @@ pub struct DbNewWord {
     pub srp_cyrillic: String,
     pub created_at: chrono::NaiveDateTime,
     pub image: Option<String>,
+    pub translation_approved: bool,
 }
 
 impl From<Word> for DbNewWord {
@@ -22,6 +23,7 @@ impl From<Word> for DbNewWord {
             srp_cyrillic: new_word.srp_cyrillic,
             created_at: chrono::Utc::now().naive_utc(),
             image: new_word.image,
+            translation_approved: new_word.translation_approved,
         }
     }
 }
@@ -48,6 +50,7 @@ pub struct DbWord {
     pub updated_at: Option<chrono::NaiveDateTime>,
     pub image: Option<String>,
     pub category_count: i32,
+    pub translation_approved: bool,
 }
 
 impl DbWord {
@@ -62,6 +65,7 @@ impl DbWord {
             updated_at: Some(chrono::Utc::now().naive_utc()),
             image: payload.image,
             category_count: self.category_count,
+            translation_approved: payload.translation_approved,
         }
     }
 }
@@ -76,6 +80,7 @@ pub struct DbWordWithCategories {
     pub created_at: chrono::NaiveDateTime,
     pub updated_at: Option<chrono::NaiveDateTime>,
     pub image: Option<String>,
+    pub translation_approved: bool,
     pub categories: Vec<DbCategory>,
 }
 
@@ -90,6 +95,7 @@ impl DbWordWithCategories {
             created_at: word.created_at,
             updated_at: word.updated_at,
             image: word.image,
+            translation_approved: word.translation_approved,
             categories,
         }
     }
@@ -105,6 +111,7 @@ impl DbWordWithCategories {
             updated_at: self.updated_at,
             image: self.image.clone(),
             category_count: self.categories.len() as i32,
+            translation_approved: true,
         }
     }
 }

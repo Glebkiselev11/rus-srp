@@ -34,6 +34,7 @@ diesel::table! {
         updated_at -> Nullable<Timestamp>,
         image -> Nullable<Text>,
         category_count -> Int4,
+        translation_approved -> Bool,
     }
 }
 
