@@ -27,6 +27,7 @@ export function convertWordToDraftWord(word: Word | DraftWord): DraftWord {
 		srp_latin: word.srp_latin,
 		srp_cyrillic: word.srp_cyrillic,
 		image: word.image,
+		translation_approved: word.translation_approved,
 		category_ids: "categories" in word 
 			? word.categories.map(category => category.id) 
 			: word.category_ids,

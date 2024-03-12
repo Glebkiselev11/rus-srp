@@ -11,6 +11,7 @@ function _initDraftWord(): DraftWord {
 		srp_cyrillic: "",
 		image: null,
 		category_ids: [],
+		translation_approved: false,
 	};
 }
 

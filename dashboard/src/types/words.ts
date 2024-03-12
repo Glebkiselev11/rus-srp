@@ -7,6 +7,7 @@ type WordBase = {
   srp_latin: string;
   srp_cyrillic: string;
   image: string | null;
+  translation_approved: boolean;
 }
 
 export type DraftWord = {

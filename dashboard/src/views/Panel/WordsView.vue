@@ -28,6 +28,7 @@ import type { LanguageCode } from "@/types/translations";
 import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
 import { getLanguageCodesOrder, getLanguageLabel, translationPreview } from "@/common/translations";
 import { useWordFormTabsStore } from "@/stores/wordFormTabs";
+import TableRowStatusComp from "@/components/Table/TableRowStatusComp.vue";
 
 const LIMIT_DEFAULT = 25;
 
@@ -50,6 +51,7 @@ export default defineComponent({
 		CategoriesPreviewBadgesComp,
 		CategoryWordsInsertModalComp,
 		SkeletonItemComp,
+		TableRowStatusComp,
 	},
 	data() {
 		return {
@@ -88,6 +90,10 @@ export default defineComponent({
 		},
 		columns() {
 			return [
+				{
+					sortable: false,
+					width: "12px",
+				},
 				{ 
 					sortable: true, 
 					sort_key: "image", 
@@ -101,7 +107,7 @@ export default defineComponent({
 				{ 
 					sortable: true, 
 					sort_key: "category_count", 
-					width: "350px", 
+					width: "338px", 
 					label: this.$t("categories"), 
 				},
 				{ sortable: false, width: "auto" },
@@ -303,6 +309,8 @@ export default defineComponent({
 							:grid-template-columns="gridTemplateColumns"	
 							@hover="setHoveredWordId(word.id, $event)"
 						>
+							<TableRowStatusComp :active="!word.translation_approved" />
+
 							<td>
 								<ImagePreviewComp
 									:src="word.image"
@@ -364,6 +372,8 @@ export default defineComponent({
 							:key="row"
 							:grid-template-columns="gridTemplateColumns"
 						>
+							<td />
+
 							<td>
 								<SkeletonItemComp
 									width="40px"
