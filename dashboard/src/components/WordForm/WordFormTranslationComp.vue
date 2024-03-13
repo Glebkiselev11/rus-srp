@@ -62,6 +62,9 @@ export default defineComponent({
 				return this.$t("new-word");
 			}
 		},
+		showTranslationApprovedCheckbox() {
+			return this.allTranslationsFilled;
+		},
 	},
 	methods: {
 		...mapActions(useDraftWordStore, [
@@ -119,6 +122,7 @@ export default defineComponent({
 					<h3>{{ $t('translation') }}</h3>
 
 					<CheckboxListItemComp
+						v-if="showTranslationApprovedCheckbox"
 						:label="$t(draftWord.translation_approved ? 'approved' : 'not-approved')"
 						appearance="secondary"
 						padding-block="6px"
