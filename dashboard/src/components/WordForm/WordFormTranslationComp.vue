@@ -1,16 +1,24 @@
 <script lang="ts">
 import { defineComponent } from "vue";
+import type { LanguageCode } from "@/types/translations";
 import ImageSectionComp from "../ImageSectionComp.vue";
 import InputComp from "../InputComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";
 import { mapActions, mapState } from "pinia";
 import { getLanguageLabel, translationPreview, getLanguageCodesOrder } from "@/common/translations";
 import ButtonComp from "../ButtonComp.vue";
-import type { LanguageCode } from "@/types/translations";
+import CheckboxListItemComp from "../CheckboxListItemComp.vue";
+import CheckboxComp from "../CheckboxComp.vue";
 
 export default defineComponent({
 	name: "WordFormTranslationComp",
-	components: { ImageSectionComp, InputComp, ButtonComp },
+	components: { 
+		ImageSectionComp, 
+		InputComp, 
+		ButtonComp, 
+		CheckboxListItemComp, 
+		CheckboxComp,
+	},
 	props: {
 		uniqueWordError: {
 			type: Boolean,
@@ -36,6 +44,7 @@ export default defineComponent({
 	data() {
 		return {
 			autoFillTranslationsLoading: false,
+			test: false,
 		};
 	},
 	computed: {
@@ -106,7 +115,17 @@ export default defineComponent({
 
 		<div class="word-form-translation__row">
 			<div>
-				<h3>{{ $t('translation') }}</h3>
+				<span class="word-form-translation__header-wrap">
+					<h3>{{ $t('translation') }}</h3>
+
+					<CheckboxListItemComp
+						:label="$t(draftWord.translation_approved ? 'approved' : 'not-approved')"
+						appearance="secondary"
+						padding-block="6px"
+					>
+						<CheckboxComp v-model="draftWord.translation_approved" />
+					</CheckboxListItemComp>
+				</span>
 
 				<span
 					v-if="uniqueWordError"
@@ -158,6 +177,12 @@ export default defineComponent({
 
 	&__input {
 		margin-block: 20px;
+	}
+
+	&__header-wrap {
+		display: flex;
+		align-items: center;
+		column-gap: 16px;
 	}
 }
 
