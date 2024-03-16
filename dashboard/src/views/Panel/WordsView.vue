@@ -7,8 +7,6 @@ import type { Id, Order, RequestParams } from "@/types/api";
 
 import CategoriesComp from "@/components/Categories/CategoriesComp.vue";
 import TopBarComp from "@/components/TopBarComp.vue";
-import InputComp from "@/components/InputComp.vue";
-import SelectComp from "@/components/SelectComp.vue";
 import TableComp from "@/components/Table/TableComp.vue";
 import TableRowComp from "@/components/Table/TableRowComp.vue";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
@@ -29,6 +27,7 @@ import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
 import { getLanguageCodesOrder, getLanguageLabel, translationPreview } from "@/common/translations";
 import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 import TableRowStatusComp from "@/components/Table/TableRowStatusComp.vue";
+import WordsViewFilterPanelComp from "@/components/WordsView/WordsViewFilterPanelComp.vue";
 
 const LIMIT_DEFAULT = 25;
 
@@ -36,8 +35,6 @@ export default defineComponent({
 	name: "WordsView",
 	components: {
 		TopBarComp,
-		InputComp,
-		SelectComp,
 		TableComp,
 		TableRowComp,
 		ImagePreviewComp,
@@ -52,6 +49,7 @@ export default defineComponent({
 		CategoryWordsInsertModalComp,
 		SkeletonItemComp,
 		TableRowStatusComp,
+		WordsViewFilterPanelComp,
 	},
 	data() {
 		return {
@@ -283,26 +281,12 @@ export default defineComponent({
 			</TopBarComp>
 
 			<div class="words-view__content">
-				<div class="words-view__filter-panel">
-					<InputComp
-						v-model="search"
-						type="text"
-						:placeholder="$t('find-word')"
-						left-icon="search"
-						debounce
-						width="360px"
-					/>	
+				<WordsViewFilterPanelComp
+					v-model:search="search"
+					v-model:order="order"
+					:order-options="orderOptions"
+				/>
 
-					<SelectComp
-						v-model="order"
-						:options="orderOptions"
-						appearance="inline"
-						icon="sort"
-						size="compact"
-						:placeholder="$t('to-sort')"
-						compact
-					/>
-				</div>
 				<TableComp
 					:columns="columns"
 					:order="filter.order"
@@ -490,13 +474,6 @@ export default defineComponent({
 	grid-template-columns: 280px 1fr;
 	width: 100%;
 	height: 100%;
-
-	&__filter-panel {
-		display: flex;
-		align-items: flex-end;
-		justify-content: space-between;
-		margin-block-end: 16px;
-	}
 	
 	&__content {
 		padding-inline: 16px;
