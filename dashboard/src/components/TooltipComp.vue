@@ -68,7 +68,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
-$shadow: rgba(2, 18, 38, 0.08);
 
 .tooltip__container {
 	position: relative;

@@ -239,6 +239,9 @@ export default defineComponent({
 		refetch() {
 			this.fetchPageWords(this.filter);
 		},
+		confirmTranslation(word: Word) {
+			this.updateWord(word.id, { ...word, translation_approved: true });
+		},
 	},
 });
 </script>
@@ -309,7 +312,31 @@ export default defineComponent({
 							:grid-template-columns="gridTemplateColumns"	
 							@hover="setHoveredWordId(word.id, $event)"
 						>
-							<TableRowStatusComp :active="!word.translation_approved" />
+							<TableRowStatusComp
+								:active="!word.translation_approved"
+								:disabled="word.translation_approved"
+							>
+								<div class="translation-confirmation-modal">
+									<span 
+										class="translation-confirmation-modal__title"
+										v-text="$t('translation-not-confirmed')"
+									/>
+
+									<div class="translation-confirmation-modal__buttons">
+										<ButtonComp 
+											:label="$t('confirm')"
+											appearance="secondary"
+											@click="confirmTranslation(word)"
+										/>
+										<ButtonComp 
+											:label="$t('edit')"
+											appearance="secondary"
+											icon="edit"
+											@click="openEditingWordForm(word.id)"
+										/>
+									</div>
+								</div>
+							</TableRowStatusComp>
 
 							<td>
 								<ImagePreviewComp
@@ -447,6 +474,7 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
+@import "@/styles/main.scss";
 
 .words-view {
 	display: grid;
@@ -467,6 +495,21 @@ export default defineComponent({
 
 	&__add-to-category-button {
 		margin-inline-end: 16px;
+	}
+}
+
+.translation-confirmation-modal {
+	display: flex;
+	flex-direction: column;
+
+	&__title {
+		@include text-subtitle-1;
+		margin-block-end: 12px;
+	}
+
+	&__buttons {
+		display: flex;
+		column-gap: 16px;
 	}
 }
 </style>

@@ -100,5 +100,7 @@
   "login-failed": "Neispravno korisničko ime ili lozinka",
   "logout": "Odjaviti se",
   "approved": "Potvrđen",
-  "not-approved": "Nije potvrđen"
+  "not-approved": "Nije potvrđen",
+  "translation-not-confirmed": "Prevod nije potvrđen",
+  "confirm": "Potvrdi"
 }
