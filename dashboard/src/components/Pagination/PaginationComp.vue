@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import ButtonComp from "./ButtonComp.vue";
+import ButtonComp from "@/components/ButtonComp.vue";
 import PaginationButtonComp from "./PaginationButtonComp.vue";
 
 const BEFORE_AND_AFTER_ELLIPSIS = 2;

@@ -14,7 +14,7 @@ import TableRowComp from "@/components/Table/TableRowComp.vue";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import ButtonComp from "@/components/ButtonComp.vue";
 import DropdownMenuComp from "@/components/DropdownMenuComp.vue";
-import PaginationBarComp from "@/components/PaginationBarComp.vue";
+import PaginationBarComp from "@/components/Pagination/PaginationBarComp.vue";
 import ZeroStateComp from "@/components/ZeroStateComp.vue";
 import WordsPageCategoryTitleComp from "@/components/WordsPageCategoryTitleComp.vue";
 import CategoriesPreviewBadgesComp from "@/components/CategoriesPreviewBadgesComp.vue";
