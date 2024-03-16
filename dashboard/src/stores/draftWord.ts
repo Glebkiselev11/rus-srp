@@ -1,7 +1,7 @@
 import type { DraftWord, Word } from "@/types/words";
 import { defineStore } from "pinia";
 import { convertWordToDraftWord, isAnyFieldHasChanged } from "@/common/utils";
-import { translate } from "@/common/translations";
+import { getLanguageCodesOrder, translate } from "@/common/translations";
 
 function _initDraftWord(): DraftWord {
 	return {
@@ -50,6 +50,15 @@ export const useDraftWordStore = defineStore("draftWord", {
 				return isAnyFieldHasChanged(_initDraftWord(), state.draftWord);
 			}
 		},
+		isTranslationChanged(state): boolean {
+			const initialWord = state.initialWord;
+
+			if (initialWord) {
+				const keys = getLanguageCodesOrder();
+				return keys.some(key => initialWord[key] !== state.draftWord[key]);
+			}
+			return false;
+		},
 	},
 
 	actions: {
@@ -66,6 +75,9 @@ export const useDraftWordStore = defineStore("draftWord", {
 		},
 		resetDraftWord() {
 			this.initDraftWord();
+		},
+		resetTranslationApproved() {
+			this.draftWord.translation_approved = this.initialWord?.translation_approved || false;
 		},
 		async autoFillTranslations() {
 			const fields = await translate(this.draftWord);

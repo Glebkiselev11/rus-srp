@@ -44,7 +44,6 @@ export default defineComponent({
 	data() {
 		return {
 			autoFillTranslationsLoading: false,
-			test: false,
 		};
 	},
 	computed: {
@@ -54,6 +53,7 @@ export default defineComponent({
 			"semifilledTranslations",
 			"allTranslationsFilled",
 			"isEditMode",
+			"isTranslationChanged",
 		]),
 		wordPreview(): string {
 			if (this.isEditMode || this.anyTranslationFilled) {
@@ -65,10 +65,21 @@ export default defineComponent({
 		showTranslationApprovedCheckbox() {
 			return this.allTranslationsFilled;
 		},
+
+	},
+	watch: {
+		isTranslationChanged(is: boolean) {
+			if (is) {
+				this.draftWord.translation_approved = false;
+			} else {
+				this.resetTranslationApproved();
+			}
+		},
 	},
 	methods: {
 		...mapActions(useDraftWordStore, [
 			"autoFillTranslations",
+			"resetTranslationApproved",
 		]),
 		getLanguageLabel,
 		getLanguageCodesOrder,
