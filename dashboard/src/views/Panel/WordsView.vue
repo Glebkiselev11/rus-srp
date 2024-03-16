@@ -195,6 +195,14 @@ export default defineComponent({
 		showAddToCategoryButton(): boolean {
 			return this.filter.category_id !== undefined;
 		},
+		showPagination(): boolean {
+			return this.count > this.limit;
+		},
+		tableHeight(): string {
+			const HeaderAndPanelHeight = "154px";
+
+			return `calc(100vh - ${HeaderAndPanelHeight})`;
+		},
 	},
 	mounted() {
 		this.fetchPageWords(this.filter);
@@ -299,6 +307,7 @@ export default defineComponent({
 					:columns="columns"
 					:order="filter.order"
 					:grid-template-columns="gridTemplateColumns"
+					:table-height="tableHeight"
 					@update:order="updateOrder"
 				>
 					<template
@@ -442,7 +451,7 @@ export default defineComponent({
 					</template>
 
 					<template
-						v-if="count > limit"
+						v-if="showPagination"
 						#pagination
 					>
 						<PaginationBarComp

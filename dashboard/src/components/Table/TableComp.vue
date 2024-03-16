@@ -34,9 +34,9 @@ export default defineComponent({
 				interval: 9999999,
 			}),
 		},
-		bodyHeight: {
+		tableHeight: {
 			type: String,
-			default: "calc(100vh - 270px)",
+			default: "700px",
 		},
 	},
 
@@ -71,7 +71,8 @@ export default defineComponent({
 		class="table-wrap"
 	>
 		<table
-			class="table" 
+			class="table"
+			:style="{ height: tableHeight }"
 		>
 			<thead
 				v-if="columns.length"
@@ -96,14 +97,13 @@ export default defineComponent({
 			<tbody
 				ref="tableBody"
 				v-infinite-scroll="[handleScrollToBottom, infiniteScrollConfig]"
-				:style="{ height: bodyHeight }"
 				class="table__body"
 			>
 				<slot name="body" />
 			</tbody>
-		</table>
 
-		<slot name="pagination" />
+			<slot name="pagination" />
+		</table>
 	</div>
 </template>
 
@@ -111,6 +111,8 @@ export default defineComponent({
 @import "@/styles/main.scss";
 
 .table-wrap {
+	display: flex;
+  flex-direction: column;
 	border: 1px solid $color-separator-primary;
 	border-radius: 8px;
 	overflow: hidden;
@@ -120,6 +122,8 @@ export default defineComponent({
 	width: 100%;
 	background: $color-background-content-primary;
 	border-collapse: collapse;
+	display: flex;
+  flex-direction: column;
 
 	&__header {
 		display: block;
@@ -142,9 +146,8 @@ export default defineComponent({
 	}
 
 	&__body {
-		display: block;
-		overflow-y: auto;
-		position: relative;
+		flex: 1; // This allows the body to expand and fill the available space
+    overflow-y: auto;
 
 		tr:last-child {
 			border-block-end: none;
