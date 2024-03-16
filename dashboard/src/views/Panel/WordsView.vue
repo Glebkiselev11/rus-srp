@@ -16,7 +16,7 @@ import PaginationBarComp from "@/components/Pagination/PaginationBarComp.vue";
 import ZeroStateComp from "@/components/ZeroStateComp.vue";
 import WordsPageCategoryTitleComp from "@/components/WordsPageCategoryTitleComp.vue";
 import CategoriesPreviewBadgesComp from "@/components/CategoriesPreviewBadgesComp.vue";
-import SkeletonItemComp from "@/components/SkeletonItemComp.vue";
+import WordsViewTableRowSkeletonComp from "@/components/WordsView/WordsViewTableRowSkeletonComp.vue";
 import CategoryWordsInsertModalComp from "@/components/CategoryWordsInsert/CategoryWordsInsertModalComp.vue";
 import { highlighTextByQuery } from "@/common/utils";
 
@@ -47,7 +47,7 @@ export default defineComponent({
 		WordFormModalComp,
 		CategoriesPreviewBadgesComp,
 		CategoryWordsInsertModalComp,
-		SkeletonItemComp,
+		WordsViewTableRowSkeletonComp,
 		TableRowStatusComp,
 		WordsViewFilterPanelComp,
 		WordsViewTranslationConfirmationComp,
@@ -295,128 +295,92 @@ export default defineComponent({
 					:table-height="tableHeight"
 					@update:order="updateOrder"
 				>
-					<template
-						v-if="words.length && loadState === 'loaded'"
-						#body
-					>
-						<TableRowComp
-							v-for="word in words"
-							:id="word.id"
-							:key="word.id"
-							:grid-template-columns="gridTemplateColumns"	
-							@hover="setHoveredWordId(word.id, $event)"
-						>
-							<TableRowStatusComp
-								:active="!word.translation_approved"
-								:disabled="word.translation_approved"
+					<template #body>
+						<template v-if="words.length && loadState === 'loaded'">
+							<TableRowComp
+								v-for="word in words"
+								:id="word.id"
+								:key="word.id"
+								:grid-template-columns="gridTemplateColumns"	
+								@hover="setHoveredWordId(word.id, $event)"
 							>
-								<WordsViewTranslationConfirmationComp
-									@confirm-translation="confirmTranslation(word)"
-									@open-editing-word-form="openEditingWordForm(word.id)"
-								/>
-							</TableRowStatusComp>
-
-							<td>
-								<ImagePreviewComp
-									:src="word.image"
-									:image-search-modal-subtitle="translationPreview(word)"
-									:default-image-search-query="word.eng"
-									@update:src="src => updateWordImage(word, src)"
-								/>
-							</td>
-
-							<td
-								v-for="(translation, i) in translationColumns"
-								:key="`${word.id}-${i}`"
-								v-html="highlighTextByQuery(word[translation.sort_key], search)"
-							/>
-
-							<td>
-								<CategoriesPreviewBadgesComp
-									:categories="word.categories"
-									:show-add-button="hoverOnWordId === word.id"
-									@click="openEditingWordFormOnCategoriesTab(word.id)"
-								/>
-							</td>
-
-							<td style="margin-inline-start: auto">
-								<DropdownMenuComp 
-									v-slot="{ isMenuOpen }"
-									:items="[
-										{ 
-											label: $t('edit'),
-											icon: 'edit',
-											handler: () => openEditingWordForm(word.id)
-										},
-										'separator',
-										{ 
-											label: $t('delete'), 
-											icon: 'delete', 
-											color: 'negative', 
-											handler: () => removeWord(word)
-										},
-									]"		
+								<TableRowStatusComp
+									:active="!word.translation_approved"
+									:disabled="word.translation_approved"
 								>
-									<ButtonComp
-										icon="more_vert"
-										appearance="inline"
-										color="neutral"
-										:pressed="isMenuOpen"
+									<WordsViewTranslationConfirmationComp
+										@confirm-translation="confirmTranslation(word)"
+										@open-editing-word-form="openEditingWordForm(word.id)"
 									/>
-								</DropdownMenuComp>
-							</td>
-						</TableRowComp>
-					</template>
+								</TableRowStatusComp>
 
-					<template
-						v-else-if="loadState === 'loading'"
-						#body
-					>
-						<TableRowComp
-							v-for="row in limit"
-							:key="row"
-							:grid-template-columns="gridTemplateColumns"
-						>
-							<td />
+								<td>
+									<ImagePreviewComp
+										:src="word.image"
+										:image-search-modal-subtitle="translationPreview(word)"
+										:default-image-search-query="word.eng"
+										@update:src="src => updateWordImage(word, src)"
+									/>
+								</td>
 
-							<td>
-								<SkeletonItemComp
-									width="40px"
-									height="40px"
-									border-radius="8px"
+								<td
+									v-for="(translation, i) in translationColumns"
+									:key="`${word.id}-${i}`"
+									v-html="highlighTextByQuery(word[translation.sort_key], search)"
 								/>
-							</td>
 
-							<td
-								v-for="col in translationColumns.length"
-								:key="`${row}-${col}`"
-							>
-								<SkeletonItemComp
-									height="20px"
-									random-width
-									border-radius="4px"
-								/>
-							</td>
+								<td>
+									<CategoriesPreviewBadgesComp
+										:categories="word.categories"
+										:show-add-button="hoverOnWordId === word.id"
+										@click="openEditingWordFormOnCategoriesTab(word.id)"
+									/>
+								</td>
 
-							<td>
-								<SkeletonItemComp
-									height="20px"
-									random-width
-									border-radius="4px"
-								/>
-							</td>
-						</TableRowComp>
-					</template>
+								<td style="margin-inline-start: auto">
+									<DropdownMenuComp 
+										v-slot="{ isMenuOpen }"
+										:items="[
+											{ 
+												label: $t('edit'),
+												icon: 'edit',
+												handler: () => openEditingWordForm(word.id)
+											},
+											'separator',
+											{ 
+												label: $t('delete'), 
+												icon: 'delete', 
+												color: 'negative', 
+												handler: () => removeWord(word)
+											},
+										]"		
+									>
+										<ButtonComp
+											icon="more_vert"
+											appearance="inline"
+											color="neutral"
+											:pressed="isMenuOpen"
+										/>
+									</DropdownMenuComp>
+								</td>
+							</TableRowComp>
+						</template>
 
-					<template
-						v-else
-						#body
-					>
-						<ZeroStateComp
-							icon="search"
-							:title="notFoundTitle"
-							:description="$t('not-found-description')"
-						/>
+						<template v-else-if="loadState === 'loading'">
+							<WordsViewTableRowSkeletonComp 
+								:rows="limit"
+								:grid-template-columns="gridTemplateColumns"
+								:central-columns-count="translationColumns.length"
+							/>
+						</template>
+
+						<template v-else>
+							<ZeroStateComp
+								icon="search"
+								:title="notFoundTitle"
+								:description="$t('not-found-description')"
+							/>
+						</template>
 					</template>
 
 					<template
