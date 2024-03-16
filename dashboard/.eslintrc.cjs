@@ -8,24 +8,24 @@ module.exports = {
 		"@vue/eslint-config-typescript/recommended",
 	],
 	rules: {
-		"max-len": ["error", {
-			code: 100,
+		"max-len": ["warn", {
+			code: 150,
 		}],
-		indent: ["error", "tab"],
-		"quotes": ["error", "double"],
-		"semi": ["error", "always"],
-		"comma-dangle": ["error", "always-multiline"],
-		"no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 1 }],
+		indent: ["warn", "tab"],
+		"quotes": ["warn", "double"],
+		"semi": ["warn", "always"],
+		"comma-dangle": ["warn", "always-multiline"],
+		"no-multiple-empty-lines": ["warn", { "max": 1, "maxEOF": 1 }],
 		"eol-last": ["error", "always"],
 		"vue/no-v-html": "off",
-		"vue/html-indent": ["error", "tab", {
+		"vue/html-indent": ["warn", "tab", {
 			"attribute": 1,
 			"baseIndent": 1,
 			"closeBracket": 0,
 			"alignAttributesVertically": true,
 			"ignores": [],
 		}],
-		"object-curly-spacing": ["error", "always"],
+		"object-curly-spacing": ["warn", "always"],
 		"comma-spacing": [2, { "before": false, "after": true }],
 	},
 };
