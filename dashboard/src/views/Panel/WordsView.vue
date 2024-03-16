@@ -17,7 +17,6 @@ import ZeroStateComp from "@/components/ZeroStateComp.vue";
 import WordsPageCategoryTitleComp from "@/components/WordsPageCategoryTitleComp.vue";
 import CategoriesPreviewBadgesComp from "@/components/CategoriesPreviewBadgesComp.vue";
 import SkeletonItemComp from "@/components/SkeletonItemComp.vue";
-// eslint-disable-next-line max-len
 import CategoryWordsInsertModalComp from "@/components/CategoryWordsInsert/CategoryWordsInsertModalComp.vue";
 import { highlighTextByQuery } from "@/common/utils";
 
@@ -28,6 +27,7 @@ import { getLanguageCodesOrder, getLanguageLabel, translationPreview } from "@/c
 import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 import TableRowStatusComp from "@/components/Table/TableRowStatusComp.vue";
 import WordsViewFilterPanelComp from "@/components/WordsView/WordsViewFilterPanelComp.vue";
+import WordsViewTranslationConfirmationComp from "@/components/WordsView/WordsViewTranslationConfirmationComp.vue";
 
 const LIMIT_DEFAULT = 25;
 
@@ -50,6 +50,7 @@ export default defineComponent({
 		SkeletonItemComp,
 		TableRowStatusComp,
 		WordsViewFilterPanelComp,
+		WordsViewTranslationConfirmationComp,
 	},
 	data() {
 		return {
@@ -309,26 +310,10 @@ export default defineComponent({
 								:active="!word.translation_approved"
 								:disabled="word.translation_approved"
 							>
-								<div class="translation-confirmation-modal">
-									<span 
-										class="translation-confirmation-modal__title"
-										v-text="$t('translation-not-confirmed')"
-									/>
-
-									<div class="translation-confirmation-modal__buttons">
-										<ButtonComp 
-											:label="$t('confirm')"
-											appearance="secondary"
-											@click="confirmTranslation(word)"
-										/>
-										<ButtonComp 
-											:label="$t('edit')"
-											appearance="secondary"
-											icon="edit"
-											@click="openEditingWordForm(word.id)"
-										/>
-									</div>
-								</div>
+								<WordsViewTranslationConfirmationComp
+									@confirm-translation="confirmTranslation(word)"
+									@open-editing-word-form="openEditingWordForm(word.id)"
+								/>
 							</TableRowStatusComp>
 
 							<td>
@@ -484,18 +469,4 @@ export default defineComponent({
 	}
 }
 
-.translation-confirmation-modal {
-	display: flex;
-	flex-direction: column;
-
-	&__title {
-		@include text-subtitle-1;
-		margin-block-end: 12px;
-	}
-
-	&__buttons {
-		display: flex;
-		column-gap: 16px;
-	}
-}
 </style>
