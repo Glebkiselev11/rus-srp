@@ -22,4 +22,8 @@ impl QueryOptions {
         let s = self.search.clone().unwrap_or_else(String::new);
         format!("%{}%", s.to_lowercase().trim())
     }
+
+    pub fn get_order(&self) -> String {
+        self.order.clone().unwrap_or_else(String::new)
+    }
 }
