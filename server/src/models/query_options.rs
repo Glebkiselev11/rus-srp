@@ -7,6 +7,7 @@ pub struct QueryOptions {
     pub limit: Option<i64>,
     pub order: Option<String>,
     pub category_id: Option<i32>,
+    pub translation_approved_status: Option<String>,
 }
 
 impl QueryOptions {
@@ -25,5 +26,12 @@ impl QueryOptions {
 
     pub fn get_order(&self) -> String {
         self.order.clone().unwrap_or_else(String::new)
+    }
+
+    pub fn must_exclude_approved_translations(&self) -> bool {
+        match self.translation_approved_status.clone() {
+            Some(s) => s == "exclude_approved",
+            _ => false,
+        }
     }
 }

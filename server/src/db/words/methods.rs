@@ -83,6 +83,10 @@ pub fn select_all_with_filter(
                 .or(dsl::eng.like(&search)),
         );
 
+        if query.must_exclude_approved_translations() {
+            base_query = base_query.filter(dsl::translation_approved.eq(false));
+        }
+
         if let Some(ids) = words_ids.clone() {
             base_query = base_query.filter(dsl::id.eq_any(ids));
         }
