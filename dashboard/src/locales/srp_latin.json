@@ -102,5 +102,6 @@
   "approved": "Potvrđen",
   "not-approved": "Nije potvrđen",
   "translation-not-confirmed": "Prevod nije potvrđen",
-  "confirm": "Potvrdi"
+  "confirm": "Potvrdi",
+  "only-unconfirmed": "Samo nepotvrđeni"
 }

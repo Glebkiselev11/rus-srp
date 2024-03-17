@@ -3,7 +3,7 @@ import { defineComponent } from "vue";
 import { mapActions, mapState } from "pinia";
 import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/types/translations";
-import type { Id, Order, RequestParams } from "@/types/api";
+import type { Id, Order, RequestParams, TranslationApprovedStatus } from "@/types/api";
 import { useWordsActionsStore } from "@/stores/words/actions";
 import { usePageWordsStore } from "@/stores/words/pageWords";
 import { useWordFormTabsStore } from "@/stores/wordFormTabs";
@@ -68,6 +68,7 @@ export default defineComponent({
 				limit: LIMIT_DEFAULT,
 				order: "-created_at" as Order,
 				category_id: undefined,
+				translation_approved_status: "all" as TranslationApprovedStatus,
 			},
 			showWordForm: false,
 			showCategoryWordsInsertModal: false,
@@ -118,13 +119,15 @@ export default defineComponent({
 		},
 		filter: {
 			get(): RequestParams {
-				const { search, offset, limit, order, category_id } = this.defaultFilter;
+				const { search, offset, limit, order, category_id, translation_approved_status } = this.defaultFilter;
 				return {
 					search: this.$route.query.search_word as string || search,
 					offset: Number(this.$route.query.offset) || offset,
 					limit: Number(this.$route.query.limit) || limit,
 					order: (this.$route.query.order_word) as Order || order,
 					category_id: Number(this.$route.query.category_id) || category_id,
+					translation_approved_status: 
+						this.$route.query.translation_approved_status as TranslationApprovedStatus || translation_approved_status,
 				};
 			},
 			set(params: RequestParams) {
@@ -136,6 +139,7 @@ export default defineComponent({
 						limit: params.limit,
 						order_word: params.order,
 						category_id: params.category_id,
+						translation_approved_status: params.translation_approved_status,
 					},
 				}).then(() => {
 					this.fetchPageWords(params);
@@ -185,6 +189,14 @@ export default defineComponent({
 			},
 			set(category_id: number | undefined) {
 				this.filter = { ...this.defaultFilter, category_id };
+			},
+		},
+		translation_approved_status: {
+			get(): TranslationApprovedStatus {
+				return this.filter.translation_approved_status;
+			},
+			set(translation_approved_status: TranslationApprovedStatus) {
+				this.filter = { ...this.filter, translation_approved_status };
 			},
 		},
 		notFoundTitle(): string {
@@ -284,6 +296,7 @@ export default defineComponent({
 				<WordsViewFilterPanelComp
 					v-model:search="search"
 					v-model:order="order"
+					v-model:translation-approved-status="translation_approved_status"
 					:order-options="orderOptions"
 				/>
 

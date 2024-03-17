@@ -28,7 +28,11 @@ export type RequestParams = {
   limit: number;
   order?: Order;
   category_id?: number;
+  translation_approved_status: TranslationApprovedStatus;
 }
+
+// exclude_approved - exclude approved translations, all - include all translations
+export type TranslationApprovedStatus = "exclude_approved" | "all"; 
 
 export type OptionalRequestParams = Partial<RequestParams>;
 

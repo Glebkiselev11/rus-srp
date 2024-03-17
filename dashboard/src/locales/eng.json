@@ -102,5 +102,6 @@
   "approved": "Approved",
   "not-approved": "Not approved",
   "translation-not-confirmed": "Translation not confirmed",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "only-unconfirmed": "Only unconfirmed"
 }
