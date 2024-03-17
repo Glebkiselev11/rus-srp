@@ -93,10 +93,15 @@
   "show-only-selected": "Показать только выбранные",
   "included-in-the-category": "Состоит в категории",
   "dont-add-to-category": "Не добавлять в категорию",
-  "login-to-word-database" : "Вход в базу слов",
+  "login-to-word-database": "Вход в базу слов",
   "to-login": "Войти",
   "login": "Логин",
   "password": "Пароль",
   "login-failed": "Неправильный логин или пароль",
-  "logout": "Выйти"
+  "logout": "Выйти",
+  "approved": "Подтвержден",
+  "not-approved": "Не подтвержден",
+  "translation-not-confirmed": "Перевод не подтвержден",
+  "confirm": "Подтвердить",
+  "only-unconfirmed": "Только неподтвержденные"
 }

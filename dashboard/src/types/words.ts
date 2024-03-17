@@ -7,10 +7,11 @@ type WordBase = {
   srp_latin: string;
   srp_cyrillic: string;
   image: string | null;
-}
+  translation_approved: boolean;
+};
 
 export type DraftWord = {
-  category_ids: Id[]; 
+  category_ids: Id[];
 } & WordBase;
 
 export type Word = {

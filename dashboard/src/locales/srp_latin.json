@@ -93,10 +93,15 @@
   "show-only-selected": "Prikaži samo izabrano",
   "included-in-the-category": "Uključeno u kategoriju",
   "dont-add-to-category": "Ne dodajte u kategoriju",
-  "login-to-word-database" : "Prijavite se u bazu reči",
+  "login-to-word-database": "Prijavite se u bazu reči",
   "to-login": "Prijavite se",
   "login": "Login",
   "password": "Lozinka",
   "login-failed": "Neispravno korisničko ime ili lozinka",
-  "logout": "Odjaviti se"
+  "logout": "Odjaviti se",
+  "approved": "Potvrđen",
+  "not-approved": "Nije potvrđen",
+  "translation-not-confirmed": "Prevod nije potvrđen",
+  "confirm": "Potvrdi",
+  "only-unconfirmed": "Samo nepotvrđeni"
 }

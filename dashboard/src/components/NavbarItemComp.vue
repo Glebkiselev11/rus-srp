@@ -4,85 +4,80 @@ import IconComp from "@/components/IconComp/index.vue";
 import type { IconName } from "../types/icons";
 
 export default defineComponent({
-	name: "NavbarItemComp",
-	components: {
-		IconComp,
-	},
-	props: {
-		active: {
-			type: Boolean,
-			default: false,
-		},
-		iconName: {
-			type: String as PropType<IconName>,
-			required: true,
-		},
-		label: {
-			type: String,
-			default: "",
-		},
-		showLabels: {
-			type: Boolean,
-			default: false,
-		},
-	},
+  name: "NavbarItemComp",
+  components: {
+    IconComp,
+  },
+  props: {
+    active: {
+      type: Boolean,
+      default: false,
+    },
+    iconName: {
+      type: String as PropType<IconName>,
+      required: true,
+    },
+    label: {
+      type: String,
+      default: "",
+    },
+    showLabels: {
+      type: Boolean,
+      default: false,
+    },
+  },
 });
-
 </script>
 
 <template>
-	<div
-		class="navbar-item"
-		:class="{'navbar-item--active': active}"
-	>
-		<IconComp
-			:name="iconName"
-			:color="active ? 'accent-primary' : 'primary'"
-		/>
+  <div class="navbar-item" :class="{ 'navbar-item--active': active }">
+    <IconComp :name="iconName" :color="active ? 'accent-primary' : 'primary'" />
 
-		<span 
-			v-if="showLabels"
-			class="navbar-item__label"
-			:class="{ 'navbar-item__label--active': active }"
-		>
-			{{ label }}
-		</span>
-	</div>
+    <span
+      v-if="showLabels"
+      class="navbar-item__label"
+      :class="{ 'navbar-item__label--active': active }"
+    >
+      {{ label }}
+    </span>
+  </div>
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main.scss";
+@import "@/styles/main";
 
 .navbar-item {
-	display: flex;	
-	align-items: center;
-	column-gap: 12px;
-	min-block-size: 48px;
-	min-inline-size: 48px;
-	padding: 12px;
-	border-radius: 12px;
-	cursor: pointer;
+  display: flex;
+  align-items: center;
+  column-gap: 12px;
+  min-block-size: 48px;
+  min-inline-size: 48px;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
 
-	&:hover {
-		background-color: $color-background-content-primary-hovered;
-	}
+  &:hover {
+    background-color: $color-background-content-primary-hovered;
+  }
 
-	&--active {
-		background-color: $color-background-accent-primary-tint;
-		&:hover {
-			cursor: default;
-			@extend .navbar-item--active;
-		}
-	}
+  &--active {
+    background-color: $color-background-accent-primary-tint;
 
-	&__label {
-		@include text-body-2;
-		color: $color-text-primary;
+    &:hover {
+      cursor: default;
 
-		&--active {
-			color: $color-text-accent-primary;
-		}
-	}
+      @extend .navbar-item--active;
+    }
+  }
+
+  &__label {
+    @include text-body-2;
+
+    color: $color-text-primary;
+
+    &--active {
+      color: $color-text-accent-primary;
+    }
+  }
 }
-
 </style>

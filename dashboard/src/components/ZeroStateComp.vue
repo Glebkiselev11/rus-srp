@@ -4,76 +4,68 @@ import IconComp from "./IconComp/index.vue";
 import { defineComponent, type PropType } from "vue";
 
 export default defineComponent({
-	name: "ZeroStateComp",
-	components: {
-		IconComp,
-	},
-	props: {
-		icon: {
-			type: String as PropType<IconName>,
-			default: null,
-		},
-		title: {
-			type: String,
-			default: null,
-		},
-		description: {
-			type: String,
-			default: null,
-		},
-	},
+  name: "ZeroStateComp",
+  components: {
+    IconComp,
+  },
+  props: {
+    icon: {
+      type: String as PropType<IconName>,
+      default: null,
+    },
+    title: {
+      type: String,
+      default: null,
+    },
+    description: {
+      type: String,
+      default: null,
+    },
+  },
 });
-
 </script>
 
 <template>
-	<div class="zero-state">
-		<div class="zero-state__container">
-			<IconComp
-				v-if="icon"
-				:name="icon"
-			/>
+  <div class="zero-state">
+    <div class="zero-state__container">
+      <IconComp v-if="icon" :name="icon" />
 
-			<h4 v-if="title">
-				{{ title }}
-			</h4>
+      <h4 v-if="title">
+        {{ title }}
+      </h4>
 
-			<span
-				v-if="description"
-				class="zero-state__description"
-			>
-				{{ description }}
-			</span>
+      <span v-if="description" class="zero-state__description">
+        {{ description }}
+      </span>
 
-			<slot />
-		</div>
-	</div>
+      <slot />
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import "@/styles/main";
 
 .zero-state {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
-	height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 
-	&__container {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		text-align: center;
-		gap: 16px;
-		max-width: 280px;
-	}
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    max-width: 280px;
+  }
 
-	&__description {
-		@include text-body-2;
-		@extend .text-color-secondary;
-	}
+  &__description {
+    @include text-body-2;
+    @extend .text-color-secondary;
+  }
 }
-
 </style>

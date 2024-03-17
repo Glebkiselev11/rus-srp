@@ -4,7 +4,7 @@ export type DraftCategory = {
   srp_latin: string;
   srp_cyrillic: string;
   image: string | null;
-}
+};
 
 export type Category = {
   id: number;

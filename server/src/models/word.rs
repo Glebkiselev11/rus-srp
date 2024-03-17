@@ -12,6 +12,7 @@ pub struct WordBody {
     pub srp_cyrillic: String,
     pub image: Option<String>,
     pub category_ids: Vec<i32>,
+    pub translation_approved: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -21,6 +22,7 @@ pub struct Word {
     pub srp_latin: String,
     pub srp_cyrillic: String,
     pub image: Option<String>,
+    pub translation_approved: bool,
 }
 
 impl From<WordBody> for Word {
@@ -31,6 +33,7 @@ impl From<WordBody> for Word {
             eng: format(&body.eng),
             srp_cyrillic: format(&body.srp_cyrillic),
             image: body.image,
+            translation_approved: body.translation_approved,
         }
     }
 }

@@ -43,28 +43,24 @@ pub fn select_all_with_filter(
     use crate::db::schema::words::dsl;
 
     let order_by = || -> Box<dyn BoxableExpression<dsl::words, Pg, SqlType = NotSelectable>> {
-        if let Some(o) = &query.order {
-            match o.as_str() {
-                "rus" => Box::new(dsl::rus.asc()),
-                "-rus" => Box::new(dsl::rus.desc()),
-                "eng" => Box::new(dsl::eng.asc()),
-                "-eng" => Box::new(dsl::eng.desc()),
-                "srp_latin" => Box::new(dsl::srp_latin.asc()),
-                "-srp_latin" => Box::new(dsl::srp_latin.desc()),
-                "srp_cyrillic" => Box::new(dsl::srp_cyrillic.asc()),
-                "-srp_cyrillic" => Box::new(dsl::srp_cyrillic.desc()),
-                "image" => Box::new(dsl::image.asc()),
-                "-image" => Box::new(dsl::image.desc()),
-                "created_at" => Box::new(dsl::created_at.asc()),
-                "-created_at" => Box::new(dsl::created_at.desc()),
-                "updated_at" => Box::new(dsl::updated_at.asc().nulls_first()),
-                "-updated_at" => Box::new(dsl::updated_at.desc().nulls_last()),
-                "category_count" => Box::new(dsl::category_count.asc()),
-                "-category_count" => Box::new(dsl::category_count.desc()),
-                _ => Box::new(dsl::created_at.desc()),
-            }
-        } else {
-            Box::new(dsl::created_at.desc())
+        match query.get_order().as_str() {
+            "rus" => Box::new(dsl::rus.asc()),
+            "-rus" => Box::new(dsl::rus.desc()),
+            "eng" => Box::new(dsl::eng.asc()),
+            "-eng" => Box::new(dsl::eng.desc()),
+            "srp_latin" => Box::new(dsl::srp_latin.asc()),
+            "-srp_latin" => Box::new(dsl::srp_latin.desc()),
+            "srp_cyrillic" => Box::new(dsl::srp_cyrillic.asc()),
+            "-srp_cyrillic" => Box::new(dsl::srp_cyrillic.desc()),
+            "image" => Box::new(dsl::image.asc()),
+            "-image" => Box::new(dsl::image.desc()),
+            "created_at" => Box::new(dsl::created_at.asc()),
+            "-created_at" => Box::new(dsl::created_at.desc()),
+            "updated_at" => Box::new(dsl::updated_at.asc().nulls_first()),
+            "-updated_at" => Box::new(dsl::updated_at.desc().nulls_last()),
+            "category_count" => Box::new(dsl::category_count.asc()),
+            "-category_count" => Box::new(dsl::category_count.desc()),
+            _ => Box::new(dsl::created_at.desc()),
         }
     };
 
@@ -86,6 +82,10 @@ pub fn select_all_with_filter(
                 .or(dsl::rus.like(&search))
                 .or(dsl::eng.like(&search)),
         );
+
+        if query.must_exclude_approved_translations() {
+            base_query = base_query.filter(dsl::translation_approved.eq(false));
+        }
 
         if let Some(ids) = words_ids.clone() {
             base_query = base_query.filter(dsl::id.eq_any(ids));
