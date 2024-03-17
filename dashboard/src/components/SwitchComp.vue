@@ -2,121 +2,116 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-	name: "SwitchComp",
-	props: {
-		modelValue: {
-			type: Boolean,
-			required: true,
-		},
-		disabled: {
-			type: Boolean,
-			default: false,
-		},
-	},
-	emits: ["update:modelValue"],
-	methods: {
-		toggleChecked() {
-			this.$emit("update:modelValue", !this.modelValue);	
-		},
-	},
+  name: "SwitchComp",
+  props: {
+    modelValue: {
+      type: Boolean,
+      required: true,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  emits: ["update:modelValue"],
+  methods: {
+    toggleChecked() {
+      this.$emit("update:modelValue", !this.modelValue);
+    },
+  },
 });
-
 </script>
 
 <template>
-	<label 
-		class="switch"
-		:class="[
-			{ 'switch--disabled': disabled }, 
-			{ 'switch--checked': modelValue }
-		]"
-	>
-		<input
-			type="checkbox"
-			:checked="modelValue"
-			:disabled="disabled"
-			@change="toggleChecked"
-		>
-		<span
-			class="switch__slider"
-		/>
-	</label>
+  <label
+    class="switch"
+    :class="[
+      { 'switch--disabled': disabled },
+      { 'switch--checked': modelValue },
+    ]"
+  >
+    <input
+      type="checkbox"
+      :checked="modelValue"
+      :disabled="disabled"
+      @change="toggleChecked"
+    />
+    <span class="switch__slider" />
+  </label>
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import "@/styles/main";
 
 .switch {
-	position: relative;
-	width: 36px;
-	height: 20px;
+  position: relative;
+  width: 36px;
+  height: 20px;
 
-	input[type="checkbox"] {
-		opacity: 0;
-		width: 0;
-		height: 0;
+  input[type="checkbox"] {
+    opacity: 0;
+    width: 0;
+    height: 0;
 
-		&:focus-visible ~.switch__slider {
-			@include focus-visible;
-		}
-	}
+    &:focus-visible ~ .switch__slider {
+      @include focus-visible;
+    }
+  }
 
-	&__slider {
-		position: absolute;
-		cursor: pointer;
-		width: inherit;
-		height: inherit;
-		border-radius: 50px;
-		transition: background-color .2s;
-		background: $color-background-content-secondary;
+  &__slider {
+    position: absolute;
+    cursor: pointer;
+    width: inherit;
+    height: inherit;
+    border-radius: 50px;
+    transition: background-color 0.2s;
+    background: $color-background-content-secondary;
 
-		&:before {
-			position: absolute;
-			content: "";
-			height: 16px;
-			width: 16px;
-			border-radius: 50%;
-			left: 2px;
-			bottom: 2px;
-			transition: .2s;
-			background-color: $color-icon-contrast;
-			filter: 
-				drop-shadow(0px 0px 4px rgba(2, 18, 38, 0.08)) 
-				drop-shadow(0px 4px 8px rgba(2, 18, 38, 0.04));
-		}
+    &::before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      border-radius: 50%;
+      left: 2px;
+      bottom: 2px;
+      transition: 0.2s;
+      background-color: $color-icon-contrast;
+      filter: drop-shadow(0 0 4px rgb(2 18 38 / 8%))
+        drop-shadow(0 4px 8px rgb(2 18 38 / 4%));
+    }
 
-		&:hover {
-			background-color: $color-background-secondary-hovered;
-		}
-	}
+    &:hover {
+      background-color: $color-background-secondary-hovered;
+    }
+  }
 
-	&--checked {
-		.switch__slider {
-			background-color: $color-background-accent-primary;
-		}
+  &--checked {
+    .switch__slider {
+      background-color: $color-background-accent-primary;
+    }
 
-		.switch__slider:before {
-			transform: translateX(16px);
-		}
+    .switch__slider::before {
+      transform: translateX(16px);
+    }
 
-		&:hover {
-			.switch__slider {
-				background-color: $color-background-accent-primary-hovered;
-			}
-		}
-	}
+    &:hover {
+      .switch__slider {
+        background-color: $color-background-accent-primary-hovered;
+      }
+    }
+  }
 
-	&--disabled {
-		pointer-events: none;
+  &--disabled {
+    pointer-events: none;
 
-		.switch__slider {
-			background-color: $color-background-disabled;
-		}
+    .switch__slider {
+      background-color: $color-background-disabled;
+    }
 
-		.switch__slider:before {
-			background-color: $color-field-background;
-		}
-	}
+    .switch__slider::before {
+      background-color: $color-field-background;
+    }
+  }
 }
-
 </style>

@@ -1,0 +1,13 @@
+{
+  "plugins": [
+    "stylelint-prettier"
+  ],
+  "extends": [
+    "stylelint-config-standard-scss",
+    "stylelint-config-recommended-vue/scss"
+  ],
+  "rules": {
+    "prettier/prettier": true,
+    "selector-class-pattern": null
+  }
+}

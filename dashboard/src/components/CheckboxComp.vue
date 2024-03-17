@@ -4,113 +4,110 @@ import IconComp from "./IconComp/index.vue";
 import type { IconName } from "@/types/icons";
 
 export default defineComponent({
-	name: "CheckboxComp",
-	components: {
-		IconComp,
-	},
-	props: {
-		modelValue: {
-			type: Boolean,
-			required: true,
-		},
-		indeterminated: {
-			type: Boolean,
-			default: false,
-		},
-		disabled: {
-			type: Boolean,
-			default: false,
-		},
-	},
-	emits: ["update:modelValue"],
-	computed: {
-		iconName(): IconName {
-			if (this.indeterminated) {
-				return "indeterminate_checkbox";
-			} else if (this.modelValue) {
-				return "checkbox";
-			} else {
-				return "checkbox_outline_blank";
-			}
-		},
-	},
-	methods: {
-		toggleChecked() {
-			this.$emit("update:modelValue", !this.modelValue);	
-		},
-	},
+  name: "CheckboxComp",
+  components: {
+    IconComp,
+  },
+  props: {
+    modelValue: {
+      type: Boolean,
+      required: true,
+    },
+    indeterminated: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  emits: ["update:modelValue"],
+  computed: {
+    iconName(): IconName {
+      if (this.indeterminated) {
+        return "indeterminate_checkbox";
+      } else if (this.modelValue) {
+        return "checkbox";
+      } else {
+        return "checkbox_outline_blank";
+      }
+    },
+  },
+  methods: {
+    toggleChecked() {
+      this.$emit("update:modelValue", !this.modelValue);
+    },
+  },
 });
-
 </script>
 
 <template>
-	<label 
-		class="checkbox"
-		:class="[
-			{ 'checkbox--disabled': disabled }, 
-			{ 'checkbox--indeterminated': indeterminated }, 
-			{ 'checkbox--checked': modelValue }
-		]"
-	>
-		<input
-			type="checkbox"
-			:checked="modelValue"
-			:disabled="disabled"
-			@change="toggleChecked"
-		>
+  <label
+    class="checkbox"
+    :class="[
+      { 'checkbox--disabled': disabled },
+      { 'checkbox--indeterminated': indeterminated },
+      { 'checkbox--checked': modelValue },
+    ]"
+  >
+    <input
+      type="checkbox"
+      :checked="modelValue"
+      :disabled="disabled"
+      @change="toggleChecked"
+    />
 
-		<div class="checkbox__fake-input">
-			<IconComp 
-				:name="iconName"
-				color="current-color"
-			/>
-		</div>
-	</label>
+    <div class="checkbox__fake-input">
+      <IconComp :name="iconName" color="current-color" />
+    </div>
+  </label>
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
+@import "@/styles/main";
 
 .checkbox {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	color: $color-icon-secondary;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $color-icon-secondary;
 
-	&:hover {
-		cursor: pointer;
-		color: $color-icon-primary;
-	}
+  &:hover {
+    cursor: pointer;
+    color: $color-icon-primary;
+  }
 
-	&--indeterminated, 
-	&--checked {
-		color: $color-icon-accent-primary;	
-		&:hover {
-			color: $color-background-accent-primary-hovered;
-		}
-	}
+  &--indeterminated,
+  &--checked {
+    color: $color-icon-accent-primary;
 
-	&--disabled {
-		pointer-events: none;
-		color: $color-icon-disabled;
-	}
+    &:hover {
+      color: $color-background-accent-primary-hovered;
+    }
+  }
 
-	input[type="checkbox"] {
-		width: 0;
-		height: 0;
-		opacity: 0;
-		&:focus-visible ~.checkbox__fake-input {
-			@include focus-visible;
-			outline-offset: -3px;
-		}
-	}
+  &--disabled {
+    pointer-events: none;
+    color: $color-icon-disabled;
+  }
 
-	&__fake-input {
-		width: 24px;
-		height: 24px;
-		border-radius: 2px;
-	}
+  input[type="checkbox"] {
+    width: 0;
+    height: 0;
+    opacity: 0;
+
+    &:focus-visible ~ .checkbox__fake-input {
+      @include focus-visible;
+
+      outline-offset: -3px;
+    }
+  }
+
+  &__fake-input {
+    width: 24px;
+    height: 24px;
+    border-radius: 2px;
+  }
 }
-
 </style>
-

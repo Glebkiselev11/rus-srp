@@ -4,4 +4,4 @@ export type Image = {
   height: number;
   avg_color: number;
   src: string;
-}
+};
