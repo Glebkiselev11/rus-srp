@@ -1,9 +1,14 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { mapActions, mapState } from "pinia";
+import type { Word } from "@/types/words";
+import type { LanguageCode } from "@/types/translations";
+import type { Id, Order, RequestParams } from "@/types/api";
 import { useWordsActionsStore } from "@/stores/words/actions";
 import { usePageWordsStore } from "@/stores/words/pageWords";
-import type { Id, Order, RequestParams } from "@/types/api";
+import { useWordFormTabsStore } from "@/stores/wordFormTabs";
+import { highlighTextByQuery } from "@/common/utils";
+import { getLanguageCodesOrder, getLanguageLabel, translationPreview } from "@/common/translations";
 
 import CategoriesComp from "@/components/Categories/CategoriesComp.vue";
 import TopBarComp from "@/components/TopBarComp.vue";
@@ -18,13 +23,7 @@ import WordsPageCategoryTitleComp from "@/components/WordsPageCategoryTitleComp.
 import CategoriesPreviewBadgesComp from "@/components/CategoriesPreviewBadgesComp.vue";
 import WordsViewTableRowSkeletonComp from "@/components/WordsView/WordsViewTableRowSkeletonComp.vue";
 import CategoryWordsInsertModalComp from "@/components/CategoryWordsInsert/CategoryWordsInsertModalComp.vue";
-import { highlighTextByQuery } from "@/common/utils";
-
-import type { Word } from "@/types/words";
-import type { LanguageCode } from "@/types/translations";
 import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
-import { getLanguageCodesOrder, getLanguageLabel, translationPreview } from "@/common/translations";
-import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 import TableRowStatusComp from "@/components/Table/TableRowStatusComp.vue";
 import WordsViewFilterPanelComp from "@/components/WordsView/WordsViewFilterPanelComp.vue";
 import WordsViewTranslationConfirmationComp from "@/components/WordsView/WordsViewTranslationConfirmationComp.vue";
