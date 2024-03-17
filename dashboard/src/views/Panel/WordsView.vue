@@ -151,11 +151,14 @@ export default defineComponent({
 				return this.filter.search;
 			},
 			set(search: string) {
-				const { category_id } = this.filter;
+				const { offset, limit } = this.defaultFilter;
 				this.filter = { 
-					...this.defaultFilter, 
-					category_id,
-					search, 
+					...this.filter, 
+					search,
+
+					// reset pagination filters
+					offset,
+					limit,
 				};
 			},
 		},
@@ -196,7 +199,8 @@ export default defineComponent({
 				return this.filter.translation_approved_status;
 			},
 			set(translation_approved_status: TranslationApprovedStatus) {
-				this.filter = { ...this.filter, translation_approved_status };
+				const { offset, limit } = this.defaultFilter;
+				this.filter = { ...this.filter, translation_approved_status, offset, limit };
 			},
 		},
 		notFoundTitle(): string {
