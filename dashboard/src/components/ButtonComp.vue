@@ -110,7 +110,7 @@ export default defineComponent({
 @import "@/styles/main";
 
 .button {
-  @include text-subtitle-2;
+  @include text-subtitle-1;
 
   display: flex;
   align-items: center;
