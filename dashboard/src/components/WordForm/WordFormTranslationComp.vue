@@ -99,10 +99,6 @@ export default defineComponent({
       }
     },
     async _autoFillTranslations() {
-      if (this.autoFillTranslationsLoading) {
-        return;
-      }
-
       try {
         this.autoFillTranslationsLoading = true;
         await this.autoFillTranslations();
@@ -153,11 +149,12 @@ export default defineComponent({
       </div>
 
       <ButtonComp
-        v-show="semifilledTranslations"
+        v-if="semifilledTranslations"
         icon="edit_note"
         appearance="inline"
         size="compact"
         :label="$t('fill-in-auto')"
+        :loading="autoFillTranslationsLoading"
         @click="_autoFillTranslations"
       />
     </div>

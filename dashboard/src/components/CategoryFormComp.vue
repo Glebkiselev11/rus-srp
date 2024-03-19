@@ -49,6 +49,7 @@ export default defineComponent({
       engValidationError: undefined as string | undefined,
       srp_latinValidationError: undefined as string | undefined,
       srp_cyrillicValidationError: undefined as string | undefined,
+      savingLoading: false,
     };
   },
 
@@ -205,19 +206,18 @@ export default defineComponent({
         return;
       }
 
+      this.savingLoading = true;
       if (this.category) {
         await this.updateCategory(this.category.id, this.draftCategory);
       } else {
         await this.createCategory(this.draftCategory);
       }
 
+      this.savingLoading = false;
+
       this.$emit("saved");
     },
     autoFill() {
-      if (this.autoFillTranslationsLoading) {
-        return;
-      }
-
       const from = this.selectedLanguage;
       const targets = getLanguageList()
         .filter(({ value }) => value !== from)
@@ -310,11 +310,12 @@ export default defineComponent({
       </div>
 
       <ButtonComp
-        v-show="showFillAutoButton"
+        v-if="showFillAutoButton"
         icon="edit_note"
         appearance="inline"
         size="regular"
         :label="$t('fill-in-auto')"
+        :loading="autoFillTranslationsLoading"
         @click="autoFill"
       />
     </div>
@@ -333,7 +334,11 @@ export default defineComponent({
 
     <div class="category-form__footer">
       <ButtonComp appearance="secondary" :label="$t('cancel')" @click="close" />
-      <ButtonComp :label="saveButtonLabel" @click="saveCategory" />
+      <ButtonComp
+        :label="saveButtonLabel"
+        :loading="savingLoading"
+        @click="saveCategory"
+      />
     </div>
   </div>
 </template>

@@ -33,6 +33,7 @@ export default defineComponent({
       engValidationError: undefined as string | undefined,
       srpLatinValidationError: undefined as string | undefined,
       srpCyrillicValidationError: undefined as string | undefined,
+      savingLoading: false,
     };
   },
   computed: {
@@ -147,11 +148,15 @@ export default defineComponent({
 
       if (!this.isValidToSave) return;
 
+      this.savingLoading = true;
+
       if (this.word) {
         await this.updateWord(this.word.id, this.draftWord);
       } else {
         await this.createWord(this.draftWord);
       }
+
+      this.savingLoading = false;
 
       if (resetAfterSave) {
         this.resetDraftWord();
@@ -197,7 +202,11 @@ export default defineComponent({
         @click="saveWord(true)"
       />
 
-      <ButtonComp :label="saveButtonLabel" @click="saveWord()" />
+      <ButtonComp
+        :label="saveButtonLabel"
+        :loading="savingLoading"
+        @click="saveWord()"
+      />
     </div>
   </div>
 </template>
