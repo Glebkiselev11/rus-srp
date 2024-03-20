@@ -34,6 +34,9 @@ export default defineComponent({
 
       this.isModalOpen = true;
     },
+    handleClickInsideModal() {
+      this.isModalOpen = false;
+    },
   },
 });
 </script>
@@ -59,6 +62,7 @@ export default defineComponent({
       class="table-row-status__modal-wrapper"
       @mouseover="mouseInsideModal = true"
       @mouseleave="handleMouseLeaveModal"
+      @click="handleClickInsideModal"
     >
       <div class="modal">
         <!-- content of modal -->

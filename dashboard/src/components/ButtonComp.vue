@@ -7,11 +7,13 @@ import type {
   ButtonSize,
   ButtonAppearance,
 } from "@/types/buttons";
+import SpinnerComp, { type SpinnerColor } from "./SpinnerComp.vue";
 
 export default defineComponent({
   name: "ButtonComp",
   components: {
     IconComp,
+    SpinnerComp,
   },
   props: {
     label: {
@@ -50,6 +52,16 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  emits: ["click"],
+  data() {
+    return {
+      buttonWidthOnMount: undefined as string | undefined,
+    };
   },
   computed: {
     _iconColor(): IconColor {
@@ -78,13 +90,44 @@ export default defineComponent({
         return "compact";
       }
     },
+    _loaderColor(): SpinnerColor {
+      if (this.appearance === "primary") {
+        return "neutral";
+      }
+
+      return this.color;
+    },
+
+    _loaderSize() {
+      if (this.size === "regular") {
+        return "24";
+      }
+
+      return "20";
+    },
+  },
+  mounted() {
+    // Get the width of the button on mount and use it on loading state
+    const button = this.$refs.button as HTMLButtonElement;
+    this.buttonWidthOnMount = `${button.offsetWidth}px`;
+  },
+  methods: {
+    onClick(e: MouseEvent) {
+      if (this.loading) {
+        return;
+      }
+
+      this.$emit("click", e);
+    },
   },
 });
 </script>
 
 <template>
   <button
+    ref="button"
     class="button"
+    :style="{ minWidth: buttonWidthOnMount }"
     :class="[
       `button--size-${size}`,
       `button--appearance-${appearance}`,
@@ -94,15 +137,26 @@ export default defineComponent({
       { 'button--only-label': label && !icon },
       { 'button--pressed': pressed },
       { 'button--full-width': fullWidth },
+      { 'button--loading': loading },
     ]"
     :disabled="disabled"
+    @click="onClick"
   >
-    <IconComp v-if="icon" :name="icon" :color="_iconColor" :size="_iconSize" />
-    <template v-if="label">
-      {{ label }}
-    </template>
+    <SpinnerComp v-if="loading" :size="_loaderSize" :color="_loaderColor" />
 
-    <slot name="right" />
+    <template v-else>
+      <IconComp
+        v-if="icon"
+        :name="icon"
+        :color="_iconColor"
+        :size="_iconSize"
+      />
+      <template v-if="label">
+        {{ label }}
+      </template>
+
+      <slot name="right" />
+    </template>
   </button>
 </template>
 
@@ -110,7 +164,7 @@ export default defineComponent({
 @import "@/styles/main";
 
 .button {
-  @include text-subtitle-2;
+  @include text-subtitle-1;
 
   display: flex;
   align-items: center;
@@ -120,20 +174,25 @@ export default defineComponent({
   cursor: pointer;
   border-radius: 8px;
 
+  &--loading {
+    pointer-events: none;
+  }
+
   /* Paggings for Icon and label case */
   &--icon-and-label {
-    padding-inline: 12px 16px;
-
     &.button--size-regular {
       padding-block: 8px;
+      padding-inline: 12px 16px;
     }
 
     &.button--size-compact {
       padding-block: 6px;
+      padding-inline: 8px 12px;
     }
 
     &.button--size-small {
       padding-block: 2px;
+      padding-inline: 4px 8px;
     }
   }
 
@@ -154,18 +213,19 @@ export default defineComponent({
 
   /* Paddings for Only label case */
   &--only-label {
-    padding-inline: 16px;
-
     &.button--size-regular {
       padding-block: 10px;
+      padding-inline: 16px;
     }
 
     &.button--size-compact {
       padding-block: 6px;
+      padding-inline: 12px;
     }
 
     &.button--size-small {
       padding-block: 2px;
+      padding-inline: 8px;
     }
   }
 
