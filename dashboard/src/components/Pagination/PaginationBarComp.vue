@@ -145,7 +145,7 @@ export default defineComponent({
     display: flex;
     align-items: center;
 
-    &--text {
+    &__text {
       @include text-body-2;
 
       color: $color-text-secondary;
