@@ -180,18 +180,19 @@ export default defineComponent({
 
   /* Paggings for Icon and label case */
   &--icon-and-label {
-    padding-inline: 12px 16px;
-
     &.button--size-regular {
       padding-block: 8px;
+      padding-inline: 12px 16px;
     }
 
     &.button--size-compact {
       padding-block: 6px;
+      padding-inline: 8px 12px;
     }
 
     &.button--size-small {
       padding-block: 2px;
+      padding-inline: 4px 8px;
     }
   }
 
@@ -212,18 +213,19 @@ export default defineComponent({
 
   /* Paddings for Only label case */
   &--only-label {
-    padding-inline: 16px;
-
     &.button--size-regular {
       padding-block: 10px;
+      padding-inline: 16px;
     }
 
     &.button--size-compact {
       padding-block: 6px;
+      padding-inline: 12px;
     }
 
     &.button--size-small {
       padding-block: 2px;
+      padding-inline: 8px;
     }
   }
 
