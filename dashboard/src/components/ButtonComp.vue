@@ -95,6 +95,10 @@ export default defineComponent({
         return "neutral";
       }
 
+      if (this.color === "neutral") {
+        return "primary";
+      }
+
       return this.color;
     },
 
@@ -142,15 +146,19 @@ export default defineComponent({
     :disabled="disabled"
     @click="onClick"
   >
-    <SpinnerComp v-if="loading" :size="_loaderSize" :color="_loaderColor" />
+    <SpinnerComp
+      v-if="loading && !icon"
+      :size="_loaderSize"
+      :color="_loaderColor"
+    />
 
     <template v-else>
-      <IconComp
-        v-if="icon"
-        :name="icon"
-        :color="_iconColor"
-        :size="_iconSize"
-      />
+      <template v-if="icon">
+        <SpinnerComp v-if="loading" :size="_loaderSize" :color="_loaderColor" />
+
+        <IconComp v-else :name="icon" :color="_iconColor" :size="_iconSize" />
+      </template>
+
       <template v-if="label">
         {{ label }}
       </template>
