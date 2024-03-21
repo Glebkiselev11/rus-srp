@@ -30,26 +30,36 @@ export default defineComponent({
 </script>
 
 <template>
-  <div
-    class="spinner"
-    :class="[`spinner--${size}`, `spinner--color-${color}`]"
-  />
+  <div class="spinner-wrap">
+    <div
+      class="spinner"
+      :class="[`spinner--${size}`, `spinner--color-${color}`]"
+    />
+  </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
+
+.spinner-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 2px;
+}
 
 .spinner {
   border-radius: 50%;
   position: relative;
   animation: rotate 1s linear infinite;
 
-  &--24 {
-    width: 24px;
-    height: 24px;
+  &--20 {
+    width: 16px;
+    height: 16px;
   }
 
-  &--20 {
+  &--24 {
     width: 20px;
     height: 20px;
   }
@@ -60,7 +70,7 @@ export default defineComponent({
     position: absolute;
     inset: 0px;
     border-radius: 50%;
-    border: 4px solid;
+    border-style: solid;
     animation: prixClipFix 3s linear infinite;
   }
 
@@ -82,6 +92,14 @@ export default defineComponent({
 
   &--color-primary::before {
     border-color: $color-icon-primary;
+  }
+
+  &--20::before {
+    border-width: 1.5px;
+  }
+
+  &--24::before {
+    border-width: 2px;
   }
 
   @keyframes rotate {
