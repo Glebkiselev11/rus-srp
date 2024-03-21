@@ -239,17 +239,17 @@ export default defineComponent({
 
   &--size {
     &-regular {
-      min-block-size: 40px;
+      block-size: 40px;
       min-inline-size: 40px;
     }
 
     &-compact {
-      min-block-size: 32px;
+      block-size: 32px;
       min-inline-size: 32px;
     }
 
     &-small {
-      min-block-size: 24px;
+      block-size: 24px;
       min-inline-size: 24px;
     }
   }
