@@ -152,7 +152,6 @@ export default defineComponent({
         v-if="semifilledTranslations"
         icon="edit_note"
         appearance="inline"
-        size="compact"
         :label="$t('fill-in-auto')"
         :loading="autoFillTranslationsLoading"
         @click="_autoFillTranslations"

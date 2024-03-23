@@ -8,7 +8,7 @@ import type { LanguageCode } from "@/types/translations";
 import InputComp from "./InputComp.vue";
 import ButtonComp from "./ButtonComp.vue";
 import { translate } from "@/common/translations";
-import { CategoriesApi } from "@/api/categories";
+import { CategoriesService } from "@/api";
 import {
   getLanguageLabel,
   getLanguageList,
@@ -144,7 +144,7 @@ export default defineComponent({
         return;
       }
 
-      const { data } = await CategoriesApi.query({ search: name });
+      const { data } = await CategoriesService.query({ search: name });
 
       const exists = data.result.some(
         (category) =>

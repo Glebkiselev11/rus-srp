@@ -1,6 +1,6 @@
 import type { Load, RequestParams } from "@/types/api";
 import { defineStore } from "pinia";
-import { ImagesApi } from "@/api";
+import { ImagesService } from "@/api";
 import type { Image } from "@/types/images";
 
 export const useImagesStore = defineStore("images", {
@@ -14,7 +14,7 @@ export const useImagesStore = defineStore("images", {
       try {
         this.loadState = "loading";
 
-        const { data } = await ImagesApi.query(params);
+        const { data } = await ImagesService.query(params);
         this.images = [...this.images, ...data.result];
         this.count = data.count;
         this.loadState = "loaded";

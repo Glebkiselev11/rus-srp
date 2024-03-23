@@ -1,6 +1,6 @@
 import type { Id } from "@/types/api";
 import { defineStore } from "pinia";
-import { WordsApi } from "@/api";
+import { WordsService } from "@/api";
 import type { DraftWord, Word } from "@/types/words";
 import { convertWordToDraftWord } from "@/common/utils";
 import { usePageWordsStore } from "./pageWords";
@@ -21,7 +21,7 @@ export const useWordsActionsStore = defineStore("wordsActions", {
   actions: {
     async createWord(word: DraftWord) {
       try {
-        await WordsApi.create(word);
+        await WordsService.create(word);
       } catch (error) {
         console.error(error);
       }
@@ -32,7 +32,7 @@ export const useWordsActionsStore = defineStore("wordsActions", {
       const modalState = useModalWordsStore();
 
       try {
-        const { data } = await WordsApi.update(
+        const { data } = await WordsService.update(
           id,
           convertWordToDraftWord(word)
         );
@@ -49,7 +49,7 @@ export const useWordsActionsStore = defineStore("wordsActions", {
       const pageState = usePageWordsStore();
       const modalState = useModalWordsStore();
       try {
-        await WordsApi.delete(id);
+        await WordsService.delete(id);
         const filterFn = (w: Word) => w.id !== id;
         pageState.words = pageState.words.filter(filterFn);
         modalState.words = modalState.words.filter(filterFn);

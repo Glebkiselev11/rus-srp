@@ -1,6 +1,6 @@
 import type { Load, RequestParams } from "@/types/api";
 import { defineStore } from "pinia";
-import { CategoriesApi } from "@/api";
+import { CategoriesService } from "@/api";
 import type { Category } from "@/types/categories";
 
 // This one is used to store categores for modal view (it is different from side page view)
@@ -15,7 +15,7 @@ export const useModalCategoriesStore = defineStore("modalCategories", {
     async fetchModalCategories(params: RequestParams) {
       try {
         this.loadState = "loading";
-        const { data } = await CategoriesApi.query(params);
+        const { data } = await CategoriesService.query(params);
         this.categories = data.result;
         this.count = data.count;
         this.loadState = "loaded";

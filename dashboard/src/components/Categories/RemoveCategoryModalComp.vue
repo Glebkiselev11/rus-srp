@@ -3,7 +3,7 @@ import type { Category } from "@/types/categories";
 import { defineComponent, type PropType } from "vue";
 import ModalComp from "../ModalComp.vue";
 import type { LanguageCode } from "@/types/translations";
-import { WordsApi } from "@/api";
+import { WordsService } from "@/api";
 import InputComp from "../InputComp.vue";
 import ButtonComp from "../ButtonComp.vue";
 import { useCategoriesActions } from "@/stores/categories/actions";
@@ -47,7 +47,7 @@ export default defineComponent({
     },
   },
   async mounted() {
-    const { data } = await WordsApi.query({
+    const { data } = await WordsService.query({
       category_id: this.category.id,
       limit: 0,
     });

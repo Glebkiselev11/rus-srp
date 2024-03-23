@@ -1,5 +1,5 @@
 import type { LanguageCode, TranslationObject } from "@/types/translations";
-import { TranslationsApi } from "@/api";
+import { TranslationsService } from "@/api";
 import i18n from "@/i18n";
 
 export function getLanguageCodesOrder(): LanguageCode[] {
@@ -50,7 +50,7 @@ export async function translate(
   params: TranslationObject
 ): Promise<TranslationObject> {
   try {
-    const { data } = await TranslationsApi.translate(params);
+    const { data } = await TranslationsService.translate(params);
     return data;
   } catch (error) {
     console.error(error);

@@ -7,7 +7,7 @@ import WordFormTranslationComp from "./WordFormTranslationComp.vue";
 import WordFormCategoriesComp from "./WordFormCategoriesComp.vue";
 import { useWordsActionsStore } from "@/stores/words/actions";
 import { mapActions, mapState } from "pinia";
-import { WordsApi } from "@/api/words";
+import { WordsService } from "@/api";
 import { useDraftWordStore } from "@/stores/draftWord";
 import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 
@@ -102,7 +102,7 @@ export default defineComponent({
         return;
       }
 
-      const { data } = await WordsApi.query({ search });
+      const { data } = await WordsService.query({ search });
 
       const exists = data.result.find(
         ({ eng, rus, srp_cyrillic, srp_latin }) => {

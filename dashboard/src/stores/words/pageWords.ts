@@ -1,7 +1,8 @@
 import type { Load, RequestParams } from "@/types/api";
 import { defineStore } from "pinia";
-import { WordsApi } from "@/api";
+import { WordsService } from "@/api";
 import type { Word } from "@/types/words";
+import { fetchOptions } from "@/api/utils";
 
 export const usePageWordsStore = defineStore("pageWords", {
   state: () => ({
@@ -13,16 +14,16 @@ export const usePageWordsStore = defineStore("pageWords", {
   actions: {
     async fetchPageWords(params: RequestParams) {
       this.lastFilters = params;
-      this.loadState = "loading";
+      const setState = (state: Load) => (this.loadState = state);
 
       try {
-        const { data } = await WordsApi.query(params);
-        this.words = data.result;
-        this.count = data.count;
-        this.loadState = "loaded";
+        const result = await fetchOptions(WordsService, params, setState);
+        if (result) {
+          this.words = result.data.result;
+          this.count = result.data.count;
+        }
       } catch (error) {
-        console.error(error);
-        this.loadState = "error";
+        console.error("Failed to fetch words for page: ", error);
       }
     },
     async refetchPageWords() {
