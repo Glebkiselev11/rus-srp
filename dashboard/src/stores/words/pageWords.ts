@@ -1,6 +1,6 @@
 import type { Load, RequestParams } from "@/types/api";
 import { defineStore } from "pinia";
-import { WordsApi } from "@/api";
+import { WordsService } from "@/api";
 import type { Word } from "@/types/words";
 
 export const usePageWordsStore = defineStore("pageWords", {
@@ -16,7 +16,7 @@ export const usePageWordsStore = defineStore("pageWords", {
       this.loadState = "loading";
 
       try {
-        const { data } = await WordsApi.query(params);
+        const { data } = await WordsService.query(params);
         this.words = data.result;
         this.count = data.count;
         this.loadState = "loaded";

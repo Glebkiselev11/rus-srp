@@ -1,6 +1,6 @@
 import type { Id, Load, RequestParams } from "@/types/api";
 import { defineStore } from "pinia";
-import { CategoriesApi, WordsApi } from "@/api";
+import { CategoriesService, WordsService } from "@/api";
 import type { Word } from "@/types/words";
 
 export const useModalWordsStore = defineStore("modalWords", {
@@ -19,7 +19,7 @@ export const useModalWordsStore = defineStore("modalWords", {
     async fetchModalWords(params: RequestParams) {
       try {
         this.loadState = "loading";
-        const { data } = await WordsApi.query(params);
+        const { data } = await WordsService.query(params);
         this.words = this.words.concat(data.result);
         this.count = data.count;
         this.loadState = "loaded";
@@ -42,7 +42,7 @@ export const useModalWordsStore = defineStore("modalWords", {
     },
     async addSelectedWordsToCategory(categoryId: Id) {
       try {
-        await CategoriesApi.addWords(categoryId, this.selectedWordIds);
+        await CategoriesService.addWords(categoryId, this.selectedWordIds);
       } catch (error) {
         console.error(error);
       }

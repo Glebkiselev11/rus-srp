@@ -1,6 +1,6 @@
 import type { Id } from "@/types/api";
 import { defineStore } from "pinia";
-import { CategoriesApi } from "@/api";
+import { CategoriesService } from "@/api";
 import type { Category, DraftCategory } from "@/types/categories";
 import { usePageCategoriesStore } from "./pageCategories";
 import { useModalCategoriesStore } from "./modalCategories";
@@ -26,7 +26,7 @@ export const useCategoriesActions = defineStore("categoriesActions", {
       const modalStore = useModalCategoriesStore();
 
       try {
-        const { data } = await CategoriesApi.create(category);
+        const { data } = await CategoriesService.create(category);
         pageStore.categories = [...pageStore.categories, data];
         modalStore.categories = [...modalStore.categories, data];
       } catch (error) {
@@ -39,7 +39,7 @@ export const useCategoriesActions = defineStore("categoriesActions", {
       const modalStore = useModalCategoriesStore();
 
       try {
-        const { data } = await CategoriesApi.update(id, category);
+        const { data } = await CategoriesService.update(id, category);
         const fn = (c: Category) => (c.id === data.id ? data : c);
 
         pageStore.categories = pageStore.categories.map(fn);
@@ -54,7 +54,7 @@ export const useCategoriesActions = defineStore("categoriesActions", {
       const modalStore = useModalCategoriesStore();
 
       try {
-        await CategoriesApi.delete(id);
+        await CategoriesService.delete(id);
         const fn = (c: Category) => c.id !== id;
 
         pageStore.categories = pageStore.categories.filter(fn);
