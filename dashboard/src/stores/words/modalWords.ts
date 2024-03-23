@@ -2,6 +2,7 @@ import type { Id, Load, RequestParams } from "@/types/api";
 import { defineStore } from "pinia";
 import { CategoriesService, WordsService } from "@/api";
 import type { Word } from "@/types/words";
+import { fetchOptions } from "@/api/utils";
 
 export const useModalWordsStore = defineStore("modalWords", {
   state: () => ({
@@ -17,15 +18,16 @@ export const useModalWordsStore = defineStore("modalWords", {
   },
   actions: {
     async fetchModalWords(params: RequestParams) {
+      const setState = (state: Load) => (this.loadState = state);
+
       try {
-        this.loadState = "loading";
-        const { data } = await WordsService.query(params);
-        this.words = this.words.concat(data.result);
-        this.count = data.count;
-        this.loadState = "loaded";
+        const result = await fetchOptions(WordsService, params, setState);
+        if (result) {
+          this.words = result.data.result;
+          this.count = result.data.count;
+        }
       } catch (error) {
-        console.error(error);
-        this.loadState = "error";
+        console.error("Failed to fetch words for modal: ", error);
       }
     },
     clearModalWords() {
