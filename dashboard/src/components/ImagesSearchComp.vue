@@ -186,6 +186,7 @@ export default defineComponent({
 .image-search-list {
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
   gap: 16px;
   margin-block-start: 20px;
   block-size: 70vh;
