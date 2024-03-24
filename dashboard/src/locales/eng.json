@@ -105,5 +105,6 @@
   "confirm": "Confirm",
   "only-unconfirmed": "Only unconfirmed",
   "search-in-all-words": "Search in all words",
-  "search-in-category-words": "Search in category words"
+  "search-in-category-words": "Search in category words",
+  "find-image": "Find image"
 }

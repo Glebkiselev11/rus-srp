@@ -104,6 +104,7 @@ export default defineComponent({
       width="100%"
       type="text"
       left-icon="search"
+      :placeholder="$t('find-image')"
       class="image-search--input"
       debounce
       clear-button
