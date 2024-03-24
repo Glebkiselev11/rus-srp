@@ -99,11 +99,6 @@ export default defineComponent({
       value: this.modelValue,
     };
   },
-  computed: {
-    leftIconColor() {
-      return this.focusOnInput ? "accent-primary" : "tertiary";
-    },
-  },
   watch: {
     // This only need with autofill case
     modelValue(value: string | number) {
@@ -174,7 +169,7 @@ export default defineComponent({
         v-if="leftIcon"
         class="input--left-icon"
         :name="leftIcon"
-        :color="leftIconColor"
+        color="tertiary"
       />
 
       <input
