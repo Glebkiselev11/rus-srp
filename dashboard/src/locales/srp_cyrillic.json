@@ -69,7 +69,7 @@
     "show": "Прикажи",
     "select-page": "Иди на страницу"
   },
-  "not-found": "Ништа није пронађено за „{search}”",
+  "not-found": "Ништа није пронађено",
   "not-found-description": "Покушајте да промените упит или промените филтере",
   "edit-image": "Уређивање слике",
   "add-image": "Додавање слике",
@@ -103,5 +103,8 @@
   "not-approved": "Није подтврђен",
   "translation-not-confirmed": "Превод није потврђен",
   "confirm": "Потврди",
-  "only-unconfirmed": "Само непотврђени"
+  "only-unconfirmed": "Само непотврђени",
+  "search-in-all-words": "Претражи у свим речима",
+  "search-in-category-words": "Претражи у речима категорије",
+  "find-image": "Нађи слику"
 }

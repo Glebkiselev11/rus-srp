@@ -113,3 +113,9 @@ h4 {
 .text-color-warning {
   color: $color-text-warning;
 }
+
+.text-overflow-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -155,6 +155,10 @@ export default defineComponent({
     fill: $color-icon-disabled;
   }
 
+  &--placeholder {
+    fill: $color-icon-placeholder;
+  }
+
   &--transparent {
     fill: transparent;
   }

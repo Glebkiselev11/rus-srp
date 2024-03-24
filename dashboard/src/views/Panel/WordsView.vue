@@ -168,14 +168,13 @@ export default defineComponent({
         return this.filter.search;
       },
       set(search: string) {
-        const { offset, limit } = this.defaultFilter;
+        const { offset } = this.defaultFilter;
         this.filter = {
           ...this.filter,
           search,
 
           // reset pagination filters
           offset,
-          limit,
         };
       },
     },
@@ -216,26 +215,22 @@ export default defineComponent({
         return this.filter.translation_approved_status || "all";
       },
       set(translation_approved_status: TranslationApprovedStatus) {
-        const { offset, limit } = this.defaultFilter;
+        const { offset } = this.defaultFilter;
         this.filter = {
           ...this.filter,
           translation_approved_status,
           offset,
-          limit,
         };
       },
-    },
-    notFoundTitle(): string {
-      return this.$t("not-found", { search: this.search });
     },
     showAddToCategoryButton(): boolean {
       return this.filter.category_id !== undefined;
     },
     showPagination(): boolean {
-      return this.count > this.limit;
+      return this.count > 0;
     },
     tableHeight(): string {
-      const HeaderAndPanelHeight = "154px";
+      const HeaderAndPanelHeight = "160px";
 
       return `calc(100vh - ${HeaderAndPanelHeight})`;
     },
@@ -323,6 +318,7 @@ export default defineComponent({
           v-model:search="search"
           v-model:order="order"
           v-model:translation-approved-status="translation_approved_status"
+          :category-id="category_id"
           :order-options="orderOptions"
         />
 
@@ -340,6 +336,7 @@ export default defineComponent({
                 :id="word.id"
                 :key="word.id"
                 :grid-template-columns="gridTemplateColumns"
+                highlight-on-hover
                 @hover="setHoveredWordId(word.id, $event)"
               >
                 <TableRowStatusComp
@@ -364,6 +361,8 @@ export default defineComponent({
                 <td
                   v-for="(translation, i) in translationColumns"
                   :key="`${word.id}-${i}`"
+                  class="text-overflow-ellipsis"
+                  :title="word[translation.sort_key]"
                   v-html="
                     highlighTextByQuery(word[translation.sort_key], search)
                   "
@@ -399,6 +398,7 @@ export default defineComponent({
                       icon="more_vert"
                       appearance="inline"
                       color="neutral"
+                      size="compact"
                       :pressed="isMenuOpen"
                     />
                   </DropdownMenuComp>
@@ -417,7 +417,7 @@ export default defineComponent({
             <template v-else>
               <ZeroStateComp
                 icon="search"
-                :title="notFoundTitle"
+                :title="$t('not-found')"
                 :description="$t('not-found-description')"
               />
             </template>

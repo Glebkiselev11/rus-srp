@@ -49,6 +49,9 @@ export default defineComponent({
     sortActive(): boolean {
       return this.order === this.sortKey || this.order === `-${this.sortKey}`;
     },
+    iconColor(): IconColor {
+      return this.sortActive ? "accent-primary" : this.icon?.color;
+    },
   },
   methods: {
     handlerSort() {
@@ -75,7 +78,7 @@ export default defineComponent({
         :disabled="!sortable"
         @click="handlerSort"
       >
-        <IconComp v-if="icon" :name="icon.name" :color="icon.color" />
+        <IconComp v-if="icon" :name="icon.name" :color="iconColor" />
         <span
           v-if="label"
           class="table-column-title__label"
@@ -103,6 +106,7 @@ $padding: 8px;
   display: flex;
   justify-content: flex-start;
   margin-inline-start: -$padding;
+  height: 32px;
 }
 
 .table-column-title {

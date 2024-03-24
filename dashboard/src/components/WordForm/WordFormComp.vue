@@ -216,12 +216,11 @@ export default defineComponent({
 
 .word-form {
   width: 596px;
-  max-height: 660px;
 
   &__content {
     padding-block-start: 20px;
     padding-inline: 16px;
-    height: 580px;
+    height: 600px;
     overflow-y: auto;
     border-block-end: 1px solid $color-separator-primary;
   }
@@ -232,6 +231,12 @@ export default defineComponent({
     column-gap: 8px;
     padding-inline: 16px;
     padding-block: 20px;
+  }
+}
+
+@media screen and (max-height: 800px) {
+  .word-form__content {
+    height: calc(100vh - 200px);
   }
 }
 </style>

@@ -17,6 +17,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    highlightOnHover: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ["hover"],
   methods: {
@@ -31,6 +35,7 @@ export default defineComponent({
   <tr
     v-element-hover="onHover"
     class="table-row"
+    :class="{ 'table-row--highlight-on-hover': highlightOnHover }"
     :style="{ gridTemplateColumns }"
   >
     <slot />
@@ -41,10 +46,14 @@ export default defineComponent({
 @import "@/styles/main";
 
 .table-row {
-  height: 72px;
+  height: 64px;
   display: grid;
   align-items: center;
   border-block-end: 1px solid $color-separator-primary;
+
+  &--highlight-on-hover:hover {
+    background: $color-background-content-primary-hovered;
+  }
 
   td {
     padding-inline: 16px;

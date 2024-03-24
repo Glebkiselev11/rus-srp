@@ -69,7 +69,7 @@
     "show": "Prikaži",
     "select-page": "Idi na stranicu"
   },
-  "not-found": "Ništa nije pronađeno za „{search}”",
+  "not-found": "Ništa nije pronađeno",
   "not-found-description": "Pokušajte da promenite upit ili promenite filtere",
   "edit-image": "Uređivanje slike",
   "add-image": "Dodavanje slike",
@@ -103,5 +103,8 @@
   "not-approved": "Nije potvrđen",
   "translation-not-confirmed": "Prevod nije potvrđen",
   "confirm": "Potvrdi",
-  "only-unconfirmed": "Samo nepotvrđeni"
+  "only-unconfirmed": "Samo nepotvrđeni",
+  "search-in-all-words": "Pretraži u svim rečima",
+  "search-in-category-words": "Pretraži u rečima kategorije",
+  "find-image": "Nađi sliku"
 }

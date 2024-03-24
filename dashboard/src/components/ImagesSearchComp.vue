@@ -53,11 +53,17 @@ export default defineComponent({
     filteredImages() {
       return this.images.filter(({ src }) => src !== this.savedLink);
     },
-    areImagesContainSavedLink(): boolean {
-      return this.images.some(({ src }) => src === this.savedLink);
-    },
     canLoadMore(): boolean {
       return this.loadState === "loading" || this.offset >= this.count;
+    },
+    nothingWereFound(): boolean {
+      return (
+        !this.images.length &&
+        (!this.savedLink || this.searchQuery !== this.defaultSearchQuery)
+      );
+    },
+    areImagesContainSavedLink(): boolean {
+      return this.images.some(({ src }) => src === this.savedLink);
     },
   },
   watch: {
@@ -101,6 +107,7 @@ export default defineComponent({
       width="100%"
       type="text"
       left-icon="search"
+      :placeholder="$t('find-image')"
       class="image-search--input"
       debounce
       clear-button
@@ -112,7 +119,7 @@ export default defineComponent({
     >
       <!-- Search query is empty -->
       <ZeroStateComp
-        v-if="loadState === 'initial' && !searchQuery"
+        v-if="!searchQuery"
         icon="manage_search"
         :title="$t('image-search-title')"
         :description="$t('image-search-description')"
@@ -120,7 +127,7 @@ export default defineComponent({
 
       <!-- Nothing were found -->
       <ZeroStateComp
-        v-if="loadState === 'loaded' && !images.length"
+        v-if="loadState === 'loaded' && nothingWereFound"
         icon="search"
         :title="$t('not-found', { search: searchQuery })"
         :description="$t('not-found-description')"
@@ -167,15 +174,19 @@ export default defineComponent({
 .image-search {
   inline-size: 946px;
   padding-inline-start: 12px;
+  padding-block-start: 4px;
+  overflow: hidden;
+  border-radius: inherit;
 
   &--input {
-    margin-inline-end: 12px;
+    padding-inline-end: 12px;
   }
 }
 
 .image-search-list {
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
   gap: 16px;
   margin-block-start: 20px;
   block-size: 70vh;
@@ -187,6 +198,7 @@ export default defineComponent({
     object-fit: cover;
     border-radius: 12px;
     cursor: pointer;
+    overflow: hidden;
     border: 1px solid $color-image-border;
   }
 }
