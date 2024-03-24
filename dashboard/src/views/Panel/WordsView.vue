@@ -340,6 +340,7 @@ export default defineComponent({
                 :id="word.id"
                 :key="word.id"
                 :grid-template-columns="gridTemplateColumns"
+                highlight-on-hover
                 @hover="setHoveredWordId(word.id, $event)"
               >
                 <TableRowStatusComp
