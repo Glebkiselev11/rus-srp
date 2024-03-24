@@ -235,7 +235,7 @@ export default defineComponent({
       return this.count > this.limit;
     },
     tableHeight(): string {
-      const HeaderAndPanelHeight = "154px";
+      const HeaderAndPanelHeight = "160px";
 
       return `calc(100vh - ${HeaderAndPanelHeight})`;
     },
