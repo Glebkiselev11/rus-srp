@@ -49,10 +49,10 @@ export default defineComponent({
 .navbar-item {
   display: flex;
   align-items: center;
+  justify-content: center;
   column-gap: 12px;
-  min-block-size: 48px;
-  min-inline-size: 48px;
-  padding: 12px;
+  block-size: 40px;
+  inline-size: 40px;
   border-radius: 12px;
   cursor: pointer;
 
