@@ -193,6 +193,7 @@ export default defineComponent({
     object-fit: cover;
     border-radius: 12px;
     cursor: pointer;
+    overflow: hidden;
     border: 1px solid $color-image-border;
   }
 }
