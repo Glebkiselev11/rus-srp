@@ -284,12 +284,15 @@ export default defineComponent({
 
     &:disabled {
       pointer-events: none;
+
+      &::placeholder {
+        color: $color-text-disabled;
+      }
     }
 
     &::placeholder {
       @include text-body-1;
-
-      color: $color-text-tertiary;
+      color: $color-text-placeholder;
     }
 
     &[error="true"] {
