@@ -167,6 +167,9 @@ export default defineComponent({
 .image-search {
   inline-size: 946px;
   padding-inline-start: 12px;
+  padding-block-start: 4px;
+  overflow: hidden;
+  border-radius: inherit;
 
   &--input {
     padding-inline-end: 12px;
