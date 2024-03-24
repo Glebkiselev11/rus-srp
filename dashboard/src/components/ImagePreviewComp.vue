@@ -87,7 +87,7 @@ export default defineComponent({
     @click="handleClick"
   >
     <img v-if="src" :src="srcWithParams" />
-    <IconComp v-else name="filter_hdr" :size="iconSize" color="tertiary" />
+    <IconComp v-else name="filter_hdr" :size="iconSize" color="placeholder" />
 
     <div v-if="!static" class="image-preview--overlay">
       <IconComp v-if="src" name="edit" color="contrast" :size="iconSize" />

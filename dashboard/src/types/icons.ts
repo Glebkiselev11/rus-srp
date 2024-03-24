@@ -13,6 +13,7 @@ export type IconColor =
   | "link"
   | "transparent"
   | "disabled"
+  | "placeholder"
   | "current-color";
 
 export type IconName =
