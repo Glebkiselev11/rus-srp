@@ -43,6 +43,9 @@ export default defineComponent({
     lastPage(): number {
       return Math.ceil(this.count / this.limit);
     },
+    showPaginationConrols(): boolean {
+      return this.count > this.limit;
+    },
   },
   methods: {
     updateLimit(value: number) {
@@ -77,7 +80,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <div class="pagination-bar__section">
+    <div v-if="showPaginationConrols" class="pagination-bar__section">
       <div class="select-page-controller">
         <span class="select-page-controller__text">
           {{ $t("pagination.select-page") }}

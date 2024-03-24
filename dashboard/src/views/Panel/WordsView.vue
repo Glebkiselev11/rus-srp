@@ -232,7 +232,7 @@ export default defineComponent({
       return this.filter.category_id !== undefined;
     },
     showPagination(): boolean {
-      return this.count > this.limit;
+      return this.count > 0;
     },
     tableHeight(): string {
       const HeaderAndPanelHeight = "160px";
