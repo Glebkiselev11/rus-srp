@@ -402,6 +402,7 @@ export default defineComponent({
                       icon="more_vert"
                       appearance="inline"
                       color="neutral"
+                      size="compact"
                       :pressed="isMenuOpen"
                     />
                   </DropdownMenuComp>
