@@ -168,14 +168,13 @@ export default defineComponent({
         return this.filter.search;
       },
       set(search: string) {
-        const { offset, limit } = this.defaultFilter;
+        const { offset } = this.defaultFilter;
         this.filter = {
           ...this.filter,
           search,
 
           // reset pagination filters
           offset,
-          limit,
         };
       },
     },
@@ -216,12 +215,11 @@ export default defineComponent({
         return this.filter.translation_approved_status || "all";
       },
       set(translation_approved_status: TranslationApprovedStatus) {
-        const { offset, limit } = this.defaultFilter;
+        const { offset } = this.defaultFilter;
         this.filter = {
           ...this.filter,
           translation_approved_status,
           offset,
-          limit,
         };
       },
     },
