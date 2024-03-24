@@ -169,7 +169,7 @@ export default defineComponent({
   padding-inline-start: 12px;
 
   &--input {
-    margin-inline-end: 12px;
+    padding-inline-end: 12px;
   }
 }
 
