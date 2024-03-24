@@ -364,6 +364,8 @@ export default defineComponent({
                 <td
                   v-for="(translation, i) in translationColumns"
                   :key="`${word.id}-${i}`"
+                  class="text-overflow-ellipsis"
+                  :title="word[translation.sort_key]"
                   v-html="
                     highlighTextByQuery(word[translation.sort_key], search)
                   "
