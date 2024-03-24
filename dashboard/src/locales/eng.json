@@ -69,7 +69,7 @@
     "show": "Show",
     "select-page": "Go to page"
   },
-  "not-found": "Notning found for ”{search}”",
+  "not-found": "Nothing found",
   "not-found-description": "Check if the query was entered correctly, or enter it differently",
   "edit-image": "Editing an image",
   "add-image": "Adding an image",

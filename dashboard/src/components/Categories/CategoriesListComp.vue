@@ -30,9 +30,6 @@ export default defineComponent({
   emits: ["selectCateogry", "select-category-for-editing"],
   computed: {
     ...mapState(usePageCategoriesStore, ["categories", "loadState", "count"]),
-    notFoundTitle(): string {
-      return this.$t("not-found", { search: this.searchQuary });
-    },
   },
   methods: {
     selectCategory(categoryId: number) {
@@ -94,7 +91,7 @@ export default defineComponent({
     >
       <ZeroStateComp
         icon="search"
-        :title="notFoundTitle"
+        :title="$t('not-found')"
         :description="$t('not-found-description')"
       />
     </div>

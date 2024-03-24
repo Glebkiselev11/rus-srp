@@ -223,9 +223,6 @@ export default defineComponent({
         };
       },
     },
-    notFoundTitle(): string {
-      return this.$t("not-found", { search: this.search });
-    },
     showAddToCategoryButton(): boolean {
       return this.filter.category_id !== undefined;
     },
@@ -420,7 +417,7 @@ export default defineComponent({
             <template v-else>
               <ZeroStateComp
                 icon="search"
-                :title="notFoundTitle"
+                :title="$t('not-found')"
                 :description="$t('not-found-description')"
               />
             </template>
