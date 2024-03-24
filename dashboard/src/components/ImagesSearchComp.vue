@@ -116,7 +116,7 @@ export default defineComponent({
     >
       <!-- Search query is empty -->
       <ZeroStateComp
-        v-if="loadState === 'initial' && !searchQuery"
+        v-if="!searchQuery"
         icon="manage_search"
         :title="$t('image-search-title')"
         :description="$t('image-search-description')"
