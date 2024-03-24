@@ -120,9 +120,12 @@ export default defineComponent({
   position: relative;
 
   &__menu {
-    min-inline-size: 148px;
-    padding-block: 8px;
     position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-inline-size: 148px;
+    padding: 8px;
     right: 0;
     background-color: $color-background-content-primary;
     border-radius: 12px;
@@ -133,11 +136,11 @@ export default defineComponent({
       0 4px 8px 0 rgb(2 18 38 / 4%);
 
     &-position-top {
-      bottom: 100%;
+      bottom: calc(100% + 6px);
     }
 
     &-position-bottom {
-      top: 100%;
+      top: calc(100% + 6px);
     }
   }
 
