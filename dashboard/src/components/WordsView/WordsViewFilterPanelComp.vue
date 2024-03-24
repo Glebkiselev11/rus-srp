@@ -92,7 +92,7 @@ export default defineComponent({
 
 .filter-panel {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   margin-block-end: 16px;
 
