@@ -323,6 +323,7 @@ export default defineComponent({
           v-model:search="search"
           v-model:order="order"
           v-model:translation-approved-status="translation_approved_status"
+          :category-id="category_id"
           :order-options="orderOptions"
         />
 

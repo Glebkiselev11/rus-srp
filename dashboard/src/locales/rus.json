@@ -103,5 +103,7 @@
   "not-approved": "Не подтвержден",
   "translation-not-confirmed": "Перевод не подтвержден",
   "confirm": "Подтвердить",
-  "only-unconfirmed": "Только неподтвержденные"
+  "only-unconfirmed": "Только неподтвержденные",
+  "search-in-all-words": "Искать по всем словам",
+  "search-in-category-words": "Искать по словам в категории"
 }

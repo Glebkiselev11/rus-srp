@@ -103,5 +103,7 @@
   "not-approved": "Nije potvrđen",
   "translation-not-confirmed": "Prevod nije potvrđen",
   "confirm": "Potvrdi",
-  "only-unconfirmed": "Samo nepotvrđeni"
+  "only-unconfirmed": "Samo nepotvrđeni",
+  "search-in-all-words": "Pretraži u svim rečima",
+  "search-in-category-words": "Pretraži u rečima kategorije"
 }

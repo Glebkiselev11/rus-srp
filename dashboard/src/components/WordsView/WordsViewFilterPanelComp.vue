@@ -29,6 +29,10 @@ export default defineComponent({
       type: String as PropType<TranslationApprovedStatus>,
       required: true,
     },
+    categoryId: {
+      type: Number,
+      default: null,
+    },
   },
   emits: ["update:search", "update:order", "update:translationApprovedStatus"],
   computed: {
@@ -42,6 +46,11 @@ export default defineComponent({
           newValue ? "exclude_approved" : "all"
         );
       },
+    },
+    searchPlaceholder(): string {
+      return this.categoryId
+        ? this.$t("search-in-category-words")
+        : this.$t("search-in-all-words");
     },
   },
   methods: {
@@ -60,7 +69,7 @@ export default defineComponent({
     <InputComp
       :model-value="search"
       type="text"
-      :placeholder="$t('find-word')"
+      :placeholder="searchPlaceholder"
       left-icon="search"
       debounce
       width="360px"

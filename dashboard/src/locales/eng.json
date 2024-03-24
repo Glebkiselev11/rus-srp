@@ -103,5 +103,7 @@
   "not-approved": "Not approved",
   "translation-not-confirmed": "Translation not confirmed",
   "confirm": "Confirm",
-  "only-unconfirmed": "Only unconfirmed"
+  "only-unconfirmed": "Only unconfirmed",
+  "search-in-all-words": "Search in all words",
+  "search-in-category-words": "Search in category words"
 }
