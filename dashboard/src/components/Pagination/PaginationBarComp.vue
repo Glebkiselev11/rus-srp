@@ -113,7 +113,7 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
   height: 64px;
-  padding-inline: 24px;
+  padding-inline: 16px;
   border-block-start: 1px solid $color-separator-primary;
   background-color: $color-background-content-primary;
 
