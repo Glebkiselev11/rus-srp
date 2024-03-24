@@ -73,6 +73,7 @@ export default defineComponent({
       left-icon="search"
       debounce
       width="360px"
+      clear-button
       @update:model-value="updateSearch"
     />
 
