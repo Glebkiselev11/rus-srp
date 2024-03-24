@@ -53,11 +53,14 @@ export default defineComponent({
     filteredImages() {
       return this.images.filter(({ src }) => src !== this.savedLink);
     },
-    areImagesContainSavedLink(): boolean {
-      return this.images.some(({ src }) => src === this.savedLink);
-    },
     canLoadMore(): boolean {
       return this.loadState === "loading" || this.offset >= this.count;
+    },
+    nothingWereFound(): boolean {
+      return (
+        !this.images.length &&
+        (!this.savedLink || this.searchQuery !== this.defaultSearchQuery)
+      );
     },
   },
   watch: {
@@ -120,7 +123,7 @@ export default defineComponent({
 
       <!-- Nothing were found -->
       <ZeroStateComp
-        v-if="loadState === 'loaded' && !images.length"
+        v-if="loadState === 'loaded' && nothingWereFound"
         icon="search"
         :title="$t('not-found', { search: searchQuery })"
         :description="$t('not-found-description')"
@@ -132,7 +135,7 @@ export default defineComponent({
         />
       </ZeroStateComp>
 
-      <div v-if="savedLink && areImagesContainSavedLink" class="selected-image">
+      <div v-if="savedLink" class="selected-image">
         <img
           class="image-search-list--image"
           :src="addCropImagaeParamsToUrl(savedLink, 300)"
