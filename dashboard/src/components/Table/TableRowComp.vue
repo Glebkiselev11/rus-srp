@@ -46,7 +46,7 @@ export default defineComponent({
 @import "@/styles/main";
 
 .table-row {
-  height: 72px;
+  height: 64px;
   display: grid;
   align-items: center;
   border-block-end: 1px solid $color-separator-primary;
