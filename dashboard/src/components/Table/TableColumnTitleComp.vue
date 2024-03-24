@@ -106,6 +106,7 @@ $padding: 8px;
   display: flex;
   justify-content: flex-start;
   margin-inline-start: -$padding;
+  height: 32px;
 }
 
 .table-column-title {
