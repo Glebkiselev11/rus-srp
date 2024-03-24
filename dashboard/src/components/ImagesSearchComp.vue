@@ -62,6 +62,9 @@ export default defineComponent({
         (!this.savedLink || this.searchQuery !== this.defaultSearchQuery)
       );
     },
+    areImagesContainSavedLink(): boolean {
+      return this.images.some(({ src }) => src === this.savedLink);
+    },
   },
   watch: {
     searchQuery() {
@@ -136,7 +139,7 @@ export default defineComponent({
         />
       </ZeroStateComp>
 
-      <div v-if="savedLink" class="selected-image">
+      <div v-if="savedLink && areImagesContainSavedLink" class="selected-image">
         <img
           class="image-search-list--image"
           :src="addCropImagaeParamsToUrl(savedLink, 300)"
