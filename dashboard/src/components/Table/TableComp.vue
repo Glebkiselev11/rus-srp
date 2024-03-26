@@ -132,7 +132,7 @@ export default defineComponent({
       height: inherit;
 
       th {
-        padding-inline: 16px;
+        padding-inline: 12px;
       }
     }
 

@@ -92,7 +92,7 @@ export default defineComponent({
         label: getLanguageLabel(code),
         sortable: true,
         sort_key: code,
-        width: "148px",
+        width: "164px",
       }));
     },
     columns() {
@@ -108,7 +108,7 @@ export default defineComponent({
             name: "image",
             color: "tertiary",
           } as const,
-          width: "100px",
+          width: "64px",
         },
         ...this.translationColumns,
         {
