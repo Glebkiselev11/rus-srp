@@ -135,7 +135,11 @@ export default defineComponent({
     <HeaderComp :title="$t('categories')" title-tag="h4">
       <template #right>
         <div class="categories__controls">
-          <DropdownMenuComp v-slot="{ isMenuOpen }" :items="orderOptions">
+          <DropdownMenuComp
+            v-slot="{ isMenuOpen }"
+            :items="orderOptions"
+            position="right"
+          >
             <TooltipComp :text="$t('to-sort')">
               <ButtonComp
                 icon="sort"

@@ -1,13 +1,12 @@
 <script lang="ts">
 import { debounce } from "lodash";
-import { type PropType, defineComponent, watch } from "vue";
+import { type PropType, defineComponent } from "vue";
 import type { IconName } from "../types/icons";
 import IconComp from "./IconComp/index.vue";
 import ButtonComp from "./ButtonComp.vue";
 import InputWrapperComp from "./InputWrapperComp.vue";
 import TooltipComp from "./TooltipComp.vue";
 import type { InputSize, InputAppearance } from "@/types/input";
-import { useFocusWithin } from "@vueuse/core";
 
 export default defineComponent({
   name: "InputComp",
@@ -95,7 +94,6 @@ export default defineComponent({
   emits: ["update:modelValue"],
   data() {
     return {
-      focusOnInput: false,
       value: this.modelValue,
     };
   },
@@ -109,23 +107,12 @@ export default defineComponent({
     if (this.focusOnMount) {
       this.setFocus();
     }
-
-    this.initWatchingFocus();
   },
   methods: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     debounceEmit: debounce(function (this: any, value: unknown) {
       this.emitValue(value);
     }, 500),
-
-    initWatchingFocus() {
-      const wrapper = this.$refs.wrapper as HTMLElement;
-      const { focused } = useFocusWithin(wrapper);
-      watch(focused, (focused) => {
-        this.focusOnInput = focused;
-      });
-    },
-
     emitValue(value: unknown) {
       this.$emit("update:modelValue", value);
     },
@@ -194,7 +181,7 @@ export default defineComponent({
 
       <div class="input__buttons">
         <ButtonComp
-          v-show="clearButton && modelValue && focusOnInput"
+          v-show="clearButton && modelValue"
           icon="cancel"
           color="neutral"
           :size="size"

@@ -53,15 +53,13 @@ export default defineComponent({
 @import "@/styles/main";
 
 .navbar {
-  padding-block: 10px;
-  width: 72px;
   height: 100%;
   background-color: $color-background-content-primary;
   border-inline-end: 1px solid $color-separator-primary;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-inline: 12px;
+  padding: 12px;
 
   &__list {
     display: flex;

@@ -56,7 +56,7 @@ export default defineComponent({
   }
 
   td {
-    padding-inline: 16px;
+    padding-inline: 12px;
   }
 }
 </style>

@@ -68,6 +68,7 @@ export default defineComponent({
   <div class="filter-panel">
     <InputComp
       :model-value="search"
+      appearance="outline"
       type="text"
       :placeholder="searchPlaceholder"
       left-icon="search"
