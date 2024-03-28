@@ -132,7 +132,7 @@ export default defineComponent({
 
 <template>
   <div class="categories">
-    <HeaderComp :title="$t('categories')" title-tag="h4">
+    <HeaderComp :title="$t('categories')" title-tag="h4" padding-inline="12px">
       <template #right>
         <div class="categories__controls">
           <DropdownMenuComp
