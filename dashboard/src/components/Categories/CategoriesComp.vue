@@ -140,7 +140,7 @@ export default defineComponent({
             :items="orderOptions"
             position="right"
           >
-            <TooltipComp :text="$t('to-sort')">
+            <TooltipComp :text="$t('to-sort')" :hidden="isMenuOpen">
               <ButtonComp
                 icon="sort"
                 appearance="inline"
