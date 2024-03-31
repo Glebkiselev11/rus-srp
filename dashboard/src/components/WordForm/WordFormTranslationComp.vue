@@ -99,6 +99,9 @@ export default defineComponent({
       }
     },
     async _autoFillTranslations() {
+      if (!this.semifilledTranslations || this.autoFillTranslationsLoading)
+        return;
+
       try {
         this.autoFillTranslationsLoading = true;
         await this.autoFillTranslations();
@@ -167,6 +170,7 @@ export default defineComponent({
       clear-button
       :label="getLanguageLabel(code)"
       class="word-form-translation__input"
+      @keypress.enter="_autoFillTranslations"
     />
   </div>
 </template>

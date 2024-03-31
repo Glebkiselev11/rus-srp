@@ -223,6 +223,10 @@ export default defineComponent({
       this.$emit("saved");
     },
     autoFill() {
+      if (!this.showFillAutoButton || this.autoFillTranslationsLoading) {
+        return;
+      }
+
       const from = this.selectedLanguage;
       const targets = getLanguageList()
         .filter(({ value }) => value !== from)
@@ -303,6 +307,7 @@ export default defineComponent({
           clear-button
           :reset-value="category?.[selectedLanguage]"
           @focusout="triggerCategoryNameUniqueValidation"
+          @keypress.enter="autoFill"
         />
       </ImageSectionComp>
 
