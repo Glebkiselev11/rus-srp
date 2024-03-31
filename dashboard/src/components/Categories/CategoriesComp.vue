@@ -8,7 +8,7 @@ import InputComp from "@/components/InputComp.vue";
 import CategoriesListComp from "@/components/Categories/CategoriesListComp.vue";
 import HeaderComp from "@/components/HeaderComp.vue";
 import DropdownMenuComp from "../DropdownMenuComp.vue";
-import type { Order, RequestParams } from "@/types/api";
+import type { Id, Order, RequestParams } from "@/types/api";
 import type { LanguageCode } from "@/types/translations";
 import TooltipComp from "../TooltipComp.vue";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
@@ -122,7 +122,7 @@ export default defineComponent({
       this.editingCategoryId = categoryId;
       this.showCategoryForm = true;
     },
-    selectCategory(categoryId: number) {
+    selectCategory(categoryId: Id) {
       this.$emit("update:selected-category-id", categoryId || undefined);
     },
     getOrderColor(key: Order) {
@@ -184,6 +184,7 @@ export default defineComponent({
       v-if="showCategoryForm"
       :category-id="editingCategoryId"
       @close="showCategoryForm = false"
+      @created="selectCategory"
     />
   </div>
 </template>

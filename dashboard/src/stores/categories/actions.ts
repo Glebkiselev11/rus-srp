@@ -25,13 +25,10 @@ export const useCategoriesActions = defineStore("categoriesActions", {
       const pageStore = usePageCategoriesStore();
       const modalStore = useModalCategoriesStore();
 
-      try {
-        const { data } = await CategoriesService.create(category);
-        pageStore.categories = [...pageStore.categories, data];
-        modalStore.categories = [...modalStore.categories, data];
-      } catch (error) {
-        console.error(error);
-      }
+      const { data } = await CategoriesService.create(category);
+      pageStore.categories = [...pageStore.categories, data];
+      modalStore.categories = [...modalStore.categories, data];
+      return data;
     },
 
     async updateCategory(id: Id, category: DraftCategory | Category) {

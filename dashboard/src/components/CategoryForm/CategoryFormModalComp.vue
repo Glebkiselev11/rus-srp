@@ -24,7 +24,7 @@ export default defineComponent({
       default: undefined,
     },
   },
-  emits: ["close"],
+  emits: ["close", "created"],
   data() {
     return {
       // Mark as changed to prevent closing modal without confirmation
@@ -90,6 +90,7 @@ export default defineComponent({
       <CategoryFormComp
         :category="category"
         @saved="close"
+        @created="(id) => $emit('created', id)"
         @close="tryClose"
         @set-changed-status="setChanged"
       />

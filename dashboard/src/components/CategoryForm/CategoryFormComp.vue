@@ -39,7 +39,7 @@ export default defineComponent({
       default: undefined,
     },
   },
-  emits: ["saved", "close", "set-changed-status"],
+  emits: ["saved", "created", "close", "set-changed-status"],
   data() {
     return {
       draftCategory: initDraftCategory(),
@@ -213,7 +213,8 @@ export default defineComponent({
       if (this.category) {
         await this.updateCategory(this.category.id, this.draftCategory);
       } else {
-        await this.createCategory(this.draftCategory);
+        const { id } = await this.createCategory(this.draftCategory);
+        this.$emit("created", id);
       }
 
       this.savingLoading = false;
