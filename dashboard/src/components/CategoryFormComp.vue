@@ -65,6 +65,11 @@ export default defineComponent({
     categoryName(): string {
       return this.draftCategory[this.selectedLanguage];
     },
+    imageSearchModalSubtitle(): string {
+      return (
+        this.draftCategory[this.selectedLanguage] || this.$t("new-category")
+      );
+    },
     defaultImageSearchQuery(): string {
       return this.draftCategory.eng;
     },
@@ -284,7 +289,7 @@ export default defineComponent({
     <div class="category-form__content">
       <ImageSectionComp
         :src="draftCategory.image"
-        :image-search-modal-subtitle="categoryName"
+        :image-search-modal-subtitle="imageSearchModalSubtitle"
         :default-image-search-query="defaultImageSearchQuery"
         @update:src="draftCategory.image = $event"
       >
