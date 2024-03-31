@@ -1,13 +1,13 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import ModalComp from "./ModalComp.vue";
+import ModalComp from "@/components/ModalComp.vue";
 import CategoryFormComp from "./CategoryFormComp.vue";
 import { useCategoriesActions } from "@/stores/categories/actions";
 import { mapState } from "pinia";
 import type { LanguageCode } from "@/types/translations";
 import type { Category } from "@/types/categories";
-import ImagePreviewComp from "./ImagePreviewComp.vue";
-import FormCloseConfirmationModalComp from "./FormCloseConfirmationModalComp.vue";
+import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
+import FormCloseConfirmationModalComp from "@/components/FormCloseConfirmationModalComp.vue";
 
 export default defineComponent({
   name: "CategoryFormModalComp",

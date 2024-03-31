@@ -1,12 +1,12 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import ImageSectionComp from "./ImageSectionComp.vue";
+import ImageSectionComp from "../ImageSectionComp.vue";
 import { useCategoriesActions } from "@/stores/categories/actions";
 import { mapActions } from "pinia";
 import type { Category, DraftCategory } from "@/types/categories";
 import type { LanguageCode } from "@/types/translations";
-import InputComp from "./InputComp.vue";
-import ButtonComp from "./ButtonComp.vue";
+import InputComp from "../InputComp.vue";
+import ButtonComp from "../ButtonComp.vue";
 import { translate } from "@/common/translations";
 import { CategoriesService } from "@/api";
 import {

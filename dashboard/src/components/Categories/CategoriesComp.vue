@@ -11,7 +11,7 @@ import DropdownMenuComp from "../DropdownMenuComp.vue";
 import type { Order, RequestParams } from "@/types/api";
 import type { LanguageCode } from "@/types/translations";
 import TooltipComp from "../TooltipComp.vue";
-import CategoryFormModalComp from "../CategoryFormModalComp.vue";
+import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 
 export default defineComponent({
   name: "CategoriesComp",

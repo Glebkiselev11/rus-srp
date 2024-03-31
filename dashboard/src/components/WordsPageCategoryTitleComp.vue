@@ -9,7 +9,7 @@ import ImagePreviewComp from "./ImagePreviewComp.vue";
 import DropdownMenuComp from "./DropdownMenuComp.vue";
 import ButtonComp from "./ButtonComp.vue";
 import RemoveCategoryModalComp from "./Categories/RemoveCategoryModalComp.vue";
-import CategoryFormModalComp from "./CategoryFormModalComp.vue";
+import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 import { extractCurrentLanguageTranslation } from "@/common/translations";
 
 export default defineComponent({
