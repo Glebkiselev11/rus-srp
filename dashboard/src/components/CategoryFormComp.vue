@@ -281,56 +281,58 @@ export default defineComponent({
 
 <template>
   <div class="category-form">
-    <ImageSectionComp
-      :src="draftCategory.image"
-      :image-search-modal-subtitle="categoryName"
-      :default-image-search-query="defaultImageSearchQuery"
-      @update:src="draftCategory.image = $event"
-    >
-      <InputComp
-        v-model="draftCategory[selectedLanguage]"
-        :label="$t('category-name')"
-        width="400px"
-        appearance="outline"
-        :focus-on-mount="!category"
-        :error-text="categoryNameValidationErrors[0]"
-        clear-button
-        :reset-value="category?.[selectedLanguage]"
-        @focusout="triggerCategoryNameUniqueValidation"
-      />
-    </ImageSectionComp>
+    <div class="category-form__content">
+      <ImageSectionComp
+        :src="draftCategory.image"
+        :image-search-modal-subtitle="categoryName"
+        :default-image-search-query="defaultImageSearchQuery"
+        @update:src="draftCategory.image = $event"
+      >
+        <InputComp
+          v-model="draftCategory[selectedLanguage]"
+          :label="$t('category-name')"
+          width="400px"
+          appearance="outline"
+          :focus-on-mount="!category"
+          :error-text="categoryNameValidationErrors[0]"
+          clear-button
+          :reset-value="category?.[selectedLanguage]"
+          @focusout="triggerCategoryNameUniqueValidation"
+        />
+      </ImageSectionComp>
 
-    <div class="category-form__row">
-      <div>
-        <h4 v-text="$t('translation')" />
-        <span
-          class="text-color-negative text-body-2"
-          v-text="translationError"
+      <div class="category-form__row">
+        <div>
+          <h4 v-text="$t('translation')" />
+          <span
+            class="text-color-negative text-body-2"
+            v-text="translationError"
+          />
+        </div>
+
+        <ButtonComp
+          v-if="showFillAutoButton"
+          icon="edit_note"
+          appearance="inline"
+          size="regular"
+          :label="$t('fill-in-auto')"
+          :loading="autoFillTranslationsLoading"
+          @click="autoFill"
         />
       </div>
 
-      <ButtonComp
-        v-if="showFillAutoButton"
-        icon="edit_note"
-        appearance="inline"
-        size="regular"
-        :label="$t('fill-in-auto')"
-        :loading="autoFillTranslationsLoading"
-        @click="autoFill"
+      <InputComp
+        v-for="code in nonSelectedLanguages"
+        :key="code"
+        v-model="draftCategory[code]"
+        appearance="outline"
+        clear-button
+        :reset-value="category?.[code]"
+        :error-text="getValidationError(code)"
+        :label="getLanguageLabel(code)"
+        class="category-form__translation-input"
       />
     </div>
-
-    <InputComp
-      v-for="code in nonSelectedLanguages"
-      :key="code"
-      v-model="draftCategory[code]"
-      appearance="outline"
-      clear-button
-      :reset-value="category?.[code]"
-      :error-text="getValidationError(code)"
-      :label="getLanguageLabel(code)"
-      class="category-form__translation-input"
-    />
 
     <div class="category-form__footer">
       <ButtonComp appearance="secondary" :label="$t('cancel')" @click="close" />
@@ -347,9 +349,11 @@ export default defineComponent({
 @import "@/styles/main";
 
 .category-form {
-  padding-inline: 16px;
-  padding-block-end: 20px;
   width: 598px;
+
+  &__content {
+    padding-inline: 20px;
+  }
 
   &__row {
     display: flex;
@@ -367,7 +371,8 @@ export default defineComponent({
     display: flex;
     justify-content: flex-end;
     column-gap: 8px;
-    padding-block-start: 16px;
+    padding: 20px;
+    border-block-start: 1px solid $color-separator-primary;
   }
 }
 </style>

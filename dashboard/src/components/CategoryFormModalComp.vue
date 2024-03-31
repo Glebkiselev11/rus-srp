@@ -77,7 +77,12 @@ export default defineComponent({
 </script>
 
 <template>
-  <ModalComp :title="title" :subtitle="subtitle" @close="tryClose">
+  <ModalComp
+    :title="title"
+    :subtitle="subtitle"
+    header-padding-inline="20px"
+    @close="tryClose"
+  >
     <template v-if="category" #header-left>
       <ImagePreviewComp :src="category.image" static />
     </template>
