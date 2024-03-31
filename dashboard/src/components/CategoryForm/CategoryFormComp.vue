@@ -312,13 +312,7 @@ export default defineComponent({
       </ImageSectionComp>
 
       <div class="category-form__row">
-        <div>
-          <h4 v-text="$t('translation')" />
-          <span
-            class="text-color-negative text-body-2"
-            v-text="translationError"
-          />
-        </div>
+        <h4 v-text="$t('translation')" />
 
         <ButtonComp
           v-if="showFillAutoButton"
