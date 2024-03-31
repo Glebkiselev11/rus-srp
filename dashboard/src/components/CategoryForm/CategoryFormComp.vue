@@ -79,7 +79,7 @@ export default defineComponent({
     showFillAutoButton(): boolean {
       const draftCategoryName = this.draftCategory[this.selectedLanguage];
 
-      if (!draftCategoryName) {
+      if (this.categoryNameAlreadyExistsError || !draftCategoryName) {
         return false;
       }
 
