@@ -163,14 +163,16 @@ export default defineComponent({
         return;
       }
 
-      const { data } = await CategoriesService.query({ search: name });
+      try {
+        const { data } = await CategoriesService.query({ search: name });
 
-      const exists = data.result.some(
-        (category) =>
-          category[key].toLocaleLowerCase() === name.toLocaleLowerCase()
-      );
+        const exists = data.result.some(
+          (category) =>
+            category[key].toLocaleLowerCase() === name.toLocaleLowerCase()
+        );
 
-      this.categoryNameAlreadyExistsError = exists;
+        this.categoryNameAlreadyExistsError = exists;
+      } catch (_) {}
     },
     async triggerValidation(): Promise<void> {
       await this.triggerCategoryNameUniqueValidation();
@@ -302,7 +304,7 @@ export default defineComponent({
           :error-text="categoryNameValidationError"
           clear-button
           :reset-value="category?.[selectedLanguage]"
-          @focusout="triggerCategoryNameUniqueValidation"
+          @input="triggerCategoryNameUniqueValidation"
           @keypress.enter="autoFill"
         />
       </ImageSectionComp>
