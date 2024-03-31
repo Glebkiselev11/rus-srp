@@ -125,6 +125,26 @@ export default defineComponent({
       },
       deep: true,
     },
+    "draftCategory.rus": {
+      handler() {
+        this.rusValidationError = undefined;
+      },
+    },
+    "draftCategory.eng": {
+      handler() {
+        this.engValidationError = undefined;
+      },
+    },
+    "draftCategory.srp_latin": {
+      handler() {
+        this.srp_latinValidationError = undefined;
+      },
+    },
+    "draftCategory.srp_cyrillic": {
+      handler() {
+        this.srp_cyrillicValidationError = undefined;
+      },
+    },
   },
   created() {
     if (this.category) {
