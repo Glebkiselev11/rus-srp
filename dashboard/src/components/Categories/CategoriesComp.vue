@@ -82,25 +82,27 @@ export default defineComponent({
         {
           label: this.$t("order.last-added"),
           icon: "done",
-          color: this.getOrderColor("-created_at"),
+          iconColor: this.getOrderColor("-created_at"),
           handler: () => (this.order = "-created_at"),
         } as const,
         {
           label: this.$t("order.last-updated"),
-          color: this.getOrderColor("-updated_at"),
+          iconColor: this.getOrderColor("-updated_at"),
           icon: "done",
           handler: () => (this.order = "-updated_at"),
         } as const,
         "separator" as const,
         {
           label: this.$t("order.alphabetical-asc"),
-          color: this.getOrderColor(`${this.$i18n.locale as LanguageCode}`),
+          iconColor: this.getOrderColor(`${this.$i18n.locale as LanguageCode}`),
           icon: "done",
           handler: () => (this.order = `${this.$i18n.locale as LanguageCode}`),
         } as const,
         {
           label: this.$t("order.alphabetical-desc"),
-          color: this.getOrderColor(`-${this.$i18n.locale as LanguageCode}`),
+          iconColor: this.getOrderColor(
+            `-${this.$i18n.locale as LanguageCode}`
+          ),
           icon: "done",
           handler: () => (this.order = `-${this.$i18n.locale as LanguageCode}`),
         } as const,
