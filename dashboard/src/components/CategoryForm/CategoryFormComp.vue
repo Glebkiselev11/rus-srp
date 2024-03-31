@@ -44,7 +44,7 @@ export default defineComponent({
     return {
       draftCategory: initDraftCategory(),
       autoFillTranslationsLoading: false,
-      categoryNameValidationErrors: [] as string[],
+      categoryNameAlreadyExistsError: false,
       rusValidationError: undefined as string | undefined,
       engValidationError: undefined as string | undefined,
       srp_latinValidationError: undefined as string | undefined,
@@ -100,9 +100,7 @@ export default defineComponent({
       return true;
     },
     isValidToSave(): boolean {
-      return (
-        this.categoryNameValidationErrors.length === 0 && !this.translationError
-      );
+      return !this.categoryNameAlreadyExistsError && !this.translationError;
     },
     translationError(): string | undefined {
       return (
@@ -111,6 +109,13 @@ export default defineComponent({
         this.srp_latinValidationError ||
         this.srp_cyrillicValidationError
       );
+    },
+    categoryNameValidationError(): string | undefined {
+      if (this.categoryNameAlreadyExistsError) {
+        return this.$t("category-exists");
+      }
+
+      return this.getValidationError(this.selectedLanguage);
     },
   },
   watch: {
@@ -129,23 +134,12 @@ export default defineComponent({
   methods: {
     ...mapActions(useCategoriesActions, ["createCategory", "updateCategory"]),
     getLanguageLabel,
-    removeCategoryNameErrorValidation(error: string): void {
-      this.categoryNameValidationErrors =
-        this.categoryNameValidationErrors.filter((x) => x !== error);
-    },
-    addCategoryNameErrorValidation(error: string): void {
-      this.categoryNameValidationErrors.push(error);
-      this.categoryNameValidationErrors = [
-        ...new Set(this.categoryNameValidationErrors),
-      ];
-    },
     async triggerCategoryNameUniqueValidation(): Promise<void> {
       const key = this.selectedLanguage;
       const name = this.draftCategory[key];
-      const error = this.$t("category-exists");
 
       if (!name || (this.category && this.category[key] === name)) {
-        this.removeCategoryNameErrorValidation(error);
+        this.categoryNameAlreadyExistsError = false;
         return;
       }
 
@@ -156,52 +150,34 @@ export default defineComponent({
           category[key].toLocaleLowerCase() === name.toLocaleLowerCase()
       );
 
-      if (exists) {
-        this.addCategoryNameErrorValidation(error);
-      } else {
-        this.removeCategoryNameErrorValidation(error);
-      }
+      this.categoryNameAlreadyExistsError = exists;
     },
     async triggerValidation(): Promise<void> {
       await this.triggerCategoryNameUniqueValidation();
 
       const requiredError = this.$t("required");
-      if (!this.draftCategory.rus && this.selectedLanguage !== "rus") {
+      if (!this.draftCategory.rus) {
         this.rusValidationError = requiredError;
       } else {
         this.rusValidationError = undefined;
       }
 
-      if (!this.draftCategory.eng && this.selectedLanguage !== "eng") {
+      if (!this.draftCategory.eng) {
         this.engValidationError = requiredError;
       } else {
         this.engValidationError = undefined;
       }
 
-      if (
-        !this.draftCategory.srp_latin &&
-        this.selectedLanguage !== "srp_latin"
-      ) {
+      if (!this.draftCategory.srp_latin) {
         this.srp_latinValidationError = requiredError;
       } else {
         this.srp_latinValidationError = undefined;
       }
 
-      if (
-        !this.draftCategory.srp_cyrillic &&
-        this.selectedLanguage !== "srp_cyrillic"
-      ) {
+      if (!this.draftCategory.srp_cyrillic) {
         this.srp_cyrillicValidationError = requiredError;
       } else {
         this.srp_cyrillicValidationError = undefined;
-      }
-
-      if (!this.draftCategory[this.selectedLanguage]) {
-        this.addCategoryNameErrorValidation(this.$t("category-name-required"));
-      } else {
-        this.removeCategoryNameErrorValidation(
-          this.$t("category-name-required")
-        );
       }
     },
     async saveCategory() {
@@ -303,7 +279,7 @@ export default defineComponent({
           width="400px"
           appearance="outline"
           :focus-on-mount="!category"
-          :error-text="categoryNameValidationErrors[0]"
+          :error-text="categoryNameValidationError"
           clear-button
           :reset-value="category?.[selectedLanguage]"
           @focusout="triggerCategoryNameUniqueValidation"
