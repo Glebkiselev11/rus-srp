@@ -26,8 +26,8 @@ export const useCategoriesActions = defineStore("categoriesActions", {
       const modalStore = useModalCategoriesStore();
 
       const { data } = await CategoriesService.create(category);
-      pageStore.categories = [...pageStore.categories, data];
-      modalStore.categories = [...modalStore.categories, data];
+      pageStore.categories = [data, ...pageStore.categories];
+      modalStore.categories = [data, ...modalStore.categories];
       return data;
     },
 
