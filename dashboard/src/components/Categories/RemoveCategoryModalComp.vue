@@ -60,6 +60,12 @@ export default defineComponent({
     },
     async removeCategory() {
       await this.deleteCategory(this.category.id);
+
+      // Remove category_id from router query
+      this.$router.push({
+        query: { ...this.$route.query, category_id: undefined },
+      });
+
       this.close();
     },
   },

@@ -146,21 +146,17 @@ export default defineComponent({
         };
       },
       set(params: RequestParams) {
-        this.$router
-          .push({
-            query: {
-              ...this.$route.query,
-              search_word: params.search,
-              offset: params.offset,
-              limit: params.limit,
-              order_word: params.order,
-              category_id: params.category_id,
-              translation_approved_status: params.translation_approved_status,
-            },
-          })
-          .then(() => {
-            this.fetchPageWords(params);
-          });
+        this.$router.push({
+          query: {
+            ...this.$route.query,
+            search_word: params.search,
+            offset: params.offset,
+            limit: params.limit,
+            order_word: params.order,
+            category_id: params.category_id,
+            translation_approved_status: params.translation_approved_status,
+          },
+        });
       },
     },
     search: {
@@ -233,6 +229,14 @@ export default defineComponent({
       const HeaderAndPanelHeight = "160px";
 
       return `calc(100vh - ${HeaderAndPanelHeight})`;
+    },
+  },
+  watch: {
+    filter: {
+      handler(filter) {
+        this.fetchPageWords(filter);
+      },
+      immediate: true,
     },
   },
   mounted() {
