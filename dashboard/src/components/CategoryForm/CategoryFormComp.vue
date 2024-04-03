@@ -237,7 +237,7 @@ export default defineComponent({
         .map(({ value }) => value)
         .reduce(
           (acc, cur) => {
-            acc[cur] = this.draftCategory[cur];
+            acc[cur] = "";
             return acc;
           },
           {} as Record<LanguageCode, string>
