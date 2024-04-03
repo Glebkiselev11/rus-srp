@@ -118,6 +118,10 @@ export default defineComponent({
 
       return this.getValidationError(this.selectedLanguage);
     },
+    fillInText(): string {
+      const inEditMode = Boolean(this.category);
+      return inEditMode ? this.$t("update") : this.$t("fill-in-auto");
+    },
   },
   watch: {
     draftCategory: {
@@ -318,7 +322,7 @@ export default defineComponent({
           icon="edit_note"
           appearance="inline"
           size="regular"
-          :label="$t('fill-in-auto')"
+          :label="fillInText"
           :loading="autoFillTranslationsLoading"
           @click="autoFill"
         />
