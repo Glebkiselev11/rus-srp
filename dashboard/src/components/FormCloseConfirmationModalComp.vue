@@ -32,7 +32,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <ModalComp :title="title" header-padding-inline="12px" @close="close">
+  <ModalComp :title="title" header-padding-inline="20px" @close="close">
     <template #content>
       <div class="form-close-confirmation-modal">
         {{ $t("modal-exit-confirmation.description") }}
@@ -57,7 +57,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .form-close-confirmation-modal {
   width: 502px;
-  padding: 12px;
+  padding: 20px;
 
   &__buttons {
     display: flex;

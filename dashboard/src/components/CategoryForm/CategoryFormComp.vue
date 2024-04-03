@@ -1,12 +1,12 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import ImageSectionComp from "./ImageSectionComp.vue";
+import ImageSectionComp from "../ImageSectionComp.vue";
 import { useCategoriesActions } from "@/stores/categories/actions";
 import { mapActions } from "pinia";
 import type { Category, DraftCategory } from "@/types/categories";
 import type { LanguageCode } from "@/types/translations";
-import InputComp from "./InputComp.vue";
-import ButtonComp from "./ButtonComp.vue";
+import InputComp from "../InputComp.vue";
+import ButtonComp from "../ButtonComp.vue";
 import { translate } from "@/common/translations";
 import { CategoriesService } from "@/api";
 import {
@@ -14,7 +14,7 @@ import {
   getLanguageList,
   getLanguageCodesOrder,
 } from "@/common/translations";
-import { isAnyFieldHasChanged } from "@/common/utils";
+import { capitalizeFirstLetter, isAnyFieldHasChanged } from "@/common/utils";
 
 function initDraftCategory(): DraftCategory {
   return {
@@ -39,12 +39,12 @@ export default defineComponent({
       default: undefined,
     },
   },
-  emits: ["saved", "close", "set-changed-status"],
+  emits: ["saved", "created", "close", "set-changed-status"],
   data() {
     return {
       draftCategory: initDraftCategory(),
       autoFillTranslationsLoading: false,
-      categoryNameValidationErrors: [] as string[],
+      categoryNameAlreadyExistsError: false,
       rusValidationError: undefined as string | undefined,
       engValidationError: undefined as string | undefined,
       srp_latinValidationError: undefined as string | undefined,
@@ -65,6 +65,12 @@ export default defineComponent({
     categoryName(): string {
       return this.draftCategory[this.selectedLanguage];
     },
+    imageSearchModalSubtitle(): string {
+      return (
+        capitalizeFirstLetter(this.draftCategory[this.selectedLanguage]) ||
+        this.$t("new-category")
+      );
+    },
     defaultImageSearchQuery(): string {
       return this.draftCategory.eng;
     },
@@ -74,7 +80,7 @@ export default defineComponent({
     showFillAutoButton(): boolean {
       const draftCategoryName = this.draftCategory[this.selectedLanguage];
 
-      if (!draftCategoryName) {
+      if (this.categoryNameAlreadyExistsError || !draftCategoryName) {
         return false;
       }
 
@@ -95,9 +101,7 @@ export default defineComponent({
       return true;
     },
     isValidToSave(): boolean {
-      return (
-        this.categoryNameValidationErrors.length === 0 && !this.translationError
-      );
+      return !this.categoryNameAlreadyExistsError && !this.translationError;
     },
     translationError(): string | undefined {
       return (
@@ -107,6 +111,17 @@ export default defineComponent({
         this.srp_cyrillicValidationError
       );
     },
+    categoryNameValidationError(): string | undefined {
+      if (this.categoryNameAlreadyExistsError) {
+        return this.$t("category-exists");
+      }
+
+      return this.getValidationError(this.selectedLanguage);
+    },
+    fillInText(): string {
+      const inEditMode = Boolean(this.category);
+      return inEditMode ? this.$t("update") : this.$t("fill-in-auto");
+    },
   },
   watch: {
     draftCategory: {
@@ -114,6 +129,26 @@ export default defineComponent({
         this.updateChangeStatus();
       },
       deep: true,
+    },
+    "draftCategory.rus": {
+      handler() {
+        this.rusValidationError = undefined;
+      },
+    },
+    "draftCategory.eng": {
+      handler() {
+        this.engValidationError = undefined;
+      },
+    },
+    "draftCategory.srp_latin": {
+      handler() {
+        this.srp_latinValidationError = undefined;
+      },
+    },
+    "draftCategory.srp_cyrillic": {
+      handler() {
+        this.srp_cyrillicValidationError = undefined;
+      },
     },
   },
   created() {
@@ -124,79 +159,52 @@ export default defineComponent({
   methods: {
     ...mapActions(useCategoriesActions, ["createCategory", "updateCategory"]),
     getLanguageLabel,
-    removeCategoryNameErrorValidation(error: string): void {
-      this.categoryNameValidationErrors =
-        this.categoryNameValidationErrors.filter((x) => x !== error);
-    },
-    addCategoryNameErrorValidation(error: string): void {
-      this.categoryNameValidationErrors.push(error);
-      this.categoryNameValidationErrors = [
-        ...new Set(this.categoryNameValidationErrors),
-      ];
-    },
     async triggerCategoryNameUniqueValidation(): Promise<void> {
       const key = this.selectedLanguage;
       const name = this.draftCategory[key];
-      const error = this.$t("category-exists");
 
       if (!name || (this.category && this.category[key] === name)) {
-        this.removeCategoryNameErrorValidation(error);
+        this.categoryNameAlreadyExistsError = false;
         return;
       }
 
-      const { data } = await CategoriesService.query({ search: name });
+      try {
+        const { data } = await CategoriesService.query({ search: name });
 
-      const exists = data.result.some(
-        (category) =>
-          category[key].toLocaleLowerCase() === name.toLocaleLowerCase()
-      );
+        const exists = data.result.some(
+          (category) =>
+            category[key].toLocaleLowerCase() === name.toLocaleLowerCase()
+        );
 
-      if (exists) {
-        this.addCategoryNameErrorValidation(error);
-      } else {
-        this.removeCategoryNameErrorValidation(error);
-      }
+        this.categoryNameAlreadyExistsError = exists;
+      } catch (_) {}
     },
     async triggerValidation(): Promise<void> {
       await this.triggerCategoryNameUniqueValidation();
 
       const requiredError = this.$t("required");
-      if (!this.draftCategory.rus && this.selectedLanguage !== "rus") {
+      if (!this.draftCategory.rus) {
         this.rusValidationError = requiredError;
       } else {
         this.rusValidationError = undefined;
       }
 
-      if (!this.draftCategory.eng && this.selectedLanguage !== "eng") {
+      if (!this.draftCategory.eng) {
         this.engValidationError = requiredError;
       } else {
         this.engValidationError = undefined;
       }
 
-      if (
-        !this.draftCategory.srp_latin &&
-        this.selectedLanguage !== "srp_latin"
-      ) {
+      if (!this.draftCategory.srp_latin) {
         this.srp_latinValidationError = requiredError;
       } else {
         this.srp_latinValidationError = undefined;
       }
 
-      if (
-        !this.draftCategory.srp_cyrillic &&
-        this.selectedLanguage !== "srp_cyrillic"
-      ) {
+      if (!this.draftCategory.srp_cyrillic) {
         this.srp_cyrillicValidationError = requiredError;
       } else {
         this.srp_cyrillicValidationError = undefined;
-      }
-
-      if (!this.draftCategory[this.selectedLanguage]) {
-        this.addCategoryNameErrorValidation(this.$t("category-name-required"));
-      } else {
-        this.removeCategoryNameErrorValidation(
-          this.$t("category-name-required")
-        );
       }
     },
     async saveCategory() {
@@ -210,7 +218,8 @@ export default defineComponent({
       if (this.category) {
         await this.updateCategory(this.category.id, this.draftCategory);
       } else {
-        await this.createCategory(this.draftCategory);
+        const { id } = await this.createCategory(this.draftCategory);
+        this.$emit("created", id);
       }
 
       this.savingLoading = false;
@@ -218,13 +227,17 @@ export default defineComponent({
       this.$emit("saved");
     },
     autoFill() {
+      if (!this.showFillAutoButton || this.autoFillTranslationsLoading) {
+        return;
+      }
+
       const from = this.selectedLanguage;
       const targets = getLanguageList()
         .filter(({ value }) => value !== from)
         .map(({ value }) => value)
         .reduce(
           (acc, cur) => {
-            acc[cur] = this.draftCategory[cur];
+            acc[cur] = "";
             return acc;
           },
           {} as Record<LanguageCode, string>
@@ -281,56 +294,51 @@ export default defineComponent({
 
 <template>
   <div class="category-form">
-    <ImageSectionComp
-      :src="draftCategory.image"
-      :image-search-modal-subtitle="categoryName"
-      :default-image-search-query="defaultImageSearchQuery"
-      @update:src="draftCategory.image = $event"
-    >
-      <InputComp
-        v-model="draftCategory[selectedLanguage]"
-        :label="$t('category-name')"
-        width="400px"
-        appearance="outline"
-        :focus-on-mount="!category"
-        :error-text="categoryNameValidationErrors[0]"
-        clear-button
-        :reset-value="category?.[selectedLanguage]"
-        @focusout="triggerCategoryNameUniqueValidation"
-      />
-    </ImageSectionComp>
+    <div class="category-form__content">
+      <ImageSectionComp
+        :src="draftCategory.image"
+        :image-search-modal-subtitle="imageSearchModalSubtitle"
+        :default-image-search-query="defaultImageSearchQuery"
+        @update:src="draftCategory.image = $event"
+      >
+        <InputComp
+          v-model="draftCategory[selectedLanguage]"
+          :label="$t('category-name')"
+          width="400px"
+          appearance="outline"
+          :focus-on-mount="!category"
+          :error-text="categoryNameValidationError"
+          clear-button
+          @input="triggerCategoryNameUniqueValidation"
+          @keypress.enter="autoFill"
+        />
+      </ImageSectionComp>
 
-    <div class="category-form__row">
-      <div>
+      <div class="category-form__row">
         <h4 v-text="$t('translation')" />
-        <span
-          class="text-color-negative text-body-2"
-          v-text="translationError"
+
+        <ButtonComp
+          v-if="showFillAutoButton"
+          icon="edit_note"
+          appearance="inline"
+          size="regular"
+          :label="fillInText"
+          :loading="autoFillTranslationsLoading"
+          @click="autoFill"
         />
       </div>
 
-      <ButtonComp
-        v-if="showFillAutoButton"
-        icon="edit_note"
-        appearance="inline"
-        size="regular"
-        :label="$t('fill-in-auto')"
-        :loading="autoFillTranslationsLoading"
-        @click="autoFill"
+      <InputComp
+        v-for="code in nonSelectedLanguages"
+        :key="code"
+        v-model="draftCategory[code]"
+        appearance="outline"
+        clear-button
+        :error-text="getValidationError(code)"
+        :label="getLanguageLabel(code)"
+        class="category-form__translation-input"
       />
     </div>
-
-    <InputComp
-      v-for="code in nonSelectedLanguages"
-      :key="code"
-      v-model="draftCategory[code]"
-      appearance="outline"
-      clear-button
-      :reset-value="category?.[code]"
-      :error-text="getValidationError(code)"
-      :label="getLanguageLabel(code)"
-      class="category-form__translation-input"
-    />
 
     <div class="category-form__footer">
       <ButtonComp appearance="secondary" :label="$t('cancel')" @click="close" />
@@ -347,9 +355,11 @@ export default defineComponent({
 @import "@/styles/main";
 
 .category-form {
-  padding-inline: 16px;
-  padding-block-end: 20px;
   width: 598px;
+
+  &__content {
+    padding-inline: 20px;
+  }
 
   &__row {
     display: flex;
@@ -367,7 +377,8 @@ export default defineComponent({
     display: flex;
     justify-content: flex-end;
     column-gap: 8px;
-    padding-block-start: 16px;
+    padding: 20px;
+    border-block-start: 1px solid $color-separator-primary;
   }
 }
 </style>

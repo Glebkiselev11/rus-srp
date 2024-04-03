@@ -8,10 +8,10 @@ import InputComp from "@/components/InputComp.vue";
 import CategoriesListComp from "@/components/Categories/CategoriesListComp.vue";
 import HeaderComp from "@/components/HeaderComp.vue";
 import DropdownMenuComp from "../DropdownMenuComp.vue";
-import type { Order, RequestParams } from "@/types/api";
+import type { Id, Order, RequestParams } from "@/types/api";
 import type { LanguageCode } from "@/types/translations";
 import TooltipComp from "../TooltipComp.vue";
-import CategoryFormModalComp from "../CategoryFormModalComp.vue";
+import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 
 export default defineComponent({
   name: "CategoriesComp",
@@ -82,25 +82,27 @@ export default defineComponent({
         {
           label: this.$t("order.last-added"),
           icon: "done",
-          color: this.getOrderColor("-created_at"),
+          iconColor: this.getOrderColor("-created_at"),
           handler: () => (this.order = "-created_at"),
         } as const,
         {
           label: this.$t("order.last-updated"),
-          color: this.getOrderColor("-updated_at"),
+          iconColor: this.getOrderColor("-updated_at"),
           icon: "done",
           handler: () => (this.order = "-updated_at"),
         } as const,
         "separator" as const,
         {
           label: this.$t("order.alphabetical-asc"),
-          color: this.getOrderColor(`${this.$i18n.locale as LanguageCode}`),
+          iconColor: this.getOrderColor(`${this.$i18n.locale as LanguageCode}`),
           icon: "done",
           handler: () => (this.order = `${this.$i18n.locale as LanguageCode}`),
         } as const,
         {
           label: this.$t("order.alphabetical-desc"),
-          color: this.getOrderColor(`-${this.$i18n.locale as LanguageCode}`),
+          iconColor: this.getOrderColor(
+            `-${this.$i18n.locale as LanguageCode}`
+          ),
           icon: "done",
           handler: () => (this.order = `-${this.$i18n.locale as LanguageCode}`),
         } as const,
@@ -120,7 +122,7 @@ export default defineComponent({
       this.editingCategoryId = categoryId;
       this.showCategoryForm = true;
     },
-    selectCategory(categoryId: number) {
+    selectCategory(categoryId: Id) {
       this.$emit("update:selected-category-id", categoryId || undefined);
     },
     getOrderColor(key: Order) {
@@ -132,7 +134,7 @@ export default defineComponent({
 
 <template>
   <div class="categories">
-    <HeaderComp :title="$t('categories')" title-tag="h4">
+    <HeaderComp :title="$t('categories')" title-tag="h4" padding-inline="12px">
       <template #right>
         <div class="categories__controls">
           <DropdownMenuComp
@@ -140,7 +142,7 @@ export default defineComponent({
             :items="orderOptions"
             position="right"
           >
-            <TooltipComp :text="$t('to-sort')">
+            <TooltipComp :text="$t('to-sort')" :hidden="isMenuOpen">
               <ButtonComp
                 icon="sort"
                 appearance="inline"
@@ -182,6 +184,7 @@ export default defineComponent({
       v-if="showCategoryForm"
       :category-id="editingCategoryId"
       @close="showCategoryForm = false"
+      @created="selectCategory"
     />
   </div>
 </template>

@@ -2,7 +2,7 @@
 import { defineComponent } from "vue";
 import InputComp from "../InputComp.vue";
 import ButtonComp from "../ButtonComp.vue";
-import CategoryFormModalComp from "../CategoryFormModalComp.vue";
+import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 import WordFormCategoryItemComp from "./WordFormCategoryItemComp.vue";
 import IconComp from "../IconComp/index.vue";
 import TooltipComp from "../TooltipComp.vue";

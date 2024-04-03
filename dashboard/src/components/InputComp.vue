@@ -91,7 +91,7 @@ export default defineComponent({
       default: undefined,
     },
   },
-  emits: ["update:modelValue"],
+  emits: ["update:modelValue", "keypress"],
   data() {
     return {
       value: this.modelValue,
@@ -151,7 +151,7 @@ export default defineComponent({
     :for="inputId"
     :style="{ width }"
   >
-    <div class="input">
+    <div class="input" @keypress="(e) => $emit('keypress', e)">
       <IconComp
         v-if="leftIcon"
         class="input--left-icon"

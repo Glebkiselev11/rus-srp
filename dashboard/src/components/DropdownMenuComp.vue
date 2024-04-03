@@ -7,8 +7,10 @@ import IconComp from "@/components/IconComp/index.vue";
 
 type MenuItem = {
   label: string;
+  labelColor?: IconColor;
   icon?: IconName;
   color?: IconColor;
+  iconColor?: IconColor;
   handler: () => void;
 };
 
@@ -92,6 +94,12 @@ export default defineComponent({
         }
       }, 10);
     },
+    getIconColor(item: MenuItem) {
+      return item.iconColor || item.color;
+    },
+    getLabelColor(item: MenuItem) {
+      return item.labelColor || item.color;
+    },
   },
 });
 </script>
@@ -125,9 +133,16 @@ export default defineComponent({
           clickable
           @click="handdleClickOnItem(item.handler)"
         >
-          <IconComp v-if="item.icon" :name="item.icon" :color="item.color" />
+          <IconComp
+            v-if="item.icon"
+            :name="item.icon"
+            :color="getIconColor(item)"
+          />
 
-          <span :class="[`text-color-${item.color}`]" v-text="item.label" />
+          <span
+            :class="[`text-color-${getLabelColor(item)}`]"
+            v-text="item.label"
+          />
         </ListItemComp>
       </template>
 

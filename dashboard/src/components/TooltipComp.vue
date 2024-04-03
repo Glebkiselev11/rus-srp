@@ -29,15 +29,19 @@ export default defineComponent({
   },
   data() {
     return {
+      timeout: 0,
       showTooltip: false,
     };
   },
   methods: {
     show() {
-      this.showTooltip = true;
+      this.timeout = setTimeout(() => {
+        this.showTooltip = true;
+      }, 400);
     },
     hide() {
       this.showTooltip = false;
+      if (this.timeout) clearTimeout(this.timeout);
     },
   },
 });

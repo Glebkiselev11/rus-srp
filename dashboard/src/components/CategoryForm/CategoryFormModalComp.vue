@@ -1,13 +1,14 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import ModalComp from "./ModalComp.vue";
+import ModalComp from "@/components/ModalComp.vue";
 import CategoryFormComp from "./CategoryFormComp.vue";
 import { useCategoriesActions } from "@/stores/categories/actions";
 import { mapState } from "pinia";
 import type { LanguageCode } from "@/types/translations";
 import type { Category } from "@/types/categories";
-import ImagePreviewComp from "./ImagePreviewComp.vue";
-import FormCloseConfirmationModalComp from "./FormCloseConfirmationModalComp.vue";
+import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
+import FormCloseConfirmationModalComp from "@/components/FormCloseConfirmationModalComp.vue";
+import { capitalizeFirstLetter } from "@/common/utils";
 
 export default defineComponent({
   name: "CategoryFormModalComp",
@@ -24,7 +25,7 @@ export default defineComponent({
       default: undefined,
     },
   },
-  emits: ["close"],
+  emits: ["close", "created"],
   data() {
     return {
       // Mark as changed to prevent closing modal without confirmation
@@ -45,7 +46,9 @@ export default defineComponent({
         : this.$t("creation-category");
     },
     subtitle(): string {
-      return this.category?.[this.$i18n.locale as LanguageCode] || "";
+      return capitalizeFirstLetter(
+        this.category?.[this.$i18n.locale as LanguageCode] || ""
+      );
     },
     closeConfirmationTitle() {
       return Boolean(this.category)
@@ -77,7 +80,12 @@ export default defineComponent({
 </script>
 
 <template>
-  <ModalComp :title="title" :subtitle="subtitle" @close="tryClose">
+  <ModalComp
+    :title="title"
+    :subtitle="subtitle"
+    header-padding-inline="20px"
+    @close="tryClose"
+  >
     <template v-if="category" #header-left>
       <ImagePreviewComp :src="category.image" static />
     </template>
@@ -85,6 +93,7 @@ export default defineComponent({
       <CategoryFormComp
         :category="category"
         @saved="close"
+        @created="(id) => $emit('created', id)"
         @close="tryClose"
         @set-changed-status="setChanged"
       />
