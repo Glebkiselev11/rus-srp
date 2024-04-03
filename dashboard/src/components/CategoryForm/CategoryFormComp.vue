@@ -304,7 +304,6 @@ export default defineComponent({
           :focus-on-mount="!category"
           :error-text="categoryNameValidationError"
           clear-button
-          :reset-value="category?.[selectedLanguage]"
           @input="triggerCategoryNameUniqueValidation"
           @keypress.enter="autoFill"
         />
@@ -330,7 +329,6 @@ export default defineComponent({
         v-model="draftCategory[code]"
         appearance="outline"
         clear-button
-        :reset-value="category?.[code]"
         :error-text="getValidationError(code)"
         :label="getLanguageLabel(code)"
         class="category-form__translation-input"
