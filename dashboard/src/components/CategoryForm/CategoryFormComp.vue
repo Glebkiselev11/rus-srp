@@ -14,7 +14,7 @@ import {
   getLanguageList,
   getLanguageCodesOrder,
 } from "@/common/translations";
-import { isAnyFieldHasChanged } from "@/common/utils";
+import { capitalizeFirstLetter, isAnyFieldHasChanged } from "@/common/utils";
 
 function initDraftCategory(): DraftCategory {
   return {
@@ -67,7 +67,8 @@ export default defineComponent({
     },
     imageSearchModalSubtitle(): string {
       return (
-        this.draftCategory[this.selectedLanguage] || this.$t("new-category")
+        capitalizeFirstLetter(this.draftCategory[this.selectedLanguage]) ||
+        this.$t("new-category")
       );
     },
     defaultImageSearchQuery(): string {

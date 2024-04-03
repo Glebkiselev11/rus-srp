@@ -8,6 +8,7 @@ import type { LanguageCode } from "@/types/translations";
 import type { Category } from "@/types/categories";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import FormCloseConfirmationModalComp from "@/components/FormCloseConfirmationModalComp.vue";
+import { capitalizeFirstLetter } from "@/common/utils";
 
 export default defineComponent({
   name: "CategoryFormModalComp",
@@ -45,7 +46,9 @@ export default defineComponent({
         : this.$t("creation-category");
     },
     subtitle(): string {
-      return this.category?.[this.$i18n.locale as LanguageCode] || "";
+      return capitalizeFirstLetter(
+        this.category?.[this.$i18n.locale as LanguageCode] || ""
+      );
     },
     closeConfirmationTitle() {
       return Boolean(this.category)
