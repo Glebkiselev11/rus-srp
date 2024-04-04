@@ -25,13 +25,13 @@ FROM node:current-slim as vue-builder
 WORKDIR /app
 
 # Copy package.json and package-lock.json
-COPY dashboard/package*.json ./
+COPY frontend/package*.json ./
 
 # Install dependencies
 RUN npm install
 
 # Copy the rest of the Vue app and build it
-COPY dashboard/ ./
+COPY frontend/ ./
 RUN npm run build
 
 # Final stage: Create the runtime image

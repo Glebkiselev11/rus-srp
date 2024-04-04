@@ -16,4 +16,4 @@ services:
     volumes:
       - ./server/migrations:/project-root/server/migrations
       - ./server/src:/project-root/server/src
-      - ./dashboard:/project-root/dashboard 
+      - ./frontend:/project-root/frontend 
