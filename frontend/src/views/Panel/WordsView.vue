@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { useWordFormTabsStore } from "@/stores/wordFormTabs";
-import { useWordsActionsStore } from "@/stores/words/actions";
-import { usePageWordsStore } from "@/stores/words/pageWords";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import { highlighTextByQuery } from "@/common/utils";
@@ -10,7 +8,7 @@ import {
   getLanguageLabel,
   translationPreview,
 } from "@/common/translations";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/types/translations";
 import type {
@@ -36,8 +34,11 @@ import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
 import TableRowStatusComp from "@/components/Table/TableRowStatusComp.vue";
 import WordsViewFilterPanelComp from "@/components/WordsView/WordsViewFilterPanelComp.vue";
 import WordsViewTranslationConfirmationComp from "@/components/WordsView/WordsViewTranslationConfirmationComp.vue";
+import { WordsService } from "@/api";
+import { useMutation, useQuery } from "@tanstack/vue-query";
+import { useDraftWordStore } from "@/stores/draftWord";
 
-const { t, i18n } = useI18n();
+const { t, locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
@@ -59,11 +60,9 @@ const LIMIT_OPTIONS = [
 ];
 
 const wordFormTabsStore = useWordFormTabsStore();
-const wordsActionsStore = useWordsActionsStore();
-const pageWordsStore = usePageWordsStore();
+const draftWordStore = useDraftWordStore();
 
 const hoverOnWordId = ref<Id | undefined>(undefined);
-const editingWordId = ref<Id | undefined>(undefined);
 const showWordForm = ref(false);
 const showCategoryWordsInsertModal = ref(false);
 
@@ -102,6 +101,22 @@ const filter = computed({
       },
     });
   },
+});
+
+const { data, status, refetch } = useQuery({
+  queryKey: ["words", filter],
+  queryFn: () => WordsService.query_v2(filter.value),
+  enabled: true,
+});
+
+const removeWordMutation = useMutation({
+  mutationFn: (id: Id) => WordsService.delete(id),
+  onSuccess: () => refetch(),
+});
+
+const updateWordMutation = useMutation({
+  mutationFn: (word: Word) => WordsService.update(word.id, word),
+  onSuccess: () => refetch(),
 });
 
 const search = computed({
@@ -171,7 +186,7 @@ const translation_approved_status = computed({
 });
 
 const showAddToCategoryButton = computed(() => category_id.value !== undefined);
-const showPagination = computed(() => pageWordsStore.count > 0);
+const showPagination = computed(() => data.value && data.value.count > 0);
 const tableHeight = computed(() => {
   const HeaderAndPanelHeight = "160px";
 
@@ -214,34 +229,22 @@ const gridTemplateColumns = computed(() => {
   return columns.value.map((col) => col.width ?? "auto").join(" ");
 });
 
-watch(
-  filter,
-  (filter) => {
-    pageWordsStore.fetchPageWords(filter);
-  },
-  { immediate: true }
-);
-
-onMounted(() => {
-  pageWordsStore.fetchPageWords(filter.value);
-});
-
 function setHoveredWordId(id: Id, hovered: boolean) {
   hoverOnWordId.value = hovered ? id : undefined;
 }
 
-function openEditingWordForm(id: Id) {
-  editingWordId.value = id;
+function openEditingWordForm(word: Word) {
+  draftWordStore.initDraftWord(word);
   showWordForm.value = true;
 }
 
 function openCreationWordForm() {
-  editingWordId.value = undefined;
+  draftWordStore.initDraftWord(undefined);
   showWordForm.value = true;
 }
 
-function openEditingWordFormOnCategoriesTab(id: Id) {
-  openEditingWordForm(id);
+function openEditingWordFormOnCategoriesTab(word: Word) {
+  openEditingWordForm(word);
   wordFormTabsStore.setCurrentTabToCategories();
 }
 
@@ -250,26 +253,22 @@ function openWordsListModal() {
 }
 
 function confirmTranslation(word: Word) {
-  wordsActionsStore.updateWord(word.id, {
+  updateWordMutation.mutateAsync({
     ...word,
     translation_approved: true,
   });
 }
 
 async function removeWord(word: Word) {
-  const key = i18n.locale as LanguageCode;
+  const key = locale as LanguageCode;
 
   if (confirm(t("are-you-sure-delete", { word: word[key] }))) {
-    wordsActionsStore.deleteWord(word.id);
+    await removeWordMutation.mutateAsync(word.id);
   }
 }
 
 function updateWordImage(word: Word, src: string) {
-  wordsActionsStore.updateWord(word.id, { ...word, image: src });
-}
-
-function refetch() {
-  pageWordsStore.fetchPageWords(filter.value);
+  updateWordMutation.mutateAsync({ ...word, image: src });
 }
 
 function updateOrder(order: Order) {
@@ -321,14 +320,9 @@ function updateOrder(order: Order) {
           @update:order="updateOrder"
         >
           <template #body>
-            <template
-              v-if="
-                pageWordsStore.words.length &&
-                pageWordsStore.loadState === 'loaded'
-              "
-            >
+            <template v-if="data?.words.length && status === 'success'">
               <TableRowComp
-                v-for="word in pageWordsStore.words"
+                v-for="word in data.words"
                 :id="word.id"
                 :key="word.id"
                 :grid-template-columns="gridTemplateColumns"
@@ -341,7 +335,7 @@ function updateOrder(order: Order) {
                 >
                   <WordsViewTranslationConfirmationComp
                     @confirm-translation="confirmTranslation(word)"
-                    @open-editing-word-form="openEditingWordForm(word.id)"
+                    @open-editing-word-form="openEditingWordForm(word)"
                   />
                 </TableRowStatusComp>
 
@@ -368,7 +362,7 @@ function updateOrder(order: Order) {
                   <CategoriesPreviewBadgesComp
                     :categories="word.categories"
                     :show-add-button="hoverOnWordId === word.id"
-                    @click="openEditingWordFormOnCategoriesTab(word.id)"
+                    @click="openEditingWordFormOnCategoriesTab(word)"
                   />
                 </td>
 
@@ -379,7 +373,7 @@ function updateOrder(order: Order) {
                       {
                         label: $t('edit'),
                         icon: 'edit',
-                        handler: () => openEditingWordForm(word.id),
+                        handler: () => openEditingWordForm(word),
                       },
                       'separator',
                       {
@@ -402,7 +396,7 @@ function updateOrder(order: Order) {
               </TableRowComp>
             </template>
 
-            <template v-else-if="pageWordsStore.loadState === 'loading'">
+            <template v-else-if="status === 'pending'">
               <WordsViewTableRowSkeletonComp
                 :rows="limit"
                 :grid-template-columns="gridTemplateColumns"
@@ -419,10 +413,10 @@ function updateOrder(order: Order) {
             </template>
           </template>
 
-          <template v-if="showPagination" #pagination>
+          <template v-if="showPagination && data" #pagination>
             <PaginationBarComp
-              :count="pageWordsStore.count"
-              :offset="offset"
+              :count="data.count"
+              :offset="data.offset"
               :limit="limit"
               :limit-options="LIMIT_OPTIONS"
               @update:limit="limit = $event"
@@ -434,11 +428,7 @@ function updateOrder(order: Order) {
     </div>
   </div>
 
-  <WordFormModalComp
-    v-if="showWordForm"
-    :word-id="editingWordId"
-    @close="showWordForm = false"
-  />
+  <WordFormModalComp v-if="showWordForm" @close="showWordForm = false" />
 
   <CategoryWordsInsertModalComp
     v-if="showCategoryWordsInsertModal && filter.category_id"

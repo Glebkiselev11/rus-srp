@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import type { Word } from "@/types/words";
+import type { DraftWord } from "@/types/words";
 import ButtonComp from "../ButtonComp.vue";
 import TabsComp from "../TabsComp.vue";
 import WordFormTranslationComp from "./WordFormTranslationComp.vue";
@@ -20,9 +20,9 @@ export default defineComponent({
     WordFormCategoriesComp,
   },
   props: {
-    word: {
-      type: Object as PropType<Word>,
-      default: undefined,
+    initialWord: {
+      type: Object as PropType<DraftWord | null>,
+      default: null,
     },
   },
   emits: ["close", "saved"],
@@ -45,7 +45,7 @@ export default defineComponent({
       "isTranslationsTabOpen",
     ]),
     saveButtonLabel(): string {
-      return this.word ? this.$t("save-changes") : this.$t("create");
+      return this.initialWord ? this.$t("save-changes") : this.$t("create");
     },
     isValidToSave(): boolean {
       return this.allTranslationsFilled && !this.uniqueWordError;
@@ -81,12 +81,9 @@ export default defineComponent({
       this.setTranslationsTabError(state);
     },
   },
-  created() {
-    this.initDraftWord(this.word);
-  },
   methods: {
     ...mapActions(useWordsActionsStore, ["createWord", "updateWord"]),
-    ...mapActions(useDraftWordStore, ["initDraftWord", "resetDraftWord"]),
+    ...mapActions(useDraftWordStore, ["resetDraftWord"]),
     ...mapActions(useWordFormTabsStore, [
       "setCurrentTabIndex",
       "setTranslationsTabError",
@@ -117,7 +114,7 @@ export default defineComponent({
 
       // If word exists and it's the same word we are editing
       // so we are fine
-      if (this.word?.id === exists?.id) {
+      if (this.initialWord?.id === exists?.id) {
         this.uniqueWordError = false;
         return;
       }
@@ -150,8 +147,8 @@ export default defineComponent({
 
       this.savingLoading = true;
 
-      if (this.word) {
-        await this.updateWord(this.word.id, this.draftWord);
+      if (this.initialWord?.id) {
+        await this.updateWord(this.initialWord.id, this.draftWord);
       } else {
         await this.createWord(this.draftWord);
       }
@@ -195,7 +192,7 @@ export default defineComponent({
       <ButtonComp appearance="secondary" :label="$t('cancel')" @click="close" />
 
       <ButtonComp
-        v-if="!word"
+        v-if="!initialWord"
         appearance="primary"
         :label="$t('create-and-add-next')"
         color="accent-secondary"

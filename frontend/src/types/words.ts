@@ -12,6 +12,7 @@ type WordBase = {
 
 export type DraftWord = {
   category_ids: Id[];
+  id?: Id;
 } & WordBase;
 
 export type Word = {

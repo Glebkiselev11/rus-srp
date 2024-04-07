@@ -12,6 +12,7 @@
     "stylelint": "stylelint \"src/**/*.{vue,scss}\" --fix"
   },
   "dependencies": {
+    "@tanstack/vue-query": "^5.29.0",
     "@vueuse/components": "^10.3.0",
     "@vueuse/core": "^10.3.0",
     "axios": "^1.4.0",

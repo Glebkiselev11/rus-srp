@@ -1,92 +1,78 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
+<script setup lang="ts">
+import { computed, ref } from "vue";
 import ModalComp from "../ModalComp.vue";
 import WordFormComp from "./WordFormComp.vue";
-import { mapActions, mapState } from "pinia";
-import { useWordsActionsStore } from "@/stores/words/actions";
 import { useWordFormTabsStore } from "@/stores/wordFormTabs";
-import type { Word } from "@/types/words";
 import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";
 import { translationPreview } from "@/common/translations";
-import { usePageWordsStore } from "@/stores/words/pageWords";
+import { useI18n } from "vue-i18n";
+import { useQueryClient } from "@tanstack/vue-query";
 
-export default defineComponent({
-  name: "WordFormModalComp",
-  components: {
-    ModalComp,
-    WordFormComp,
-    FormCloseConfirmationModalComp,
-  },
-  props: {
-    // If provided word id, then form will be in edit mode
-    wordId: {
-      type: [String, Number] as PropType<Word["id"]>,
-      default: undefined,
-    },
-  },
-  emits: ["close"],
-  data() {
-    return {
-      showCloseConfirmationModal: false,
-    };
-  },
-  computed: {
-    ...mapState(useWordsActionsStore, ["getWordById"]),
-    ...mapState(useDraftWordStore, [
-      "anyTranslationFilled",
-      "draftWord",
-      "isChanged",
-    ]),
-    word(): Word | undefined {
-      return this.wordId ? this.getWordById(this.wordId) : undefined;
-    },
-    title(): string {
-      return this.wordId ? this.$t("editing-word") : this.$t("creation-word");
-    },
-    subtitle(): string {
-      if (this.word) {
-        return translationPreview(this.word);
-      } else if (this.anyTranslationFilled) {
-        return translationPreview(this.draftWord);
-      } else {
-        return this.$t("new-word");
-      }
-    },
-    closeConfirmationTitle() {
-      return Boolean(this.word)
-        ? this.$t("modal-exit-confirmation.edit-word-title")
-        : this.$t("modal-exit-confirmation.creation-word-title");
-    },
-    closeConfirmationCancelButtonLabel() {
-      return Boolean(this.word)
-        ? this.$t("modal-exit-confirmation.continue-editing")
-        : this.$t("modal-exit-confirmation.continue-creation");
-    },
-  },
-  methods: {
-    ...mapActions(useWordFormTabsStore, ["resetCurrentTab"]),
-    ...mapActions(usePageWordsStore, ["refetchPageWords"]),
-    close() {
-      this.$emit("close");
-      this.resetCurrentTab();
-      this.refetchPageWords();
-    },
-    tryClose() {
-      if (this.isChanged) {
-        this.showCloseConfirmationModal = true;
-      } else {
-        this.close();
-      }
-    },
-  },
+const { t } = useI18n();
+const emit = defineEmits<{
+  (e: "close"): void;
+}>();
+
+const showCloseConfirmationModal = ref(false);
+
+const queryClient = useQueryClient();
+const draftWordStore = useDraftWordStore();
+const wordFormTabsStore = useWordFormTabsStore();
+
+const title = computed(() => {
+  return draftWordStore.initialWord ? t("editing-word") : t("creation-word");
 });
+
+const subtitle = computed(() => {
+  if (draftWordStore.initialWord) {
+    return translationPreview(draftWordStore.initialWord);
+  } else if (draftWordStore.anyTranslationFilled) {
+    return translationPreview(draftWordStore.draftWord);
+  } else {
+    return t("new-word");
+  }
+});
+
+const closeConfirmationCancelButtonLabel = computed(() =>
+  draftWordStore.initialWord
+    ? t("modal-exit-confirmation.continue-editing")
+    : t("modal-exit-confirmation.continue-creation")
+);
+
+const closeConfirmationTitle = computed(() =>
+  draftWordStore.initialWord
+    ? t("modal-exit-confirmation.edit-word-title")
+    : t("modal-exit-confirmation.creation-word-title")
+);
+
+function tryClose() {
+  if (draftWordStore.isChanged) {
+    showCloseConfirmationModal.value = true;
+  } else {
+    close();
+  }
+}
+
+function close() {
+  emit("close");
+  wordFormTabsStore.resetCurrentTab();
+}
+
+function saved() {
+  queryClient.invalidateQueries({ queryKey: ["words"] });
+  close();
+}
 </script>
 
 <template>
   <ModalComp :title="title" :subtitle="subtitle" @close="tryClose">
     <template #content>
-      <WordFormComp :word="word" @close="tryClose" @saved="close" />
+      <WordFormComp
+        :initial-word="draftWordStore.initialWord"
+        @close="tryClose"
+        @saved="saved"
+      />
     </template>
   </ModalComp>
 
