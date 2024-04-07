@@ -21,10 +21,6 @@ export default defineComponent({
       type: String as PropType<Order>,
       default: "",
     },
-    orderOptions: {
-      type: Array as PropType<{ value: string; label: string }[]>,
-      required: true,
-    },
     translationApprovedStatus: {
       type: String as PropType<TranslationApprovedStatus>,
       required: true,
@@ -35,6 +31,14 @@ export default defineComponent({
     },
   },
   emits: ["update:search", "update:order", "update:translationApprovedStatus"],
+  data() {
+    return {
+      orderOptions: [
+        { value: "-created_at", label: this.$t("order.last-added") },
+        { value: "-updated_at", label: this.$t("order.last-updated") },
+      ],
+    };
+  },
   computed: {
     switcherValue: {
       get(): boolean {

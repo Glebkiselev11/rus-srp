@@ -1,6 +1,16 @@
-<script lang="ts">
-import { defineComponent } from "vue";
-import { mapActions, mapState } from "pinia";
+<script setup lang="ts">
+import { useWordFormTabsStore } from "@/stores/wordFormTabs";
+import { useWordsActionsStore } from "@/stores/words/actions";
+import { usePageWordsStore } from "@/stores/words/pageWords";
+import { useI18n } from "vue-i18n";
+import { useRoute, useRouter } from "vue-router";
+import { highlighTextByQuery } from "@/common/utils";
+import {
+  getLanguageCodesOrder,
+  getLanguageLabel,
+  translationPreview,
+} from "@/common/translations";
+import { computed, onMounted, ref, watch } from "vue";
 import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/types/translations";
 import type {
@@ -9,16 +19,6 @@ import type {
   RequestParams,
   TranslationApprovedStatus,
 } from "@/types/api";
-import { useWordsActionsStore } from "@/stores/words/actions";
-import { usePageWordsStore } from "@/stores/words/pageWords";
-import { useWordFormTabsStore } from "@/stores/wordFormTabs";
-import { highlighTextByQuery } from "@/common/utils";
-import {
-  getLanguageCodesOrder,
-  getLanguageLabel,
-  translationPreview,
-} from "@/common/translations";
-
 import CategoriesComp from "@/components/Categories/CategoriesComp.vue";
 import TopBarComp from "@/components/TopBarComp.vue";
 import TableComp from "@/components/Table/TableComp.vue";
@@ -37,256 +37,244 @@ import TableRowStatusComp from "@/components/Table/TableRowStatusComp.vue";
 import WordsViewFilterPanelComp from "@/components/WordsView/WordsViewFilterPanelComp.vue";
 import WordsViewTranslationConfirmationComp from "@/components/WordsView/WordsViewTranslationConfirmationComp.vue";
 
+const { t, i18n } = useI18n();
+const route = useRoute();
+const router = useRouter();
+
 const LIMIT_DEFAULT = 25;
 
-export default defineComponent({
-  name: "WordsView",
-  components: {
-    TopBarComp,
-    TableComp,
-    TableRowComp,
-    ImagePreviewComp,
-    ButtonComp,
-    DropdownMenuComp,
-    PaginationBarComp,
-    ZeroStateComp,
-    CategoriesComp,
-    WordsPageCategoryTitleComp,
-    WordFormModalComp,
-    CategoriesPreviewBadgesComp,
-    CategoryWordsInsertModalComp,
-    WordsViewTableRowSkeletonComp,
-    TableRowStatusComp,
-    WordsViewFilterPanelComp,
-    WordsViewTranslationConfirmationComp,
-  },
-  data() {
+const DEFAULT_FILTER = {
+  search: "",
+  offset: 0,
+  limit: LIMIT_DEFAULT,
+  order: "-created_at" as Order,
+  category_id: undefined,
+  translation_approved_status: "all" as TranslationApprovedStatus,
+};
+
+const LIMIT_OPTIONS = [
+  { value: LIMIT_DEFAULT, label: String(LIMIT_DEFAULT) },
+  { value: 50, label: "50" },
+  { value: 100, label: "100" },
+];
+
+const wordFormTabsStore = useWordFormTabsStore();
+const wordsActionsStore = useWordsActionsStore();
+const pageWordsStore = usePageWordsStore();
+
+const hoverOnWordId = ref<Id | undefined>(undefined);
+const editingWordId = ref<Id | undefined>(undefined);
+const showWordForm = ref(false);
+const showCategoryWordsInsertModal = ref(false);
+
+const filter = computed({
+  get(): RequestParams {
+    const {
+      search,
+      offset,
+      limit,
+      order,
+      category_id,
+      translation_approved_status,
+    } = DEFAULT_FILTER;
     return {
-      limitOptions: [
-        { value: LIMIT_DEFAULT, label: String(LIMIT_DEFAULT) },
-        { value: 50, label: "50" },
-        { value: 100, label: "100" },
-      ],
-      orderOptions: [
-        { value: "-created_at", label: this.$t("order.last-added") },
-        { value: "-updated_at", label: this.$t("order.last-updated") },
-      ],
-      defaultFilter: {
-        search: "",
-        offset: 0,
-        limit: LIMIT_DEFAULT,
-        order: "-created_at" as Order,
-        category_id: undefined,
-        translation_approved_status: "all" as TranslationApprovedStatus,
-      },
-      showWordForm: false,
-      showCategoryWordsInsertModal: false,
-      editingWordId: undefined as Id | undefined,
-      hoverOnWordId: undefined as Id | undefined,
+      search: (route.query.search_word as string) || search,
+      offset: Number(route.query.offset) || offset,
+      limit: Number(route.query.limit) || limit,
+      order: (route.query.order_word as Order) || order,
+      category_id: Number(route.query.category_id) || category_id,
+      translation_approved_status:
+        (route.query
+          .translation_approved_status as TranslationApprovedStatus) ||
+        translation_approved_status,
     };
   },
-  computed: {
-    ...mapState(usePageWordsStore, ["words", "count", "loadState"]),
-    translationColumns() {
-      return getLanguageCodesOrder().map((code) => ({
-        label: getLanguageLabel(code),
-        sortable: true,
-        sort_key: code,
-        width: "164px",
-      }));
-    },
-    columns() {
-      return [
-        {
-          sortable: false,
-          width: "12px",
-        },
-        {
-          sortable: true,
-          sort_key: "image",
-          icon: {
-            name: "image",
-            color: "tertiary",
-          } as const,
-          width: "64px",
-        },
-        ...this.translationColumns,
-        {
-          sortable: true,
-          sort_key: "category_count",
-          width: "338px",
-          label: this.$t("categories"),
-        },
-        { sortable: false, width: "auto" },
-      ];
-    },
-    gridTemplateColumns() {
-      return this.columns.map((col) => col.width ?? "auto").join(" ");
-    },
-    filter: {
-      get(): RequestParams {
-        const {
-          search,
-          offset,
-          limit,
-          order,
-          category_id,
-          translation_approved_status,
-        } = this.defaultFilter;
-        return {
-          search: (this.$route.query.search_word as string) || search,
-          offset: Number(this.$route.query.offset) || offset,
-          limit: Number(this.$route.query.limit) || limit,
-          order: (this.$route.query.order_word as Order) || order,
-          category_id: Number(this.$route.query.category_id) || category_id,
-          translation_approved_status:
-            (this.$route.query
-              .translation_approved_status as TranslationApprovedStatus) ||
-            translation_approved_status,
-        };
+  set(params: RequestParams) {
+    router.push({
+      query: {
+        ...route.query,
+        search_word: params.search,
+        offset: params.offset,
+        limit: params.limit,
+        order_word: params.order,
+        category_id: params.category_id,
+        translation_approved_status: params.translation_approved_status,
       },
-      set(params: RequestParams) {
-        this.$router.push({
-          query: {
-            ...this.$route.query,
-            search_word: params.search,
-            offset: params.offset,
-            limit: params.limit,
-            order_word: params.order,
-            category_id: params.category_id,
-            translation_approved_status: params.translation_approved_status,
-          },
-        });
-      },
-    },
-    search: {
-      get(): string {
-        return this.filter.search;
-      },
-      set(search: string) {
-        const { offset } = this.defaultFilter;
-        this.filter = {
-          ...this.filter,
-          search,
-
-          // reset pagination filters
-          offset,
-        };
-      },
-    },
-    limit: {
-      get(): number {
-        return this.filter.limit;
-      },
-      set(limit: number) {
-        this.filter = { ...this.filter, limit, offset: 0 };
-      },
-    },
-    offset: {
-      get(): number {
-        return this.filter.offset;
-      },
-      set(offset: number) {
-        this.filter = { ...this.filter, offset };
-      },
-    },
-    order: {
-      get(): Order {
-        return this.filter.order || "-created_at";
-      },
-      set(order: Order) {
-        this.filter = { ...this.filter, order };
-      },
-    },
-    category_id: {
-      get(): number | undefined {
-        return this.filter.category_id;
-      },
-      set(category_id: number | undefined) {
-        this.filter = { ...this.defaultFilter, category_id };
-      },
-    },
-    translation_approved_status: {
-      get(): TranslationApprovedStatus {
-        return this.filter.translation_approved_status || "all";
-      },
-      set(translation_approved_status: TranslationApprovedStatus) {
-        const { offset } = this.defaultFilter;
-        this.filter = {
-          ...this.filter,
-          translation_approved_status,
-          offset,
-        };
-      },
-    },
-    showAddToCategoryButton(): boolean {
-      return this.filter.category_id !== undefined;
-    },
-    showPagination(): boolean {
-      return this.count > 0;
-    },
-    tableHeight(): string {
-      const HeaderAndPanelHeight = "160px";
-
-      return `calc(100vh - ${HeaderAndPanelHeight})`;
-    },
-  },
-  watch: {
-    filter: {
-      handler(filter) {
-        this.fetchPageWords(filter);
-      },
-      immediate: true,
-    },
-  },
-  mounted() {
-    this.fetchPageWords(this.filter);
-  },
-  methods: {
-    ...mapActions(useWordsActionsStore, ["deleteWord", "updateWord"]),
-    ...mapActions(usePageWordsStore, ["fetchPageWords"]),
-    ...mapActions(useWordFormTabsStore, ["setCurrentTabToCategories"]),
-    highlighTextByQuery,
-    translationPreview,
-    updateOrder(order: Order) {
-      this.filter = { ...this.filter, order };
-    },
-    openCreationWordForm() {
-      this.editingWordId = undefined;
-      this.showWordForm = true;
-    },
-    async removeWord(word: Word) {
-      const key = this.$i18n.locale as LanguageCode;
-
-      if (confirm(this.$t("are-you-sure-delete", { word: word[key] }))) {
-        this.deleteWord(word.id);
-      }
-    },
-    openEditingWordForm(id: Id) {
-      this.editingWordId = id;
-      this.showWordForm = true;
-    },
-    openEditingWordFormOnCategoriesTab(id: Id) {
-      this.openEditingWordForm(id);
-      this.setCurrentTabToCategories();
-    },
-    openWordsListModal() {
-      this.showCategoryWordsInsertModal = true;
-    },
-    updateWordImage(word: Word, src: string) {
-      this.updateWord(word.id, { ...word, image: src });
-    },
-    setHoveredWordId(id: Id, hovered: boolean) {
-      this.hoverOnWordId = hovered ? id : undefined;
-    },
-    refetch() {
-      this.fetchPageWords(this.filter);
-    },
-    confirmTranslation(word: Word) {
-      this.updateWord(word.id, { ...word, translation_approved: true });
-    },
+    });
   },
 });
+
+const search = computed({
+  get(): string {
+    return filter.value.search;
+  },
+  set(search: string) {
+    const { offset } = DEFAULT_FILTER;
+    filter.value = {
+      ...filter.value,
+      search,
+
+      // reset pagination filters
+      offset,
+    };
+  },
+});
+
+const limit = computed({
+  get(): number {
+    return filter.value.limit;
+  },
+  set(limit: number) {
+    filter.value = { ...filter.value, limit, offset: 0 };
+  },
+});
+
+const offset = computed({
+  get(): number {
+    return filter.value.offset;
+  },
+  set(offset: number) {
+    filter.value = { ...filter.value, offset };
+  },
+});
+
+const order = computed({
+  get(): Order {
+    return filter.value.order || "-created_at";
+  },
+  set(order: Order) {
+    filter.value = { ...filter.value, order };
+  },
+});
+
+const category_id = computed({
+  get(): number | undefined {
+    return filter.value.category_id;
+  },
+  set(category_id: number | undefined) {
+    filter.value = { ...DEFAULT_FILTER, category_id };
+  },
+});
+
+const translation_approved_status = computed({
+  get(): TranslationApprovedStatus {
+    return filter.value.translation_approved_status || "all";
+  },
+  set(translation_approved_status: TranslationApprovedStatus) {
+    const { offset } = DEFAULT_FILTER;
+    filter.value = {
+      ...filter.value,
+      translation_approved_status,
+      offset,
+    };
+  },
+});
+
+const showAddToCategoryButton = computed(() => category_id.value !== undefined);
+const showPagination = computed(() => pageWordsStore.count > 0);
+const tableHeight = computed(() => {
+  const HeaderAndPanelHeight = "160px";
+
+  return `calc(100vh - ${HeaderAndPanelHeight})`;
+});
+const translationColumns = computed(() => {
+  return getLanguageCodesOrder().map((code) => ({
+    label: getLanguageLabel(code),
+    sortable: true,
+    sort_key: code,
+    width: "164px",
+  }));
+});
+const columns = computed(() => {
+  return [
+    {
+      sortable: false,
+      width: "12px",
+    },
+    {
+      sortable: true,
+      sort_key: "image",
+      icon: {
+        name: "image",
+        color: "tertiary",
+      } as const,
+      width: "64px",
+    },
+    ...translationColumns.value,
+    {
+      sortable: true,
+      sort_key: "category_count",
+      width: "338px",
+      label: t("categories"),
+    },
+    { sortable: false, width: "auto" },
+  ];
+});
+const gridTemplateColumns = computed(() => {
+  return columns.value.map((col) => col.width ?? "auto").join(" ");
+});
+
+watch(
+  filter,
+  (filter) => {
+    pageWordsStore.fetchPageWords(filter);
+  },
+  { immediate: true }
+);
+
+onMounted(() => {
+  pageWordsStore.fetchPageWords(filter.value);
+});
+
+function setHoveredWordId(id: Id, hovered: boolean) {
+  hoverOnWordId.value = hovered ? id : undefined;
+}
+
+function openEditingWordForm(id: Id) {
+  editingWordId.value = id;
+  showWordForm.value = true;
+}
+
+function openCreationWordForm() {
+  editingWordId.value = undefined;
+  showWordForm.value = true;
+}
+
+function openEditingWordFormOnCategoriesTab(id: Id) {
+  openEditingWordForm(id);
+  wordFormTabsStore.setCurrentTabToCategories();
+}
+
+function openWordsListModal() {
+  showCategoryWordsInsertModal.value = true;
+}
+
+function confirmTranslation(word: Word) {
+  wordsActionsStore.updateWord(word.id, {
+    ...word,
+    translation_approved: true,
+  });
+}
+
+async function removeWord(word: Word) {
+  const key = i18n.locale as LanguageCode;
+
+  if (confirm(t("are-you-sure-delete", { word: word[key] }))) {
+    wordsActionsStore.deleteWord(word.id);
+  }
+}
+
+function updateWordImage(word: Word, src: string) {
+  wordsActionsStore.updateWord(word.id, { ...word, image: src });
+}
+
+function refetch() {
+  pageWordsStore.fetchPageWords(filter.value);
+}
+
+function updateOrder(order: Order) {
+  filter.value = { ...filter.value, order };
+}
 </script>
 
 <template>
@@ -323,7 +311,6 @@ export default defineComponent({
           v-model:order="order"
           v-model:translation-approved-status="translation_approved_status"
           :category-id="category_id"
-          :order-options="orderOptions"
         />
 
         <TableComp
@@ -334,9 +321,14 @@ export default defineComponent({
           @update:order="updateOrder"
         >
           <template #body>
-            <template v-if="words.length && loadState === 'loaded'">
+            <template
+              v-if="
+                pageWordsStore.words.length &&
+                pageWordsStore.loadState === 'loaded'
+              "
+            >
               <TableRowComp
-                v-for="word in words"
+                v-for="word in pageWordsStore.words"
                 :id="word.id"
                 :key="word.id"
                 :grid-template-columns="gridTemplateColumns"
@@ -410,7 +402,7 @@ export default defineComponent({
               </TableRowComp>
             </template>
 
-            <template v-else-if="loadState === 'loading'">
+            <template v-else-if="pageWordsStore.loadState === 'loading'">
               <WordsViewTableRowSkeletonComp
                 :rows="limit"
                 :grid-template-columns="gridTemplateColumns"
@@ -429,10 +421,10 @@ export default defineComponent({
 
           <template v-if="showPagination" #pagination>
             <PaginationBarComp
-              :count="count"
+              :count="pageWordsStore.count"
               :offset="offset"
               :limit="limit"
-              :limit-options="limitOptions"
+              :limit-options="LIMIT_OPTIONS"
               @update:limit="limit = $event"
               @update:offset="offset = $event"
             />
