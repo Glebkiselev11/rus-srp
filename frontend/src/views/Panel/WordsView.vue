@@ -34,9 +34,12 @@ import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
 import TableRowStatusComp from "@/components/Table/TableRowStatusComp.vue";
 import WordsViewFilterPanelComp from "@/components/WordsView/WordsViewFilterPanelComp.vue";
 import WordsViewTranslationConfirmationComp from "@/components/WordsView/WordsViewTranslationConfirmationComp.vue";
-import { WordsService } from "@/api";
-import { useMutation, useQuery } from "@tanstack/vue-query";
 import { useDraftWordStore } from "@/stores/draftWord";
+import {
+  useWordMutationUpdate,
+  useWordMutationDelete,
+  useWordsQuery,
+} from "@/api/hooks/words";
 
 const { t, locale } = useI18n();
 const route = useRoute();
@@ -103,21 +106,9 @@ const filter = computed({
   },
 });
 
-const { data, status, refetch } = useQuery({
-  queryKey: ["words", filter],
-  queryFn: () => WordsService.query_v2(filter.value),
-  enabled: true,
-});
-
-const removeWordMutation = useMutation({
-  mutationFn: (id: Id) => WordsService.delete(id),
-  onSuccess: () => refetch(),
-});
-
-const updateWordMutation = useMutation({
-  mutationFn: (word: Word) => WordsService.update(word.id, word),
-  onSuccess: () => refetch(),
-});
+const { data, status, refetch } = useWordsQuery(filter);
+const removeWordMutation = useWordMutationDelete();
+const updateWordMutation = useWordMutationUpdate();
 
 const search = computed({
   get(): string {

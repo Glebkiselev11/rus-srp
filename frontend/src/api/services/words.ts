@@ -5,11 +5,13 @@ import { convertWordToDraftWord } from "@/common/utils";
 
 export const WordsService = {
   ENDPOINT: "/api/v1/private/words",
-  create(data: DraftWord) {
-    return ApiTransport.post<Word>(`${this.ENDPOINT}/create`, data);
+  async create(data: DraftWord) {
+    return await ApiTransport.post<Word>(`${this.ENDPOINT}/create`, data);
   },
-  query(params: OptionalRequestParams) {
-    return ApiTransport.query<ListResponse<Word>>(this.ENDPOINT, { params });
+  async query(params: OptionalRequestParams) {
+    return await ApiTransport.query<ListResponse<Word>>(this.ENDPOINT, {
+      params,
+    });
   },
   async getById(id: Id) {
     const { data } = await ApiTransport.get<Word>(`${this.ENDPOINT}/${id}`);
@@ -21,8 +23,8 @@ export const WordsService = {
       convertWordToDraftWord(data)
     );
   },
-  delete(id: Id) {
-    return ApiTransport.remove<void>(`${this.ENDPOINT}/${id}`);
+  async delete(id: Id) {
+    return await ApiTransport.remove<void>(`${this.ENDPOINT}/${id}`);
   },
   async query_v2(params: OptionalRequestParams) {
     const { data } = await ApiTransport.query<ListResponse<Word>>(

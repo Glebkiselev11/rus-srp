@@ -1,183 +1,193 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
+<script setup lang="ts">
+import { computed, ref, watch } from "vue";
 import type { DraftWord } from "@/types/words";
+import { WordsService } from "@/api";
+import { useDraftWordStore } from "@/stores/draftWord";
+import { useWordFormTabsStore } from "@/stores/wordFormTabs";
+import { useI18n } from "vue-i18n";
 import ButtonComp from "../ButtonComp.vue";
 import TabsComp from "../TabsComp.vue";
 import WordFormTranslationComp from "./WordFormTranslationComp.vue";
 import WordFormCategoriesComp from "./WordFormCategoriesComp.vue";
-import { useWordsActionsStore } from "@/stores/words/actions";
-import { mapActions, mapState } from "pinia";
-import { WordsService } from "@/api";
-import { useDraftWordStore } from "@/stores/draftWord";
-import { useWordFormTabsStore } from "@/stores/wordFormTabs";
+import {
+  useWordMutationUpdate,
+  useWordMutationCreate,
+} from "@/api/hooks/words";
 
-export default defineComponent({
-  name: "WordFormComp",
-  components: {
-    ButtonComp,
-    TabsComp,
-    WordFormTranslationComp,
-    WordFormCategoriesComp,
-  },
-  props: {
-    initialWord: {
-      type: Object as PropType<DraftWord | null>,
-      default: null,
-    },
-  },
-  emits: ["close", "saved"],
-  data() {
-    return {
-      uniqueWordError: false,
-      rusValidationError: undefined as string | undefined,
-      engValidationError: undefined as string | undefined,
-      srpLatinValidationError: undefined as string | undefined,
-      srpCyrillicValidationError: undefined as string | undefined,
-      savingLoading: false,
-    };
-  },
-  computed: {
-    ...mapState(useDraftWordStore, ["draftWord", "allTranslationsFilled"]),
-    ...mapState(useWordFormTabsStore, [
-      "tabs",
-      "currentTabIndex",
-      "isCategoriesTabOpen",
-      "isTranslationsTabOpen",
-    ]),
-    saveButtonLabel(): string {
-      return this.initialWord ? this.$t("save-changes") : this.$t("create");
-    },
-    isValidToSave(): boolean {
-      return this.allTranslationsFilled && !this.uniqueWordError;
-    },
-    anyTranslationError() {
-      return Boolean(
-        this.rusValidationError ||
-          this.engValidationError ||
-          this.srpLatinValidationError ||
-          this.srpCyrillicValidationError ||
-          this.uniqueWordError
-      );
-    },
-  },
-  watch: {
-    ["draftWord.rus"]() {
-      this.rusValidationError = undefined;
-      this.uniqueWordError = false;
-    },
-    ["draftWord.eng"]() {
-      this.engValidationError = undefined;
-      this.uniqueWordError = false;
-    },
-    ["draftWord.srp_latin"]() {
-      this.srpLatinValidationError = undefined;
-      this.uniqueWordError = false;
-    },
-    ["draftWord.srp_cyrillic"]() {
-      this.srpCyrillicValidationError = undefined;
-      this.uniqueWordError = false;
-    },
-    anyTranslationError(state) {
-      this.setTranslationsTabError(state);
-    },
-  },
-  methods: {
-    ...mapActions(useWordsActionsStore, ["createWord", "updateWord"]),
-    ...mapActions(useDraftWordStore, ["resetDraftWord"]),
-    ...mapActions(useWordFormTabsStore, [
-      "setCurrentTabIndex",
-      "setTranslationsTabError",
-    ]),
-    close() {
-      this.$emit("close");
-    },
-    async triggerWordNameUniqueValidation() {
-      const search = this.draftWord.eng;
+const { t } = useI18n();
 
-      if (!search) {
-        this.uniqueWordError = false;
-        return;
-      }
+const props = defineProps<{
+  initialWord: DraftWord | null;
+}>();
 
-      const { data } = await WordsService.query({ search });
+const emit = defineEmits<{
+  (e: "close"): void;
+  (e: "saved"): void;
+}>();
 
-      const exists = data.result.find(
-        ({ eng, rus, srp_cyrillic, srp_latin }) => {
-          return (
-            eng === this.draftWord.eng.toLocaleLowerCase() &&
-            rus === this.draftWord.rus.toLocaleLowerCase() &&
-            srp_cyrillic === this.draftWord.srp_cyrillic.toLocaleLowerCase() &&
-            srp_latin === this.draftWord.srp_latin.toLocaleLowerCase()
-          );
-        }
-      );
+const updateWordMutation = useWordMutationUpdate();
+const createWordMutation = useWordMutationCreate();
 
-      // If word exists and it's the same word we are editing
-      // so we are fine
-      if (this.initialWord?.id === exists?.id) {
-        this.uniqueWordError = false;
-        return;
-      }
+const draftWordStore = useDraftWordStore();
+const wordFormTabsStore = useWordFormTabsStore();
 
-      if (exists) {
-        this.uniqueWordError = true;
-      } else {
-        this.uniqueWordError = false;
-      }
-    },
-    async triggerValidation() {
-      const checkFieldPresence = (x: string) =>
-        x ? undefined : this.$t("required");
+const savingLoading = ref(false);
+const uniqueWordError = ref(false);
+const rusValidationError = ref<string | undefined>(undefined);
+const engValidationError = ref<string | undefined>(undefined);
+const srpCyrillicValidationError = ref<string | undefined>(undefined);
+const srpLatinValidationError = ref<string | undefined>(undefined);
 
-      this.rusValidationError = checkFieldPresence(this.draftWord.rus);
-      this.engValidationError = checkFieldPresence(this.draftWord.eng);
-      this.srpCyrillicValidationError = checkFieldPresence(
-        this.draftWord.srp_cyrillic
-      );
-      this.srpLatinValidationError = checkFieldPresence(
-        this.draftWord.srp_latin
-      );
-
-      await this.triggerWordNameUniqueValidation();
-    },
-    async saveWord(resetAfterSave = false) {
-      await this.triggerValidation();
-
-      if (!this.isValidToSave) return;
-
-      this.savingLoading = true;
-
-      if (this.initialWord?.id) {
-        await this.updateWord(this.initialWord.id, this.draftWord);
-      } else {
-        await this.createWord(this.draftWord);
-      }
-
-      this.savingLoading = false;
-
-      if (resetAfterSave) {
-        this.resetDraftWord();
-      } else {
-        this.$emit("saved");
-      }
-    },
-  },
+const saveButtonLabel = computed(() => {
+  return props.initialWord ? t("save-changes") : t("create");
 });
+
+const anyTranslationError = computed(() => {
+  return Boolean(
+    rusValidationError.value ||
+      engValidationError.value ||
+      srpLatinValidationError.value ||
+      srpCyrillicValidationError.value ||
+      uniqueWordError.value
+  );
+});
+
+const isValidToSave = computed(() => {
+  return (
+    draftWordStore.allTranslationsFilled &&
+    !uniqueWordError.value &&
+    !anyTranslationError.value
+  );
+});
+
+watch(
+  () => draftWordStore.draftWord.rus,
+  () => {
+    rusValidationError.value = undefined;
+    uniqueWordError.value = false;
+  }
+);
+
+watch(
+  () => draftWordStore.draftWord.eng,
+  () => {
+    engValidationError.value = undefined;
+    uniqueWordError.value = false;
+  }
+);
+
+watch(
+  () => draftWordStore.draftWord.srp_latin,
+  () => {
+    srpLatinValidationError.value = undefined;
+    uniqueWordError.value = false;
+  }
+);
+
+watch(
+  () => draftWordStore.draftWord.srp_cyrillic,
+  () => {
+    srpCyrillicValidationError.value = undefined;
+    uniqueWordError.value = false;
+  }
+);
+
+watch(anyTranslationError, (state) => {
+  wordFormTabsStore.setTranslationsTabError(state);
+});
+
+function close() {
+  emit("close");
+}
+
+async function triggerWordNameUniqueValidation() {
+  const search = draftWordStore.draftWord.eng;
+
+  if (!search) {
+    uniqueWordError.value = false;
+    return;
+  }
+
+  const { data } = await WordsService.query({ search });
+
+  const exists = data.result.find(({ eng, rus, srp_cyrillic, srp_latin }) => {
+    return (
+      eng === draftWordStore.draftWord.eng.toLocaleLowerCase() &&
+      rus === draftWordStore.draftWord.rus.toLocaleLowerCase() &&
+      srp_cyrillic ===
+        draftWordStore.draftWord.srp_cyrillic.toLocaleLowerCase() &&
+      srp_latin === draftWordStore.draftWord.srp_latin.toLocaleLowerCase()
+    );
+  });
+
+  // If word exists and it's the same word we are editing
+  // so we are fine
+  if (draftWordStore.initialWord?.id === exists?.id) {
+    uniqueWordError.value = false;
+    return;
+  }
+
+  if (exists) {
+    uniqueWordError.value = true;
+  } else {
+    uniqueWordError.value = false;
+  }
+}
+
+async function triggerValidation() {
+  const checkFieldPresence = (x: string) => (x ? undefined : t("required"));
+
+  rusValidationError.value = checkFieldPresence(draftWordStore.draftWord.rus);
+  engValidationError.value = checkFieldPresence(draftWordStore.draftWord.eng);
+  srpCyrillicValidationError.value = checkFieldPresence(
+    draftWordStore.draftWord.srp_cyrillic
+  );
+  srpLatinValidationError.value = checkFieldPresence(
+    draftWordStore.draftWord.srp_latin
+  );
+
+  await triggerWordNameUniqueValidation();
+}
+
+async function saveWord(resetAfterSave = false) {
+  await triggerValidation();
+
+  if (!isValidToSave.value) return;
+
+  savingLoading.value = true;
+
+  if (props.initialWord?.id) {
+    await updateWordMutation.mutateAsync({
+      ...draftWordStore.draftWord,
+      id: props.initialWord.id,
+    });
+  } else {
+    await createWordMutation.mutateAsync(draftWordStore.draftWord);
+  }
+
+  savingLoading.value = false;
+
+  if (resetAfterSave) {
+    draftWordStore.resetDraftWord();
+  } else {
+    emit("saved");
+  }
+}
 </script>
 
 <template>
   <TabsComp
-    :tabs="tabs"
+    :tabs="wordFormTabsStore.tabs"
     padding-inline="16px"
-    :selected-tab-index="currentTabIndex"
+    :selected-tab-index="wordFormTabsStore.currentTabIndex"
     class="word-form__tabs"
-    @update:selected-tab-index="setCurrentTabIndex"
+    @update:selected-tab-index="wordFormTabsStore.setCurrentTabIndex"
   />
 
   <div class="word-form">
     <div class="word-form__content">
       <WordFormTranslationComp
-        v-show="isTranslationsTabOpen"
+        v-show="wordFormTabsStore.isTranslationsTabOpen"
         :unique-word-error="uniqueWordError"
         :rus-validation-error="rusValidationError"
         :eng-validation-error="engValidationError"
@@ -185,7 +195,7 @@ export default defineComponent({
         :srp-latin-validation-error="srpLatinValidationError"
       />
 
-      <WordFormCategoriesComp v-show="isCategoriesTabOpen" />
+      <WordFormCategoriesComp v-show="wordFormTabsStore.isCategoriesTabOpen" />
     </div>
 
     <div class="word-form__footer">

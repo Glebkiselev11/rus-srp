@@ -7,7 +7,6 @@ import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vu
 import { useDraftWordStore } from "@/stores/draftWord";
 import { translationPreview } from "@/common/translations";
 import { useI18n } from "vue-i18n";
-import { useQueryClient } from "@tanstack/vue-query";
 
 const { t } = useI18n();
 const emit = defineEmits<{
@@ -16,7 +15,6 @@ const emit = defineEmits<{
 
 const showCloseConfirmationModal = ref(false);
 
-const queryClient = useQueryClient();
 const draftWordStore = useDraftWordStore();
 const wordFormTabsStore = useWordFormTabsStore();
 
@@ -58,11 +56,6 @@ function close() {
   emit("close");
   wordFormTabsStore.resetCurrentTab();
 }
-
-function saved() {
-  queryClient.invalidateQueries({ queryKey: ["words"] });
-  close();
-}
 </script>
 
 <template>
@@ -71,7 +64,7 @@ function saved() {
       <WordFormComp
         :initial-word="draftWordStore.initialWord"
         @close="tryClose"
-        @saved="saved"
+        @saved="close"
       />
     </template>
   </ModalComp>
