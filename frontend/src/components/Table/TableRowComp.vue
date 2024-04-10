@@ -1,34 +1,30 @@
-<script lang="ts">
+<script setup lang="ts">
 import type { Id } from "@/types/api";
 import { vElementHover } from "@vueuse/components";
-import { defineComponent, type PropType } from "vue";
+import type { PropType } from "vue";
 
-export default defineComponent({
-  name: "TableRowComp",
-  directives: {
-    elementHover: vElementHover,
+defineProps({
+  id: {
+    type: [String, Number] as PropType<Id>,
+    default: null,
   },
-  props: {
-    id: {
-      type: [String, Number] as PropType<Id>,
-      default: null,
-    },
-    gridTemplateColumns: {
-      type: String,
-      required: true,
-    },
-    highlightOnHover: {
-      type: Boolean,
-      default: false,
-    },
+  gridTemplateColumns: {
+    type: String,
+    required: true,
   },
-  emits: ["hover"],
-  methods: {
-    onHover(x: boolean) {
-      this.$emit("hover", x);
-    },
+  highlightOnHover: {
+    type: Boolean,
+    default: false,
   },
 });
+
+const emit = defineEmits<{
+  (event: "hover", x: boolean): void;
+}>();
+
+function onHover(x: boolean) {
+  emit("hover", x);
+}
 </script>
 
 <template>

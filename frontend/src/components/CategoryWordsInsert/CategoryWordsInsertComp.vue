@@ -1,148 +1,118 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
+import type { Id } from "@/types/api";
+import { computed, onMounted, ref } from "vue";
+import { useI18n } from "vue-i18n";
+import { useModalWordsStore } from "@/stores/words/modalWords";
+import { highlighTextByQuery } from "@/common/utils";
+import { getLanguageCodesOrder } from "@/common/translations";
 import InputComp from "../InputComp.vue";
 import ButtonComp from "../ButtonComp.vue";
 import WordFormModalComp from "../WordForm/WordFormModalComp.vue";
-import { mapActions, mapState } from "pinia";
-import { useModalWordsStore } from "@/stores/words/modalWords";
 import TableComp from "@/components/Table/TableComp.vue";
-import TableRowComp from "../Table/TableRowComp.vue";
-import ImagePreviewComp from "../ImagePreviewComp.vue";
-import { highlighTextByQuery } from "@/common/utils";
-import { getLanguageCodesOrder } from "@/common/translations";
-import type { Id } from "@/types/api";
+import TableRowComp from "@/components/Table/TableRowComp.vue";
 import CounterComp from "../CounterComp.vue";
 import SwitchComp from "../SwitchComp.vue";
 import ZeroStateComp from "../ZeroStateComp.vue";
 import CheckboxComp from "../CheckboxComp.vue";
 import TooltipComp from "../TooltipComp.vue";
 import SkeletonItemComp from "../SkeletonItemComp.vue";
+import ImagePreviewComp from "../ImagePreviewComp.vue";
 
-export default defineComponent({
-  name: "CategoryWordsInsertComp",
-  components: {
-    InputComp,
-    ButtonComp,
-    WordFormModalComp,
-    TableComp,
-    TableRowComp,
-    ImagePreviewComp,
-    CounterComp,
-    SwitchComp,
-    ZeroStateComp,
-    CheckboxComp,
-    TooltipComp,
-    SkeletonItemComp,
-  },
-  props: {
-    categoryId: {
-      type: Number,
-      required: true,
-    },
-  },
-  emits: ["close", "words-inserted"],
-  data() {
-    return {
-      showWordForm: false,
-      search: "",
-      offset: 0,
-      limit: 50,
-      translationOrder: getLanguageCodesOrder(),
-      gridTemplateColumns: "48px 64px 1fr 1fr 1fr 1fr",
-      showOnlySelected: false,
-    };
-  },
-  computed: {
-    ...mapState(useModalWordsStore, [
-      "words",
-      "loadState",
-      "count",
-      "selectedWordIds",
-      "isAnyWordSelected",
-    ]),
-    requestParams() {
-      return {
-        search: this.search,
-        offset: this.offset,
-        limit: this.limit,
-      };
-    },
-    alreadyAddedWordIds() {
-      return this.words
-        .filter(({ categories }) =>
-          categories.some(({ id }) => id === this.categoryId)
-        )
-        .map(({ id }) => id);
-    },
-    filteredWords() {
-      if (this.showOnlySelected) {
-        return this.words.filter(({ id }) => this.selectedWordIds.includes(id));
-      } else {
-        return this.words;
-      }
-    },
-    nothingWereFound() {
-      return this.filteredWords.length === 0 && this.loadState === "loaded";
-    },
-  },
-  watch: {
-    search() {
-      this.offset = 0;
-      this.clearModalWords();
-      this.fetchModalWords(this.requestParams);
-    },
-    selectedWordIds(ids: Id[]) {
-      if (ids.length === 0) {
-        this.showOnlySelected = false;
-      }
-    },
-  },
-  async created() {
-    await this.fetchModalWords(this.requestParams);
-  },
-  methods: {
-    ...mapActions(useModalWordsStore, [
-      "fetchModalWords",
-      "clearModalWords",
-      "updateSelectedWordIds",
-      "addSelectedWordsToCategory",
-    ]),
-    highlighTextByQuery,
-    loadMore() {
-      if (this.loadState === "loading" || this.offset >= this.count) return;
-      this.offset += this.limit;
+const { t } = useI18n();
+const props = defineProps<{
+  categoryId: number;
+}>();
 
-      this.fetchModalWords(this.requestParams);
-    },
-    isWordChecked(wordId: Id): boolean {
-      return (
-        this.selectedWordIds.includes(wordId) ||
-        this.alreadyAddedWordIds.includes(wordId)
-      );
-    },
-    isWordDisabled(wordId: Id): boolean {
-      return this.alreadyAddedWordIds.includes(wordId);
-    },
-    getTooltipText(wordId: Id): string {
-      if (this.isWordDisabled(wordId)) {
-        return this.$t("included-in-the-category");
-      }
+const emit = defineEmits<{
+  (event: "close"): void;
+  (event: "words-inserted"): void;
+}>();
 
-      if (this.isWordChecked(wordId)) {
-        return this.$t("dont-add-to-category");
-      }
+const modalWordsStore = useModalWordsStore();
 
-      return this.$t("add-to-category");
-    },
-    async clickAddButton() {
-      await this.addSelectedWordsToCategory(this.categoryId);
-      this.$emit("words-inserted");
-    },
-    close() {
-      this.$emit("close");
-    },
-  },
+const showWordForm = ref(false);
+const search = ref("");
+const offset = ref(0);
+const limit = 50;
+const gridTemplateColumns = "48px 64px 1fr 1fr 1fr 1fr";
+const showOnlySelected = ref(false);
+const translationOrder = getLanguageCodesOrder();
+
+const requestParams = computed(() => ({
+  search: search.value,
+  offset: offset.value,
+  limit,
+}));
+
+const alreadyAddedWordIds = computed(() =>
+  modalWordsStore.words
+    .filter(({ categories }) =>
+      categories.some(({ id }) => id === props.categoryId)
+    )
+    .map(({ id }) => id)
+);
+
+const filteredWords = computed(() => {
+  if (showOnlySelected.value) {
+    return modalWordsStore.words.filter(({ id }) =>
+      modalWordsStore.selectedWordIds.includes(id)
+    );
+  } else {
+    return modalWordsStore.words;
+  }
 });
+
+const nothingWereFound = computed(
+  () =>
+    filteredWords.value.length === 0 && modalWordsStore.loadState === "loaded"
+);
+
+onMounted(async () => {
+  await modalWordsStore.fetchModalWords(requestParams.value);
+});
+
+function close() {
+  emit("close");
+}
+
+async function clickAddButton() {
+  await modalWordsStore.addSelectedWordsToCategory(props.categoryId);
+  emit("words-inserted");
+}
+
+function isWordDisabled(wordId: Id): boolean {
+  return alreadyAddedWordIds.value.includes(wordId);
+}
+
+function isWordChecked(wordId: Id): boolean {
+  return (
+    modalWordsStore.selectedWordIds.includes(wordId) ||
+    alreadyAddedWordIds.value.includes(wordId)
+  );
+}
+
+function loadMore() {
+  if (
+    modalWordsStore.loadState === "loading" ||
+    offset.value >= modalWordsStore.count
+  )
+    return;
+  offset.value += limit;
+
+  modalWordsStore.fetchModalWords(requestParams.value);
+}
+
+function getTooltipText(wordId: Id): string {
+  if (isWordDisabled(wordId)) {
+    return t("included-in-the-category");
+  }
+
+  if (isWordChecked(wordId)) {
+    return t("dont-add-to-category");
+  }
+
+  return t("add-to-category");
+}
 </script>
 
 <template>
@@ -173,7 +143,7 @@ export default defineComponent({
       table-height="calc(100vh - 300px)"
       @scroll-to-bottom="loadMore"
     >
-      <template v-if="nothingWereFound" #body>
+      <template v-if="nothingWereFound">
         <ZeroStateComp
           icon="search"
           :title="$t('not-found', { search })"
@@ -181,39 +151,39 @@ export default defineComponent({
         />
       </template>
 
-      <template v-else #body>
-        <section>
-          <TableRowComp
-            v-for="word in filteredWords"
-            :key="word.id"
-            :grid-template-columns="gridTemplateColumns"
-          >
-            <td>
-              <TooltipComp
-                :text="getTooltipText(word.id)"
-                position="bottom-right"
-              >
-                <CheckboxComp
-                  :model-value="isWordChecked(word.id)"
-                  :disabled="isWordDisabled(word.id)"
-                  @update:model-value="(x) => updateSelectedWordIds(word.id, x)"
-                />
-              </TooltipComp>
-            </td>
+      <template v-else>
+        <TableRowComp
+          v-for="word in filteredWords"
+          :key="word.id"
+          :grid-template-columns="gridTemplateColumns"
+        >
+          <td>
+            <TooltipComp
+              :text="getTooltipText(word.id)"
+              position="bottom-right"
+            >
+              <CheckboxComp
+                :model-value="isWordChecked(word.id)"
+                :disabled="isWordDisabled(word.id)"
+                @update:model-value="
+                  (x) => modalWordsStore.updateSelectedWordIds(word.id, x)
+                "
+              />
+            </TooltipComp>
+          </td>
 
-            <td>
-              <ImagePreviewComp :src="word.image" static />
-            </td>
+          <td>
+            <ImagePreviewComp :src="word.image" static />
+          </td>
 
-            <td
-              v-for="(langCode, i) in translationOrder"
-              :key="`${word.id}-${i}`"
-              v-html="highlighTextByQuery(word[langCode], search)"
-            />
-          </TableRowComp>
-        </section>
+          <td
+            v-for="(langCode, i) in translationOrder"
+            :key="`${word.id}-${i}`"
+            v-html="highlighTextByQuery(word[langCode], search)"
+          />
+        </TableRowComp>
 
-        <template v-if="loadState === 'loading'">
+        <template v-if="modalWordsStore.loadState === 'loading'">
           <TableRowComp
             v-for="row in limit"
             :key="row"
@@ -248,7 +218,7 @@ export default defineComponent({
     </TableComp>
 
     <div class="category-words-insert__footer">
-      <div v-show="isAnyWordSelected">
+      <div v-show="modalWordsStore.isAnyWordSelected">
         <span v-text="$t('show-only-selected')" />
         <SwitchComp v-model="showOnlySelected" />
       </div>
@@ -265,11 +235,11 @@ export default defineComponent({
 
         <ButtonComp
           :label="$t('add')"
-          :disabled="!isAnyWordSelected"
+          :disabled="!modalWordsStore.isAnyWordSelected"
           @click="clickAddButton"
         >
-          <template v-if="isAnyWordSelected" #right>
-            <CounterComp :count="selectedWordIds.length" />
+          <template v-if="modalWordsStore.isAnyWordSelected" #right>
+            <CounterComp :count="modalWordsStore.selectedWordIds.length" />
           </template>
         </ButtonComp>
       </div>

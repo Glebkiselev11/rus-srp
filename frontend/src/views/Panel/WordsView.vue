@@ -310,98 +310,94 @@ function updateOrder(order: Order) {
           :table-height="tableHeight"
           @update:order="updateOrder"
         >
-          <template #body>
-            <template v-if="data?.words.length && status === 'success'">
-              <TableRowComp
-                v-for="word in data.words"
-                :id="word.id"
-                :key="word.id"
-                :grid-template-columns="gridTemplateColumns"
-                highlight-on-hover
-                @hover="setHoveredWordId(word.id, $event)"
+          <template v-if="data?.words.length && status === 'success'">
+            <TableRowComp
+              v-for="word in data.words"
+              :id="word.id"
+              :key="word.id"
+              :grid-template-columns="gridTemplateColumns"
+              highlight-on-hover
+              @hover="setHoveredWordId(word.id, $event)"
+            >
+              <TableRowStatusComp
+                :active="!word.translation_approved"
+                :disabled="word.translation_approved"
               >
-                <TableRowStatusComp
-                  :active="!word.translation_approved"
-                  :disabled="word.translation_approved"
-                >
-                  <WordsViewTranslationConfirmationComp
-                    @confirm-translation="confirmTranslation(word)"
-                    @open-editing-word-form="openEditingWordForm(word)"
-                  />
-                </TableRowStatusComp>
-
-                <td>
-                  <ImagePreviewComp
-                    :src="word.image"
-                    :image-search-modal-subtitle="translationPreview(word)"
-                    :default-image-search-query="word.eng"
-                    @update:src="(src) => updateWordImage(word, src)"
-                  />
-                </td>
-
-                <td
-                  v-for="(translation, i) in translationColumns"
-                  :key="`${word.id}-${i}`"
-                  class="text-overflow-ellipsis"
-                  :title="word[translation.sort_key]"
-                  v-html="
-                    highlighTextByQuery(word[translation.sort_key], search)
-                  "
+                <WordsViewTranslationConfirmationComp
+                  @confirm-translation="confirmTranslation(word)"
+                  @open-editing-word-form="openEditingWordForm(word)"
                 />
+              </TableRowStatusComp>
 
-                <td>
-                  <CategoriesPreviewBadgesComp
-                    :categories="word.categories"
-                    :show-add-button="hoverOnWordId === word.id"
-                    @click="openEditingWordFormOnCategoriesTab(word)"
+              <td>
+                <ImagePreviewComp
+                  :src="word.image"
+                  :image-search-modal-subtitle="translationPreview(word)"
+                  :default-image-search-query="word.eng"
+                  @update:src="(src) => updateWordImage(word, src)"
+                />
+              </td>
+
+              <td
+                v-for="(translation, i) in translationColumns"
+                :key="`${word.id}-${i}`"
+                class="text-overflow-ellipsis"
+                :title="word[translation.sort_key]"
+                v-html="highlighTextByQuery(word[translation.sort_key], search)"
+              />
+
+              <td>
+                <CategoriesPreviewBadgesComp
+                  :categories="word.categories"
+                  :show-add-button="hoverOnWordId === word.id"
+                  @click="openEditingWordFormOnCategoriesTab(word)"
+                />
+              </td>
+
+              <td style="margin-inline-start: auto">
+                <DropdownMenuComp
+                  v-slot="{ isMenuOpen }"
+                  :items="[
+                    {
+                      label: $t('edit'),
+                      icon: 'edit',
+                      handler: () => openEditingWordForm(word),
+                    },
+                    'separator',
+                    {
+                      label: $t('delete'),
+                      icon: 'delete',
+                      color: 'negative',
+                      handler: () => removeWord(word),
+                    },
+                  ]"
+                >
+                  <ButtonComp
+                    icon="more_vert"
+                    appearance="inline"
+                    color="neutral"
+                    size="compact"
+                    :pressed="isMenuOpen"
                   />
-                </td>
+                </DropdownMenuComp>
+              </td>
+            </TableRowComp>
+          </template>
 
-                <td style="margin-inline-start: auto">
-                  <DropdownMenuComp
-                    v-slot="{ isMenuOpen }"
-                    :items="[
-                      {
-                        label: $t('edit'),
-                        icon: 'edit',
-                        handler: () => openEditingWordForm(word),
-                      },
-                      'separator',
-                      {
-                        label: $t('delete'),
-                        icon: 'delete',
-                        color: 'negative',
-                        handler: () => removeWord(word),
-                      },
-                    ]"
-                  >
-                    <ButtonComp
-                      icon="more_vert"
-                      appearance="inline"
-                      color="neutral"
-                      size="compact"
-                      :pressed="isMenuOpen"
-                    />
-                  </DropdownMenuComp>
-                </td>
-              </TableRowComp>
-            </template>
+          <template v-else-if="status === 'pending'">
+            <WordsViewTableRowSkeletonComp
+              :rows="limit"
+              :grid-template-columns="gridTemplateColumns"
+              :central-columns-count="translationColumns.length"
+            />
+          </template>
 
-            <template v-else-if="status === 'pending'">
-              <WordsViewTableRowSkeletonComp
-                :rows="limit"
-                :grid-template-columns="gridTemplateColumns"
-                :central-columns-count="translationColumns.length"
-              />
-            </template>
-
-            <template v-else>
-              <ZeroStateComp
-                icon="search"
-                :title="$t('not-found')"
-                :description="$t('not-found-description')"
-              />
-            </template>
+          <template v-else>
+            <ZeroStateComp
+              icon="search"
+              :title="$t('not-found')"
+              :description="$t('not-found-description')"
+            />
           </template>
 
           <template v-if="showPagination && data" #pagination>

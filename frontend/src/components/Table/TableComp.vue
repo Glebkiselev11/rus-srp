@@ -1,70 +1,62 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
+<script setup lang="ts">
+import { onUpdated, ref, type PropType } from "vue";
 import TableColumnTitleComp from "./TableColumnTitleComp.vue";
 import type { Order } from "../../types/api";
 import type { TableColumn } from "@/types/table";
 import { vInfiniteScroll } from "@vueuse/components";
 import type { UseInfiniteScrollOptions } from "@vueuse/core";
-
-export default defineComponent({
-  name: "TableComp",
-  directives: {
-    infiniteScroll: vInfiniteScroll,
+defineProps({
+  columns: {
+    type: Array as PropType<TableColumn[]>,
+    default: () => [],
   },
-  components: {
-    TableColumnTitleComp,
+  gridTemplateColumns: {
+    type: String,
+    required: true,
   },
-  props: {
-    columns: {
-      type: Array as PropType<TableColumn[]>,
-      default: () => [],
-    },
-    gridTemplateColumns: {
-      type: String,
-      required: true,
-    },
-    order: {
-      type: String as PropType<Order>,
-      default: null,
-    },
-    infiniteScrollConfig: {
-      type: Object as PropType<UseInfiniteScrollOptions>,
-      default: () => ({
-        // it will disable the interval for the case when we don't need to infinite scroll
-        interval: 9999999,
-      }),
-    },
-    tableHeight: {
-      type: String,
-      default: "700px",
-    },
+  order: {
+    type: String as PropType<Order>,
+    default: null,
   },
-
-  emits: ["update:order", "scrollToBottom"],
-  data() {
-    return {
-      isContentBodyScrollable: null as boolean | null,
-    };
+  infiniteScrollConfig: {
+    type: Object as PropType<UseInfiniteScrollOptions>,
+    default: () => ({
+      // it will disable the interval for the case when we don't need to infinite scroll
+      interval: 9999999,
+    }),
   },
-  updated() {
-    this.setStateForTableBody();
-  },
-  methods: {
-    setStateForTableBody() {
-      const tableBody = this.$refs.tableBody as HTMLElement;
-
-      if (!tableBody) {
-        this.isContentBodyScrollable = false;
-      }
-
-      this.isContentBodyScrollable =
-        tableBody.scrollHeight > tableBody.clientHeight;
-    },
-    handleScrollToBottom() {
-      this.$emit("scrollToBottom");
-    },
+  tableHeight: {
+    type: String,
+    default: "700px",
   },
 });
+
+const emit = defineEmits<{
+  (event: "update:order", order: Order): void;
+  (event: "scrollToBottom"): void;
+}>();
+
+const isContentBodyScrollable = ref(false);
+
+onUpdated(() => {
+  setStateForTableBody();
+});
+
+function setStateForTableBody() {
+  const tableBody = ref<HTMLTableSectionElement | null>(null);
+
+  if (!tableBody.value) {
+    isContentBodyScrollable.value = false;
+    return;
+  }
+
+  isContentBodyScrollable.value =
+    tableBody.value.scrollHeight > tableBody.value.clientHeight;
+}
+
+function handleScrollToBottom() {
+  emit("scrollToBottom");
+}
 </script>
 
 <template>
@@ -95,7 +87,7 @@ export default defineComponent({
         v-infinite-scroll="[handleScrollToBottom, infiniteScrollConfig]"
         class="table__body"
       >
-        <slot name="body" />
+        <slot />
       </tbody>
 
       <slot name="pagination" />
