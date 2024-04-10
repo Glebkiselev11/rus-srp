@@ -9,10 +9,7 @@ import ButtonComp from "../ButtonComp.vue";
 import TabsComp from "../TabsComp.vue";
 import WordFormTranslationComp from "./WordFormTranslationComp.vue";
 import WordFormCategoriesComp from "./WordFormCategoriesComp.vue";
-import {
-  useWordMutationUpdate,
-  useWordMutationCreate,
-} from "@/api/hooks/words";
+import { useUpdateWord, useCreateWord } from "@/queries/words";
 
 const { t } = useI18n();
 
@@ -25,8 +22,8 @@ const emit = defineEmits<{
   (e: "saved"): void;
 }>();
 
-const updateWordMutation = useWordMutationUpdate();
-const createWordMutation = useWordMutationCreate();
+const updateWord = useUpdateWord();
+const createWord = useCreateWord();
 
 const draftWordStore = useDraftWordStore();
 const wordFormTabsStore = useWordFormTabsStore();
@@ -157,12 +154,12 @@ async function saveWord(resetAfterSave = false) {
   savingLoading.value = true;
 
   if (props.initialWord?.id) {
-    await updateWordMutation.mutateAsync({
+    await updateWord.mutateAsync({
       ...draftWordStore.draftWord,
       id: props.initialWord.id,
     });
   } else {
-    await createWordMutation.mutateAsync(draftWordStore.draftWord);
+    await createWord.mutateAsync(draftWordStore.draftWord);
   }
 
   savingLoading.value = false;

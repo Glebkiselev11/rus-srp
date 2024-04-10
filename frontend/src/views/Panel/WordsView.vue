@@ -35,11 +35,7 @@ import TableRowStatusComp from "@/components/Table/TableRowStatusComp.vue";
 import WordsViewFilterPanelComp from "@/components/WordsView/WordsViewFilterPanelComp.vue";
 import WordsViewTranslationConfirmationComp from "@/components/WordsView/WordsViewTranslationConfirmationComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";
-import {
-  useWordMutationUpdate,
-  useWordMutationDelete,
-  useWordsQuery,
-} from "@/api/hooks/words";
+import { useUpdateWord, useDeleteWord, useWordsQuery } from "@/queries/words";
 
 const { t, locale } = useI18n();
 const route = useRoute();
@@ -107,8 +103,8 @@ const filter = computed({
 });
 
 const { data, status, refetch } = useWordsQuery(filter);
-const removeWordMutation = useWordMutationDelete();
-const updateWordMutation = useWordMutationUpdate();
+const deleteWord = useDeleteWord();
+const updateWord = useUpdateWord();
 
 const search = computed({
   get(): string {
@@ -244,7 +240,7 @@ function openWordsListModal() {
 }
 
 function confirmTranslation(word: Word) {
-  updateWordMutation.mutateAsync({
+  updateWord.mutateAsync({
     ...word,
     translation_approved: true,
   });
@@ -254,12 +250,12 @@ async function removeWord(word: Word) {
   const key = locale as LanguageCode;
 
   if (confirm(t("are-you-sure-delete", { word: word[key] }))) {
-    await removeWordMutation.mutateAsync(word.id);
+    await deleteWord.mutateAsync(word.id);
   }
 }
 
 function updateWordImage(word: Word, src: string) {
-  updateWordMutation.mutateAsync({ ...word, image: src });
+  updateWord.mutateAsync({ ...word, image: src });
 }
 
 function updateOrder(order: Order) {

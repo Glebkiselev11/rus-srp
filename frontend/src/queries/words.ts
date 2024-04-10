@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import type { DraftWord, Word } from "@/types/words";
-import { WordsService } from "../services/words";
+import { WordsService } from "@/api/services/words";
 import type { Id, RequestParams } from "@/types/api";
 import type { Ref } from "vue";
 
@@ -14,7 +14,7 @@ export const useWordsQuery = (params: Ref<RequestParams>) => {
   });
 };
 
-export const useWordMutationUpdate = () => {
+export const useUpdateWord = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -24,7 +24,7 @@ export const useWordMutationUpdate = () => {
   });
 };
 
-export const useWordMutationCreate = () => {
+export const useCreateWord = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -33,7 +33,7 @@ export const useWordMutationCreate = () => {
   });
 };
 
-export const useWordMutationDelete = () => {
+export const useDeleteWord = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
