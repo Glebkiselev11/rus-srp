@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Id } from "@/types/api";
-import { computed, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useModalWordsStore } from "@/stores/words/modalWords";
 import { highlighTextByQuery } from "@/common/utils";
@@ -17,6 +17,7 @@ import CheckboxComp from "../CheckboxComp.vue";
 import TooltipComp from "../TooltipComp.vue";
 import SkeletonItemComp from "../SkeletonItemComp.vue";
 import ImagePreviewComp from "../ImagePreviewComp.vue";
+import { useWordsInfinityQuery } from "@/queries/words";
 
 const { t } = useI18n();
 const props = defineProps<{
@@ -30,22 +31,27 @@ const emit = defineEmits<{
 
 const modalWordsStore = useModalWordsStore();
 
-const showWordForm = ref(false);
-const search = ref("");
-const offset = ref(0);
 const limit = 50;
+const search = ref("");
 const gridTemplateColumns = "48px 64px 1fr 1fr 1fr 1fr";
 const showOnlySelected = ref(false);
 const translationOrder = getLanguageCodesOrder();
+const showWordForm = ref(false);
 
 const requestParams = computed(() => ({
   search: search.value,
-  offset: offset.value,
   limit,
 }));
 
+const { data, isFetching, fetchNextPage, isSuccess } =
+  useWordsInfinityQuery(requestParams);
+
+const words = computed(
+  () => data.value?.pages.flatMap((page) => page.words) ?? []
+);
+
 const alreadyAddedWordIds = computed(() =>
-  modalWordsStore.words
+  words.value
     .filter(({ categories }) =>
       categories.some(({ id }) => id === props.categoryId)
     )
@@ -54,22 +60,17 @@ const alreadyAddedWordIds = computed(() =>
 
 const filteredWords = computed(() => {
   if (showOnlySelected.value) {
-    return modalWordsStore.words.filter(({ id }) =>
+    return words.value.filter(({ id }) =>
       modalWordsStore.selectedWordIds.includes(id)
     );
   } else {
-    return modalWordsStore.words;
+    return words.value;
   }
 });
 
 const nothingWereFound = computed(
-  () =>
-    filteredWords.value.length === 0 && modalWordsStore.loadState === "loaded"
+  () => filteredWords.value.length === 0 && isSuccess.value
 );
-
-onMounted(async () => {
-  await modalWordsStore.fetchModalWords(requestParams.value);
-});
 
 function close() {
   emit("close");
@@ -89,17 +90,6 @@ function isWordChecked(wordId: Id): boolean {
     modalWordsStore.selectedWordIds.includes(wordId) ||
     alreadyAddedWordIds.value.includes(wordId)
   );
-}
-
-function loadMore() {
-  if (
-    modalWordsStore.loadState === "loading" ||
-    offset.value >= modalWordsStore.count
-  )
-    return;
-  offset.value += limit;
-
-  modalWordsStore.fetchModalWords(requestParams.value);
 }
 
 function getTooltipText(wordId: Id): string {
@@ -141,7 +131,7 @@ function getTooltipText(wordId: Id): string {
       :grid-template-columns="gridTemplateColumns"
       :infinite-scroll-config="{ distance: 100 }"
       table-height="calc(100vh - 300px)"
-      @scroll-to-bottom="loadMore"
+      @scroll-to-bottom="fetchNextPage"
     >
       <template v-if="nothingWereFound">
         <ZeroStateComp
@@ -183,7 +173,7 @@ function getTooltipText(wordId: Id): string {
           />
         </TableRowComp>
 
-        <template v-if="modalWordsStore.loadState === 'loading'">
+        <template v-if="isFetching">
           <TableRowComp
             v-for="row in limit"
             :key="row"

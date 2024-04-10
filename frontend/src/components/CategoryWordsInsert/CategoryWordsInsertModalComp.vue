@@ -55,7 +55,6 @@ function tryClose() {
 
 function close() {
   emit("close");
-  modalWordsStore.clearModalWords();
 }
 </script>
 

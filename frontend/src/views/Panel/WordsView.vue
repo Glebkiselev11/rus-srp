@@ -133,7 +133,7 @@ const limit = computed({
 
 const offset = computed({
   get(): number {
-    return filter.value.offset;
+    return filter.value.offset || 0;
   },
   set(offset: number) {
     filter.value = { ...filter.value, offset };

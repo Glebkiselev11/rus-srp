@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/vue-query";
 import type { DraftWord, Word } from "@/types/words";
 import { WordsService } from "@/api/services/words";
 import type { Id, RequestParams } from "@/types/api";
@@ -11,6 +16,36 @@ export const useWordsQuery = (params: Ref<RequestParams>) => {
     queryKey: [KEY, params],
     queryFn: () => WordsService.query_v2(params.value),
     enabled: true,
+  });
+};
+
+export const useWordsInfinityQuery = (params: Ref<RequestParams>) => {
+  return useInfiniteQuery({
+    queryKey: [KEY, params],
+    enabled: true,
+    staleTime: Infinity,
+    queryFn: (p) =>
+      WordsService.query_v2({
+        ...params.value,
+        offset: p.pageParam * params.value.limit,
+      }),
+    getNextPageParam: (
+      lastPage: { words: Word[]; count: number; offset: number },
+      _allPages,
+      lastPageParam: number
+    ) => {
+      if (lastPage.words.length === 0) {
+        return undefined;
+      }
+      return lastPageParam + 1;
+    },
+    getPreviousPageParam: (_firstPage, _allPages, firstPageParam: number) => {
+      if (firstPageParam <= 1) {
+        return undefined;
+      }
+      return firstPageParam - 1;
+    },
+    initialPageParam: 0,
   });
 };
 
