@@ -1,30 +1,35 @@
 import type { Id } from "@/types/api";
 import { defineStore } from "pinia";
 import { CategoriesService } from "@/api";
+import { computed, ref } from "vue";
 
-export const useModalWordsStore = defineStore("modalWords", {
-  state: () => ({
-    selectedWordIds: [] as Array<Id>,
-  }),
-  getters: {
-    isAnyWordSelected(): boolean {
-      return this.selectedWordIds.length > 0;
-    },
-  },
-  actions: {
-    updateSelectedWordIds(id: Id, select: boolean) {
-      if (select) {
-        this.selectedWordIds.push(id);
-      } else {
-        this.selectedWordIds = this.selectedWordIds.filter((i) => i !== id);
-      }
-    },
-    async addSelectedWordsToCategory(categoryId: Id) {
-      try {
-        await CategoriesService.addWords(categoryId, this.selectedWordIds);
-      } catch (error) {
-        console.error(error);
-      }
-    },
-  },
+export const useModalWordsStore = defineStore("modalWords", () => {
+  const selectedWordIds = ref([] as Array<Id>);
+
+  const isAnyWordSelected = computed(() => {
+    return selectedWordIds.value.length > 0;
+  });
+
+  const updateSelectedWordIds = (id: Id, select: boolean) => {
+    if (select) {
+      selectedWordIds.value.push(id);
+    } else {
+      selectedWordIds.value = selectedWordIds.value.filter((i) => i !== id);
+    }
+  };
+
+  const addSelectedWordsToCategory = async (categoryId: Id) => {
+    try {
+      await CategoriesService.addWords(categoryId, selectedWordIds.value);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return {
+    selectedWordIds,
+    isAnyWordSelected,
+    updateSelectedWordIds,
+    addSelectedWordsToCategory,
+  };
 });
