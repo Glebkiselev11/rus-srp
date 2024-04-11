@@ -8,7 +8,7 @@ import { addCropImagaeParamsToUrl } from "@/common/utils";
 import { extractCurrentLanguageTranslation } from "@/common/translations";
 import ImagePreviewComp from "../ImagePreviewComp.vue";
 import CategoryWordsInsertComp from "./CategoryWordsInsertComp.vue";
-import { useModalWordsStore } from "@/stores/words/modalWords";
+import { useModalWordsStore } from "@/stores/modalWords";
 import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vue";
 
 const { t } = useI18n();

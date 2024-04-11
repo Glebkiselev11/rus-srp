@@ -2,7 +2,7 @@
 import type { Id } from "@/types/api";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { useModalWordsStore } from "@/stores/words/modalWords";
+import { useModalWordsStore } from "@/stores/modalWords";
 import { highlighTextByQuery } from "@/common/utils";
 import { getLanguageCodesOrder } from "@/common/translations";
 import InputComp from "../InputComp.vue";
