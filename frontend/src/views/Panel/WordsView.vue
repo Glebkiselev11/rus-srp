@@ -150,10 +150,10 @@ const order = computed({
 });
 
 const category_id = computed({
-  get(): number | undefined {
+  get(): Id | undefined {
     return filter.value.category_id;
   },
-  set(category_id: number | undefined) {
+  set(category_id: Id | undefined) {
     filter.value = { ...DEFAULT_FILTER, category_id };
   },
 });

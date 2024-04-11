@@ -27,7 +27,7 @@ export type RequestParams = {
   offset?: number;
   limit: number;
   order?: Order;
-  category_id?: number;
+  category_id?: Id;
   translation_approved_status?: TranslationApprovedStatus;
 };
 

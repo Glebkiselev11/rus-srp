@@ -10,11 +10,12 @@ import ImagePreviewComp from "../ImagePreviewComp.vue";
 import CategoryWordsInsertComp from "./CategoryWordsInsertComp.vue";
 import { useModalWordsStore } from "@/stores/modalWords";
 import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vue";
+import type { Id } from "@/types/api";
 
 const { t } = useI18n();
 
 const props = defineProps<{
-  categoryId: number;
+  categoryId: Id;
 }>();
 
 const emit = defineEmits<{

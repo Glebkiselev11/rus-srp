@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import AllWordsCategoryImageComp from "./Categories/AllWordsCategoryImageComp.vue";
 import { usePageCategoriesStore } from "@/stores/categories/pageCategories";
 import { useCategoriesActions } from "@/stores/categories/actions";
@@ -11,6 +11,7 @@ import ButtonComp from "./ButtonComp.vue";
 import RemoveCategoryModalComp from "./Categories/RemoveCategoryModalComp.vue";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 import { extractCurrentLanguageTranslation } from "@/common/translations";
+import type { Id } from "@/types/api";
 
 export default defineComponent({
   name: "WordsPageCategoryTitleComp",
@@ -24,7 +25,7 @@ export default defineComponent({
   },
   props: {
     categoryId: {
-      type: Number,
+      type: Number as PropType<Id>,
       default: undefined,
     },
   },

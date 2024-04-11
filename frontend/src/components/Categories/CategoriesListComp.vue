@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import CategoryItemComp from "./CategoryItemComp.vue";
 import ListItemComp from "@/components/ListItemComp.vue";
 import AllWordsCategoryImageComp from "./AllWordsCategoryImageComp.vue";
@@ -7,6 +7,7 @@ import { usePageCategoriesStore } from "@/stores/categories/pageCategories";
 import { mapState } from "pinia";
 import ZeroStateComp from "../ZeroStateComp.vue";
 import SkeletonItemComp from "../SkeletonItemComp.vue";
+import type { Id } from "@/types/api";
 
 export default defineComponent({
   name: "CategoriesListComp",
@@ -19,7 +20,7 @@ export default defineComponent({
   },
   props: {
     selectedCategoryId: {
-      type: Number,
+      type: Number as PropType<Id>,
       default: undefined,
     },
     searchQuary: {

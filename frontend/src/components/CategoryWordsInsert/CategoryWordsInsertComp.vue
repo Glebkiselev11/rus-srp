@@ -21,7 +21,7 @@ import { useWordsInfinityQuery } from "@/queries/words";
 
 const { t } = useI18n();
 const props = defineProps<{
-  categoryId: number;
+  categoryId: Id;
 }>();
 
 const emit = defineEmits<{

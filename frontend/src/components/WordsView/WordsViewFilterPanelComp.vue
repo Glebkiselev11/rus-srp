@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import type { Order, TranslationApprovedStatus } from "@/types/api";
+import type { Id, Order, TranslationApprovedStatus } from "@/types/api";
 import InputComp from "@/components/InputComp.vue";
 import SelectComp from "@/components/SelectComp.vue";
 import SwitchComp from "@/components/SwitchComp.vue";
@@ -26,7 +26,7 @@ export default defineComponent({
       required: true,
     },
     categoryId: {
-      type: Number,
+      type: Number as PropType<Id>,
       default: null,
     },
   },

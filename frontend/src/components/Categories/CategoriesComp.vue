@@ -1,6 +1,6 @@
 <!-- The side bar with categories -->
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import ButtonComp from "@/components/ButtonComp.vue";
 import { mapActions } from "pinia";
 import { usePageCategoriesStore } from "@/stores/categories/pageCategories";
@@ -26,11 +26,10 @@ export default defineComponent({
   },
   props: {
     selectedCategoryId: {
-      type: Number,
+      type: Number as PropType<Id>,
       default: undefined,
     },
   },
-  emits: ["update:selected-category-id"],
   data() {
     return {
       showCategoryForm: false,
@@ -122,14 +121,21 @@ export default defineComponent({
       this.editingCategoryId = categoryId;
       this.showCategoryForm = true;
     },
-    selectCategory(categoryId: Id) {
-      this.$emit("update:selected-category-id", categoryId || undefined);
-    },
     getOrderColor(key: Order) {
       return key === this.order ? "accent-primary" : "transparent";
     },
   },
 });
+</script>
+
+<script setup lang="ts">
+const emit = defineEmits<{
+  (e: "update:selected-category-id", catedoryId: Id): void;
+}>();
+
+function selectCategory(categoryId: Id) {
+  emit("update:selected-category-id", categoryId);
+}
 </script>
 
 <template>
