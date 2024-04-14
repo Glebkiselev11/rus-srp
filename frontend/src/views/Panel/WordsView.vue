@@ -247,7 +247,7 @@ function confirmTranslation(word: Word) {
 }
 
 async function removeWord(word: Word) {
-  const key = locale as LanguageCode;
+  const key = locale.value as LanguageCode;
 
   if (confirm(t("are-you-sure-delete", { word: word[key] }))) {
     await deleteWord.mutateAsync(word.id);
