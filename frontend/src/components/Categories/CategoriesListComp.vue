@@ -19,12 +19,12 @@ const emit = defineEmits<{
   (e: "select-category-for-editing", catedoryId: Id): void;
 }>();
 
-function selectCategory(categoryId: number) {
+function selectCategory(categoryId: Id) {
   if (categoryId === props.selectedCategoryId) return;
   emit("selectCateogry", categoryId);
 }
 
-function selectCategoryForEditing(categoryId: number) {
+function selectCategoryForEditing(categoryId: Id) {
   emit("select-category-for-editing", categoryId);
 }
 </script>

@@ -1,58 +1,45 @@
-<script lang="ts">
+<script setup lang="ts">
+import { ref } from "vue";
+import { highlighTextByQuery } from "@/common/utils";
+import { extractCurrentLanguageTranslation } from "@/common/translations";
 import type { Category } from "@/types/categories";
-import { defineComponent, type PropType } from "vue";
+import type { Id } from "@/types/api";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import ListItemComp from "@/components/ListItemComp.vue";
-import { highlighTextByQuery } from "@/common/utils";
 import ButtonComp from "../ButtonComp.vue";
 import DropdownMenuComp from "../DropdownMenuComp.vue";
 import RemoveCategoryModalComp from "./RemoveCategoryModalComp.vue";
-import { extractCurrentLanguageTranslation } from "@/common/translations";
 
-export default defineComponent({
-  name: "CategoryItemComp",
-  components: {
-    ImagePreviewComp,
-    ListItemComp,
-    ButtonComp,
-    DropdownMenuComp,
-    RemoveCategoryModalComp,
-  },
-  props: {
-    category: {
-      type: Object as PropType<Category>,
-      required: true,
-    },
-    selected: {
-      type: Boolean,
-      default: false,
-    },
-    query: {
-      type: String,
-      default: "",
-    },
-  },
-  emits: ["selectCateogry", "selectCategoryForEditing"],
-  data() {
-    return {
-      isRemoveCategoryModalOpen: false,
-    };
-  },
-  methods: {
-    highlighTextByQuery,
-    extractCurrentLanguageTranslation,
-    selectCategory() {
-      if (this.selected) return;
-      this.$emit("selectCateogry", this.category.id);
-    },
-    editCategory(categoryId: number) {
-      this.$emit("selectCategoryForEditing", categoryId);
-    },
-    openRemoveCategoryModal() {
-      this.isRemoveCategoryModalOpen = true;
-    },
-  },
+type Props = {
+  category: Category;
+  selected: boolean;
+  query: string;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  selected: false,
+  query: "",
 });
+
+const emit = defineEmits<{
+  (e: "selectCateogry", catedoryId: Id): void;
+  (e: "select-category-for-editing", catedoryId: Id): void;
+}>();
+
+const isRemoveCategoryModalOpen = ref(false);
+
+function openRemoveCategoryModal() {
+  isRemoveCategoryModalOpen.value = true;
+}
+
+function selectCategory() {
+  if (props.selected) return;
+  emit("selectCateogry", props.category.id);
+}
+
+function editCategory(categoryId: Id) {
+  emit("select-category-for-editing", categoryId);
+}
 </script>
 
 <template>
