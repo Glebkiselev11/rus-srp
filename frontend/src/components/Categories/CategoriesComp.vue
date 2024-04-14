@@ -28,7 +28,7 @@ const emit = defineEmits<{
 }>();
 
 const showCategoryForm = ref(false);
-const editingCategoryId = ref<number | undefined>(undefined);
+const editingCategoryId = ref<Id | undefined>(undefined);
 
 const filter = computed({
   get(): RequestParams {
@@ -115,7 +115,7 @@ function selectCategory(categoryId: Id) {
   emit("update:selected-category-id", categoryId);
 }
 
-function openEditingCategoryForm(categoryId: number) {
+function openEditingCategoryForm(categoryId: Id) {
   editingCategoryId.value = categoryId;
   showCategoryForm.value = true;
 }

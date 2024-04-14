@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import ModalComp from "@/components/ModalComp.vue";
 import CategoryFormComp from "./CategoryFormComp.vue";
 import { useCategoriesActions } from "@/stores/categories/actions";
@@ -9,6 +9,7 @@ import type { Category } from "@/types/categories";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import FormCloseConfirmationModalComp from "@/components/FormCloseConfirmationModalComp.vue";
 import { capitalizeFirstLetter } from "@/common/utils";
+import type { Id } from "@/types/api";
 
 export default defineComponent({
   name: "CategoryFormModalComp",
@@ -21,7 +22,7 @@ export default defineComponent({
   props: {
     // If provided category id, then form will be in edit mode
     categoryId: {
-      type: Number,
+      type: Number as PropType<Id>,
       default: undefined,
     },
   },

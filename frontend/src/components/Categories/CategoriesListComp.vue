@@ -1,47 +1,32 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
+<script setup lang="ts">
+import type { Id } from "@/types/api";
+import { usePageCategoriesStore } from "@/stores/categories/pageCategories";
 import CategoryItemComp from "./CategoryItemComp.vue";
 import ListItemComp from "@/components/ListItemComp.vue";
 import AllWordsCategoryImageComp from "./AllWordsCategoryImageComp.vue";
-import { usePageCategoriesStore } from "@/stores/categories/pageCategories";
-import { mapState } from "pinia";
 import ZeroStateComp from "../ZeroStateComp.vue";
 import SkeletonItemComp from "../SkeletonItemComp.vue";
-import type { Id } from "@/types/api";
 
-export default defineComponent({
-  name: "CategoriesListComp",
-  components: {
-    CategoryItemComp,
-    ListItemComp,
-    AllWordsCategoryImageComp,
-    ZeroStateComp,
-    SkeletonItemComp,
-  },
-  props: {
-    selectedCategoryId: {
-      type: Number as PropType<Id>,
-      default: undefined,
-    },
-    searchQuary: {
-      type: String,
-      default: "",
-    },
-  },
-  emits: ["selectCateogry", "select-category-for-editing"],
-  computed: {
-    ...mapState(usePageCategoriesStore, ["categories", "loadState", "count"]),
-  },
-  methods: {
-    selectCategory(categoryId: number) {
-      if (categoryId === this.selectedCategoryId) return;
-      this.$emit("selectCateogry", categoryId);
-    },
-    selectCategoryForEditing(categoryId: number) {
-      this.$emit("select-category-for-editing", categoryId);
-    },
-  },
-});
+const pageCategoriesStore = usePageCategoriesStore();
+
+const props = defineProps<{
+  selectedCategoryId?: Id;
+  searchQuary?: string;
+}>();
+
+const emit = defineEmits<{
+  (e: "selectCateogry", catedoryId: Id): void;
+  (e: "select-category-for-editing", catedoryId: Id): void;
+}>();
+
+function selectCategory(categoryId: number) {
+  if (categoryId === props.selectedCategoryId) return;
+  emit("selectCateogry", categoryId);
+}
+
+function selectCategoryForEditing(categoryId: number) {
+  emit("select-category-for-editing", categoryId);
+}
 </script>
 
 <template>
@@ -65,11 +50,14 @@ export default defineComponent({
     <hr />
 
     <div
-      v-if="loadState === 'loaded' && count > 0"
+      v-if="
+        pageCategoriesStore.loadState === 'loaded' &&
+        pageCategoriesStore.count > 0
+      "
       class="categories-list__items"
     >
       <CategoryItemComp
-        v-for="category in categories"
+        v-for="category in pageCategoriesStore.categories"
         :key="category.id"
         :category="category"
         :selected="category.id === selectedCategoryId"
@@ -79,7 +67,10 @@ export default defineComponent({
       />
     </div>
 
-    <div v-else-if="loadState === 'loading'" class="categories-list__items">
+    <div
+      v-else-if="pageCategoriesStore.loadState === 'loading'"
+      class="categories-list__items"
+    >
       <div v-for="i in 15" :key="i" class="categories-list__skeleton-item">
         <SkeletonItemComp height="24px" width="24px" border-radius="8px" />
         <SkeletonItemComp height="20px" random-width border-radius="4px" />
@@ -87,7 +78,10 @@ export default defineComponent({
     </div>
 
     <div
-      v-else-if="loadState === 'loaded' && count === 0"
+      v-else-if="
+        pageCategoriesStore.loadState === 'loaded' &&
+        pageCategoriesStore.count === 0
+      "
       class="categories-list__zero-state"
     >
       <ZeroStateComp
