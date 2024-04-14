@@ -128,7 +128,7 @@ function openCreationCategoryForm() {
 
 <template>
   <div class="categories">
-    <HeaderComp :title="$t('categories')" title-tag="h4" padding-inline="12px">
+    <HeaderComp :title="t('categories')" title-tag="h4" padding-inline="12px">
       <template #right>
         <div class="categories__controls">
           <DropdownMenuComp
@@ -136,7 +136,7 @@ function openCreationCategoryForm() {
             :items="orderOptions"
             position="right"
           >
-            <TooltipComp :text="$t('to-sort')" :hidden="isMenuOpen">
+            <TooltipComp :text="t('to-sort')" :hidden="isMenuOpen">
               <ButtonComp
                 icon="sort"
                 appearance="inline"
@@ -146,7 +146,7 @@ function openCreationCategoryForm() {
             </TooltipComp>
           </DropdownMenuComp>
 
-          <TooltipComp :text="$t('create-category')">
+          <TooltipComp :text="t('create-category')">
             <ButtonComp
               icon="add"
               appearance="inline"
@@ -160,7 +160,7 @@ function openCreationCategoryForm() {
 
     <InputComp
       v-model="search"
-      :placeholder="$t('find-category')"
+      :placeholder="t('find-category')"
       left-icon="search"
       debounce
       clear-button

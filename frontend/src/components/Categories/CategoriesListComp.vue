@@ -6,7 +6,9 @@ import ListItemComp from "@/components/ListItemComp.vue";
 import AllWordsCategoryImageComp from "./AllWordsCategoryImageComp.vue";
 import ZeroStateComp from "../ZeroStateComp.vue";
 import SkeletonItemComp from "../SkeletonItemComp.vue";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const pageCategoriesStore = usePageCategoriesStore();
 
 const props = defineProps<{
@@ -42,7 +44,7 @@ function selectCategoryForEditing(categoryId: Id) {
         <div class="categories-list__all-words-item">
           <AllWordsCategoryImageComp size="24px" />
 
-          <span>{{ $t("all-words") }}</span>
+          <span>{{ t("all-words") }}</span>
         </div>
       </ListItemComp>
     </div>
@@ -86,8 +88,8 @@ function selectCategoryForEditing(categoryId: Id) {
     >
       <ZeroStateComp
         icon="search"
-        :title="$t('not-found')"
-        :description="$t('not-found-description')"
+        :title="t('not-found')"
+        :description="t('not-found-description')"
       />
     </div>
   </div>

@@ -1,5 +1,10 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { computed, onMounted, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import { useDraftWordStore } from "@/stores/draftWord";
+import type { Category } from "@/types/categories";
+import { useModalCategoriesStore } from "@/stores/categories/modalCategories";
+import type { Id, Order } from "@/types/api";
 import InputComp from "../InputComp.vue";
 import ButtonComp from "../ButtonComp.vue";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
@@ -7,78 +12,59 @@ import WordFormCategoryItemComp from "./WordFormCategoryItemComp.vue";
 import IconComp from "../IconComp/index.vue";
 import TooltipComp from "../TooltipComp.vue";
 import ZeroStateComp from "../ZeroStateComp.vue";
-import { useDraftWordStore } from "@/stores/draftWord";
-import { mapActions, mapState } from "pinia";
-import type { Category } from "@/types/categories";
-import { useModalCategoriesStore } from "@/stores/categories/modalCategories";
-import type { Order } from "@/types/api";
 
-export default defineComponent({
-  name: "WordFormCategoriesComp",
-  components: {
-    InputComp,
-    ButtonComp,
-    IconComp,
-    CategoryFormModalComp,
-    WordFormCategoryItemComp,
-    TooltipComp,
-    ZeroStateComp,
-  },
-  data() {
-    return {
-      showCategoryForm: false,
-      search: "",
-    };
-  },
-  computed: {
-    ...mapState(useDraftWordStore, ["draftWord"]),
-    ...mapState(useModalCategoriesStore, ["categories", "loadState"]),
-    addedCategories(): Category[] {
-      return this.draftWord.category_ids
-        .map((id) => this.categories.find((x) => x.id === id))
-        .filter(Boolean) as Category[];
-    },
-    nonAddedCategories(): Category[] {
-      return this.categories.filter(
-        (x) => !this.draftWord.category_ids.includes(x.id)
-      );
-    },
-    nothingWereFound(): boolean {
-      return (
-        this.loadState === "loaded" &&
-        !this.addedCategories.length &&
-        !this.nonAddedCategories.length
-      );
-    },
-    filter() {
-      return {
-        search: this.search,
-        order: "-created_at" as Order,
-        offset: 0,
-        limit: 1000,
-      };
-    },
-  },
-  watch: {
-    search() {
-      this.fetchModalCategories(this.filter);
-    },
-  },
-  mounted() {
-    this.fetchModalCategories(this.filter);
-  },
-  methods: {
-    ...mapActions(useModalCategoriesStore, ["fetchModalCategories"]),
-    addCategory(categoryId: number) {
-      this.draftWord.category_ids.push(categoryId);
-    },
-    removeCategory(categoryId: number) {
-      this.draftWord.category_ids = this.draftWord.category_ids.filter(
-        (x) => x !== categoryId
-      );
-    },
-  },
+const { t } = useI18n();
+const modalCategoriesStore = useModalCategoriesStore();
+const draftWordStore = useDraftWordStore();
+
+const showCategoryForm = ref(false);
+const search = ref("");
+
+const addedCategories = computed(() => {
+  return draftWordStore.draftWord.category_ids
+    .map((id) => modalCategoriesStore.categories.find((x) => x.id === id))
+    .filter(Boolean) as Category[];
 });
+
+const nonAddedCategories = computed(() => {
+  return modalCategoriesStore.categories.filter(
+    (x) => !draftWordStore.draftWord.category_ids.includes(x.id)
+  );
+});
+
+const nothingWereFound = computed(() => {
+  return (
+    modalCategoriesStore.loadState === "loaded" &&
+    !addedCategories.value.length &&
+    !nonAddedCategories.value.length
+  );
+});
+
+const filter = computed(() => {
+  return {
+    search: search.value,
+    order: "-created_at" as Order,
+    offset: 0,
+    limit: 1000,
+  };
+});
+
+watch(search, () => {
+  modalCategoriesStore.fetchModalCategories(filter.value);
+});
+
+onMounted(() => {
+  modalCategoriesStore.fetchModalCategories(filter.value);
+});
+
+function removeCategory(categoryId: Id) {
+  draftWordStore.draftWord.category_ids =
+    draftWordStore.draftWord.category_ids.filter((x) => x !== categoryId);
+}
+
+function addCategory(categoryId: Id) {
+  draftWordStore.draftWord.category_ids.push(categoryId);
+}
 </script>
 
 <template>
@@ -90,7 +76,7 @@ export default defineComponent({
         clear-button
         debounce
         class="word-form-categories__search-input"
-        :placeholder="$t('find-category')"
+        :placeholder="t('find-category')"
         left-icon="search"
       />
 
@@ -98,7 +84,7 @@ export default defineComponent({
         icon="add"
         class="word-form-categories__create-category-button"
         appearance="inline"
-        :label="$t('create-category')"
+        :label="t('create-category')"
         @click="showCategoryForm = true"
       />
     </div>
@@ -107,8 +93,8 @@ export default defineComponent({
     <ZeroStateComp
       v-if="nothingWereFound"
       icon="search"
-      :title="$t('not-found', { search })"
-      :description="$t('not-found-description')"
+      :title="t('not-found', { search })"
+      :description="t('not-found-description')"
       class="word-form-categories__zero-state"
     />
 
@@ -121,14 +107,14 @@ export default defineComponent({
           :category="category"
           @select-cateogry="removeCategory"
         >
-          <TooltipComp :text="$t('remove-from-category')" position="left">
+          <TooltipComp :text="t('remove-from-category')" position="left">
             <IconComp name="remove" size="compact" appearance="inline" />
           </TooltipComp>
         </WordFormCategoryItemComp>
       </div>
 
       <span class="word-form-categories__caption">{{
-        $t("all-categories")
+        t("all-categories")
       }}</span>
 
       <div class="word-form-categories__list">
@@ -139,7 +125,7 @@ export default defineComponent({
           :category="category"
           @select-cateogry="addCategory"
         >
-          <TooltipComp :text="$t('add-to-category')" position="left">
+          <TooltipComp :text="t('add-to-category')" position="left">
             <IconComp name="add" size="compact" appearance="inline" />
           </TooltipComp>
         </WordFormCategoryItemComp>

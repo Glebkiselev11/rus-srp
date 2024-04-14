@@ -78,17 +78,17 @@ function close() {
         <span
           v-if="wordsInCategory > 0"
           class="remove-category-modal__description"
-          v-text="$t('category-removing.description')"
+          v-text="t('category-removing.description')"
         />
 
         <InputComp
           v-model="confirmationInput"
-          :label="$t('category-removing.confirmation-label')"
+          :label="t('category-removing.confirmation-label')"
         />
 
         <div class="remove-category-modal__buttons">
           <ButtonComp
-            :label="$t('cancel')"
+            :label="t('cancel')"
             color="neutral"
             appearance="secondary"
             @click="close"
@@ -96,7 +96,7 @@ function close() {
           <ButtonComp
             :disabled="!confirmed"
             color="negative"
-            :label="$t('yes-remove')"
+            :label="t('yes-remove')"
             @click="removeCategory"
           />
         </div>

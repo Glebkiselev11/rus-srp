@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import { ref } from "vue";
 import { highlighTextByQuery } from "@/common/utils";
 import { extractCurrentLanguageTranslation } from "@/common/translations";
@@ -9,6 +10,8 @@ import ListItemComp from "@/components/ListItemComp.vue";
 import ButtonComp from "../ButtonComp.vue";
 import DropdownMenuComp from "../DropdownMenuComp.vue";
 import RemoveCategoryModalComp from "./RemoveCategoryModalComp.vue";
+
+const { t } = useI18n();
 
 type Props = {
   category: Category;
@@ -70,13 +73,13 @@ function editCategory(categoryId: Id) {
         v-slot="{ isMenuOpen }"
         :items="[
           {
-            label: $t('edit'),
+            label: t('edit'),
             icon: 'edit',
             handler: () => editCategory(category.id),
           },
           'separator',
           {
-            label: $t('delete'),
+            label: t('delete'),
             icon: 'delete',
             color: 'negative',
             handler: openRemoveCategoryModal,
