@@ -1,20 +1,294 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
-import ImageSectionComp from "../ImageSectionComp.vue";
-import { useCategoriesActions } from "@/stores/categories/actions";
-import { mapActions } from "pinia";
-import type { Category, DraftCategory } from "@/types/categories";
-import type { LanguageCode } from "@/types/translations";
-import InputComp from "../InputComp.vue";
-import ButtonComp from "../ButtonComp.vue";
-import { translate } from "@/common/translations";
+<script setup lang="ts">
+import { useI18n } from "vue-i18n";
+import { computed, onMounted, ref, watch } from "vue";
 import { CategoriesService } from "@/api";
+import { useCategoriesActions } from "@/stores/categories/actions";
+import { capitalizeFirstLetter, isAnyFieldHasChanged } from "@/common/utils";
 import {
   getLanguageLabel,
   getLanguageList,
   getLanguageCodesOrder,
+  translate,
 } from "@/common/translations";
-import { capitalizeFirstLetter, isAnyFieldHasChanged } from "@/common/utils";
+import type { Category, DraftCategory } from "@/types/categories";
+import type { LanguageCode } from "@/types/translations";
+import ImageSectionComp from "../ImageSectionComp.vue";
+import InputComp from "../InputComp.vue";
+import ButtonComp from "../ButtonComp.vue";
+
+const { t, locale } = useI18n();
+const categoryActions = useCategoriesActions();
+
+const props = defineProps<{
+  category?: Category;
+}>();
+
+const emits = defineEmits<{
+  (e: "created", id: number): void;
+  (e: "saved"): void;
+  (e: "close"): void;
+  (e: "set-changed-status", status: boolean): void;
+}>();
+
+const draftCategory = ref(initDraftCategory());
+const autoFillTranslationsLoading = ref(false);
+const categoryNameAlreadyExistsError = ref(false);
+const rusValidationError = ref<string | undefined>(undefined);
+const engValidationError = ref<string | undefined>(undefined);
+const srp_latinValidationError = ref<string | undefined>(undefined);
+const srp_cyrillicValidationError = ref<string | undefined>(undefined);
+const savingLoading = ref(false);
+
+const showFillAutoButton = computed(() => {
+  const draftCategoryName = draftCategory.value[selectedLanguage.value];
+
+  if (categoryNameAlreadyExistsError.value || !draftCategoryName) {
+    return false;
+  }
+
+  const categoryName = props.category?.[selectedLanguage.value];
+
+  if (categoryName && categoryName !== draftCategoryName) {
+    return true;
+  }
+
+  const isAllFieldsFilled = getLanguageList().every(
+    ({ value }) => draftCategory.value[value] !== ""
+  );
+
+  if (isAllFieldsFilled) {
+    return false;
+  }
+
+  return true;
+});
+
+const selectedLanguage = computed(() => {
+  return locale.value as LanguageCode;
+});
+
+const imageSearchModalSubtitle = computed(() => {
+  return (
+    capitalizeFirstLetter(draftCategory.value[selectedLanguage.value]) ||
+    t("new-category")
+  );
+});
+
+const translationError = computed(() => {
+  return (
+    rusValidationError.value ||
+    engValidationError.value ||
+    srp_latinValidationError.value ||
+    srp_cyrillicValidationError.value
+  );
+});
+
+const isValidToSave = computed(() => {
+  return !categoryNameAlreadyExistsError.value && !translationError.value;
+});
+
+const fillInText = computed(() => {
+  const inEditMode = Boolean(props.category);
+  return inEditMode ? t("update") : t("fill-in-auto");
+});
+
+const categoryNameValidationError = computed(() => {
+  if (categoryNameAlreadyExistsError.value) {
+    return t("category-exists");
+  }
+
+  return getValidationError(selectedLanguage.value);
+});
+
+const defaultImageSearchQuery = computed(() => {
+  return draftCategory.value.eng;
+});
+
+const saveButtonLabel = computed(() => {
+  return props.category ? t("save-changes") : t("create");
+});
+
+const nonSelectedLanguages = computed(() => {
+  return getLanguageCodesOrder().filter(
+    (code) => code !== selectedLanguage.value
+  );
+});
+
+watch(
+  draftCategory,
+  () => {
+    updateChangeStatus();
+  },
+  { deep: true }
+);
+
+watch(
+  () => draftCategory.value.rus,
+  () => {
+    rusValidationError.value = undefined;
+  }
+);
+
+watch(
+  () => draftCategory.value.eng,
+  () => {
+    engValidationError.value = undefined;
+  }
+);
+
+watch(
+  () => draftCategory.value.srp_latin,
+  () => {
+    srp_latinValidationError.value = undefined;
+  }
+);
+
+watch(
+  () => draftCategory.value.srp_cyrillic,
+  () => {
+    srp_cyrillicValidationError.value = undefined;
+  }
+);
+
+onMounted(() => {
+  if (props.category) {
+    draftCategory.value = { ...props.category };
+  }
+});
+
+function getValidationError(code: LanguageCode) {
+  switch (code) {
+    case "eng":
+      return engValidationError.value;
+    case "rus":
+      return rusValidationError.value;
+    case "srp_latin":
+      return srp_latinValidationError.value;
+    case "srp_cyrillic":
+      return srp_cyrillicValidationError.value;
+  }
+}
+
+function autoFill() {
+  if (!showFillAutoButton.value || autoFillTranslationsLoading.value) {
+    return;
+  }
+
+  const from = selectedLanguage.value;
+  const targets = getLanguageList()
+    .filter(({ value }) => value !== from)
+    .map(({ value }) => value)
+    .reduce(
+      (acc, cur) => {
+        acc[cur] = "";
+        return acc;
+      },
+      {} as Record<LanguageCode, string>
+    );
+
+  autoFillTranslationsLoading.value = true;
+
+  translate({
+    [from]: draftCategory.value[from],
+    ...targets,
+  })
+    .then((translations) => {
+      draftCategory.value = {
+        ...draftCategory.value,
+        ...translations,
+      };
+    })
+    .finally(() => {
+      autoFillTranslationsLoading.value = false;
+    });
+}
+
+async function triggerCategoryNameUniqueValidation(): Promise<void> {
+  const key = selectedLanguage.value;
+  const name = draftCategory.value[key];
+
+  if (!name || (props.category && props.category[key] === name)) {
+    categoryNameAlreadyExistsError.value = false;
+    return;
+  }
+
+  try {
+    const { data } = await CategoriesService.query({ search: name });
+
+    const exists = data.result.some(
+      (category) =>
+        category[key].toLocaleLowerCase() === name.toLocaleLowerCase()
+    );
+
+    categoryNameAlreadyExistsError.value = exists;
+  } catch (_) {}
+}
+
+async function triggerValidation(): Promise<void> {
+  await triggerCategoryNameUniqueValidation();
+
+  const requiredError = t("required");
+  if (!draftCategory.value.rus) {
+    rusValidationError.value = requiredError;
+  } else {
+    rusValidationError.value = undefined;
+  }
+
+  if (!draftCategory.value.eng) {
+    engValidationError.value = requiredError;
+  } else {
+    engValidationError.value = undefined;
+  }
+
+  if (!draftCategory.value.srp_latin) {
+    srp_latinValidationError.value = requiredError;
+  } else {
+    srp_latinValidationError.value = undefined;
+  }
+
+  if (!draftCategory.value.srp_cyrillic) {
+    srp_cyrillicValidationError.value = requiredError;
+  } else {
+    srp_cyrillicValidationError.value = undefined;
+  }
+}
+
+async function saveCategory() {
+  await triggerValidation();
+
+  if (!isValidToSave.value) {
+    return;
+  }
+
+  savingLoading.value = true;
+  if (props.category) {
+    await categoryActions.updateCategory(
+      props.category.id,
+      draftCategory.value
+    );
+  } else {
+    const { id } = await categoryActions.createCategory(draftCategory.value);
+    emits("created", id);
+  }
+
+  savingLoading.value = false;
+
+  emits("saved");
+}
+
+function updateChangeStatus() {
+  if (props.category) {
+    emits(
+      "set-changed-status",
+      isAnyFieldHasChanged(props.category, draftCategory.value)
+    );
+  } else {
+    emits(
+      "set-changed-status",
+      isAnyFieldHasChanged(initDraftCategory(), draftCategory.value)
+    );
+  }
+}
 
 function initDraftCategory(): DraftCategory {
   return {
@@ -26,270 +300,9 @@ function initDraftCategory(): DraftCategory {
   };
 }
 
-export default defineComponent({
-  name: "CategoryFormComp",
-  components: {
-    ImageSectionComp,
-    InputComp,
-    ButtonComp,
-  },
-  props: {
-    category: {
-      type: Object as PropType<Category>,
-      default: undefined,
-    },
-  },
-  emits: ["saved", "created", "close", "set-changed-status"],
-  data() {
-    return {
-      draftCategory: initDraftCategory(),
-      autoFillTranslationsLoading: false,
-      categoryNameAlreadyExistsError: false,
-      rusValidationError: undefined as string | undefined,
-      engValidationError: undefined as string | undefined,
-      srp_latinValidationError: undefined as string | undefined,
-      srp_cyrillicValidationError: undefined as string | undefined,
-      savingLoading: false,
-    };
-  },
-
-  computed: {
-    selectedLanguage(): LanguageCode {
-      return this.$i18n.locale as LanguageCode;
-    },
-    nonSelectedLanguages(): LanguageCode[] {
-      return getLanguageCodesOrder().filter(
-        (code) => code !== this.selectedLanguage
-      );
-    },
-    categoryName(): string {
-      return this.draftCategory[this.selectedLanguage];
-    },
-    imageSearchModalSubtitle(): string {
-      return (
-        capitalizeFirstLetter(this.draftCategory[this.selectedLanguage]) ||
-        this.$t("new-category")
-      );
-    },
-    defaultImageSearchQuery(): string {
-      return this.draftCategory.eng;
-    },
-    saveButtonLabel(): string {
-      return this.category ? this.$t("save-changes") : this.$t("create");
-    },
-    showFillAutoButton(): boolean {
-      const draftCategoryName = this.draftCategory[this.selectedLanguage];
-
-      if (this.categoryNameAlreadyExistsError || !draftCategoryName) {
-        return false;
-      }
-
-      const categoryName = this.category?.[this.selectedLanguage];
-
-      if (categoryName && categoryName !== draftCategoryName) {
-        return true;
-      }
-
-      const isAllFieldsFilled = getLanguageList().every(
-        ({ value }) => this.draftCategory[value] !== ""
-      );
-
-      if (isAllFieldsFilled) {
-        return false;
-      }
-
-      return true;
-    },
-    isValidToSave(): boolean {
-      return !this.categoryNameAlreadyExistsError && !this.translationError;
-    },
-    translationError(): string | undefined {
-      return (
-        this.rusValidationError ||
-        this.engValidationError ||
-        this.srp_latinValidationError ||
-        this.srp_cyrillicValidationError
-      );
-    },
-    categoryNameValidationError(): string | undefined {
-      if (this.categoryNameAlreadyExistsError) {
-        return this.$t("category-exists");
-      }
-
-      return this.getValidationError(this.selectedLanguage);
-    },
-    fillInText(): string {
-      const inEditMode = Boolean(this.category);
-      return inEditMode ? this.$t("update") : this.$t("fill-in-auto");
-    },
-  },
-  watch: {
-    draftCategory: {
-      handler() {
-        this.updateChangeStatus();
-      },
-      deep: true,
-    },
-    "draftCategory.rus": {
-      handler() {
-        this.rusValidationError = undefined;
-      },
-    },
-    "draftCategory.eng": {
-      handler() {
-        this.engValidationError = undefined;
-      },
-    },
-    "draftCategory.srp_latin": {
-      handler() {
-        this.srp_latinValidationError = undefined;
-      },
-    },
-    "draftCategory.srp_cyrillic": {
-      handler() {
-        this.srp_cyrillicValidationError = undefined;
-      },
-    },
-  },
-  created() {
-    if (this.category) {
-      this.draftCategory = { ...this.category };
-    }
-  },
-  methods: {
-    ...mapActions(useCategoriesActions, ["createCategory", "updateCategory"]),
-    getLanguageLabel,
-    async triggerCategoryNameUniqueValidation(): Promise<void> {
-      const key = this.selectedLanguage;
-      const name = this.draftCategory[key];
-
-      if (!name || (this.category && this.category[key] === name)) {
-        this.categoryNameAlreadyExistsError = false;
-        return;
-      }
-
-      try {
-        const { data } = await CategoriesService.query({ search: name });
-
-        const exists = data.result.some(
-          (category) =>
-            category[key].toLocaleLowerCase() === name.toLocaleLowerCase()
-        );
-
-        this.categoryNameAlreadyExistsError = exists;
-      } catch (_) {}
-    },
-    async triggerValidation(): Promise<void> {
-      await this.triggerCategoryNameUniqueValidation();
-
-      const requiredError = this.$t("required");
-      if (!this.draftCategory.rus) {
-        this.rusValidationError = requiredError;
-      } else {
-        this.rusValidationError = undefined;
-      }
-
-      if (!this.draftCategory.eng) {
-        this.engValidationError = requiredError;
-      } else {
-        this.engValidationError = undefined;
-      }
-
-      if (!this.draftCategory.srp_latin) {
-        this.srp_latinValidationError = requiredError;
-      } else {
-        this.srp_latinValidationError = undefined;
-      }
-
-      if (!this.draftCategory.srp_cyrillic) {
-        this.srp_cyrillicValidationError = requiredError;
-      } else {
-        this.srp_cyrillicValidationError = undefined;
-      }
-    },
-    async saveCategory() {
-      await this.triggerValidation();
-
-      if (!this.isValidToSave) {
-        return;
-      }
-
-      this.savingLoading = true;
-      if (this.category) {
-        await this.updateCategory(this.category.id, this.draftCategory);
-      } else {
-        const { id } = await this.createCategory(this.draftCategory);
-        this.$emit("created", id);
-      }
-
-      this.savingLoading = false;
-
-      this.$emit("saved");
-    },
-    autoFill() {
-      if (!this.showFillAutoButton || this.autoFillTranslationsLoading) {
-        return;
-      }
-
-      const from = this.selectedLanguage;
-      const targets = getLanguageList()
-        .filter(({ value }) => value !== from)
-        .map(({ value }) => value)
-        .reduce(
-          (acc, cur) => {
-            acc[cur] = "";
-            return acc;
-          },
-          {} as Record<LanguageCode, string>
-        );
-
-      this.autoFillTranslationsLoading = true;
-
-      translate({
-        [from]: this.draftCategory[from],
-        ...targets,
-      })
-        .then((translations) => {
-          this.draftCategory = {
-            ...this.draftCategory,
-            ...translations,
-          };
-        })
-        .finally(() => {
-          this.autoFillTranslationsLoading = false;
-        });
-    },
-    close() {
-      this.$emit("close");
-    },
-    updateChangeStatus() {
-      const emit = "set-changed-status";
-      if (this.category) {
-        this.$emit(
-          emit,
-          isAnyFieldHasChanged(this.category, this.draftCategory)
-        );
-      } else {
-        this.$emit(
-          emit,
-          isAnyFieldHasChanged(initDraftCategory(), this.draftCategory)
-        );
-      }
-    },
-    getValidationError(code: LanguageCode) {
-      switch (code) {
-        case "eng":
-          return this.engValidationError;
-        case "rus":
-          return this.rusValidationError;
-        case "srp_latin":
-          return this.srp_latinValidationError;
-        case "srp_cyrillic":
-          return this.srp_cyrillicValidationError;
-      }
-    },
-  },
-});
+function close() {
+  emits("close");
+}
 </script>
 
 <template>
@@ -306,7 +319,7 @@ export default defineComponent({
           :label="$t('category-name')"
           width="400px"
           appearance="outline"
-          :focus-on-mount="!category"
+          :focus-on-mount="!props.category"
           :error-text="categoryNameValidationError"
           clear-button
           @input="triggerCategoryNameUniqueValidation"
