@@ -1,140 +1,128 @@
 <!-- The side bar with categories -->
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
-import ButtonComp from "@/components/ButtonComp.vue";
-import { mapActions } from "pinia";
+<script setup lang="ts">
+import { computed, onMounted, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
+import type { Id, Order, RequestParams } from "@/types/api";
+import type { LanguageCode } from "@/types/translations";
 import { usePageCategoriesStore } from "@/stores/categories/pageCategories";
+import ButtonComp from "@/components/ButtonComp.vue";
 import InputComp from "@/components/InputComp.vue";
 import CategoriesListComp from "@/components/Categories/CategoriesListComp.vue";
 import HeaderComp from "@/components/HeaderComp.vue";
 import DropdownMenuComp from "../DropdownMenuComp.vue";
-import type { Id, Order, RequestParams } from "@/types/api";
-import type { LanguageCode } from "@/types/translations";
 import TooltipComp from "../TooltipComp.vue";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 
-export default defineComponent({
-  name: "CategoriesComp",
-  components: {
-    InputComp,
-    ButtonComp,
-    CategoriesListComp,
-    HeaderComp,
-    DropdownMenuComp,
-    TooltipComp,
-    CategoryFormModalComp,
-  },
-  props: {
-    selectedCategoryId: {
-      type: Number as PropType<Id>,
-      default: undefined,
-    },
-  },
-  data() {
-    return {
-      showCategoryForm: false,
-      editingCategoryId: undefined as number | undefined,
-    };
-  },
-  computed: {
-    filter: {
-      get() {
-        return {
-          search: (this.$route.query.search_category as string) || "",
-          order: (this.$route.query.order_category as Order) || "-created_at",
-          offset: 0,
-          limit: 1000, // TODO check if it's ok with more categories
-        };
-      },
-      set(params: RequestParams) {
-        this.$router
-          .push({
-            query: {
-              ...this.$route.query,
-              search_category: params.search,
-              order_category: params.order,
-            },
-          })
-          .then(() => {
-            this.fetchPageCategories(params);
-          });
-      },
-    },
-    search: {
-      get() {
-        return this.filter.search;
-      },
-      set(search: string) {
-        this.filter = { ...this.filter, search };
-      },
-    },
-    order: {
-      get(): Order {
-        return this.filter.order;
-      },
-      set(order: Order) {
-        this.filter = { ...this.filter, order };
-      },
-    },
-    orderOptions() {
-      return [
-        {
-          label: this.$t("order.last-added"),
-          icon: "done",
-          iconColor: this.getOrderColor("-created_at"),
-          handler: () => (this.order = "-created_at"),
-        } as const,
-        {
-          label: this.$t("order.last-updated"),
-          iconColor: this.getOrderColor("-updated_at"),
-          icon: "done",
-          handler: () => (this.order = "-updated_at"),
-        } as const,
-        "separator" as const,
-        {
-          label: this.$t("order.alphabetical-asc"),
-          iconColor: this.getOrderColor(`${this.$i18n.locale as LanguageCode}`),
-          icon: "done",
-          handler: () => (this.order = `${this.$i18n.locale as LanguageCode}`),
-        } as const,
-        {
-          label: this.$t("order.alphabetical-desc"),
-          iconColor: this.getOrderColor(
-            `-${this.$i18n.locale as LanguageCode}`
-          ),
-          icon: "done",
-          handler: () => (this.order = `-${this.$i18n.locale as LanguageCode}`),
-        } as const,
-      ];
-    },
-  },
-  mounted() {
-    this.fetchPageCategories(this.filter);
-  },
-  methods: {
-    ...mapActions(usePageCategoriesStore, ["fetchPageCategories"]),
-    openCreationCategoryForm() {
-      this.editingCategoryId = undefined;
-      this.showCategoryForm = true;
-    },
-    openEditingCategoryForm(categoryId: number) {
-      this.editingCategoryId = categoryId;
-      this.showCategoryForm = true;
-    },
-    getOrderColor(key: Order) {
-      return key === this.order ? "accent-primary" : "transparent";
-    },
-  },
-});
-</script>
+const { t, locale } = useI18n();
+const route = useRoute();
+const router = useRouter();
+const pageCategoriesStore = usePageCategoriesStore();
 
-<script setup lang="ts">
+const props = defineProps<{
+  selectedCategoryId?: Id;
+}>();
+
 const emit = defineEmits<{
   (e: "update:selected-category-id", catedoryId: Id): void;
 }>();
 
+const showCategoryForm = ref(false);
+const editingCategoryId = ref<number | undefined>(undefined);
+
+const filter = computed({
+  get(): RequestParams {
+    return {
+      search: (route.query.search_category as string) || "",
+      order: (route.query.order_category as Order) || "-created_at",
+      offset: 0,
+      limit: 9999,
+    };
+  },
+  set(params: RequestParams) {
+    console.log(params);
+    router
+      .push({
+        query: {
+          ...route.query,
+          search_category: params.search,
+          order_category: params.order,
+        },
+      })
+      .then(() => {
+        pageCategoriesStore.fetchPageCategories(params);
+      });
+  },
+});
+
+const order = computed({
+  get() {
+    return filter.value.order as Order;
+  },
+  set(order: Order) {
+    filter.value = { ...filter.value, order };
+  },
+});
+
+const search = computed({
+  get(): string {
+    return filter.value.search;
+  },
+  set(search: string) {
+    filter.value = { ...filter.value, search };
+  },
+});
+
+const orderOptions = computed(() => {
+  return [
+    {
+      label: t("order.last-added"),
+      icon: "done",
+      iconColor: getOrderColor("-created_at"),
+      handler: () => (order.value = "-created_at"),
+    } as const,
+    {
+      label: t("order.last-updated"),
+      iconColor: getOrderColor("-updated_at"),
+      icon: "done",
+      handler: () => (order.value = "-updated_at"),
+    } as const,
+    "separator" as const,
+    {
+      label: t("order.alphabetical-asc"),
+      iconColor: getOrderColor(`${locale.value as LanguageCode}`),
+      icon: "done",
+      handler: () => (order.value = `${locale.value as LanguageCode}`),
+    } as const,
+    {
+      label: t("order.alphabetical-desc"),
+      iconColor: getOrderColor(`-${locale.value as LanguageCode}`),
+      icon: "done",
+      handler: () => (order.value = `-${locale.value as LanguageCode}`),
+    } as const,
+  ];
+});
+
+onMounted(() => {
+  pageCategoriesStore.fetchPageCategories(filter.value);
+});
+
+function getOrderColor(key: Order) {
+  return key === order.value ? "accent-primary" : "transparent";
+}
+
 function selectCategory(categoryId: Id) {
   emit("update:selected-category-id", categoryId);
+}
+
+function openEditingCategoryForm(categoryId: number) {
+  editingCategoryId.value = categoryId;
+  showCategoryForm.value = true;
+}
+
+function openCreationCategoryForm() {
+  editingCategoryId.value = undefined;
+  showCategoryForm.value = true;
 }
 </script>
 
@@ -180,7 +168,7 @@ function selectCategory(categoryId: Id) {
     />
 
     <CategoriesListComp
-      :selected-category-id="selectedCategoryId"
+      :selected-category-id="props.selectedCategoryId"
       :search-quary="search"
       @select-cateogry="selectCategory"
       @select-category-for-editing="openEditingCategoryForm"
