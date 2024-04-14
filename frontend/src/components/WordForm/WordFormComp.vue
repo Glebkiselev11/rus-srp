@@ -105,9 +105,9 @@ async function triggerWordNameUniqueValidation() {
     return;
   }
 
-  const { data } = await WordsService.query({ search });
+  const { words } = await WordsService.query({ search });
 
-  const exists = data.result.find(({ eng, rus, srp_cyrillic, srp_latin }) => {
+  const exists = words.find(({ eng, rus, srp_cyrillic, srp_latin }) => {
     return (
       eng === draftWordStore.draftWord.eng.toLocaleLowerCase() &&
       rus === draftWordStore.draftWord.rus.toLocaleLowerCase() &&

@@ -14,7 +14,7 @@ const KEY = "words";
 export const useWordsQuery = (params: Ref<RequestParams>) => {
   return useQuery({
     queryKey: [KEY, params],
-    queryFn: () => WordsService.query_v2(params.value),
+    queryFn: () => WordsService.query(params.value),
     enabled: true,
   });
 };
@@ -25,7 +25,7 @@ export const useWordsInfinityQuery = (params: Ref<RequestParams>) => {
     enabled: true,
     staleTime: Infinity,
     queryFn: (p) =>
-      WordsService.query_v2({
+      WordsService.query({
         ...params.value,
         offset: p.pageParam * params.value.limit,
       }),

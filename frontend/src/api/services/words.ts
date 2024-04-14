@@ -8,11 +8,6 @@ export const WordsService = {
   async create(data: DraftWord) {
     return await ApiTransport.post<Word>(`${this.ENDPOINT}/create`, data);
   },
-  async query(params: OptionalRequestParams) {
-    return await ApiTransport.query<ListResponse<Word>>(this.ENDPOINT, {
-      params,
-    });
-  },
   async getById(id: Id) {
     const { data } = await ApiTransport.get<Word>(`${this.ENDPOINT}/${id}`);
     return data;
@@ -26,7 +21,7 @@ export const WordsService = {
   async delete(id: Id) {
     return await ApiTransport.remove<void>(`${this.ENDPOINT}/${id}`);
   },
-  async query_v2(params: OptionalRequestParams) {
+  async query(params: OptionalRequestParams) {
     const { data } = await ApiTransport.query<ListResponse<Word>>(
       this.ENDPOINT,
       {

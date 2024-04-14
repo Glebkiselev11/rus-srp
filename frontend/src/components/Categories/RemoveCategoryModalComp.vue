@@ -43,11 +43,11 @@ const confirmed = computed(() => {
 });
 
 onMounted(async () => {
-  const { data } = await WordsService.query({
+  const { count } = await WordsService.query({
     category_id: props.category.id,
     limit: 0,
   });
-  wordsInCategory.value = data.count;
+  wordsInCategory.value = count;
 });
 
 async function removeCategory() {
