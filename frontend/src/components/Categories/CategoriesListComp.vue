@@ -1,25 +1,29 @@
 <script setup lang="ts">
-import type { Id } from "@/types/api";
-import { usePageCategoriesStore } from "@/stores/categories/pageCategories";
+import type { Id, RequestParams } from "@/types/api";
 import CategoryItemComp from "./CategoryItemComp.vue";
 import ListItemComp from "@/components/ListItemComp.vue";
 import AllWordsCategoryImageComp from "./AllWordsCategoryImageComp.vue";
 import ZeroStateComp from "../ZeroStateComp.vue";
 import SkeletonItemComp from "../SkeletonItemComp.vue";
 import { useI18n } from "vue-i18n";
+import { useCategoriesQuery } from "@/queries/categories";
+import { computed } from "vue";
+import { toReactive } from "@vueuse/core";
 
 const { t } = useI18n();
-const pageCategoriesStore = usePageCategoriesStore();
 
 const props = defineProps<{
   selectedCategoryId?: Id;
-  searchQuary?: string;
+  requestParams: RequestParams;
 }>();
 
 const emit = defineEmits<{
   (e: "selectCateogry", catedoryId: Id): void;
   (e: "select-category-for-editing", catedoryId: Id): void;
 }>();
+
+const filter = computed(() => toReactive(props.requestParams));
+const { data, status } = useCategoriesQuery(filter);
 
 function selectCategory(categoryId: Id) {
   if (categoryId === props.selectedCategoryId) return;
@@ -52,27 +56,21 @@ function selectCategoryForEditing(categoryId: Id) {
     <hr />
 
     <div
-      v-if="
-        pageCategoriesStore.loadState === 'loaded' &&
-        pageCategoriesStore.count > 0
-      "
+      v-if="status === 'success' && data && data.count > 0"
       class="categories-list__items"
     >
       <CategoryItemComp
-        v-for="category in pageCategoriesStore.categories"
+        v-for="category in data.categories"
         :key="category.id"
         :category="category"
         :selected="category.id === selectedCategoryId"
-        :query="searchQuary"
+        :query="props.requestParams.search"
         @select-cateogry="selectCategory"
         @select-category-for-editing="selectCategoryForEditing"
       />
     </div>
 
-    <div
-      v-else-if="pageCategoriesStore.loadState === 'loading'"
-      class="categories-list__items"
-    >
+    <div v-else-if="status === 'pending'" class="categories-list__items">
       <div v-for="i in 15" :key="i" class="categories-list__skeleton-item">
         <SkeletonItemComp height="24px" width="24px" border-radius="8px" />
         <SkeletonItemComp height="20px" random-width border-radius="4px" />
@@ -80,10 +78,7 @@ function selectCategoryForEditing(categoryId: Id) {
     </div>
 
     <div
-      v-else-if="
-        pageCategoriesStore.loadState === 'loaded' &&
-        pageCategoriesStore.count === 0
-      "
+      v-else-if="status === 'success' && data?.count === 0"
       class="categories-list__zero-state"
     >
       <ZeroStateComp

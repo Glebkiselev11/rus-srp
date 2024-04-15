@@ -8,10 +8,23 @@ export const CategoriesService = {
   create(data: DraftCategory) {
     return ApiTransport.post<Category>(`${this.ENDPOINT}/create`, data);
   },
-  query(params: OptionalRequestParams) {
-    return ApiTransport.query<ListResponse<Category>>(this.ENDPOINT, {
-      params,
-    });
+  async query(params: OptionalRequestParams) {
+    const { data } = await ApiTransport.query<ListResponse<Category>>(
+      this.ENDPOINT,
+      {
+        params,
+      }
+    );
+
+    return {
+      categories: data.result,
+      count: data.count,
+      offset: data.offset,
+    };
+  },
+  async getById(id: Id) {
+    const { data } = await ApiTransport.get<Category>(`${this.ENDPOINT}/${id}`);
+    return { category: data };
   },
   update(id: Id, data: Category | DraftCategory) {
     return ApiTransport.put<Category>(`${this.ENDPOINT}/${id}`, data);

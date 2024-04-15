@@ -15,14 +15,12 @@ export const useWordsQuery = (params: Ref<RequestParams>) => {
   return useQuery({
     queryKey: [KEY, params],
     queryFn: () => WordsService.query(params.value),
-    enabled: true,
   });
 };
 
 export const useWordsInfinityQuery = (params: Ref<RequestParams>) => {
   return useInfiniteQuery({
     queryKey: [KEY, params],
-    enabled: true,
     staleTime: Infinity,
     queryFn: (p) =>
       WordsService.query({

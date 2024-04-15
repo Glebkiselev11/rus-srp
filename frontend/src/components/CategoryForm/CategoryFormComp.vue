@@ -213,9 +213,9 @@ async function triggerCategoryNameUniqueValidation(): Promise<void> {
   }
 
   try {
-    const { data } = await CategoriesService.query({ search: name });
+    const { categories } = await CategoriesService.query({ search: name });
 
-    const exists = data.result.some(
+    const exists = categories.some(
       (category) =>
         category[key].toLocaleLowerCase() === name.toLocaleLowerCase()
     );

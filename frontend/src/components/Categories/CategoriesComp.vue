@@ -1,11 +1,10 @@
 <!-- The side bar with categories -->
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import type { Id, Order, RequestParams } from "@/types/api";
 import type { LanguageCode } from "@/types/translations";
-import { usePageCategoriesStore } from "@/stores/categories/pageCategories";
 import ButtonComp from "@/components/ButtonComp.vue";
 import InputComp from "@/components/InputComp.vue";
 import CategoriesListComp from "@/components/Categories/CategoriesListComp.vue";
@@ -17,7 +16,6 @@ import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalCo
 const { t, locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
-const pageCategoriesStore = usePageCategoriesStore();
 
 const props = defineProps<{
   selectedCategoryId?: Id;
@@ -40,18 +38,13 @@ const filter = computed({
     };
   },
   set(params: RequestParams) {
-    console.log(params);
-    router
-      .push({
-        query: {
-          ...route.query,
-          search_category: params.search,
-          order_category: params.order,
-        },
-      })
-      .then(() => {
-        pageCategoriesStore.fetchPageCategories(params);
-      });
+    router.push({
+      query: {
+        ...route.query,
+        search_category: params.search,
+        order_category: params.order,
+      },
+    });
   },
 });
 
@@ -101,10 +94,6 @@ const orderOptions = computed(() => {
       handler: () => (order.value = `-${locale.value as LanguageCode}`),
     } as const,
   ];
-});
-
-onMounted(() => {
-  pageCategoriesStore.fetchPageCategories(filter.value);
 });
 
 function getOrderColor(key: Order) {
@@ -169,7 +158,7 @@ function openCreationCategoryForm() {
 
     <CategoriesListComp
       :selected-category-id="props.selectedCategoryId"
-      :search-quary="search"
+      :request-params="filter"
       @select-cateogry="selectCategory"
       @select-category-for-editing="openEditingCategoryForm"
     />

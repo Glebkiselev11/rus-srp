@@ -15,9 +15,9 @@ export const useModalCategoriesStore = defineStore("modalCategories", {
     async fetchModalCategories(params: RequestParams) {
       try {
         this.loadState = "loading";
-        const { data } = await CategoriesService.query(params);
-        this.categories = data.result;
-        this.count = data.count;
+        const { categories, count } = await CategoriesService.query(params);
+        this.categories = categories;
+        this.count = count;
         this.loadState = "loaded";
       } catch (error) {
         console.error(error);
