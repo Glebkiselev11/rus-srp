@@ -14,25 +14,11 @@ export const useCategoriesQuery = (params: Ref<RequestParams>) => {
 };
 
 export const useCategoryByIdQuery = (id: Ref<Id | undefined>) => {
-  const queryClient = useQueryClient();
   const enabled = computed(() => !!id.value);
 
   return useQuery({
     queryKey: [KEY, id],
     queryFn: () => {
-      const data = queryClient
-        .getQueryCache()
-        .getAll()
-        .find((query) => query.queryKey[0] === KEY)?.state.data;
-
-      if (data) {
-        const { categories } = data as { categories: Category[] };
-        const category = categories.find((c) => c.id === id.value);
-        if (category) {
-          return { category }; // Return the cached category if found
-        }
-      }
-
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return CategoriesService.getById(id.value!);
     },
