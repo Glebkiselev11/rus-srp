@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, toRef } from "vue";
 import { useI18n } from "vue-i18n";
-import { useCategoriesActions } from "@/stores/categories/actions";
 import { capitalizeFirstLetter } from "@/common/utils";
 import type { LanguageCode } from "@/types/translations";
 import type { Id } from "@/types/api";
@@ -9,9 +8,9 @@ import ModalComp from "@/components/ModalComp.vue";
 import CategoryFormComp from "./CategoryFormComp.vue";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import FormCloseConfirmationModalComp from "@/components/FormCloseConfirmationModalComp.vue";
+import { useCategoryByIdQuery } from "@/queries/categories";
 
 const { t, locale } = useI18n();
-const categoryActions = useCategoriesActions();
 
 const props = defineProps<{
   categoryId?: Id; // If provided category id, then form will be in edit mode
@@ -25,10 +24,10 @@ const emit = defineEmits<{
 const isChanged = ref(false);
 const showCloseConfirmationModal = ref(false);
 
+const { data } = useCategoryByIdQuery(toRef(props, "categoryId"));
+
 const category = computed(() => {
-  return props.categoryId
-    ? categoryActions.getCategoryById(props.categoryId)
-    : undefined;
+  return data.value?.category;
 });
 
 const title = computed(() => {

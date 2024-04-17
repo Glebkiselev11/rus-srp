@@ -5,8 +5,8 @@ import { ApiTransport } from "@/api/apiTransport";
 export const CategoriesService = {
   ENDPOINT: "/api/v1/private/categories",
 
-  create(data: DraftCategory) {
-    return ApiTransport.post<Category>(`${this.ENDPOINT}/create`, data);
+  async create(data: DraftCategory) {
+    return await ApiTransport.post<Category>(`${this.ENDPOINT}/create`, data);
   },
   async query(params: OptionalRequestParams) {
     const { data } = await ApiTransport.query<ListResponse<Category>>(
@@ -26,14 +26,14 @@ export const CategoriesService = {
     const { data } = await ApiTransport.get<Category>(`${this.ENDPOINT}/${id}`);
     return { category: data };
   },
-  update(id: Id, data: Category | DraftCategory) {
-    return ApiTransport.put<Category>(`${this.ENDPOINT}/${id}`, data);
+  async update(id: Id, data: Category | DraftCategory) {
+    return await ApiTransport.put<Category>(`${this.ENDPOINT}/${id}`, data);
   },
-  delete(id: Id) {
-    return ApiTransport.remove<void>(`${this.ENDPOINT}/${id}`);
+  async delete(id: Id) {
+    return await ApiTransport.remove<void>(`${this.ENDPOINT}/${id}`);
   },
-  addWords(id: Id, word_ids: Id[]) {
-    return ApiTransport.put<void>(`${this.ENDPOINT}/${id}/add-words`, {
+  async addWords(id: Id, word_ids: Id[]) {
+    return await ApiTransport.put<void>(`${this.ENDPOINT}/${id}/add-words`, {
       word_ids,
     });
   },

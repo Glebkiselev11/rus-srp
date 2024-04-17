@@ -7,13 +7,14 @@ import type { LanguageCode } from "@/types/translations";
 import { WordsService } from "@/api";
 import InputComp from "../InputComp.vue";
 import ButtonComp from "../ButtonComp.vue";
-import { useCategoriesActions } from "@/stores/categories/actions";
 import { useRoute, useRouter } from "vue-router";
+import { useDeleteCategory } from "@/queries/categories";
 
 const { t, locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
-const categoriesActions = useCategoriesActions();
+
+const deleteCategory = useDeleteCategory();
 
 const props = defineProps<{
   category: Category;
@@ -51,7 +52,7 @@ onMounted(async () => {
 });
 
 async function removeCategory() {
-  await categoriesActions.deleteCategory(props.category.id);
+  await deleteCategory.mutateAsync(props.category.id);
 
   // Remove category_id from router query
   router.push({

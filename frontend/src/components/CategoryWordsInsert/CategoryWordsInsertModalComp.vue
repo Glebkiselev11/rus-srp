@@ -1,9 +1,8 @@
 <!-- Component for adding words into category -->
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import { computed, ref } from "vue";
+import { computed, ref, toRef } from "vue";
 import ModalComp from "../ModalComp.vue";
-import { useCategoriesActions } from "@/stores/categories/actions";
 import { addCropImagaeParamsToUrl } from "@/common/utils";
 import { extractCurrentLanguageTranslation } from "@/common/translations";
 import ImagePreviewComp from "../ImagePreviewComp.vue";
@@ -11,6 +10,7 @@ import CategoryWordsInsertComp from "./CategoryWordsInsertComp.vue";
 import { useModalWordsStore } from "@/stores/modalWords";
 import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vue";
 import type { Id } from "@/types/api";
+import { useCategoryByIdQuery } from "@/queries/categories";
 
 const { t } = useI18n();
 
@@ -24,13 +24,12 @@ const emit = defineEmits<{
 }>();
 
 const modalWordsStore = useModalWordsStore();
-const categoriesActionsStore = useCategoriesActions();
 
 const showCloseConfirmationModal = ref(false);
 
-const category = computed(() =>
-  categoriesActionsStore.getCategoryById(props.categoryId)
-);
+const { data } = useCategoryByIdQuery(toRef(props, "categoryId"));
+
+const category = computed(() => data.value?.category);
 
 const srcWithParams = computed(() => {
   const src = category.value?.image;

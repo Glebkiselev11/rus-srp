@@ -35,3 +35,21 @@ export const useUpdateCategory = () => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [KEY] }),
   });
 };
+
+export const useCreateCategory = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (category: DraftCategory) => CategoriesService.create(category),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [KEY] }),
+  });
+};
+
+export const useDeleteCategory = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: Id) => CategoriesService.delete(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [KEY] }),
+  });
+};

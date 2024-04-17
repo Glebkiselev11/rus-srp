@@ -2,7 +2,7 @@
 import { useI18n } from "vue-i18n";
 import { computed, onMounted, ref, watch } from "vue";
 import { CategoriesService } from "@/api";
-import { useCategoriesActions } from "@/stores/categories/actions";
+import { useCreateCategory, useUpdateCategory } from "@/queries/categories";
 import { capitalizeFirstLetter, isAnyFieldHasChanged } from "@/common/utils";
 import {
   getLanguageLabel,
@@ -17,7 +17,8 @@ import InputComp from "../InputComp.vue";
 import ButtonComp from "../ButtonComp.vue";
 
 const { t, locale } = useI18n();
-const categoryActions = useCategoriesActions();
+const createCategory = useCreateCategory();
+const updateCategory = useUpdateCategory();
 
 const props = defineProps<{
   category?: Category;
@@ -262,13 +263,12 @@ async function saveCategory() {
 
   savingLoading.value = true;
   if (props.category) {
-    await categoryActions.updateCategory(
-      props.category.id,
-      draftCategory.value
-    );
+    await updateCategory.mutateAsync({
+      ...draftCategory.value,
+    } as Category);
   } else {
-    const { id } = await categoryActions.createCategory(draftCategory.value);
-    emits("created", id);
+    const { data } = await createCategory.mutateAsync(draftCategory.value);
+    emits("created", data.id);
   }
 
   savingLoading.value = false;

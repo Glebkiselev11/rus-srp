@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDraftWordStore } from "@/stores/draftWord";
 import type { Category } from "@/types/categories";
-import { useModalCategoriesStore } from "@/stores/categories/modalCategories";
 import type { Id, Order } from "@/types/api";
 import InputComp from "../InputComp.vue";
 import ButtonComp from "../ButtonComp.vue";
@@ -12,33 +11,13 @@ import WordFormCategoryItemComp from "./WordFormCategoryItemComp.vue";
 import IconComp from "../IconComp/index.vue";
 import TooltipComp from "../TooltipComp.vue";
 import ZeroStateComp from "../ZeroStateComp.vue";
+import { useCategoriesQuery } from "@/queries/categories";
 
 const { t } = useI18n();
-const modalCategoriesStore = useModalCategoriesStore();
 const draftWordStore = useDraftWordStore();
 
 const showCategoryForm = ref(false);
 const search = ref("");
-
-const addedCategories = computed(() => {
-  return draftWordStore.draftWord.category_ids
-    .map((id) => modalCategoriesStore.categories.find((x) => x.id === id))
-    .filter(Boolean) as Category[];
-});
-
-const nonAddedCategories = computed(() => {
-  return modalCategoriesStore.categories.filter(
-    (x) => !draftWordStore.draftWord.category_ids.includes(x.id)
-  );
-});
-
-const nothingWereFound = computed(() => {
-  return (
-    modalCategoriesStore.loadState === "loaded" &&
-    !addedCategories.value.length &&
-    !nonAddedCategories.value.length
-  );
-});
 
 const filter = computed(() => {
   return {
@@ -49,12 +28,30 @@ const filter = computed(() => {
   };
 });
 
-watch(search, () => {
-  modalCategoriesStore.fetchModalCategories(filter.value);
+const { data, isFetched } = useCategoriesQuery(filter);
+
+const categories = computed(() => {
+  return data.value?.categories || [];
 });
 
-onMounted(() => {
-  modalCategoriesStore.fetchModalCategories(filter.value);
+const addedCategories = computed(() => {
+  return draftWordStore.draftWord.category_ids
+    .map((id) => categories.value.find((x) => x.id === id))
+    .filter(Boolean) as Category[];
+});
+
+const nonAddedCategories = computed(() => {
+  return categories.value.filter(
+    (x) => !draftWordStore.draftWord.category_ids.includes(x.id)
+  );
+});
+
+const nothingWereFound = computed(() => {
+  return (
+    isFetched.value &&
+    !addedCategories.value.length &&
+    !nonAddedCategories.value.length
+  );
 });
 
 function removeCategory(categoryId: Id) {
