@@ -20,7 +20,6 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (event: "close"): void;
-  (event: "refetch"): void;
 }>();
 
 const modalWordsStore = useModalWordsStore();
@@ -39,11 +38,6 @@ const srcWithParams = computed(() => {
 const subtitle = computed(() =>
   category.value ? extractCurrentLanguageTranslation(category.value) : ""
 );
-
-function handleWordsInserted() {
-  emit("refetch");
-  close();
-}
 
 function tryClose() {
   if (modalWordsStore.isAnyWordSelected) {
@@ -71,7 +65,7 @@ function close() {
       <CategoryWordsInsertComp
         :category-id="categoryId"
         @close="tryClose"
-        @words-inserted="handleWordsInserted"
+        @words-inserted="close"
       />
     </template>
   </ModalComp>

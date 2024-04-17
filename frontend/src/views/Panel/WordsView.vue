@@ -102,7 +102,7 @@ const filter = computed({
   },
 });
 
-const { data, status, refetch } = useWordsQuery(filter);
+const { data, status } = useWordsQuery(filter);
 const deleteWord = useDeleteWord();
 const updateWord = useUpdateWord();
 
@@ -417,7 +417,6 @@ function updateOrder(order: Order) {
     v-if="showCategoryWordsInsertModal && filter.category_id"
     :category-id="filter.category_id"
     @close="showCategoryWordsInsertModal = false"
-    @refetch="refetch"
   />
 </template>
 
