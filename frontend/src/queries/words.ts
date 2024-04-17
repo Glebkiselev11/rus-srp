@@ -9,7 +9,7 @@ import { WordsService } from "@/api/services/words";
 import type { Id, RequestParams } from "@/types/api";
 import type { Ref } from "vue";
 
-const KEY = "words";
+export const KEY = "words";
 
 export const useWordsQuery = (params: Ref<RequestParams>) => {
   return useQuery({

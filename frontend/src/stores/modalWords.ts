@@ -2,8 +2,11 @@ import type { Id } from "@/types/api";
 import { defineStore } from "pinia";
 import { CategoriesService } from "@/api";
 import { computed, ref } from "vue";
+import { useQueryClient } from "@tanstack/vue-query";
+import { KEY as WORDS_KEY } from "@/queries/words";
 
 export const useModalWordsStore = defineStore("modalWords", () => {
+  const queryClient = useQueryClient();
   const selectedWordIds = ref([] as Array<Id>);
 
   const isAnyWordSelected = computed(() => {
@@ -21,6 +24,7 @@ export const useModalWordsStore = defineStore("modalWords", () => {
   const addSelectedWordsToCategory = async (categoryId: Id) => {
     try {
       await CategoriesService.addWords(categoryId, selectedWordIds.value);
+      queryClient.invalidateQueries({ queryKey: [WORDS_KEY] });
     } catch (error) {
       console.error(error);
     }

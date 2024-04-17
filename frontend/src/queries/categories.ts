@@ -4,7 +4,7 @@ import type { Id, RequestParams } from "@/types/api";
 import { computed, type Ref } from "vue";
 import type { Category, DraftCategory } from "@/types/categories";
 
-const KEY = "categories";
+export const KEY = "categories";
 
 export const useCategoriesQuery = (params: Ref<RequestParams>) => {
   return useQuery({
