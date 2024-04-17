@@ -24,11 +24,18 @@ export const useModalWordsStore = defineStore("modalWords", () => {
     } catch (error) {
       console.error(error);
     }
+
+    $reset();
+  };
+
+  const $reset = () => {
+    selectedWordIds.value = [];
   };
 
   return {
     selectedWordIds,
     isAnyWordSelected,
+    $reset,
     updateSelectedWordIds,
     addSelectedWordsToCategory,
   };
