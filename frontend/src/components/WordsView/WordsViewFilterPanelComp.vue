@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import type { Order, TranslationApprovedStatus } from "@/types/api";
+import type { Id, Order, TranslationApprovedStatus } from "@/types/api";
 import InputComp from "@/components/InputComp.vue";
 import SelectComp from "@/components/SelectComp.vue";
 import SwitchComp from "@/components/SwitchComp.vue";
@@ -21,20 +21,24 @@ export default defineComponent({
       type: String as PropType<Order>,
       default: "",
     },
-    orderOptions: {
-      type: Array as PropType<{ value: string; label: string }[]>,
-      required: true,
-    },
     translationApprovedStatus: {
       type: String as PropType<TranslationApprovedStatus>,
       required: true,
     },
     categoryId: {
-      type: Number,
+      type: Number as PropType<Id>,
       default: null,
     },
   },
   emits: ["update:search", "update:order", "update:translationApprovedStatus"],
+  data() {
+    return {
+      orderOptions: [
+        { value: "-created_at", label: this.$t("order.last-added") },
+        { value: "-updated_at", label: this.$t("order.last-updated") },
+      ],
+    };
+  },
   computed: {
     switcherValue: {
       get(): boolean {

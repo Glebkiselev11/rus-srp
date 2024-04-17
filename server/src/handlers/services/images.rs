@@ -56,7 +56,6 @@ impl From<ResponsePhoto> for Photo {
     }
 }
 
-
 fn offset_to_page(offset: u32, limit: u32) -> u32 {
     (offset + limit - 1) / limit + 1
 }
@@ -76,7 +75,10 @@ pub async fn query(params: web::Query<ImagesQueryParams>) -> actix_web::Result<i
         .query(&[
             ("query", params.search),
             ("per_page", params.limit.to_string()),
-            ("page", offset_to_page(params.offset, params.limit).to_string()),
+            (
+                "page",
+                offset_to_page(params.offset, params.limit).to_string(),
+            ),
         ])
         .send()
         .await;
@@ -99,7 +101,7 @@ pub async fn query(params: web::Query<ImagesQueryParams>) -> actix_web::Result<i
 }
 
 fn url(path: &str) -> String {
-    format!("https://pexelsdimasv1.p.rapidapi.com/v1/{path}")
+    format!("https://api.pexels.com/v1/{path}")
 }
 
 fn headers() -> HeaderMap {
@@ -111,16 +113,6 @@ fn headers() -> HeaderMap {
             &std::env::var("PEXELS_API_KEY").expect("Pexels api key not provided"),
         )
         .unwrap(),
-    );
-
-    headers.insert(
-        "X-RapidAPI-Key",
-        HeaderValue::from_str(&std::env::var("RAPID_API_KEY").expect("Rapid api key not provided"))
-            .unwrap(),
-    );
-    headers.insert(
-        "X-RapidAPI-Host",
-        HeaderValue::from_static("PexelsdimasV1.p.rapidapi.com"),
     );
 
     headers

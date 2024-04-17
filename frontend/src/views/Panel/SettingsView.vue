@@ -1,21 +1,9 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import TopBarComp from "@/components/TopBarComp.vue";
 import PageSectionComp from "@/components/PageSectionComp.vue";
 import IconComp from "@/components/IconComp/index.vue";
 import ListItemComp from "@/components/ListItemComp.vue";
 import LanguageSelectComp from "@/components/LanguageSelectComp.vue";
-
-export default defineComponent({
-  name: "SettingsView",
-  components: {
-    TopBarComp,
-    PageSectionComp,
-    IconComp,
-    ListItemComp,
-    LanguageSelectComp,
-  },
-});
 </script>
 
 <template>

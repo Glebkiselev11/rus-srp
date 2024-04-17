@@ -1,9 +1,9 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts"></script>
+
+<script setup lang="ts">
+import { ref, toRef } from "vue";
 import AllWordsCategoryImageComp from "./Categories/AllWordsCategoryImageComp.vue";
-import { usePageCategoriesStore } from "@/stores/categories/pageCategories";
-import { useCategoriesActions } from "@/stores/categories/actions";
-import { mapActions, mapState } from "pinia";
+
 import type { Category } from "@/types/categories";
 import ImagePreviewComp from "./ImagePreviewComp.vue";
 import DropdownMenuComp from "./DropdownMenuComp.vue";
@@ -11,69 +11,50 @@ import ButtonComp from "./ButtonComp.vue";
 import RemoveCategoryModalComp from "./Categories/RemoveCategoryModalComp.vue";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 import { extractCurrentLanguageTranslation } from "@/common/translations";
+import type { Id } from "@/types/api";
+import { useCategoryByIdQuery, useUpdateCategory } from "@/queries/categories";
 
-export default defineComponent({
-  name: "WordsPageCategoryTitleComp",
-  components: {
-    AllWordsCategoryImageComp,
-    ImagePreviewComp,
-    DropdownMenuComp,
-    ButtonComp,
-    RemoveCategoryModalComp,
-    CategoryFormModalComp,
-  },
-  props: {
-    categoryId: {
-      type: Number,
-      default: undefined,
-    },
-  },
-  data() {
-    return {
-      isRemoveCategoryModalOpen: false,
-      isEditCategoryModalOpen: false,
-    };
-  },
-  computed: {
-    ...mapState(usePageCategoriesStore, ["categories"]),
-    category(): Category | undefined {
-      return this.categories.find(
-        (category) => category.id === this.categoryId
-      );
-    },
-  },
-  methods: {
-    ...mapActions(useCategoriesActions, ["updateCategory"]),
-    extractCurrentLanguageTranslation,
-    updateCategoryImage(src: string) {
-      if (this.category && src) {
-        this.updateCategory(this.category.id, {
-          ...this.category,
-          image: src,
-        });
-      }
-    },
-    editCategory() {
-      this.isEditCategoryModalOpen = true;
-    },
-    openRemoveCategoryModal() {
-      this.isRemoveCategoryModalOpen = true;
-    },
-  },
-});
+const props = defineProps<{
+  categoryId?: Id;
+}>();
+
+const isRemoveCategoryModalOpen = ref(false);
+const isEditCategoryModalOpen = ref(false);
+
+const { data } = useCategoryByIdQuery(toRef(props, "categoryId"));
+const updateCategory = useUpdateCategory();
+
+function editCategory() {
+  isEditCategoryModalOpen.value = true;
+}
+
+function openRemoveCategoryModal() {
+  isRemoveCategoryModalOpen.value = true;
+}
+
+function updateCategoryImage(src: string) {
+  if (data && data.value?.category && src) {
+    updateCategory.mutate({
+      ...data.value.category,
+      image: src,
+    } as Category);
+  }
+}
 </script>
 
 <template>
-  <div v-if="category" class="words-page-category-title">
+  <div v-if="categoryId && data?.category" class="words-page-category-title">
     <ImagePreviewComp
       size="56px"
-      :src="category.image"
-      :image-search-modal-subtitle="extractCurrentLanguageTranslation(category)"
-      :default-image-search-query="category.eng"
+      :src="data.category.image"
+      :image-search-modal-subtitle="
+        extractCurrentLanguageTranslation(data.category)
+      "
+      :default-image-search-query="data.category.eng"
       @update:src="(src) => updateCategoryImage(src)"
     />
     <h2>
-      {{ extractCurrentLanguageTranslation(category) }}
+      {{ extractCurrentLanguageTranslation(data.category) }}
     </h2>
 
     <DropdownMenuComp
@@ -105,18 +86,18 @@ export default defineComponent({
 
     <RemoveCategoryModalComp
       v-if="isRemoveCategoryModalOpen"
-      :category="category"
+      :category="data.category"
       @close="isRemoveCategoryModalOpen = false"
     />
 
     <CategoryFormModalComp
       v-if="isEditCategoryModalOpen"
-      :category-id="category.id"
+      :category-id="data.category.id"
       @close="isEditCategoryModalOpen = false"
     />
   </div>
 
-  <div v-else class="words-page-category-title">
+  <div v-else-if="!categoryId" class="words-page-category-title">
     <AllWordsCategoryImageComp size="56px" />
     <h2>
       {{ $t("all-words") }}

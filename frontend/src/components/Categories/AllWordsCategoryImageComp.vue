@@ -1,38 +1,25 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
+<script setup lang="ts">
 import IconComp from "@/components/IconComp/index.vue";
-import type { IconSize } from "@/types/icons";
+import { computed } from "vue";
 
-type Size = "24px" | "56px";
+const props = defineProps<{
+  size: "24px" | "56px";
+}>();
 
-export default defineComponent({
-  name: "AllWordsCategoryImageComp",
-  components: {
-    IconComp,
-  },
-  props: {
-    size: {
-      type: String as PropType<Size>,
-      required: true,
-    },
-  },
-  computed: {
-    iconSize(): IconSize {
-      switch (this.size) {
-        case "24px":
-          return "small";
-        default:
-          return "regular";
-      }
-    },
-  },
+const iconSize = computed(() => {
+  switch (props.size) {
+    case "24px":
+      return "small";
+    default:
+      return "regular";
+  }
 });
 </script>
 
 <template>
   <div
     class="all-words-category-image"
-    :class="[`all-words-category-image--${size}`]"
+    :class="[`all-words-category-image--${props.size}`]"
   >
     <IconComp name="widgets" :size="iconSize" color="contrast" />
   </div>

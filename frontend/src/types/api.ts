@@ -24,10 +24,10 @@ export type Order =
 
 export type RequestParams = {
   search: string;
-  offset: number;
+  offset?: number;
   limit: number;
   order?: Order;
-  category_id?: number;
+  category_id?: Id;
   translation_approved_status?: TranslationApprovedStatus;
 };
 

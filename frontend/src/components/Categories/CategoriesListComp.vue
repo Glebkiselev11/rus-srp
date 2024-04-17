@@ -1,46 +1,38 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import type { Id, RequestParams } from "@/types/api";
 import CategoryItemComp from "./CategoryItemComp.vue";
 import ListItemComp from "@/components/ListItemComp.vue";
 import AllWordsCategoryImageComp from "./AllWordsCategoryImageComp.vue";
-import { usePageCategoriesStore } from "@/stores/categories/pageCategories";
-import { mapState } from "pinia";
 import ZeroStateComp from "../ZeroStateComp.vue";
 import SkeletonItemComp from "../SkeletonItemComp.vue";
+import { useI18n } from "vue-i18n";
+import { useCategoriesQuery } from "@/queries/categories";
+import { computed } from "vue";
+import { toReactive } from "@vueuse/core";
 
-export default defineComponent({
-  name: "CategoriesListComp",
-  components: {
-    CategoryItemComp,
-    ListItemComp,
-    AllWordsCategoryImageComp,
-    ZeroStateComp,
-    SkeletonItemComp,
-  },
-  props: {
-    selectedCategoryId: {
-      type: Number,
-      default: undefined,
-    },
-    searchQuary: {
-      type: String,
-      default: "",
-    },
-  },
-  emits: ["selectCateogry", "select-category-for-editing"],
-  computed: {
-    ...mapState(usePageCategoriesStore, ["categories", "loadState", "count"]),
-  },
-  methods: {
-    selectCategory(categoryId: number) {
-      if (categoryId === this.selectedCategoryId) return;
-      this.$emit("selectCateogry", categoryId);
-    },
-    selectCategoryForEditing(categoryId: number) {
-      this.$emit("select-category-for-editing", categoryId);
-    },
-  },
-});
+const { t } = useI18n();
+
+const props = defineProps<{
+  selectedCategoryId?: Id;
+  requestParams: RequestParams;
+}>();
+
+const emit = defineEmits<{
+  (e: "selectCateogry", catedoryId: Id): void;
+  (e: "select-category-for-editing", catedoryId: Id): void;
+}>();
+
+const filter = computed(() => toReactive(props.requestParams));
+const { data, status } = useCategoriesQuery(filter);
+
+function selectCategory(categoryId: Id) {
+  if (categoryId === props.selectedCategoryId) return;
+  emit("selectCateogry", categoryId);
+}
+
+function selectCategoryForEditing(categoryId: Id) {
+  emit("select-category-for-editing", categoryId);
+}
 </script>
 
 <template>
@@ -56,7 +48,7 @@ export default defineComponent({
         <div class="categories-list__all-words-item">
           <AllWordsCategoryImageComp size="24px" />
 
-          <span>{{ $t("all-words") }}</span>
+          <span>{{ t("all-words") }}</span>
         </div>
       </ListItemComp>
     </div>
@@ -64,21 +56,21 @@ export default defineComponent({
     <hr />
 
     <div
-      v-if="loadState === 'loaded' && count > 0"
+      v-if="status === 'success' && data && data.count > 0"
       class="categories-list__items"
     >
       <CategoryItemComp
-        v-for="category in categories"
+        v-for="category in data.categories"
         :key="category.id"
         :category="category"
         :selected="category.id === selectedCategoryId"
-        :query="searchQuary"
+        :query="props.requestParams.search"
         @select-cateogry="selectCategory"
         @select-category-for-editing="selectCategoryForEditing"
       />
     </div>
 
-    <div v-else-if="loadState === 'loading'" class="categories-list__items">
+    <div v-else-if="status === 'pending'" class="categories-list__items">
       <div v-for="i in 15" :key="i" class="categories-list__skeleton-item">
         <SkeletonItemComp height="24px" width="24px" border-radius="8px" />
         <SkeletonItemComp height="20px" random-width border-radius="4px" />
@@ -86,13 +78,13 @@ export default defineComponent({
     </div>
 
     <div
-      v-else-if="loadState === 'loaded' && count === 0"
+      v-else-if="status === 'success' && data?.count === 0"
       class="categories-list__zero-state"
     >
       <ZeroStateComp
         icon="search"
-        :title="$t('not-found')"
-        :description="$t('not-found-description')"
+        :title="t('not-found')"
+        :description="t('not-found-description')"
       />
     </div>
   </div>

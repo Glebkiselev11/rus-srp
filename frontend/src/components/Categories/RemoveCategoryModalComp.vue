@@ -1,75 +1,70 @@
-<script lang="ts">
+<script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import type { Category } from "@/types/categories";
-import { defineComponent, type PropType } from "vue";
+import { computed, onMounted, ref } from "vue";
 import ModalComp from "../ModalComp.vue";
 import type { LanguageCode } from "@/types/translations";
 import { WordsService } from "@/api";
 import InputComp from "../InputComp.vue";
 import ButtonComp from "../ButtonComp.vue";
-import { useCategoriesActions } from "@/stores/categories/actions";
+import { useRoute, useRouter } from "vue-router";
+import { useDeleteCategory } from "@/queries/categories";
 
-import { mapActions } from "pinia";
+const { t, locale } = useI18n();
+const route = useRoute();
+const router = useRouter();
 
-export default defineComponent({
-  name: "RemoveCategoryModalComp",
-  components: {
-    ModalComp,
-    InputComp,
-    ButtonComp,
-  },
-  props: {
-    category: {
-      type: Object as PropType<Category>,
-      required: true,
-    },
-  },
-  emits: ["close"],
-  data() {
-    return {
-      wordsInCategory: 0,
-      confirmationInput: "",
-    };
-  },
-  computed: {
-    title() {
-      return this.$t("category-removing.title", {
-        categoryName: this.category[this.$i18n.locale as LanguageCode],
-      });
-    },
-    subtitle() {
-      return this.$tc("category-removing.subtitle", this.wordsInCategory);
-    },
-    confirmed() {
-      const key =
-        this.category[this.$i18n.locale as LanguageCode].toLocaleLowerCase();
-      const input = this.confirmationInput.toLocaleLowerCase();
-      return key === input;
-    },
-  },
-  async mounted() {
-    const { data } = await WordsService.query({
-      category_id: this.category.id,
-      limit: 0,
-    });
-    this.wordsInCategory = data.count;
-  },
-  methods: {
-    ...mapActions(useCategoriesActions, ["deleteCategory"]),
-    close() {
-      this.$emit("close");
-    },
-    async removeCategory() {
-      await this.deleteCategory(this.category.id);
+const deleteCategory = useDeleteCategory();
 
-      // Remove category_id from router query
-      this.$router.push({
-        query: { ...this.$route.query, category_id: undefined },
-      });
+const props = defineProps<{
+  category: Category;
+}>();
 
-      this.close();
-    },
-  },
+const emit = defineEmits<{
+  (e: "close"): void;
+}>();
+
+const wordsInCategory = ref(0);
+const confirmationInput = ref("");
+
+const title = computed(() =>
+  t("category-removing.title", {
+    categoryName: props.category[locale.value as LanguageCode],
+  })
+);
+
+const subtitle = computed(() =>
+  t("category-removing.subtitle", wordsInCategory.value)
+);
+
+const confirmed = computed(() => {
+  const key = props.category[locale.value as LanguageCode].toLocaleLowerCase();
+  const input = confirmationInput.value.toLocaleLowerCase();
+  return key === input;
 });
+
+onMounted(async () => {
+  const { count } = await WordsService.query({
+    category_id: props.category.id,
+    limit: 0,
+  });
+  wordsInCategory.value = count;
+});
+
+async function removeCategory() {
+  await deleteCategory.mutateAsync(props.category.id);
+
+  // Remove category_id from router query
+  router.push({
+    query: { ...route.query, category_id: undefined },
+  });
+
+  close();
+}
+
+function close() {
+  emit("close");
+}
 </script>
 
 <template>
@@ -84,17 +79,17 @@ export default defineComponent({
         <span
           v-if="wordsInCategory > 0"
           class="remove-category-modal__description"
-          v-text="$t('category-removing.description')"
+          v-text="t('category-removing.description')"
         />
 
         <InputComp
           v-model="confirmationInput"
-          :label="$t('category-removing.confirmation-label')"
+          :label="t('category-removing.confirmation-label')"
         />
 
         <div class="remove-category-modal__buttons">
           <ButtonComp
-            :label="$t('cancel')"
+            :label="t('cancel')"
             color="neutral"
             appearance="secondary"
             @click="close"
@@ -102,7 +97,7 @@ export default defineComponent({
           <ButtonComp
             :disabled="!confirmed"
             color="negative"
-            :label="$t('yes-remove')"
+            :label="t('yes-remove')"
             @click="removeCategory"
           />
         </div>

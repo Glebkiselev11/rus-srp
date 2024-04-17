@@ -22,6 +22,7 @@ export function isAnyFieldHasChanged(
 
 export function convertWordToDraftWord(word: Word | DraftWord): DraftWord {
   return {
+    id: word.id,
     rus: word.rus,
     eng: word.eng,
     srp_latin: word.srp_latin,

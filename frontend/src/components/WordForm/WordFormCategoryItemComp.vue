@@ -1,36 +1,27 @@
-<script lang="ts">
+<script setup lang="ts">
+import type { Id } from "@/types/api";
 import type { Category } from "@/types/categories";
-import { defineComponent, type PropType } from "vue";
-import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
-import ListItemComp from "@/components/ListItemComp.vue";
 import { highlighTextByQuery } from "@/common/utils";
 import { extractCurrentLanguageTranslation } from "@/common/translations";
+import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
+import ListItemComp from "@/components/ListItemComp.vue";
 
-export default defineComponent({
-  name: "WordFormCategoryItemComp",
-  components: {
-    ImagePreviewComp,
-    ListItemComp,
-  },
-  props: {
-    category: {
-      type: Object as PropType<Category>,
-      required: true,
-    },
-    query: {
-      type: String,
-      default: "",
-    },
-  },
-  emits: ["selectCateogry"],
-  methods: {
-    highlighTextByQuery,
-    extractCurrentLanguageTranslation,
-    selectCategory() {
-      this.$emit("selectCateogry", this.category.id);
-    },
-  },
+type Props = {
+  category: Category;
+  query?: string;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  query: "",
 });
+
+const emit = defineEmits<{
+  (e: "selectCateogry", catedoryId: Id): void;
+}>();
+
+function selectCategory() {
+  emit("selectCateogry", props.category.id);
+}
 </script>
 
 <template>
@@ -43,13 +34,13 @@ export default defineComponent({
   >
     <div class="word-form-category-item">
       <div class="word-form-category-item__row">
-        <ImagePreviewComp size="24px" :src="category.image" static />
+        <ImagePreviewComp size="24px" :src="props.category.image" static />
 
         <span
           class="word-form-category-item__label"
           v-html="
             highlighTextByQuery(
-              extractCurrentLanguageTranslation(category),
+              extractCurrentLanguageTranslation(props.category),
               query
             )
           "
