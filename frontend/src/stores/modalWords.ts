@@ -28,8 +28,6 @@ export const useModalWordsStore = defineStore("modalWords", () => {
     } catch (error) {
       console.error(error);
     }
-
-    $reset();
   };
 
   const $reset = () => {

@@ -49,6 +49,7 @@ function tryClose() {
 
 function close() {
   emit("close");
+  modalWordsStore.$reset();
 }
 </script>
 
