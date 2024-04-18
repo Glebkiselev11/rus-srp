@@ -1,60 +1,51 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { computed } from "vue";
 import IconComp from "./IconComp/index.vue";
 import type { IconName } from "@/types/icons";
 
-export default defineComponent({
-  name: "CheckboxComp",
-  components: {
-    IconComp,
-  },
-  props: {
-    modelValue: {
-      type: Boolean,
-      required: true,
-    },
-    indeterminated: {
-      type: Boolean,
-      default: false,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: ["update:modelValue"],
-  computed: {
-    iconName(): IconName {
-      if (this.indeterminated) {
-        return "indeterminate_checkbox";
-      } else if (this.modelValue) {
-        return "checkbox";
-      } else {
-        return "checkbox_outline_blank";
-      }
-    },
-  },
-  methods: {
-    toggleChecked() {
-      this.$emit("update:modelValue", !this.modelValue);
-    },
-  },
+type Props = {
+  modelValue: boolean;
+  indeterminated?: boolean;
+  disabled?: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  indeterminated: false,
+  disabled: false,
 });
+
+const emit = defineEmits<{
+  (event: "update:modelValue", value: boolean): void;
+}>();
+
+const iconName = computed((): IconName => {
+  if (props.indeterminated) {
+    return "indeterminate_checkbox";
+  } else if (props.modelValue) {
+    return "checkbox";
+  } else {
+    return "checkbox_outline_blank";
+  }
+});
+
+function toggleChecked() {
+  emit("update:modelValue", !props.modelValue);
+}
 </script>
 
 <template>
   <label
     class="checkbox"
     :class="[
-      { 'checkbox--disabled': disabled },
-      { 'checkbox--indeterminated': indeterminated },
-      { 'checkbox--checked': modelValue },
+      { 'checkbox--disabled': props.disabled },
+      { 'checkbox--indeterminated': props.indeterminated },
+      { 'checkbox--checked': props.modelValue },
     ]"
   >
     <input
       type="checkbox"
-      :checked="modelValue"
-      :disabled="disabled"
+      :checked="props.modelValue"
+      :disabled="props.disabled"
       @change="toggleChecked"
     />
 
