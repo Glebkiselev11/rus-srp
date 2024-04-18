@@ -1,17 +1,8 @@
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  name: "CheckboxIcon",
-  props: {
-    size: {
-      type: String,
-      required: true,
-    },
-  },
-});
+<script setup lang="ts">
+defineProps<{
+  size: string;
+}>();
 </script>
-
 <template>
   <svg :width="size" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path

@@ -1,15 +1,7 @@
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  name: "NavigateNextIcon",
-  props: {
-    size: {
-      type: String,
-      required: true,
-    },
-  },
-});
+<script setup lang="ts">
+defineProps<{
+  size: string;
+}>();
 </script>
 
 <template>
