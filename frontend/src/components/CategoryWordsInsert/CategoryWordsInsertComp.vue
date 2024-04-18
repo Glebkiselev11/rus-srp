@@ -131,6 +131,7 @@ function getTooltipText(wordId: Id): string {
       :grid-template-columns="gridTemplateColumns"
       :infinite-scroll-config="{ distance: 100 }"
       table-height="calc(100vh - 300px)"
+      class="category-words-insert__table"
       @scroll-to-bottom="fetchNextPage"
     >
       <template v-if="nothingWereFound">
@@ -243,13 +244,19 @@ function getTooltipText(wordId: Id): string {
 @import "@/styles/main";
 
 .category-words-insert {
-  padding: 20px;
   width: 704px;
 
   &__panel {
     display: flex;
     align-items: center;
     margin-block-end: 16px;
+    margin-inline: 16px;
+  }
+
+  &__table {
+    margin-inline: 16px;
+    border-radius: 8px 8px 0 0;
+    border-block-end: none;
   }
 
   &__search-input {
@@ -262,15 +269,16 @@ function getTooltipText(wordId: Id): string {
   }
 
   &__footer {
+    border-block-start: 1px solid $color-separator-primary;
     display: flex;
     justify-content: space-between;
-    margin-block-start: 20px;
-    height: 40px;
+    padding-block: 20px;
+    padding-inline: 16px;
+    align-items: center;
 
     & > div {
       display: flex;
       column-gap: 8px;
-      align-items: center;
     }
   }
 }

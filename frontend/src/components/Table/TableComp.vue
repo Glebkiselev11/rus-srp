@@ -1,38 +1,31 @@
 <script setup lang="ts">
-import { onUpdated, ref, type PropType } from "vue";
+import { onUpdated, ref } from "vue";
 import TableColumnTitleComp from "./TableColumnTitleComp.vue";
 import type { Order } from "../../types/api";
 import type { TableColumn } from "@/types/table";
 import { vInfiniteScroll } from "@vueuse/components";
 import type { UseInfiniteScrollOptions } from "@vueuse/core";
-defineProps({
-  columns: {
-    type: Array as PropType<TableColumn[]>,
-    default: () => [],
-  },
-  gridTemplateColumns: {
-    type: String,
-    required: true,
-  },
-  order: {
-    type: String as PropType<Order>,
-    default: null,
-  },
-  infiniteScrollConfig: {
-    type: Object as PropType<UseInfiniteScrollOptions>,
-    default: () => ({
-      // it will disable the interval for the case when we don't need to infinite scroll
-      interval: 9999999,
-    }),
-  },
-  tableHeight: {
-    type: String,
-    default: "700px",
-  },
+
+type Props = {
+  gridTemplateColumns: string;
+  columns?: TableColumn[];
+  order?: Order;
+  infiniteScrollConfig?: UseInfiniteScrollOptions;
+  tableHeight?: string;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  columns: () => [],
+  infiniteScrollConfig: () => ({
+    // it will disable the interval for the case when we don't need to infinite scroll
+    interval: 9999999,
+  }),
+  order: undefined,
+  tableHeight: "700px",
 });
 
 const emit = defineEmits<{
-  (event: "update:order", order: Order): void;
+  (event: "update:order", o: Order): void;
   (event: "scrollToBottom"): void;
 }>();
 
@@ -61,13 +54,13 @@ function handleScrollToBottom() {
 
 <template>
   <div class="table-wrap">
-    <table class="table" :style="{ height: tableHeight }">
+    <table class="table" :style="{ height: props.tableHeight }">
       <thead
-        v-if="columns.length"
+        v-if="props.columns.length"
         class="table__header"
         :class="{ 'table__header--scrollable-body': isContentBodyScrollable }"
       >
-        <tr :style="{ gridTemplateColumns }">
+        <tr :style="{ gridTemplateColumns: props.gridTemplateColumns }">
           <TableColumnTitleComp
             v-for="col in columns"
             :key="col.sort_key"
@@ -77,14 +70,14 @@ function handleScrollToBottom() {
             :icon="col.icon"
             :width="col.width"
             :sortable="col.sortable"
-            :order="order"
+            :order="props.order"
             @update:order="(x) => $emit('update:order', x)"
           />
         </tr>
       </thead>
       <tbody
         ref="tableBody"
-        v-infinite-scroll="[handleScrollToBottom, infiniteScrollConfig]"
+        v-infinite-scroll="[handleScrollToBottom, props.infiniteScrollConfig]"
         class="table__body"
       >
         <slot />
