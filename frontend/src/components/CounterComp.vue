@@ -1,20 +1,12 @@
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  name: "CounterComp",
-  props: {
-    count: {
-      type: Number,
-      required: true,
-    },
-  },
-});
+<script setup lang="ts">
+const props = defineProps<{
+  count: number;
+}>();
 </script>
 
 <template>
   <div class="counter">
-    {{ count }}
+    {{ props.count }}
   </div>
 </template>
 
