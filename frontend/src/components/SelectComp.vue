@@ -1,95 +1,74 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
+<script setup lang="ts" generic="T">
+import { computed } from "vue";
 import InputWrapperComp from "./InputWrapperComp.vue";
 import DropdownMenuComp from "./DropdownMenuComp.vue";
 import IconComp from "./IconComp/index.vue";
 import type { SelectSize, SelectAppearance } from "@/types/select";
 import type { IconName } from "@/types/icons";
 
-export default defineComponent({
-  name: "SelectComp",
-  components: {
-    InputWrapperComp,
-    DropdownMenuComp,
-    IconComp,
-  },
-  props: {
-    appearance: {
-      type: String as PropType<SelectAppearance>,
-      default: "default",
+type Props = {
+  modelValue: T;
+  options: { value: T; label: string }[];
+  appearance?: SelectAppearance;
+  size?: SelectSize;
+  label?: string;
+  placeholder?: string;
+  disabled?: boolean;
+  icon?: IconName;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  appearance: "default",
+  size: "regular",
+  label: undefined,
+  placeholder: "",
+  disabled: false,
+  icon: undefined,
+});
+
+const emit = defineEmits<{
+  (event: "update:modelValue", value: T): void;
+}>();
+
+const items = computed(() =>
+  props.options.map((item) => ({
+    ...item,
+    handler: () => {
+      emit("update:modelValue", item.value);
     },
-    size: {
-      type: String as PropType<SelectSize>,
-      default: "regular",
-    },
-    label: {
-      type: String,
-      default: null,
-    },
-    placeholder: {
-      type: String,
-      default: null,
-    },
-    modelValue: {
-      type: [String, Number],
-      default: null,
-    },
-    options: {
-      type: Array as PropType<{ value: string | number; label: string }[]>,
-      required: true,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    icon: {
-      type: String as PropType<IconName>,
-      default: null,
-    },
-  },
-  emits: ["update:modelValue"],
-  computed: {
-    items() {
-      return this.options.map((item) => ({
-        ...item,
-        handler: () => {
-          this.$emit("update:modelValue", item.value);
-        },
-      }));
-    },
-    selectedItem() {
-      const item = this.options.find((item) => item.value === this.modelValue);
-      return item ? item.label : this.placeholder;
-    },
-  },
-  methods: {
-    handleSelect(event: Event) {
-      const target = event.target as HTMLSelectElement;
-      this.$emit("update:modelValue", target.value);
-    },
-  },
+  }))
+);
+
+const selectedItem = computed(() => {
+  const item = props.options.find((item) => item.value === props.modelValue);
+  return item ? item.label : props.placeholder;
 });
 </script>
 
 <template>
-  <InputWrapperComp :label="label" for="select">
+  <InputWrapperComp :label="props.label" for="select">
     <DropdownMenuComp
       v-slot="{ isMenuOpen }"
       :items="items"
-      :disabled="disabled"
+      :disabled="props.disabled"
     >
       <button
         id="select"
         class="select"
-        :disabled="disabled"
+        :disabled="props.disabled"
         :class="[
-          `select--appearance-${appearance}`,
-          `select--size-${size}`,
+          `select--appearance-${props.appearance}`,
+          `select--size-${props.size}`,
           { 'select--menu-open': isMenuOpen },
-          { 'select--with-icon': icon },
+          { 'select--with-icon': props.icon },
         ]"
       >
-        <IconComp v-if="icon" :name="icon" size="compact" color="secondary" />
+        <IconComp
+          v-if="props.icon"
+          :name="props.icon"
+          size="compact"
+          color="secondary"
+        />
 
         {{ selectedItem }}
 

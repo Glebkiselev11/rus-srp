@@ -34,8 +34,8 @@ export default defineComponent({
   data() {
     return {
       orderOptions: [
-        { value: "-created_at", label: this.$t("order.last-added") },
-        { value: "-updated_at", label: this.$t("order.last-updated") },
+        { value: "-created_at" as Order, label: this.$t("order.last-added") },
+        { value: "-updated_at" as Order, label: this.$t("order.last-updated") },
       ],
     };
   },
