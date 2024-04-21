@@ -1,41 +1,25 @@
-<script lang="ts">
+<script setup lang="ts">
 import type { IconName } from "@/types/icons";
 import IconComp from "./IconComp/index.vue";
-import { defineComponent, type PropType } from "vue";
 
-export default defineComponent({
-  name: "ZeroStateComp",
-  components: {
-    IconComp,
-  },
-  props: {
-    icon: {
-      type: String as PropType<IconName>,
-      default: null,
-    },
-    title: {
-      type: String,
-      default: null,
-    },
-    description: {
-      type: String,
-      default: null,
-    },
-  },
-});
+const props = defineProps<{
+  icon: IconName;
+  title: string;
+  description: string;
+}>();
 </script>
 
 <template>
   <div class="zero-state">
     <div class="zero-state__container">
-      <IconComp v-if="icon" :name="icon" />
+      <IconComp :name="props.icon" />
 
-      <h4 v-if="title">
-        {{ title }}
+      <h4>
+        {{ props.title }}
       </h4>
 
-      <span v-if="description" class="zero-state__description">
-        {{ description }}
+      <span class="zero-state__description">
+        {{ props.description }}
       </span>
 
       <slot />
