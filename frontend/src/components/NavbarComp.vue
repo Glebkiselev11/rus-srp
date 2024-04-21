@@ -1,35 +1,26 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
-import NavbarItemComp from "./NavbarItemComp.vue";
+<script setup lang="ts">
 import type { NavItem } from "../types";
+import NavbarItemComp from "./NavbarItemComp.vue";
 import TooltipComp from "./TooltipComp.vue";
 
-export default defineComponent({
-  name: "NavbarComp",
-  components: {
-    NavbarItemComp,
-    TooltipComp,
-  },
-  props: {
-    items: {
-      type: Array as PropType<NavItem[]>,
-      required: true,
-    },
-  },
-  emits: ["clickOnItem"],
-  methods: {
-    handleClick(item: NavItem) {
-      this.$emit("clickOnItem", item);
-    },
-  },
-});
+const props = defineProps<{
+  items: NavItem[];
+}>();
+
+const emit = defineEmits<{
+  (event: "clickOnItem", item: NavItem): void;
+}>();
+
+function handleClick(item: NavItem) {
+  emit("clickOnItem", item);
+}
 </script>
 
 <template>
   <aside class="navbar">
     <div class="navbar__list">
       <TooltipComp
-        v-for="item in items"
+        v-for="item in props.items"
         :key="item.name"
         :text="$t(item.name)"
         position="right"
