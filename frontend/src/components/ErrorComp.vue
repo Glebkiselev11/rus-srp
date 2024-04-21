@@ -1,33 +1,26 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
+<script setup lang="ts">
 import type { IconSize } from "@/types/icons";
 import IconComp from "@/components/IconComp/index.vue";
 
-type ErrorSize = IconSize;
+type Props = {
+  text: string;
+  size?: IconSize;
+};
 
-export default defineComponent({
-  name: "ErrorComp",
-  components: {
-    IconComp,
-  },
-  props: {
-    text: {
-      type: String,
-      required: true,
-    },
-    size: {
-      type: String as PropType<ErrorSize>,
-      default: "compact",
-    },
-  },
+const props = withDefaults(defineProps<Props>(), {
+  size: "compact",
 });
 </script>
 
 <template>
   <span class="error">
-    <IconComp color="negative" name="error" :size="size" />
+    <IconComp color="negative" name="error" :size="props.size" />
 
-    <span class="error__text" :class="[`error__text--${size}`]" v-text="text" />
+    <span
+      class="error__text"
+      :class="[`error__text--${props.size}`]"
+      v-text="props.text"
+    />
   </span>
 </template>
 
