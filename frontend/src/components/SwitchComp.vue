@@ -1,39 +1,34 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+type Props = {
+  modelValue: boolean;
+  disabled?: boolean;
+};
 
-export default defineComponent({
-  name: "SwitchComp",
-  props: {
-    modelValue: {
-      type: Boolean,
-      required: true,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: ["update:modelValue"],
-  methods: {
-    toggleChecked() {
-      this.$emit("update:modelValue", !this.modelValue);
-    },
-  },
+const props = withDefaults(defineProps<Props>(), {
+  disabled: false,
 });
+
+const emit = defineEmits<{
+  (event: "update:modelValue", value: boolean): void;
+}>();
+
+function toggleChecked() {
+  emit("update:modelValue", !props.modelValue);
+}
 </script>
 
 <template>
   <label
     class="switch"
     :class="[
-      { 'switch--disabled': disabled },
-      { 'switch--checked': modelValue },
+      { 'switch--disabled': props.disabled },
+      { 'switch--checked': props.modelValue },
     ]"
   >
     <input
       type="checkbox"
-      :checked="modelValue"
-      :disabled="disabled"
+      :checked="props.modelValue"
+      :disabled="props.disabled"
       @change="toggleChecked"
     />
     <span class="switch__slider" />
