@@ -68,7 +68,7 @@ const convertedSize = computed(() => {
   <component
     :is="icon"
     :class="[`icon--${props.color}`]"
-    :size="convertedSize"
+    :width="convertedSize"
   />
 </template>
 
