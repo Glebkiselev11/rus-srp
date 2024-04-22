@@ -195,7 +195,7 @@ const columns = computed(() => {
     },
     {
       sortable: true,
-      sort_key: "image",
+      sort_key: "image" as const,
       icon: {
         name: "image",
         color: "tertiary",
@@ -205,7 +205,7 @@ const columns = computed(() => {
     ...translationColumns.value,
     {
       sortable: true,
-      sort_key: "category_count",
+      sort_key: "category_count" as const,
       width: "338px",
       label: t("categories"),
     },
@@ -258,7 +258,7 @@ function updateWordImage(word: Word, src: string) {
   updateWord.mutateAsync({ ...word, image: src });
 }
 
-function updateOrder(order: Order) {
+function updateOrder(order?: Order) {
   filter.value = { ...filter.value, order };
 }
 </script>

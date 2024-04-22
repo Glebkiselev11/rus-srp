@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
-  (event: "update:order", o: Order): void;
+  (event: "update:order", o?: Order): void;
   (event: "scrollToBottom"): void;
 }>();
 

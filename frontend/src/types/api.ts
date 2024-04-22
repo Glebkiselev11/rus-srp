@@ -6,21 +6,17 @@ export type ListResponse<T> = {
 
 export type Id = number | string;
 
-export type Order =
+export type SortKey =
   | "created_at"
-  | "-created_at"
-  | "-updated_at"
   | "updated_at"
   | "rus"
-  | "-rus"
   | "eng"
-  | "-eng"
   | "srp_latin"
-  | "-srp_latin"
   | "srp_cyrillic"
-  | "-srp_cyrillic"
   | "image"
-  | "-image";
+  | "category_count";
+
+export type Order = `${SortKey}` | `-${SortKey}`;
 
 export type RequestParams = {
   search: string;

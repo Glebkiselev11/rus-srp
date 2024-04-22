@@ -1,72 +1,61 @@
-<script lang="ts">
+<script setup lang="ts">
 import type { IconColor, IconName } from "../../types/icons";
-import { defineComponent, type PropType } from "vue";
+import { computed } from "vue";
 import IconComp from "../IconComp/index.vue";
-import type { Order } from "../../types/api";
+import type { Order, SortKey } from "../../types/api";
 
-export default defineComponent({
-  name: "TableColumnTitleComp",
-  components: {
-    IconComp,
-  },
-  props: {
-    label: {
-      type: String as PropType<string>,
-      default: null,
-    },
-    icon: {
-      type: Object as PropType<{ name: IconName; color: IconColor }>,
-      default: null,
-    },
-    width: {
-      type: String as PropType<string>,
-      default: "auto",
-    },
-    sortable: {
-      type: Boolean as PropType<boolean>,
-      default: false,
-    },
-    order: {
-      type: String as PropType<Order>,
-      default: null,
-    },
-    sortKey: {
-      type: String as PropType<string>,
-      default: null,
-    },
-  },
-  emits: ["update:order"],
-  computed: {
-    sortIcon(): IconName {
-      if (this.order === this.sortKey) return "arrow_downward_alt";
-      if (this.order === `-${this.sortKey}`) return "arrow_upward_alt";
-      return "expand_all";
-    },
-    sortIconColor(): IconColor {
-      if (this.sortActive) return "accent-primary";
-      return "tertiary";
-    },
-    sortActive(): boolean {
-      return this.order === this.sortKey || this.order === `-${this.sortKey}`;
-    },
-    iconColor(): IconColor {
-      return this.sortActive ? "accent-primary" : this.icon?.color;
-    },
-  },
-  methods: {
-    handlerSort() {
-      if (!this.sortable || !this.sortKey) return;
+type Props = {
+  label?: string;
+  icon?: { name: IconName; color: IconColor };
+  width?: string;
+  sortable?: boolean;
+  order?: Order;
+  sortKey?: SortKey;
+};
 
-      if (this.order !== this.sortKey && this.order !== `-${this.sortKey}`) {
-        this.$emit("update:order", this.sortKey);
-      } else if (this.order === this.sortKey) {
-        this.$emit("update:order", `-${this.sortKey}`);
-      } else {
-        this.$emit("update:order", undefined);
-      }
-    },
-  },
+const props = withDefaults(defineProps<Props>(), {
+  label: undefined,
+  icon: undefined,
+  width: "auto",
+  sortable: false,
+  order: undefined,
+  sortKey: undefined,
 });
+
+const emit = defineEmits<{
+  (event: "update:order", order?: Order): void;
+}>();
+
+const sortActive = computed(() => {
+  return props.order === props.sortKey || props.order === `-${props.sortKey}`;
+});
+
+const iconColor = computed(() => {
+  return sortActive.value ? "accent-primary" : props.icon?.color;
+});
+
+const sortIconColor = computed(() => {
+  if (sortActive.value) return "accent-primary";
+  return "tertiary";
+});
+
+const sortIcon = computed(() => {
+  if (props.order === props.sortKey) return "arrow_downward_alt";
+  if (props.order === `-${props.sortKey}`) return "arrow_upward_alt";
+  return "expand_all";
+});
+
+function handlerSort() {
+  if (!props.sortable || !props.sortKey) return;
+
+  if (props.order !== props.sortKey && props.order !== `-${props.sortKey}`) {
+    emit("update:order", props.sortKey);
+  } else if (props.order === props.sortKey) {
+    emit("update:order", `-${props.sortKey}`);
+  } else {
+    emit("update:order", undefined);
+  }
+}
 </script>
 
 <template>

@@ -1,7 +1,8 @@
+import type { SortKey } from "./api";
 import type { IconColor, IconName } from "./icons";
 
 export type TableColumn = {
-  sort_key?: string;
+  sort_key?: SortKey;
   sortable: boolean;
   width?: string;
   label?: string;
