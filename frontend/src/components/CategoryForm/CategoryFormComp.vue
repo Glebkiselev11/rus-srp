@@ -316,7 +316,7 @@ function close() {
       >
         <InputComp
           v-model="draftCategory[selectedLanguage]"
-          :label="$t('category-name')"
+          :label="t('category-name')"
           width="400px"
           appearance="outline"
           :focus-on-mount="!props.category"
@@ -328,7 +328,7 @@ function close() {
       </ImageSectionComp>
 
       <div class="category-form__row">
-        <h4 v-text="$t('translation')" />
+        <h4 v-text="t('translation')" />
 
         <ButtonComp
           v-if="showFillAutoButton"
@@ -354,7 +354,7 @@ function close() {
     </div>
 
     <div class="category-form__footer">
-      <ButtonComp appearance="secondary" :label="$t('cancel')" @click="close" />
+      <ButtonComp appearance="secondary" :label="t('cancel')" @click="close" />
       <ButtonComp
         :label="saveButtonLabel"
         :loading="savingLoading"

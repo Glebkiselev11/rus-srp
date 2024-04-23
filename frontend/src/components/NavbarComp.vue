@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import type { NavItem } from "../types";
 import NavbarItemComp from "./NavbarItemComp.vue";
 import TooltipComp from "./TooltipComp.vue";
+
+const { t } = useI18n();
 
 const props = defineProps<{
   items: NavItem[];
@@ -22,7 +25,7 @@ function handleClick(item: NavItem) {
       <TooltipComp
         v-for="item in props.items"
         :key="item.name"
-        :text="$t(item.name)"
+        :text="t(item.name)"
         position="right"
       >
         <NavbarItemComp

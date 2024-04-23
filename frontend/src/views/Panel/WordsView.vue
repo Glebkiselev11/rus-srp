@@ -278,14 +278,14 @@ function updateOrder(order?: Order) {
         <template #right>
           <ButtonComp
             v-show="showAddToCategoryButton"
-            :label="$t('add-to-category')"
+            :label="t('add-to-category')"
             appearance="inline"
             class="words-view__add-to-category-button"
             @click="openWordsListModal"
           />
           <ButtonComp
             icon="add"
-            :label="$t('create-word')"
+            :label="t('create-word')"
             @click="openCreationWordForm"
           />
         </template>
@@ -355,13 +355,13 @@ function updateOrder(order?: Order) {
                   v-slot="{ isMenuOpen }"
                   :items="[
                     {
-                      label: $t('edit'),
+                      label: t('edit'),
                       icon: 'edit',
                       handler: () => openEditingWordForm(word),
                     },
                     'separator',
                     {
-                      label: $t('delete'),
+                      label: t('delete'),
                       icon: 'delete',
                       color: 'negative',
                       handler: () => removeWord(word),
@@ -391,8 +391,8 @@ function updateOrder(order?: Order) {
           <template v-else>
             <ZeroStateComp
               icon="search"
-              :title="$t('not-found')"
-              :description="$t('not-found-description')"
+              :title="t('not-found')"
+              :description="t('not-found-description')"
             />
           </template>
 

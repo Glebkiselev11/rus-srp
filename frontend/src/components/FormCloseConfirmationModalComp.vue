@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import ModalComp from "./ModalComp.vue";
 import ButtonComp from "./ButtonComp.vue";
+
+const { t } = useI18n();
 
 const props = defineProps<{
   title: string;
@@ -25,7 +28,7 @@ function confirm() {
   <ModalComp :title="props.title" header-padding-inline="20px" @close="close">
     <template #content>
       <div class="form-close-confirmation-modal">
-        {{ $t("modal-exit-confirmation.description") }}
+        {{ t("modal-exit-confirmation.description") }}
 
         <div class="form-close-confirmation-modal__buttons">
           <ButtonComp
@@ -34,7 +37,7 @@ function confirm() {
             @click="close"
           />
           <ButtonComp
-            :label="$t('modal-exit-confirmation.confirm')"
+            :label="t('modal-exit-confirmation.confirm')"
             color="negative"
             @click="confirm"
           />

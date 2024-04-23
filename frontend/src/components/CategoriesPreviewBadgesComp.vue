@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import type { Category } from "@/types/categories";
 import { extractCurrentLanguageTranslation } from "@/common/translations";
 import ImagePreviewComp from "./ImagePreviewComp.vue";
@@ -7,6 +8,8 @@ import TooltipComp from "./TooltipComp.vue";
 import ButtonComp from "./ButtonComp.vue";
 
 const MAX_IMAGES = 3;
+
+const { t } = useI18n();
 
 type Props = {
   categories: Category[];
@@ -81,7 +84,7 @@ function isOverflowing() {
 
   <ButtonComp
     v-else-if="props.showAddButton"
-    :label="$t('add')"
+    :label="t('add')"
     icon="add"
     appearance="inline"
     size="compact"

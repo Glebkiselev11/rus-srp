@@ -196,12 +196,12 @@ async function saveWord(resetAfterSave = false) {
     </div>
 
     <div class="word-form__footer">
-      <ButtonComp appearance="secondary" :label="$t('cancel')" @click="close" />
+      <ButtonComp appearance="secondary" :label="t('cancel')" @click="close" />
 
       <ButtonComp
         v-if="!initialWord"
         appearance="primary"
-        :label="$t('create-and-add-next')"
+        :label="t('create-and-add-next')"
         color="accent-secondary"
         @click="saveWord(true)"
       />

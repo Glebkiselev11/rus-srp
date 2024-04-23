@@ -114,7 +114,7 @@ function getTooltipText(wordId: Id): string {
         clear-button
         debounce
         class="category-words-insert__search-input"
-        :placeholder="$t('find-word')"
+        :placeholder="t('find-word')"
         left-icon="search"
       />
 
@@ -122,7 +122,7 @@ function getTooltipText(wordId: Id): string {
         icon="add"
         appearance="inline"
         class="category-words-insert__create-word-button"
-        :label="$t('create-word')"
+        :label="t('create-word')"
         @click="showWordForm = true"
       />
     </div>
@@ -137,8 +137,8 @@ function getTooltipText(wordId: Id): string {
       <template v-if="nothingWereFound">
         <ZeroStateComp
           icon="search"
-          :title="$t('not-found', { search })"
-          :description="$t('not-found-description')"
+          :title="t('not-found', { search })"
+          :description="t('not-found-description')"
         />
       </template>
 
@@ -210,7 +210,7 @@ function getTooltipText(wordId: Id): string {
 
     <div class="category-words-insert__footer">
       <div v-show="modalWordsStore.isAnyWordSelected">
-        <span v-text="$t('show-only-selected')" />
+        <span v-text="t('show-only-selected')" />
         <SwitchComp v-model="showOnlySelected" />
       </div>
 
@@ -219,13 +219,13 @@ function getTooltipText(wordId: Id): string {
 
       <div>
         <ButtonComp
-          :label="$t('cancel')"
+          :label="t('cancel')"
           appearance="secondary"
           @click="close"
         />
 
         <ButtonComp
-          :label="$t('add')"
+          :label="t('add')"
           :disabled="!modalWordsStore.isAnyWordSelected"
           @click="clickAddButton"
         >

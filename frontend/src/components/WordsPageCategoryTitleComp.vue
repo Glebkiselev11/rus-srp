@@ -2,17 +2,19 @@
 
 <script setup lang="ts">
 import { ref, toRef } from "vue";
-import AllWordsCategoryImageComp from "./Categories/AllWordsCategoryImageComp.vue";
-
+import { useI18n } from "vue-i18n";
+import { extractCurrentLanguageTranslation } from "@/common/translations";
+import { useCategoryByIdQuery, useUpdateCategory } from "@/queries/categories";
+import type { Id } from "@/types/api";
 import type { Category } from "@/types/categories";
 import ImagePreviewComp from "./ImagePreviewComp.vue";
 import DropdownMenuComp from "./DropdownMenuComp.vue";
 import ButtonComp from "./ButtonComp.vue";
 import RemoveCategoryModalComp from "./Categories/RemoveCategoryModalComp.vue";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
-import { extractCurrentLanguageTranslation } from "@/common/translations";
-import type { Id } from "@/types/api";
-import { useCategoryByIdQuery, useUpdateCategory } from "@/queries/categories";
+import AllWordsCategoryImageComp from "./Categories/AllWordsCategoryImageComp.vue";
+
+const { t } = useI18n();
 
 const props = defineProps<{
   categoryId?: Id;
@@ -61,13 +63,13 @@ function updateCategoryImage(src: string) {
       v-slot="{ isMenuOpen }"
       :items="[
         {
-          label: $t('edit'),
+          label: t('edit'),
           icon: 'edit',
           handler: editCategory,
         },
         'separator',
         {
-          label: $t('delete'),
+          label: t('delete'),
           icon: 'delete',
           color: 'negative',
           handler: openRemoveCategoryModal,
@@ -100,7 +102,7 @@ function updateCategoryImage(src: string) {
   <div v-else-if="!categoryId" class="words-page-category-title">
     <AllWordsCategoryImageComp size="56px" />
     <h2>
-      {{ $t("all-words") }}
+      {{ t("all-words") }}
     </h2>
   </div>
 </template>
