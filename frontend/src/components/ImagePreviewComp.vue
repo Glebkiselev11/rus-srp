@@ -1,96 +1,92 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
+<script setup lang="ts">
+import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
+import { addCropImagaeParamsToUrl } from "@/common/utils";
+import type { IconSize } from "@/types/icons";
 import IconComp from "@/components/IconComp/index.vue";
 import ModalComp from "@/components/ModalComp.vue";
 import ImagesSearchComp from "./ImagesSearchComp.vue";
-import { addCropImagaeParamsToUrl } from "@/common/utils";
-import type { IconSize } from "@/types/icons";
 
 type PreviewSize = "24px" | "32px" | "40px" | "48px" | "56px" | "64px" | "96px";
 
-export default defineComponent({
-  name: "ImagePreviewComp",
-  components: {
-    IconComp,
-    ModalComp,
-    ImagesSearchComp,
-  },
-  props: {
-    src: {
-      type: [String, null] as PropType<string | null>,
-      required: true,
-    },
-    imageSearchModalSubtitle: {
-      type: String,
-      default: null,
-    },
-    // Disable modal window and show image preview only
-    static: {
-      type: Boolean,
-      default: false,
-    },
-    defaultImageSearchQuery: {
-      type: String,
-      default: "",
-    },
-    size: {
-      type: String as PropType<PreviewSize>,
-      default: "40px",
-    },
-  },
-  emits: ["update:src"],
-  data() {
-    return {
-      isModalVisible: false,
-    };
-  },
-  computed: {
-    srcWithParams(): string {
-      return this.src ? this.addCropImagaeParamsToUrl(this.src, 200) : "";
-    },
-    imagesSearchModalTitle(): string {
-      return this.src ? this.$t("edit-image") : this.$t("add-image");
-    },
-    iconSize(): IconSize {
-      switch (this.size) {
-        case "24px":
-          return "small";
-        case "32px":
-        case "40px":
-          return "compact";
-        default:
-          return "regular";
-      }
-    },
-  },
-  methods: {
-    addCropImagaeParamsToUrl,
-    handleClick(e: Event): void {
-      if (this.static) return;
+const { t } = useI18n();
 
-      e.stopPropagation();
-      this.isModalVisible = true;
-    },
-    handleSelectImage(src: string): void {
-      this.$emit("update:src", src);
-      this.isModalVisible = false;
-    },
-  },
+type Props = {
+  src: string | null;
+  imageSearchModalSubtitle?: string;
+  static?: boolean;
+  defaultImageSearchQuery?: string;
+  size?: PreviewSize;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  imageSearchModalSubtitle: undefined,
+  static: false,
+  defaultImageSearchQuery: "",
+  size: "40px",
 });
+
+const emit = defineEmits<{
+  (event: "update:src", src: string): void;
+}>();
+
+const isModalVisible = ref(false);
+
+const srcWithParams = computed(() => {
+  return props.src ? addCropImagaeParamsToUrl(props.src, 200) : "";
+});
+
+const imagesSearchModalTitle = computed(() => {
+  return props.src ? t("edit-image") : t("add-image");
+});
+
+const iconSize = computed((): IconSize => {
+  switch (props.size) {
+    case "24px":
+      return "small";
+    case "32px":
+    case "40px":
+      return "compact";
+    default:
+      return "regular";
+  }
+});
+
+function handleClick(e: Event): void {
+  if (props.static) return;
+
+  e.stopPropagation();
+  isModalVisible.value = true;
+}
+
+function handleSelectImage(src: string): void {
+  emit("update:src", src);
+  isModalVisible.value = false;
+}
 </script>
 
 <template>
   <button
     class="image-preview"
-    :disabled="static"
-    :style="{ width: size, height: size, minWidth: size, minHeight: size }"
+    :disabled="props.static"
+    :style="{
+      width: props.size,
+      height: props.size,
+      minWidth: props.size,
+      minHeight: props.size,
+    }"
     @click="handleClick"
   >
-    <img v-if="src" :src="srcWithParams" />
+    <img v-if="props.src" :src="srcWithParams" />
     <IconComp v-else name="filter_hdr" :size="iconSize" color="placeholder" />
 
-    <div v-if="!static" class="image-preview--overlay">
-      <IconComp v-if="src" name="edit" color="contrast" :size="iconSize" />
+    <div v-if="!props.static" class="image-preview--overlay">
+      <IconComp
+        v-if="props.src"
+        name="edit"
+        color="contrast"
+        :size="iconSize"
+      />
 
       <IconComp
         v-else
@@ -102,19 +98,19 @@ export default defineComponent({
   </button>
 
   <ModalComp
-    v-if="!static && isModalVisible"
+    v-if="!props.static && isModalVisible"
     :title="imagesSearchModalTitle"
     :subtitle="imageSearchModalSubtitle"
     @close="isModalVisible = false"
   >
-    <template v-if="src" #header-left>
+    <template v-if="props.src" #header-left>
       <ImagePreviewComp :src="srcWithParams" static />
     </template>
 
     <template #content>
       <ImagesSearchComp
-        :default-search-query="defaultImageSearchQuery"
-        :saved-link="src"
+        :default-search-query="props.defaultImageSearchQuery"
+        :saved-link="props.src"
         @select="handleSelectImage"
       />
     </template>
