@@ -1,55 +1,47 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
+<script setup lang="ts">
 import ButtonComp from "./ButtonComp.vue";
 
 type TitleTag = "h1" | "h2" | "h3" | "h4" | "h5";
 
-export default defineComponent({
-  name: "HeaderComp",
-  components: {
-    ButtonComp,
-  },
-  props: {
-    title: {
-      type: String,
-      default: null,
-    },
-    titleTag: {
-      type: String as PropType<TitleTag>,
-      default: "h3",
-    },
-    paddingInline: {
-      type: String,
-      default: "16px",
-    },
-    subtitle: {
-      type: String,
-      default: null,
-    },
-    closeButton: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: ["close"],
-  methods: {
-    close(e: Event): void {
-      this.$emit("close", e);
-    },
-  },
+type Props = {
+  title?: string;
+  titleTag?: TitleTag;
+  paddingInline?: string;
+  subtitle?: string;
+  closeButton?: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  title: undefined,
+  titleTag: "h3",
+  paddingInline: "16px",
+  subtitle: undefined,
+  closeButton: false,
 });
+
+const emit = defineEmits<{
+  (event: "close", e: Event): void;
+}>();
+
+function close(e: Event): void {
+  emit("close", e);
+}
 </script>
 
 <template>
-  <header class="header" :style="{ paddingInline }">
+  <header class="header" :style="{ paddingInline: props.paddingInline }">
     <div class="header__part-container">
       <slot name="left" />
       <div>
-        <component :is="titleTag" v-if="title">
-          {{ title }}
+        <component :is="props.titleTag" v-if="props.title">
+          {{ props.title }}
         </component>
 
-        <span v-if="subtitle" class="header__subtitle" v-text="subtitle" />
+        <span
+          v-if="props.subtitle"
+          class="header__subtitle"
+          v-text="props.subtitle"
+        />
       </div>
     </div>
 
@@ -57,7 +49,7 @@ export default defineComponent({
       <slot name="right" />
 
       <ButtonComp
-        v-if="closeButton"
+        v-if="props.closeButton"
         icon="close"
         appearance="inline"
         color="neutral"
