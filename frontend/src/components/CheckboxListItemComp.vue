@@ -1,26 +1,15 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
+<script setup lang="ts">
+type Props = {
+  label: string;
+  paddingBlock?: string;
+  appearance?: "inline" | "secondary";
+  disabled?: boolean;
+};
 
-export default defineComponent({
-  name: "CheckboxListItemComp",
-  props: {
-    label: {
-      type: String,
-      required: true,
-    },
-    paddingBlock: {
-      type: String,
-      default: "8px",
-    },
-    appearance: {
-      type: String as PropType<"inline" | "secondary">,
-      default: "inline",
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-  },
+const props = withDefaults(defineProps<Props>(), {
+  paddingBlock: "8px",
+  appearance: "inline",
+  disabled: false,
 });
 </script>
 
@@ -28,12 +17,12 @@ export default defineComponent({
   <label
     class="checkbox-list-item"
     :class="[
-      `checkbox-list-item--appearance-${appearance}`,
-      { 'checkbox-list-item--disabled': disabled },
+      `checkbox-list-item--appearance-${props.appearance}`,
+      { 'checkbox-list-item--disabled': props.disabled },
     ]"
-    :style="{ paddingBlock }"
+    :style="{ paddingBlock: props.paddingBlock }"
   >
-    {{ label }}
+    {{ props.label }}
     <slot />
   </label>
 </template>
