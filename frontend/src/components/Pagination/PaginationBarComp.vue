@@ -1,78 +1,56 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
+<script setup lang="ts">
+import { computed } from "vue";
 import SelectComp from "@/components/SelectComp.vue";
 import InputComp from "@/components/InputComp.vue";
 import PaginationComp from "./PaginationComp.vue";
 
-export default defineComponent({
-  name: "PaginationBarComp",
-  components: {
-    SelectComp,
-    InputComp,
-    PaginationComp,
-  },
-  props: {
-    count: {
-      type: Number,
-      required: true,
-    },
-    offset: {
-      type: Number,
-      required: true,
-    },
-    limit: {
-      type: Number,
-      required: true,
-    },
-    limitOptions: {
-      type: Array as PropType<{ value: number; label: string }[]>,
-      required: true,
-    },
-  },
-  emits: ["update:limit", "update:offset"],
-  computed: {
-    currentRange(): string {
-      const last = this.offset + this.limit;
-      if (last > this.count) return `${this.offset + 1}-${this.count}`;
+const props = defineProps<{
+  count: number;
+  offset: number;
+  limit: number;
+  limitOptions: { value: number; label: string }[];
+}>();
 
-      return `${this.offset + 1}-${last}`;
-    },
-    currentPage(): number {
-      return Math.ceil(this.offset / this.limit) + 1;
-    },
-    lastPage(): number {
-      return Math.ceil(this.count / this.limit);
-    },
-    showPaginationConrols(): boolean {
-      return this.count > this.limit;
-    },
-  },
-  methods: {
-    updateLimit(value: number) {
-      this.$emit("update:limit", value);
-    },
-    changePage(value: number) {
-      this.updateOffset((value - 1) * this.limit);
-    },
-    updateOffset(value: number) {
-      this.$emit("update:offset", value);
-    },
-  },
+const emit = defineEmits<{
+  (event: "update:limit", value: number): void;
+  (event: "update:offset", value: number): void;
+}>();
+
+const currentRange = computed(() => {
+  const last = props.offset + props.limit;
+  if (last > props.count) return `${props.offset + 1}-${props.count}`;
+
+  return `${props.offset + 1}-${last}`;
 });
+const currentPage = computed(() => Math.ceil(props.offset / props.limit) + 1);
+const lastPage = computed(() => Math.ceil(props.count / props.limit));
+const showPaginationConrols = computed(() => props.count > props.limit);
+
+function updateLimit(value: number) {
+  emit("update:limit", value);
+}
+
+function changePage(value: number) {
+  emit("update:offset", (value - 1) * props.limit);
+}
+
+function updateOffset(value: number) {
+  emit("update:offset", value);
+}
 </script>
 
 <template>
   <div class="pagination-bar">
     <div class="pagination-bar__section">
       <div class="count-info">
-        {{ $t("pagination.info", { currentRange, count }) }}
+        {{ $t("pagination.info", { currentRange, count: props.count }) }}
       </div>
 
       <div class="limit-controller">
         <span class="limit-controller__text">{{ $t("pagination.show") }}</span>
         <SelectComp
-          :model-value="limit"
-          :options="limitOptions"
+          :model-value="props.limit"
+          :options="props.limitOptions"
           size="compact"
           appearance="filled"
           @update:model-value="updateLimit"
@@ -99,9 +77,9 @@ export default defineComponent({
       </div>
 
       <PaginationComp
-        :limit="limit"
-        :offset="offset"
-        :count="count"
+        :limit="props.limit"
+        :offset="props.offset"
+        :count="props.count"
         @update:offset="updateOffset"
       />
     </div>
