@@ -1,4 +1,5 @@
 <script setup lang="ts" generic="T">
+import { useI18n } from "vue-i18n";
 import { useDebounceFn } from "@vueuse/core";
 import { onMounted, ref, watch } from "vue";
 import type { IconName } from "../types/icons";
@@ -28,6 +29,8 @@ type Props = {
   focusOnMount?: boolean;
   resetValue?: T;
 };
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   label: undefined,
@@ -111,56 +114,56 @@ function resetInput() {
 <template>
   <InputWrapperComp
     ref="wrapper"
-    :label="label"
-    :error="errorText"
-    :for="inputId"
-    :style="{ width }"
+    :label="props.label"
+    :error="props.errorText"
+    :for="props.inputId"
+    :style="{ width: props.width }"
   >
-    <div class="input" @keypress="(e) => $emit('keypress', e)">
+    <div class="input" @keypress="(e) => emit('keypress', e)">
       <IconComp
-        v-if="leftIcon"
+        v-if="props.leftIcon"
         class="input--left-icon"
-        :name="leftIcon"
+        :name="props.leftIcon"
         color="tertiary"
       />
 
       <input
-        :id="inputId"
+        :id="props.inputId"
         ref="input"
         v-model="_modelValue"
         class="input__field"
         :class="[
-          `input__field--size-${size}`,
-          `input__field--appearance-${appearance}`,
+          `input__field--size-${props.size}`,
+          `input__field--appearance-${props.appearance}`,
         ]"
-        :style="{ width }"
-        :type="type"
-        :placeholder="placeholder"
-        :disabled="disabled"
-        :error="error || Boolean(errorText)"
-        :max="max"
-        :min="min"
+        :style="{ width: props.width }"
+        :type="props.type"
+        :placeholder="props.placeholder"
+        :disabled="props.disabled"
+        :error="props.error || Boolean(props.errorText)"
+        :max="props.max"
+        :min="props.min"
         autocomplete="off"
         @input="handleInput"
       />
 
       <div class="input__buttons">
         <ButtonComp
-          v-show="clearButton && modelValue"
+          v-show="props.clearButton && props.modelValue"
           icon="cancel"
           color="neutral"
-          :size="size"
+          :size="props.size"
           appearance="inline"
           icon-color="tertiary"
           @click="clearInput"
         />
 
-        <TooltipComp :text="$t('reset')" position="top">
+        <TooltipComp :text="t('reset')" position="top">
           <ButtonComp
-            v-show="resetValue && modelValue !== resetValue"
+            v-show="props.resetValue && props.modelValue !== props.resetValue"
             icon="restart_alt"
             color="neutral"
-            :size="size"
+            :size="props.size"
             appearance="inline"
             icon-color="tertiary"
             @click="resetInput"
