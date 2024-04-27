@@ -5,9 +5,10 @@ import WordFormComp from "./WordFormComp.vue";
 import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";
-import { translationPreview } from "@/common/translations";
+import { useTranslations } from "@/common/useTranslations";
 import { useI18n } from "vue-i18n";
 
+const { translationPreview } = useTranslations();
 const { t } = useI18n();
 const emit = defineEmits<{
   (e: "close"): void;

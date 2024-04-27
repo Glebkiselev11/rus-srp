@@ -4,7 +4,7 @@ import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useModalWordsStore } from "@/stores/modalWords";
 import { highlighTextByQuery } from "@/common/utils";
-import { getLanguageCodesOrder } from "@/common/translations";
+import { useTranslations } from "@/common/useTranslations";
 import InputComp from "../InputComp.vue";
 import ButtonComp from "../ButtonComp.vue";
 import WordFormModalComp from "../WordForm/WordFormModalComp.vue";
@@ -19,6 +19,7 @@ import SkeletonItemComp from "../SkeletonItemComp.vue";
 import ImagePreviewComp from "../ImagePreviewComp.vue";
 import { useWordsInfinityQuery } from "@/queries/words";
 
+const { getLanguageCodesOrder } = useTranslations();
 const { t } = useI18n();
 const props = defineProps<{
   categoryId: Id;

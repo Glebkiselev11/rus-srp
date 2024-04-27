@@ -3,7 +3,7 @@
 <script setup lang="ts">
 import { ref, toRef } from "vue";
 import { useI18n } from "vue-i18n";
-import { extractCurrentLanguageTranslation } from "@/common/translations";
+import { useTranslations } from "@/common/useTranslations";
 import { useCategoryByIdQuery, useUpdateCategory } from "@/queries/categories";
 import type { Id } from "@/types/api";
 import type { Category } from "@/types/categories";
@@ -15,6 +15,7 @@ import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalCo
 import AllWordsCategoryImageComp from "./Categories/AllWordsCategoryImageComp.vue";
 
 const { t } = useI18n();
+const { extractCurrentLanguageTranslation } = useTranslations();
 
 const props = defineProps<{
   categoryId?: Id;

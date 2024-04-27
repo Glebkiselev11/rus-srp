@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import SelectComp from "@/components/SelectComp.vue";
 import InputComp from "@/components/InputComp.vue";
 import PaginationComp from "./PaginationComp.vue";
+
+const { t } = useI18n();
 
 const props = defineProps<{
   count: number;
@@ -43,11 +46,11 @@ function updateOffset(value: number) {
   <div class="pagination-bar">
     <div class="pagination-bar__section">
       <div class="count-info">
-        {{ $t("pagination.info", { currentRange, count: props.count }) }}
+        {{ t("pagination.info", { currentRange, count: props.count }) }}
       </div>
 
       <div class="limit-controller">
-        <span class="limit-controller__text">{{ $t("pagination.show") }}</span>
+        <span class="limit-controller__text">{{ t("pagination.show") }}</span>
         <SelectComp
           :model-value="props.limit"
           :options="props.limitOptions"
@@ -61,7 +64,7 @@ function updateOffset(value: number) {
     <div v-if="showPaginationConrols" class="pagination-bar__section">
       <div class="select-page-controller">
         <span class="select-page-controller__text">
-          {{ $t("pagination.select-page") }}
+          {{ t("pagination.select-page") }}
         </span>
 
         <InputComp

@@ -3,11 +3,7 @@ import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import { highlighTextByQuery } from "@/common/utils";
-import {
-  getLanguageCodesOrder,
-  getLanguageLabel,
-  translationPreview,
-} from "@/common/translations";
+import { useTranslations } from "@/common/useTranslations";
 import { computed, ref } from "vue";
 import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/types/translations";
@@ -40,6 +36,8 @@ import { useUpdateWord, useDeleteWord, useWordsQuery } from "@/queries/words";
 const { t, locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
+const { getLanguageCodesOrder, getLanguageLabel, translationPreview } =
+  useTranslations();
 
 const LIMIT_DEFAULT = 25;
 

@@ -4,7 +4,7 @@ import { useI18n } from "vue-i18n";
 import { computed, ref, toRef } from "vue";
 import ModalComp from "../ModalComp.vue";
 import { addCropImagaeParamsToUrl } from "@/common/utils";
-import { extractCurrentLanguageTranslation } from "@/common/translations";
+import { useTranslations } from "@/common/useTranslations";
 import ImagePreviewComp from "../ImagePreviewComp.vue";
 import CategoryWordsInsertComp from "./CategoryWordsInsertComp.vue";
 import { useModalWordsStore } from "@/stores/modalWords";
@@ -13,6 +13,7 @@ import type { Id } from "@/types/api";
 import { useCategoryByIdQuery } from "@/queries/categories";
 
 const { t } = useI18n();
+const { extractCurrentLanguageTranslation } = useTranslations();
 
 const props = defineProps<{
   categoryId: Id;

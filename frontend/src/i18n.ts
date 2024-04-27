@@ -24,7 +24,7 @@ function slavicPluralizationRule(choice: number, choicesLength: number) {
 }
 
 export default createI18n({
-  allowComposition: true,
+  legacy: false,
   locale: localStorage.getItem(STORAGE_KEY) || "eng",
   pluralizationRules: {
     rus: slavicPluralizationRule,

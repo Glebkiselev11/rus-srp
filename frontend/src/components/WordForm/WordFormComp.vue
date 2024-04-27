@@ -14,7 +14,7 @@ import { useUpdateWord, useCreateWord } from "@/queries/words";
 const { t } = useI18n();
 
 const props = defineProps<{
-  initialWord: DraftWord | null;
+  initialWord?: DraftWord;
 }>();
 
 const emit = defineEmits<{

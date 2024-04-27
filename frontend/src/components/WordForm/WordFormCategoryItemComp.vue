@@ -2,7 +2,7 @@
 import type { Id } from "@/types/api";
 import type { Category } from "@/types/categories";
 import { highlighTextByQuery } from "@/common/utils";
-import { extractCurrentLanguageTranslation } from "@/common/translations";
+import { useTranslations } from "@/common/useTranslations";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import ListItemComp from "@/components/ListItemComp.vue";
 
@@ -10,6 +10,8 @@ type Props = {
   category: Category;
   query?: string;
 };
+
+const { extractCurrentLanguageTranslation } = useTranslations();
 
 const props = withDefaults(defineProps<Props>(), {
   query: "",

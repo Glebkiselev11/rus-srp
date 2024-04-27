@@ -3,11 +3,8 @@ import { useI18n } from "vue-i18n";
 import { computed, ref, watch } from "vue";
 import type { LanguageCode } from "@/types/translations";
 import { useDraftWordStore } from "@/stores/draftWord";
-import {
-  getLanguageLabel,
-  translationPreview,
-  getLanguageCodesOrder,
-} from "@/common/translations";
+
+import { useTranslations } from "@/common/useTranslations";
 import ButtonComp from "../ButtonComp.vue";
 import CheckboxListItemComp from "../CheckboxListItemComp.vue";
 import CheckboxComp from "../CheckboxComp.vue";
@@ -22,6 +19,8 @@ type Props = {
   srpCyrillicValidationError?: string;
 };
 
+const { translationPreview, getLanguageCodesOrder, getLanguageLabel } =
+  useTranslations();
 const { t } = useI18n();
 const draftWordStore = useDraftWordStore();
 
