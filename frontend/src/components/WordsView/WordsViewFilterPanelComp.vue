@@ -26,10 +26,10 @@ const emit = defineEmits<{
   ): void;
 }>();
 
-const orderOptions = [
+const orderOptions = computed(() => [
   { value: "-created_at" as Order, label: t("order.last-added") },
   { value: "-updated_at" as Order, label: t("order.last-updated") },
-];
+]);
 
 const switcherValue = computed<boolean>({
   get() {
