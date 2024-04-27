@@ -1,6 +1,6 @@
-<script lang="ts">
-import { debounce } from "lodash";
-import { type PropType, defineComponent } from "vue";
+<script setup lang="ts" generic="T">
+import { useDebounceFn } from "@vueuse/core";
+import { onMounted, ref, watch } from "vue";
 import type { IconName } from "../types/icons";
 import IconComp from "./IconComp/index.vue";
 import ButtonComp from "./ButtonComp.vue";
@@ -8,139 +8,104 @@ import InputWrapperComp from "./InputWrapperComp.vue";
 import TooltipComp from "./TooltipComp.vue";
 import type { InputSize, InputAppearance } from "@/types/input";
 
-export default defineComponent({
-  name: "InputComp",
-  components: {
-    IconComp,
-    ButtonComp,
-    InputWrapperComp,
-    TooltipComp,
-  },
-  props: {
-    label: {
-      type: String,
-      default: null,
-    },
-    inputId: {
-      type: String,
-      default: "input-id",
-    },
-    type: {
-      type: String,
-      default: "text",
-    },
-    appearance: {
-      type: String as PropType<InputAppearance>,
-      default: "default",
-    },
-    modelValue: {
-      type: [String, Number],
-      required: true,
-    },
-    placeholder: {
-      type: String,
-      default: null,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    error: {
-      type: Boolean,
-      default: false,
-    },
-    errorText: {
-      type: String,
-      default: null,
-    },
-    leftIcon: {
-      type: String as PropType<IconName>,
-      default: null,
-    },
-    debounce: {
-      type: Boolean,
-      default: false,
-    },
-    max: {
-      type: Number,
-      default: null,
-    },
-    min: {
-      type: Number,
-      default: null,
-    },
-    width: {
-      type: String,
-      default: "100%",
-    },
-    size: {
-      type: String as PropType<InputSize>,
-      default: "regular",
-    },
-    clearButton: {
-      type: Boolean,
-      default: false,
-    },
-    focusOnMount: {
-      type: Boolean,
-      default: false,
-    },
-    // If provided - show reset button
-    resetValue: {
-      type: [String, Number],
-      default: undefined,
-    },
-  },
-  emits: ["update:modelValue", "keypress"],
-  data() {
-    return {
-      value: this.modelValue,
-    };
-  },
-  watch: {
-    // This only need with autofill case
-    modelValue(value: string | number) {
-      this.value = value;
-    },
-  },
-  mounted() {
-    if (this.focusOnMount) {
-      this.setFocus();
-    }
-  },
-  methods: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    debounceEmit: debounce(function (this: any, value: unknown) {
-      this.emitValue(value);
-    }, 500),
-    emitValue(value: unknown) {
-      this.$emit("update:modelValue", value);
-    },
-    handleInput() {
-      if (
-        (this.max && Number(this.value) > this.max) ||
-        (this.min && Number(this.value) < this.min)
-      ) {
-        return;
-      }
-      this.debounce
-        ? this.debounceEmit(this.value)
-        : this.emitValue(this.value);
-    },
-    setFocus() {
-      const input = this.$refs.input as HTMLInputElement;
-      input.focus();
-    },
-    clearInput() {
-      this.emitValue("");
-      this.setFocus();
-    },
-    resetInput() {
-      this.emitValue(this.resetValue);
-      this.setFocus();
-    },
-  },
+type Props = {
+  modelValue: T;
+  label?: string;
+  inputId?: string;
+  type?: string;
+  appearance?: InputAppearance;
+  placeholder?: string;
+  disabled?: boolean;
+  error?: boolean;
+  errorText?: string;
+  leftIcon?: IconName;
+  debounce?: boolean;
+  max?: number;
+  min?: number;
+  width?: string;
+  size?: InputSize;
+  clearButton?: boolean;
+  focusOnMount?: boolean;
+  resetValue?: T;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  label: undefined,
+  inputId: "input-id",
+  type: "text",
+  appearance: "default",
+  placeholder: undefined,
+  disabled: false,
+  error: false,
+  errorText: undefined,
+  leftIcon: undefined,
+  debounce: false,
+  max: undefined,
+  min: undefined,
+  width: "100%",
+  size: "regular",
+  clearButton: false,
+  focusOnMount: false,
+  resetValue: undefined,
 });
+
+const emit = defineEmits<{
+  (event: "update:modelValue", value: T): void;
+  (event: "keypress", e: KeyboardEvent): void;
+}>();
+
+const input = ref<HTMLInputElement | null>(null);
+const _modelValue = ref();
+
+// This only need with autofill case
+watch(
+  () => props.modelValue,
+  (value) => {
+    _modelValue.value = value;
+  }
+);
+
+onMounted(() => {
+  if (props.focusOnMount) {
+    setFocus();
+  }
+
+  _modelValue.value = props.modelValue;
+});
+
+const debounceEmit = useDebounceFn(() => {
+  emitValue(_modelValue.value);
+}, 500);
+
+function emitValue(value: T) {
+  emit("update:modelValue", value);
+}
+
+function handleInput() {
+  if (
+    (props.max && Number(_modelValue.value) > props.max) ||
+    (props.min && Number(_modelValue.value) < props.min)
+  ) {
+    return;
+  }
+  props.debounce ? debounceEmit() : emitValue(_modelValue.value);
+}
+
+function setFocus() {
+  input.value?.focus();
+}
+
+function clearInput() {
+  emitValue("" as T);
+  setFocus();
+}
+
+function resetInput() {
+  if (props.resetValue === undefined) return;
+
+  emitValue(props.resetValue);
+  setFocus();
+}
 </script>
 
 <template>
@@ -162,7 +127,7 @@ export default defineComponent({
       <input
         :id="inputId"
         ref="input"
-        v-model="value"
+        v-model="_modelValue"
         class="input__field"
         :class="[
           `input__field--size-${size}`,
