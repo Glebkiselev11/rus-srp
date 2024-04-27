@@ -1,29 +1,19 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { computed } from "vue";
 import SelectComp from "./SelectComp.vue";
 import { STORAGE_KEY } from "@/i18n";
 import { getLanguageList } from "@/common/translations";
+import { useI18n } from "vue-i18n";
 
-export default defineComponent({
-  name: "LanguageSelectComp",
-  components: {
-    SelectComp,
-  },
-  data() {
-    return {
-      options: getLanguageList(),
-    };
-  },
-  computed: {
-    currentLanguage: {
-      get() {
-        return this.$i18n.locale;
-      },
-      set(code: string) {
-        this.$i18n.locale = code;
-        localStorage.setItem(STORAGE_KEY, code);
-      },
-    },
+const { t, locale } = useI18n();
+
+const options = getLanguageList();
+
+const currentLanguage = computed({
+  get: () => locale.value,
+  set: (code: string) => {
+    locale.value = code;
+    localStorage.setItem(STORAGE_KEY, code);
   },
 });
 </script>
@@ -31,7 +21,7 @@ export default defineComponent({
 <template>
   <SelectComp
     v-model="currentLanguage"
-    :label="$t('interface-language')"
+    :label="t('interface-language')"
     :options="options"
     appearance="inline"
     size="compact"
