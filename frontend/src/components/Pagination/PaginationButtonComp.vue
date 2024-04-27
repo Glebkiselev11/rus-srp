@@ -1,27 +1,20 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+type Props = {
+  label: string | null;
+  active: boolean;
+};
 
-export default defineComponent({
-  name: "PaginationButtonComp",
-  props: {
-    label: {
-      type: String,
-      default: null,
-    },
-    active: {
-      type: Boolean,
-      required: true,
-    },
-  },
-  emits: ["click"],
-  methods: {
-    click(e: MouseEvent) {
-      if (!this.active) {
-        this.$emit("click", e);
-      }
-    },
-  },
-});
+const props = defineProps<Props>();
+
+const emit = defineEmits<{
+  (event: "click", e: MouseEvent): void;
+}>();
+
+function click(e: MouseEvent) {
+  if (!props.active) {
+    emit("click", e);
+  }
+}
 </script>
 
 <template>
