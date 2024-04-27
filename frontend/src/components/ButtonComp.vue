@@ -39,6 +39,7 @@ const emit = defineEmits<{
   (event: "click", e: MouseEvent): void;
 }>();
 
+const button = ref<HTMLButtonElement | null>(null);
 const buttonWidthOnMount = ref<string | undefined>(undefined);
 
 const iconColor = computed(() => {
@@ -91,7 +92,6 @@ const loaderSize = computed(() => {
 
 onMounted(() => {
   // Get the width of the button on mount and use it on loading state
-  const button = ref<HTMLButtonElement | null>(null);
   buttonWidthOnMount.value = `${button.value?.offsetWidth}px`;
 });
 
