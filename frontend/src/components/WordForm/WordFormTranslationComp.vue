@@ -1,5 +1,3 @@
-<script lang="ts"></script>
-
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { computed, ref, watch } from "vue";
