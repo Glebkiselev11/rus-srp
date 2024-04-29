@@ -114,7 +114,6 @@ function getTooltipText(wordId: Id): string {
         appearance="outline"
         clear-button
         debounce
-        class="category-words-insert__search-input"
         :placeholder="t('find-word')"
         left-icon="search"
       />
@@ -260,13 +259,9 @@ function getTooltipText(wordId: Id): string {
     border-block-end: none;
   }
 
-  &__search-input {
-    flex-shrink: 1;
-  }
-
   &__create-word-button {
     flex-shrink: 0;
-    margin-inline-start: 16px;
+    margin-inline-start: 12px;
   }
 
   &__footer {
