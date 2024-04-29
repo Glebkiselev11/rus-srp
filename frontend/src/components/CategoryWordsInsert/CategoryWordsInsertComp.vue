@@ -114,6 +114,7 @@ function getTooltipText(wordId: Id): string {
         appearance="default"
         clear-button
         debounce
+        focus-on-mount
         :placeholder="t('find-word')"
         left-icon="search"
       />
