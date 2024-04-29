@@ -244,7 +244,7 @@ function getTooltipText(wordId: Id): string {
 @import "@/styles/main";
 
 .category-words-insert {
-  width: 704px;
+  width: 742px;
 
   &__panel {
     display: flex;
