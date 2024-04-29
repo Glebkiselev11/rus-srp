@@ -1,36 +1,27 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { computed } from "vue";
 
-export default defineComponent({
-  name: "SkeletonItemComp",
-  props: {
-    width: {
-      type: String,
-      default: "100%",
-    },
-    height: {
-      type: String,
-      default: "100%",
-    },
-    randomWidth: {
-      type: Boolean,
-      default: false,
-    },
-    borderRadius: {
-      type: String,
-      default: "0",
-    },
-  },
-  computed: {
-    _width(): string {
-      if (!this.randomWidth) {
-        return this.width;
-      }
+type Props = {
+  width?: string;
+  height?: string;
+  randomWidth?: boolean;
+  borderRadius?: string;
+};
 
-      const randomWidth = Math.random() * 100;
-      return randomWidth < 50 ? `${randomWidth + 50}%` : `${randomWidth}%`;
-    },
-  },
+const props = withDefaults(defineProps<Props>(), {
+  width: "100%",
+  height: "100%",
+  randomWidth: false,
+  borderRadius: "0",
+});
+
+const _width = computed(() => {
+  if (!props.randomWidth) {
+    return props.width;
+  }
+
+  const randomWidth = Math.random() * 100;
+  return randomWidth < 50 ? `${randomWidth + 50}%` : `${randomWidth}%`;
 });
 </script>
 
@@ -39,8 +30,8 @@ export default defineComponent({
     class="skeleton-item"
     :style="{
       width: _width,
-      height: height,
-      borderRadius,
+      height: props.height,
+      borderRadius: props.borderRadius,
     }"
   />
 </template>

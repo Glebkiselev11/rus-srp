@@ -1,44 +1,34 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
+<script setup lang="ts">
 import IconComp from "@/components/IconComp/index.vue";
 import type { IconName } from "../types/icons";
 
-export default defineComponent({
-  name: "NavbarItemComp",
-  components: {
-    IconComp,
-  },
-  props: {
-    active: {
-      type: Boolean,
-      default: false,
-    },
-    iconName: {
-      type: String as PropType<IconName>,
-      required: true,
-    },
-    label: {
-      type: String,
-      default: "",
-    },
-    showLabels: {
-      type: Boolean,
-      default: false,
-    },
-  },
+type Props = {
+  iconName: IconName;
+  active?: boolean;
+  label?: string;
+  showLabels?: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  active: false,
+  label: "",
+  showLabels: false,
 });
 </script>
 
 <template>
-  <div class="navbar-item" :class="{ 'navbar-item--active': active }">
-    <IconComp :name="iconName" :color="active ? 'accent-primary' : 'primary'" />
+  <div class="navbar-item" :class="{ 'navbar-item--active': props.active }">
+    <IconComp
+      :name="props.iconName"
+      :color="props.active ? 'accent-primary' : 'primary'"
+    />
 
     <span
-      v-if="showLabels"
+      v-if="props.showLabels"
       class="navbar-item__label"
-      :class="{ 'navbar-item__label--active': active }"
+      :class="{ 'navbar-item__label--active': props.active }"
     >
-      {{ label }}
+      {{ props.label }}
     </span>
   </div>
 </template>

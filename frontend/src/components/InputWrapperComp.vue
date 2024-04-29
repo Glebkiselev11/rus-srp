@@ -1,34 +1,23 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { ref } from "vue";
 import ErrorComp from "./ErrorComp.vue";
 
-export default defineComponent({
-  name: "InputWrapperComp",
-  components: { ErrorComp },
-  props: {
-    label: {
-      type: String,
-      default: null,
-    },
-    error: {
-      type: String,
-      default: null,
-    },
-    for: {
-      type: String,
-      required: true,
-    },
-  },
-  methods: {
-    selectInput() {
-      const target = this.$refs.target as HTMLElement;
-      const element = target.querySelector(`#${this.for}`) as HTMLElement;
-      if (element) {
-        element.tagName === "BUTTON" ? element.click() : element.focus();
-      }
-    },
-  },
-});
+type Props = {
+  for: string;
+  label?: string;
+  error?: string;
+};
+
+const props = defineProps<Props>();
+
+const target = ref<HTMLElement | null>(null);
+
+function selectInput() {
+  const element = target.value?.querySelector(`#${props.for}`) as HTMLElement;
+  if (element) {
+    element.tagName === "BUTTON" ? element.click() : element.focus();
+  }
+}
 </script>
 
 <template>

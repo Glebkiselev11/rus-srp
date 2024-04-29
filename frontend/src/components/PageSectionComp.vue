@@ -1,24 +1,18 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
 import HeaderComp from "@/components/HeaderComp.vue";
 
-export default defineComponent({
-  name: "PageSectionComp",
-  components: {
-    HeaderComp,
-  },
-  props: {
-    title: {
-      type: String,
-      default: null,
-    },
-  },
+type Props = {
+  title?: string;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  title: undefined,
 });
 </script>
 
 <template>
   <div class="page-section">
-    <HeaderComp v-if="title" :title="title" />
+    <HeaderComp v-if="props.title" :title="props.title" />
 
     <div>
       <slot />

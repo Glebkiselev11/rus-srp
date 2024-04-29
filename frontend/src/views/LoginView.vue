@@ -1,68 +1,59 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
+import { login } from "@/common/auth";
 import InputComp from "@/components/InputComp.vue";
 import ButtonComp from "@/components/ButtonComp.vue";
 import AllWordsCategoryImageComp from "@/components/Categories/AllWordsCategoryImageComp.vue";
 import ErrorComp from "@/components/ErrorComp.vue";
-import { login } from "@/common/auth";
 
-export default defineComponent({
-  name: "LoginView",
-  components: {
-    InputComp,
-    ButtonComp,
-    ErrorComp,
-    AllWordsCategoryImageComp,
-  },
-  data() {
-    return {
-      username: "",
-      password: "",
-      authError: undefined as string | undefined,
-      usernameError: undefined as string | undefined,
-      passwordError: undefined as string | undefined,
-    };
-  },
-  watch: {
-    username() {
-      this.usernameError = undefined;
-      this.authError = undefined;
-    },
-    password() {
-      this.passwordError = undefined;
-      this.authError = undefined;
-    },
-  },
-  methods: {
-    login,
-    async tryLogin() {
-      this.triggerValidation();
+const { t } = useI18n();
+const router = useRouter();
 
-      if (this.usernameError || this.passwordError) {
-        return;
-      }
+const username = ref("");
+const password = ref("");
+const authError = ref<string | undefined>();
+const usernameError = ref<string | undefined>();
+const passwordError = ref<string | undefined>();
 
-      try {
-        await login({
-          username: this.username,
-          password: this.password,
-        });
-        this.$router.push({ name: "words" });
-      } catch (error) {
-        this.authError = this.$t("login-failed");
-      }
-    },
-    triggerValidation() {
-      const error = this.$t("required");
-      if (!this.username) {
-        this.usernameError = error;
-      }
-      if (!this.password) {
-        this.passwordError = error;
-      }
-    },
-  },
+watch(username, () => {
+  usernameError.value = undefined;
+  authError.value = undefined;
 });
+
+watch(password, () => {
+  passwordError.value = undefined;
+  authError.value = undefined;
+});
+
+function triggerValidation() {
+  const error = t("required");
+  if (!username.value) {
+    usernameError.value = error;
+  }
+  if (!password.value) {
+    passwordError.value = error;
+  }
+}
+
+async function tryLogin() {
+  triggerValidation();
+
+  if (usernameError.value || passwordError.value) {
+    return;
+  }
+
+  try {
+    await login({
+      username: username.value,
+      password: password.value,
+    });
+    router.push({ name: "words" });
+  } catch (error) {
+    authError.value = t("login-failed");
+  }
+}
 </script>
 
 <template>
@@ -70,14 +61,14 @@ export default defineComponent({
     <div class="login-view__container">
       <div class="login-view__header">
         <AllWordsCategoryImageComp size="56px" />
-        <h1>{{ $t("login-to-word-database") }}</h1>
+        <h1>{{ t("login-to-word-database") }}</h1>
 
         <ErrorComp v-if="authError" :text="authError" />
       </div>
 
       <InputComp
         v-model="username"
-        :label="$t('login')"
+        :label="t('login')"
         :error-text="usernameError"
         :error="Boolean(authError)"
         input-id="username"
@@ -85,7 +76,7 @@ export default defineComponent({
 
       <InputComp
         v-model="password"
-        :label="$t('password')"
+        :label="t('password')"
         :error-text="passwordError"
         :error="Boolean(authError)"
         type="password"
@@ -94,7 +85,7 @@ export default defineComponent({
 
       <ButtonComp
         class="login-view__login-button"
-        :label="$t('to-login')"
+        :label="t('to-login')"
         full-width
         @click="tryLogin"
       />

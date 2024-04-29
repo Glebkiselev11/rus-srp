@@ -1,50 +1,34 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
+<script setup lang="ts">
+import { ref } from "vue";
 
-export default defineComponent({
-  name: "TooltipComp",
-  props: {
-    text: {
-      type: String,
-      required: true,
-    },
-    position: {
-      type: String as PropType<
-        "top" | "bottom" | "left" | "right" | "bottom-right"
-      >,
-      default: "bottom",
-    },
-    textWrap: {
-      type: Boolean,
-      default: false,
-    },
-    hidden: {
-      type: Boolean,
-      default: false,
-    },
-    color: {
-      type: String as PropType<"dark" | "light">,
-      default: "dark",
-    },
-  },
-  data() {
-    return {
-      timeout: 0,
-      showTooltip: false,
-    };
-  },
-  methods: {
-    show() {
-      this.timeout = setTimeout(() => {
-        this.showTooltip = true;
-      }, 400);
-    },
-    hide() {
-      this.showTooltip = false;
-      if (this.timeout) clearTimeout(this.timeout);
-    },
-  },
+type Props = {
+  text: string;
+  position?: "top" | "bottom" | "left" | "right" | "bottom-right";
+  textWrap?: boolean;
+  hidden?: boolean;
+  color?: "dark" | "light";
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  position: "bottom",
+  textWrap: false,
+  hidden: false,
+  color: "dark",
 });
+
+const timeout = ref(0);
+const showTooltip = ref(false);
+
+const show = () => {
+  timeout.value = setTimeout(() => {
+    showTooltip.value = true;
+  }, 400);
+};
+
+const hide = () => {
+  showTooltip.value = false;
+  if (timeout.value) clearTimeout(timeout.value);
+};
 </script>
 
 <template>
@@ -54,15 +38,15 @@ export default defineComponent({
     </div>
 
     <span
-      v-show="showTooltip && !hidden"
+      v-show="showTooltip && !props.hidden"
       class="tooltip"
       :class="[
-        `tooltip--${position}`,
-        `tooltip--color-${color}`,
-        textWrap ? 'tooltip--wrap' : '',
+        `tooltip--${props.position}`,
+        `tooltip--color-${props.color}`,
+        props.textWrap ? 'tooltip--wrap' : '',
       ]"
     >
-      {{ text }}
+      {{ props.text }}
     </span>
   </div>
 </template>

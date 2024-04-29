@@ -1,61 +1,56 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { onMounted, onUnmounted } from "vue";
 import HeaderComp from "@/components/HeaderComp.vue";
 
-export default defineComponent({
-  name: "ModalComp",
-  components: {
-    HeaderComp,
-  },
-  props: {
-    title: {
-      type: String,
-      required: true,
-    },
-    subtitle: {
-      type: String,
-      default: null,
-    },
-    headerPaddingInline: {
-      type: String,
-      default: "16px",
-    },
-  },
-  emits: ["close"],
-  mounted() {
-    this.updateBackgroundShadow();
-  },
-  unmounted() {
-    this.updateBackgroundShadow();
-  },
-  methods: {
-    handleClose(): void {
-      this.$emit("close");
-    },
-    // It needs us to keep only one shadow (on last modal) for all modals
-    updateBackgroundShadow() {
-      const modals = document.body.querySelectorAll(".modal-screen");
-      const className = "modal-screen--last-modal";
-      modals.forEach((modal) => {
-        modal.classList.remove(className);
-      });
+type Props = {
+  title: string;
+  subtitle?: string;
+  headerPaddingInline?: string;
+};
 
-      const lastModal = modals[modals.length - 1];
-      if (lastModal) {
-        lastModal.classList.add(className);
-      }
-    },
-  },
+const props = withDefaults(defineProps<Props>(), {
+  subtitle: "",
+  headerPaddingInline: "16px",
 });
+
+const emit = defineEmits<{
+  (event: "close"): void;
+}>();
+
+onMounted(() => {
+  updateBackgroundShadow();
+});
+
+onUnmounted(() => {
+  updateBackgroundShadow();
+});
+
+// It needs us to keep only one shadow (on last modal) for all modals
+function updateBackgroundShadow() {
+  const modals = document.body.querySelectorAll(".modal-screen");
+  const className = "modal-screen--last-modal";
+  modals.forEach((modal) => {
+    modal.classList.remove(className);
+  });
+
+  const lastModal = modals[modals.length - 1];
+  if (lastModal) {
+    lastModal.classList.add(className);
+  }
+}
+
+function handleClose() {
+  emit("close");
+}
 </script>
 
 <template>
   <div class="modal-screen">
     <div class="modal">
       <HeaderComp
-        :title="title"
-        :subtitle="subtitle"
-        :padding-inline="headerPaddingInline"
+        :title="props.title"
+        :subtitle="props.subtitle"
+        :padding-inline="props.headerPaddingInline"
         close-button
         @close="handleClose"
       >

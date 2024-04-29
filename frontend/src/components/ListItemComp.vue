@@ -1,28 +1,18 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
-
+<script setup lang="ts">
 type Size = "regular" | "compact";
 
-export default defineComponent({
-  name: "ListItemComp",
-  props: {
-    clickable: {
-      type: Boolean,
-      default: false,
-    },
-    size: {
-      type: String as PropType<Size>,
-      default: "regular",
-    },
-    selected: {
-      type: Boolean,
-      default: false,
-    },
-    paddingInline: {
-      type: String,
-      default: "16px",
-    },
-  },
+type Props = {
+  clickable?: boolean;
+  size?: Size;
+  selected?: boolean;
+  paddingInline?: string;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  clickable: false,
+  size: "regular",
+  selected: false,
+  paddingInline: "16px",
 });
 </script>
 
@@ -30,12 +20,12 @@ export default defineComponent({
   <div
     class="list-item"
     :class="{
-      'list-item--clickable': clickable,
-      'list-item--selected': selected,
-      'list-item--compact': size === 'compact',
+      'list-item--clickable': props.clickable,
+      'list-item--selected': props.selected,
+      'list-item--compact': props.size === 'compact',
     }"
     :style="{
-      paddingInline,
+      paddingInline: props.paddingInline,
     }"
   >
     <slot />

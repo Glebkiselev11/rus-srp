@@ -1,130 +1,107 @@
-<script lang="ts">
+<script setup lang="ts">
+import { computed, onMounted, ref } from "vue";
 import type { IconColor, IconName, IconSize } from "@/types/icons";
-import IconComp from "@/components/IconComp/index.vue";
-import { defineComponent, type PropType } from "vue";
 import type {
   ButtonColor,
   ButtonSize,
   ButtonAppearance,
 } from "@/types/buttons";
 import SpinnerComp, { type SpinnerColor } from "./SpinnerComp.vue";
+import IconComp from "@/components/IconComp/index.vue";
 
-export default defineComponent({
-  name: "ButtonComp",
-  components: {
-    IconComp,
-    SpinnerComp,
-  },
-  props: {
-    label: {
-      type: String,
-      default: null,
-    },
-    icon: {
-      type: String as PropType<IconName>,
-      default: null,
-    },
-    color: {
-      type: String as PropType<ButtonColor>,
-      default: "accent-primary",
-    },
-    size: {
-      type: String as PropType<ButtonSize>,
-      default: "regular",
-    },
-    appearance: {
-      type: String as PropType<ButtonAppearance>,
-      default: "primary",
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    iconColor: {
-      type: String as PropType<IconColor>,
-      default: null,
-    },
-    pressed: {
-      type: Boolean,
-      default: false,
-    },
-    fullWidth: {
-      type: Boolean,
-      default: false,
-    },
-    loading: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: ["click"],
-  data() {
-    return {
-      buttonWidthOnMount: undefined as string | undefined,
-    };
-  },
-  computed: {
-    _iconColor(): IconColor {
-      if (this.disabled) {
-        return "disabled";
-      }
+type Props = {
+  label?: string;
+  icon?: IconName;
+  color?: ButtonColor;
+  size?: ButtonSize;
+  appearance?: ButtonAppearance;
+  disabled?: boolean;
+  iconColor?: IconColor;
+  pressed?: boolean;
+  fullWidth?: boolean;
+  loading?: boolean;
+};
 
-      if (this.iconColor) {
-        return this.iconColor;
-      }
-
-      if (this.color === "neutral") {
-        return "primary";
-      }
-
-      if (this.appearance === "primary") {
-        return "contrast";
-      }
-
-      return this.color;
-    },
-    _iconSize(): IconSize {
-      if (this.size === "regular") {
-        return "regular";
-      } else {
-        return "compact";
-      }
-    },
-    _loaderColor(): SpinnerColor {
-      if (this.appearance === "primary") {
-        return "neutral";
-      }
-
-      if (this.color === "neutral") {
-        return "primary";
-      }
-
-      return this.color;
-    },
-
-    _loaderSize() {
-      if (this.size === "regular") {
-        return "24";
-      }
-
-      return "20";
-    },
-  },
-  mounted() {
-    // Get the width of the button on mount and use it on loading state
-    const button = this.$refs.button as HTMLButtonElement;
-    this.buttonWidthOnMount = `${button.offsetWidth}px`;
-  },
-  methods: {
-    onClick(e: MouseEvent) {
-      if (this.loading) {
-        return;
-      }
-
-      this.$emit("click", e);
-    },
-  },
+const props = withDefaults(defineProps<Props>(), {
+  label: undefined,
+  icon: undefined,
+  color: "accent-primary",
+  size: "regular",
+  appearance: "primary",
+  disabled: false,
+  iconColor: undefined,
+  pressed: false,
+  fullWidth: false,
+  loading: false,
 });
+
+const emit = defineEmits<{
+  (event: "click", e: MouseEvent): void;
+}>();
+
+const button = ref<HTMLButtonElement | null>(null);
+const buttonWidthOnMount = ref<string | undefined>(undefined);
+
+const iconColor = computed(() => {
+  if (props.disabled) {
+    return "disabled";
+  }
+
+  if (props.iconColor) {
+    return props.iconColor;
+  }
+
+  if (props.color === "neutral") {
+    return "primary";
+  }
+
+  if (props.appearance === "primary") {
+    return "contrast";
+  }
+
+  return props.color;
+});
+
+const iconSize = computed((): IconSize => {
+  if (props.size === "regular") {
+    return "regular";
+  }
+
+  return "compact";
+});
+
+const loaderColor = computed((): SpinnerColor => {
+  if (props.appearance === "primary") {
+    return "neutral";
+  }
+
+  if (props.color === "neutral") {
+    return "primary";
+  }
+
+  return props.color;
+});
+
+const loaderSize = computed(() => {
+  if (props.size === "regular") {
+    return "24";
+  }
+
+  return "20";
+});
+
+onMounted(() => {
+  // Get the width of the button on mount and use it on loading state
+  buttonWidthOnMount.value = `${button.value?.offsetWidth}px`;
+});
+
+function onClick(e: MouseEvent) {
+  if (props.loading) {
+    return;
+  }
+
+  emit("click", e);
+}
 </script>
 
 <template>
@@ -133,34 +110,43 @@ export default defineComponent({
     class="button"
     :style="{ minWidth: buttonWidthOnMount }"
     :class="[
-      `button--size-${size}`,
-      `button--appearance-${appearance}`,
-      `button--color-${color}`,
-      { 'button--icon-and-label': icon && label },
-      { 'button--only-icon': icon && !label },
-      { 'button--only-label': label && !icon },
-      { 'button--pressed': pressed },
-      { 'button--full-width': fullWidth },
-      { 'button--loading': loading },
+      `button--size-${props.size}`,
+      `button--appearance-${props.appearance}`,
+      `button--color-${props.color}`,
+      { 'button--icon-and-label': props.icon && props.label },
+      { 'button--only-icon': props.icon && !props.label },
+      { 'button--only-label': props.label && !props.icon },
+      { 'button--pressed': props.pressed },
+      { 'button--full-width': props.fullWidth },
+      { 'button--loading': props.loading },
     ]"
-    :disabled="disabled"
+    :disabled="props.disabled"
     @click="onClick"
   >
     <SpinnerComp
-      v-if="loading && !icon"
-      :size="_loaderSize"
-      :color="_loaderColor"
+      v-if="props.loading && !props.icon"
+      :size="loaderSize"
+      :color="loaderColor"
     />
 
     <template v-else>
-      <template v-if="icon">
-        <SpinnerComp v-if="loading" :size="_loaderSize" :color="_loaderColor" />
+      <template v-if="props.icon">
+        <SpinnerComp
+          v-if="props.loading"
+          :size="loaderSize"
+          :color="loaderColor"
+        />
 
-        <IconComp v-else :name="icon" :color="_iconColor" :size="_iconSize" />
+        <IconComp
+          v-else
+          :name="props.icon"
+          :color="iconColor"
+          :size="iconSize"
+        />
       </template>
 
-      <template v-if="label">
-        {{ label }}
+      <template v-if="props.label">
+        {{ props.label }}
       </template>
 
       <slot name="right" />

@@ -1,51 +1,46 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { ref } from "vue";
 
-export default defineComponent({
-  name: "TableRowStatusComp",
-  props: {
-    active: {
-      type: Boolean,
-      default: false,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  data() {
-    return {
-      mouseInsideModal: false,
-      isModalOpen: false,
-    };
-  },
-  methods: {
-    handleMouseLeaveRow() {
-      if (this.disabled || this.mouseInsideModal) return;
+type Props = {
+  active?: boolean;
+  disabled?: boolean;
+};
 
-      this.isModalOpen = false;
-    },
-    handleMouseLeaveModal() {
-      this.isModalOpen = false;
-      this.mouseInsideModal = false;
-    },
-    handleMouseOverOnRow() {
-      if (this.disabled) return;
-
-      this.isModalOpen = true;
-    },
-    handleClickInsideModal() {
-      this.isModalOpen = false;
-    },
-  },
+const props = withDefaults(defineProps<Props>(), {
+  active: false,
+  disabled: false,
 });
+
+const mouseInsideModal = ref(false);
+const isModalOpen = ref(false);
+
+function handleMouseLeaveRow() {
+  if (props.disabled || mouseInsideModal.value) return;
+
+  isModalOpen.value = false;
+}
+
+function handleMouseLeaveModal() {
+  isModalOpen.value = false;
+  mouseInsideModal.value = false;
+}
+
+function handleMouseOverOnRow() {
+  if (props.disabled) return;
+
+  isModalOpen.value = true;
+}
+
+function handleClickInsideModal() {
+  isModalOpen.value = false;
+}
 </script>
 
 <template>
   <tr
     class="table-row-status"
     :class="{
-      'table-row-status--disabled': disabled,
+      'table-row-status--disabled': props.disabled,
     }"
     @mouseover="handleMouseOverOnRow"
     @mouseleave="handleMouseLeaveRow"
@@ -53,7 +48,7 @@ export default defineComponent({
     <div
       class="table-row-status__indicator"
       :class="{
-        'table-row-status__indicator--active': active,
+        'table-row-status__indicator--active': props.active,
       }"
     />
 

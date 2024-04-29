@@ -5,12 +5,15 @@ import WordFormComp from "./WordFormComp.vue";
 import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";
-import { translationPreview } from "@/common/translations";
+import { useTranslations } from "@/common/useTranslations";
 import { useI18n } from "vue-i18n";
+import type { Id } from "@/types/api";
 
+const { translationPreview } = useTranslations();
 const { t } = useI18n();
 const emit = defineEmits<{
   (e: "close"): void;
+  (e: "created", createdWordId: Id): void;
 }>();
 
 const showCloseConfirmationModal = ref(false);
@@ -55,6 +58,11 @@ function tryClose() {
 function close() {
   emit("close");
   wordFormTabsStore.resetCurrentTab();
+  draftWordStore.resetDraftWord();
+}
+
+function handleCreated(createdWordId: Id) {
+  emit("created", createdWordId);
 }
 </script>
 
@@ -64,7 +72,7 @@ function close() {
       <WordFormComp
         :initial-word="draftWordStore.initialWord"
         @close="tryClose"
-        @saved="close"
+        @created="handleCreated"
       />
     </template>
   </ModalComp>

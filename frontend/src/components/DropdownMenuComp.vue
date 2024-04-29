@@ -1,8 +1,8 @@
-<script lang="ts">
-import type { IconColor, IconName } from "@/types/icons";
-import { defineComponent, type PropType } from "vue";
-import ListItemComp from "./ListItemComp.vue";
+<script setup lang="ts">
+import { nextTick, ref } from "vue";
 import { vOnClickOutside, vElementVisibility } from "@vueuse/components";
+import type { IconColor, IconName } from "@/types/icons";
+import ListItemComp from "./ListItemComp.vue";
 import IconComp from "@/components/IconComp/index.vue";
 
 type MenuItem = {
@@ -18,90 +18,76 @@ type Separator = "separator";
 
 type MenuPosition = "left" | "right";
 
-export default defineComponent({
-  name: "DropdownMenuComp",
-  directives: {
-    onClickOutside: vOnClickOutside,
-    elementVisibility: vElementVisibility,
-  },
-  components: {
-    ListItemComp,
-    IconComp,
-  },
-  props: {
-    items: {
-      type: Array as PropType<Array<MenuItem | Separator>>,
-      required: true,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    position: {
-      type: String as PropType<MenuPosition>,
-      default: "left",
-    },
-  },
-  data() {
-    return {
-      isMenuOpen: false,
-      isBottomMenuVisible: null as boolean | null,
-      menuLeft: 0,
-      menuTop: 0,
-    };
-  },
-  methods: {
-    toggleMenu() {
-      if (this.disabled) return;
-      this.isMenuOpen = !this.isMenuOpen;
+type Props = {
+  items: Array<MenuItem | Separator>;
+  disabled?: boolean;
+  position?: MenuPosition;
+};
 
-      if (this.isMenuOpen) {
-        this.$nextTick(() => {
-          this.calculateMenuPosition();
-        });
-      }
-    },
-    closeMenu() {
-      this.isMenuOpen = false;
-    },
-    setBottomMenuAngleVisibility(state: boolean) {
-      this.isBottomMenuVisible = state;
-    },
-    handdleClickOnItem(handler: () => void) {
-      handler();
-      this.closeMenu();
-    },
-    calculateMenuPosition() {
-      const trigger = this.$refs.trigger as HTMLElement;
-      const menu = this.$refs.menu as HTMLElement;
-      if (!trigger || !menu) return {};
-
-      const triggerRect = trigger.getBoundingClientRect();
-      const menuRect = menu.getBoundingClientRect();
-
-      const margin = 8;
-      this.menuTop = triggerRect.y + triggerRect.height + margin;
-
-      if (this.position === "left") {
-        this.menuLeft = triggerRect.left - menuRect.width + triggerRect.width;
-      } else {
-        this.menuLeft = triggerRect.left;
-      }
-
-      setTimeout(() => {
-        if (!this.isBottomMenuVisible) {
-          this.menuTop = triggerRect.y - menuRect.height - margin;
-        }
-      }, 10);
-    },
-    getIconColor(item: MenuItem) {
-      return item.iconColor || item.color;
-    },
-    getLabelColor(item: MenuItem) {
-      return item.labelColor || item.color;
-    },
-  },
+const props = withDefaults(defineProps<Props>(), {
+  disabled: false,
+  position: "left",
 });
+
+const isMenuOpen = ref(false);
+const isBottomMenuVisible = ref<boolean | null>(null);
+const menuLeft = ref(0);
+const menuTop = ref(0);
+const trigger = ref<HTMLElement>();
+const menu = ref<HTMLElement>();
+
+function toggleMenu() {
+  if (props.disabled) return;
+  isMenuOpen.value = !isMenuOpen.value;
+
+  if (isMenuOpen.value) {
+    nextTick(() => {
+      calculateMenuPosition();
+    });
+  }
+}
+
+function closeMenu() {
+  isMenuOpen.value = false;
+}
+
+function setBottomMenuAngleVisibility(state: boolean) {
+  isBottomMenuVisible.value = state;
+}
+
+function handdleClickOnItem(handler: () => void) {
+  handler();
+  closeMenu();
+}
+
+function calculateMenuPosition() {
+  if (!trigger.value || !menu.value) return;
+
+  const triggerRect = trigger.value.getBoundingClientRect();
+  const menuRect = menu.value.getBoundingClientRect();
+
+  const margin = 8;
+  menuTop.value = triggerRect.y + triggerRect.height + margin;
+
+  if (props.position === "left") {
+    menuLeft.value = triggerRect.left - menuRect.width + triggerRect.width;
+  } else {
+    menuLeft.value = triggerRect.left;
+  }
+
+  setTimeout(() => {
+    if (!isBottomMenuVisible.value) {
+      menuTop.value = triggerRect.y - menuRect.height - margin;
+    }
+  }, 10);
+}
+
+function getIconColor(item: MenuItem) {
+  return item.iconColor || item.color;
+}
+function getLabelColor(item: MenuItem) {
+  return item.labelColor || item.color;
+}
 </script>
 
 <template>

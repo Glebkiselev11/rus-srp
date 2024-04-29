@@ -1,50 +1,43 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import ModalComp from "./ModalComp.vue";
 import ButtonComp from "./ButtonComp.vue";
 
-export default defineComponent({
-  name: "FormCloseConfirmationModalComp",
-  components: {
-    ModalComp,
-    ButtonComp,
-  },
-  props: {
-    title: {
-      type: String,
-      required: true,
-    },
-    cancelButtonLabel: {
-      type: String,
-      required: true,
-    },
-  },
-  emits: ["close", "confirm"],
-  methods: {
-    close() {
-      this.$emit("close");
-    },
-    confirm() {
-      this.$emit("confirm");
-    },
-  },
-});
+const { t } = useI18n();
+
+const props = defineProps<{
+  title: string;
+  cancelButtonLabel: string;
+}>();
+
+const emit = defineEmits<{
+  (event: "close"): void;
+  (event: "confirm"): void;
+}>();
+
+function close() {
+  emit("close");
+}
+
+function confirm() {
+  emit("confirm");
+}
 </script>
 
 <template>
-  <ModalComp :title="title" header-padding-inline="20px" @close="close">
+  <ModalComp :title="props.title" header-padding-inline="20px" @close="close">
     <template #content>
       <div class="form-close-confirmation-modal">
-        {{ $t("modal-exit-confirmation.description") }}
+        {{ t("modal-exit-confirmation.description") }}
 
         <div class="form-close-confirmation-modal__buttons">
           <ButtonComp
-            :label="cancelButtonLabel"
+            :label="props.cancelButtonLabel"
             appearance="secondary"
             @click="close"
           />
           <ButtonComp
-            :label="$t('modal-exit-confirmation.confirm')"
+            :label="t('modal-exit-confirmation.confirm')"
             color="negative"
             @click="confirm"
           />

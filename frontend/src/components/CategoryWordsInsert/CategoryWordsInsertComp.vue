@@ -4,7 +4,7 @@ import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useModalWordsStore } from "@/stores/modalWords";
 import { highlighTextByQuery } from "@/common/utils";
-import { getLanguageCodesOrder } from "@/common/translations";
+import { useTranslations } from "@/common/useTranslations";
 import InputComp from "../InputComp.vue";
 import ButtonComp from "../ButtonComp.vue";
 import WordFormModalComp from "../WordForm/WordFormModalComp.vue";
@@ -19,6 +19,7 @@ import SkeletonItemComp from "../SkeletonItemComp.vue";
 import ImagePreviewComp from "../ImagePreviewComp.vue";
 import { useWordsInfinityQuery } from "@/queries/words";
 
+const { getLanguageCodesOrder } = useTranslations();
 const { t } = useI18n();
 const props = defineProps<{
   categoryId: Id;
@@ -103,6 +104,10 @@ function getTooltipText(wordId: Id): string {
 
   return t("add-to-category");
 }
+
+function handleWordCreated(id: Id) {
+  modalWordsStore.updateSelectedWordIds(id, true);
+}
 </script>
 
 <template>
@@ -110,11 +115,11 @@ function getTooltipText(wordId: Id): string {
     <div class="category-words-insert__panel">
       <InputComp
         v-model="search"
-        appearance="outline"
+        appearance="default"
         clear-button
         debounce
-        class="category-words-insert__search-input"
-        :placeholder="$t('find-word')"
+        focus-on-mount
+        :placeholder="t('find-word')"
         left-icon="search"
       />
 
@@ -122,7 +127,7 @@ function getTooltipText(wordId: Id): string {
         icon="add"
         appearance="inline"
         class="category-words-insert__create-word-button"
-        :label="$t('create-word')"
+        :label="t('create-word')"
         @click="showWordForm = true"
       />
     </div>
@@ -131,13 +136,14 @@ function getTooltipText(wordId: Id): string {
       :grid-template-columns="gridTemplateColumns"
       :infinite-scroll-config="{ distance: 100 }"
       table-height="calc(100vh - 300px)"
+      class="category-words-insert__table"
       @scroll-to-bottom="fetchNextPage"
     >
       <template v-if="nothingWereFound">
         <ZeroStateComp
           icon="search"
-          :title="$t('not-found', { search })"
-          :description="$t('not-found-description')"
+          :title="t('not-found', { search })"
+          :description="t('not-found-description')"
         />
       </template>
 
@@ -209,7 +215,7 @@ function getTooltipText(wordId: Id): string {
 
     <div class="category-words-insert__footer">
       <div v-show="modalWordsStore.isAnyWordSelected">
-        <span v-text="$t('show-only-selected')" />
+        <span v-text="t('show-only-selected')" />
         <SwitchComp v-model="showOnlySelected" />
       </div>
 
@@ -218,13 +224,13 @@ function getTooltipText(wordId: Id): string {
 
       <div>
         <ButtonComp
-          :label="$t('cancel')"
+          :label="t('cancel')"
           appearance="secondary"
           @click="close"
         />
 
         <ButtonComp
-          :label="$t('add')"
+          :label="t('add')"
           :disabled="!modalWordsStore.isAnyWordSelected"
           @click="clickAddButton"
         >
@@ -236,41 +242,48 @@ function getTooltipText(wordId: Id): string {
     </div>
   </div>
 
-  <WordFormModalComp v-if="showWordForm" @close="showWordForm = false" />
+  <WordFormModalComp
+    v-if="showWordForm"
+    @close="showWordForm = false"
+    @created="handleWordCreated"
+  />
 </template>
 
 <style lang="scss" scoped>
 @import "@/styles/main";
 
 .category-words-insert {
-  padding: 20px;
-  width: 704px;
+  width: 742px;
 
   &__panel {
     display: flex;
     align-items: center;
     margin-block-end: 16px;
+    margin-inline: 16px;
   }
 
-  &__search-input {
-    flex-shrink: 1;
+  &__table {
+    margin-inline: 16px;
+    border-radius: 8px 8px 0 0;
+    border-block-end: none;
   }
 
   &__create-word-button {
     flex-shrink: 0;
-    margin-inline-start: 16px;
+    margin-inline-start: 12px;
   }
 
   &__footer {
+    border-block-start: 1px solid $color-separator-primary;
     display: flex;
     justify-content: space-between;
-    margin-block-start: 20px;
-    height: 40px;
+    padding-block: 20px;
+    padding-inline: 16px;
+    align-items: center;
 
     & > div {
       display: flex;
       column-gap: 8px;
-      align-items: center;
     }
   }
 }

@@ -1,19 +1,7 @@
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  name: "EditIcon",
-  props: {
-    size: {
-      type: String,
-      required: true,
-    },
-  },
-});
-</script>
+<script setup lang="ts" />
 
 <template>
-  <svg :width="size" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M4.5 19.4998H5.6L16.675 8.4248L15.575 7.3248L4.5 18.3998V19.4998ZM19.85 7.3498L16.65 4.1498L17.7 3.0998C17.9833 2.81647 18.3333 2.6748 18.75 2.6748C19.1667 2.6748 19.5167 2.81647 19.8 3.0998L20.9 4.1998C21.1833 4.48314 21.325 4.83314 21.325 5.2498C21.325 5.66647 21.1833 6.01647 20.9 6.2998L19.85 7.3498ZM18.8 8.3998L6.2 20.9998H3V17.7998L15.6 5.1998L18.8 8.3998ZM16.125 7.8748L15.575 7.3248L16.675 8.4248L16.125 7.8748Z"
     />

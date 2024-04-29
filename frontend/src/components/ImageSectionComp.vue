@@ -1,40 +1,30 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
+<script setup lang="ts">
 import ImagePreviewComp from "./ImagePreviewComp.vue";
 
-export default defineComponent({
-  name: "ImageSectionComp",
-  components: { ImagePreviewComp },
-  props: {
-    src: {
-      type: [String, null] as PropType<string | null>,
-      required: true,
-    },
-    imageSearchModalSubtitle: {
-      type: String,
-      default: null,
-    },
-    defaultImageSearchQuery: {
-      type: String,
-      default: null,
-    },
-  },
-  emits: ["update:src"],
-  methods: {
-    updateSrc(src: string) {
-      this.$emit("update:src", src);
-    },
-  },
-});
+type Props = {
+  src: string | null;
+  imageSearchModalSubtitle?: string;
+  defaultImageSearchQuery?: string;
+};
+
+const props = defineProps<Props>();
+
+const emit = defineEmits<{
+  (event: "update:src", src: string): void;
+}>();
+
+function updateSrc(src: string) {
+  emit("update:src", src);
+}
 </script>
 
 <template>
   <div class="image-section">
     <ImagePreviewComp
       size="96px"
-      :src="src"
-      :image-search-modal-subtitle="imageSearchModalSubtitle"
-      :default-image-search-query="defaultImageSearchQuery"
+      :src="props.src"
+      :image-search-modal-subtitle="props.imageSearchModalSubtitle"
+      :default-image-search-query="props.defaultImageSearchQuery"
       @update:src="updateSrc"
     />
 

@@ -1,21 +1,24 @@
 <script lang="ts" setup>
+import { useI18n } from "vue-i18n";
 import TopBarComp from "@/components/TopBarComp.vue";
 import PageSectionComp from "@/components/PageSectionComp.vue";
 import IconComp from "@/components/IconComp/index.vue";
 import ListItemComp from "@/components/ListItemComp.vue";
 import LanguageSelectComp from "@/components/LanguageSelectComp.vue";
+
+const { t } = useI18n();
 </script>
 
 <template>
   <main class="settings-view">
     <TopBarComp>
       <template #left>
-        <h3>{{ $t("settings") }}</h3>
+        <h3>{{ t("settings") }}</h3>
       </template>
     </TopBarComp>
 
     <div class="settings-view__content">
-      <PageSectionComp :title="$t('general')">
+      <PageSectionComp :title="t('general')">
         <ListItemComp>
           <IconComp name="translate" />
 

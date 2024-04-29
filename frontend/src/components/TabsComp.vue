@@ -1,47 +1,39 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
-
+<script setup lang="ts">
 type Tab = {
   name: string;
   error: boolean;
 };
 
-export default defineComponent({
-  name: "TabsComp",
-  props: {
-    tabs: {
-      type: Array as PropType<Tab[]>,
-      required: true,
-    },
-    selectedTabIndex: {
-      type: Number,
-      required: true,
-    },
-    paddingInline: {
-      type: String,
-      default: "0px",
-    },
-  },
-  emits: ["update:selected-tab-index"],
-  methods: {
-    handleClick(index: number) {
-      this.$emit("update:selected-tab-index", index);
-    },
-  },
+type Props = {
+  tabs: Tab[];
+  selectedTabIndex: number;
+  paddingInline?: string;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  paddingInline: "0px",
 });
+
+const emit = defineEmits<{
+  (event: "update:selected-tab-index", index: number): void;
+}>();
+
+function handleClick(index: number) {
+  emit("update:selected-tab-index", index);
+}
 </script>
 
 <template>
-  <div class="tabs" :style="{ paddingInline }">
+  <div class="tabs" :style="{ paddingInline: props.paddingInline }">
     <button
-      v-for="(tab, i) in tabs"
+      v-for="(tab, i) in props.tabs"
       :key="i"
       class="tabs__button"
       :class="{
-        'tabs__button--active': i === selectedTabIndex,
+        'tabs__button--active': i === props.selectedTabIndex,
         'tabs__button--error': tab.error,
       }"
-      :disabled="i === selectedTabIndex"
+      :disabled="i === props.selectedTabIndex"
       @click.stop="handleClick(i)"
     >
       {{ tab.name }}

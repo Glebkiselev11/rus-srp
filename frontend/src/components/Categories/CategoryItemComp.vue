@@ -2,7 +2,7 @@
 import { useI18n } from "vue-i18n";
 import { ref } from "vue";
 import { highlighTextByQuery } from "@/common/utils";
-import { extractCurrentLanguageTranslation } from "@/common/translations";
+import { useTranslations } from "@/common/useTranslations";
 import type { Category } from "@/types/categories";
 import type { Id } from "@/types/api";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
@@ -12,6 +12,7 @@ import DropdownMenuComp from "../DropdownMenuComp.vue";
 import RemoveCategoryModalComp from "./RemoveCategoryModalComp.vue";
 
 const { t } = useI18n();
+const { extractCurrentLanguageTranslation } = useTranslations();
 
 type Props = {
   category: Category;

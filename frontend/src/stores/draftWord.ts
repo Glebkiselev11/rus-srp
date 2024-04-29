@@ -1,7 +1,9 @@
 import type { DraftWord, Word } from "@/types/words";
 import { defineStore } from "pinia";
 import { convertWordToDraftWord, isAnyFieldHasChanged } from "@/common/utils";
-import { getLanguageCodesOrder, translate } from "@/common/translations";
+import { translate } from "@/common/translations";
+import { useTranslations } from "@/common/useTranslations";
+import { computed, ref } from "vue";
 
 function _initDraftWord(): DraftWord {
   return {
@@ -15,77 +17,98 @@ function _initDraftWord(): DraftWord {
   };
 }
 
-export const useDraftWordStore = defineStore("draftWord", {
-  state: () => ({
-    draftWord: _initDraftWord(),
-    // if we are in editing mode, we need to store the initial word
-    initialWord: null as DraftWord | null,
-  }),
+export const useDraftWordStore = defineStore("draftWord", () => {
+  const { getLanguageCodesOrder } = useTranslations();
 
-  getters: {
-    translations(state): string[] {
-      return [
-        state.draftWord.rus,
-        state.draftWord.eng,
-        state.draftWord.srp_latin,
-        state.draftWord.srp_cyrillic,
-      ];
-    },
-    anyTranslationFilled(): boolean {
-      return this.translations.some((x) => Boolean(x));
-    },
-    allTranslationsFilled(): boolean {
-      return this.translations.every((x) => Boolean(x));
-    },
-    semifilledTranslations(): boolean {
-      return this.anyTranslationFilled && !this.allTranslationsFilled;
-    },
-    isEditMode(state): boolean {
-      return Boolean(state.initialWord);
-    },
-    isChanged(state): boolean {
-      if (state.initialWord) {
-        return isAnyFieldHasChanged(state.initialWord, state.draftWord);
-      } else {
-        return isAnyFieldHasChanged(_initDraftWord(), state.draftWord);
-      }
-    },
-    isTranslationChanged(state): boolean {
-      const initialWord = state.initialWord;
+  const draftWord = ref(_initDraftWord());
+  // if we are in editing mode, we need to store the initial word
+  const initialWord = ref<DraftWord>();
 
-      if (initialWord) {
-        const keys = getLanguageCodesOrder();
-        return keys.some((key) => initialWord[key] !== state.draftWord[key]);
-      }
-      return false;
-    },
-  },
+  const translations = computed(() => {
+    return [
+      draftWord.value.rus,
+      draftWord.value.eng,
+      draftWord.value.srp_latin,
+      draftWord.value.srp_cyrillic,
+    ];
+  });
 
-  actions: {
-    initDraftWord(word: Word | null = null) {
-      if (word) {
-        const _word = convertWordToDraftWord(word);
+  const anyTranslationFilled = computed(() => {
+    return translations.value.some((x) => Boolean(x));
+  });
 
-        this.draftWord = structuredClone(_word);
-        this.initialWord = structuredClone(_word);
-      } else {
-        this.draftWord = _initDraftWord();
-        this.initialWord = null;
-      }
-    },
-    resetDraftWord() {
-      this.initDraftWord();
-    },
-    resetTranslationApproved() {
-      this.draftWord.translation_approved =
-        this.initialWord?.translation_approved || false;
-    },
-    async autoFillTranslations() {
-      const fields = await translate(this.draftWord);
-      this.draftWord = {
-        ...this.draftWord,
-        ...fields,
-      };
-    },
-  },
+  const allTranslationsFilled = computed(() => {
+    return translations.value.every((x) => Boolean(x));
+  });
+
+  const semifilledTranslations = computed(() => {
+    return anyTranslationFilled.value && !allTranslationsFilled.value;
+  });
+
+  const isEditMode = computed(() => {
+    return Boolean(initialWord.value);
+  });
+
+  const isChanged = computed(() => {
+    if (initialWord.value) {
+      return isAnyFieldHasChanged(initialWord.value, draftWord.value);
+    } else {
+      return isAnyFieldHasChanged(_initDraftWord(), draftWord.value);
+    }
+  });
+
+  const isTranslationChanged = computed(() => {
+    const initialWordValue = initialWord.value;
+
+    if (initialWordValue) {
+      const keys = getLanguageCodesOrder();
+      return keys.some((key) => initialWordValue[key] !== draftWord.value[key]);
+    }
+    return false;
+  });
+
+  function initDraftWord(word?: Word) {
+    if (word) {
+      const _word = convertWordToDraftWord(word);
+
+      draftWord.value = structuredClone(_word);
+      initialWord.value = structuredClone(_word);
+    } else {
+      draftWord.value = _initDraftWord();
+      initialWord.value = undefined;
+    }
+  }
+
+  function resetDraftWord() {
+    initDraftWord();
+  }
+
+  function resetTranslationApproved() {
+    draftWord.value.translation_approved =
+      initialWord.value?.translation_approved || false;
+  }
+
+  async function autoFillTranslations() {
+    const fields = await translate(draftWord.value);
+    draftWord.value = {
+      ...draftWord.value,
+      ...fields,
+    };
+  }
+
+  return {
+    draftWord,
+    initialWord,
+    translations,
+    anyTranslationFilled,
+    allTranslationsFilled,
+    semifilledTranslations,
+    isEditMode,
+    isChanged,
+    isTranslationChanged,
+    initDraftWord,
+    resetDraftWord,
+    resetTranslationApproved,
+    autoFillTranslations,
+  };
 });

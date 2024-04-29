@@ -4,17 +4,16 @@ import { computed, onMounted, ref, watch } from "vue";
 import { CategoriesService } from "@/api";
 import { useCreateCategory, useUpdateCategory } from "@/queries/categories";
 import { capitalizeFirstLetter, isAnyFieldHasChanged } from "@/common/utils";
-import {
-  getLanguageLabel,
-  getLanguageList,
-  getLanguageCodesOrder,
-  translate,
-} from "@/common/translations";
+import { translate } from "@/common/translations";
+import { useTranslations } from "@/common/useTranslations";
 import type { Category, DraftCategory } from "@/types/categories";
 import type { LanguageCode } from "@/types/translations";
 import ImageSectionComp from "../ImageSectionComp.vue";
 import InputComp from "../InputComp.vue";
 import ButtonComp from "../ButtonComp.vue";
+
+const { getLanguageLabel, getLanguageList, getLanguageCodesOrder } =
+  useTranslations();
 
 const { t, locale } = useI18n();
 const createCategory = useCreateCategory();
@@ -316,7 +315,7 @@ function close() {
       >
         <InputComp
           v-model="draftCategory[selectedLanguage]"
-          :label="$t('category-name')"
+          :label="t('category-name')"
           width="400px"
           appearance="outline"
           :focus-on-mount="!props.category"
@@ -328,7 +327,7 @@ function close() {
       </ImageSectionComp>
 
       <div class="category-form__row">
-        <h4 v-text="$t('translation')" />
+        <h4 v-text="t('translation')" />
 
         <ButtonComp
           v-if="showFillAutoButton"
@@ -354,7 +353,7 @@ function close() {
     </div>
 
     <div class="category-form__footer">
-      <ButtonComp appearance="secondary" :label="$t('cancel')" @click="close" />
+      <ButtonComp appearance="secondary" :label="t('cancel')" @click="close" />
       <ButtonComp
         :label="saveButtonLabel"
         :loading="savingLoading"

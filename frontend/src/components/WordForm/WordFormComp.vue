@@ -10,16 +10,17 @@ import TabsComp from "../TabsComp.vue";
 import WordFormTranslationComp from "./WordFormTranslationComp.vue";
 import WordFormCategoriesComp from "./WordFormCategoriesComp.vue";
 import { useUpdateWord, useCreateWord } from "@/queries/words";
+import type { Id } from "@/types/api";
 
 const { t } = useI18n();
 
 const props = defineProps<{
-  initialWord: DraftWord | null;
+  initialWord?: DraftWord;
 }>();
 
 const emit = defineEmits<{
   (e: "close"): void;
-  (e: "saved"): void;
+  (e: "created", createdWordId: Id): void;
 }>();
 
 const updateWord = useUpdateWord();
@@ -146,28 +147,33 @@ async function triggerValidation() {
   await triggerWordNameUniqueValidation();
 }
 
-async function saveWord(resetAfterSave = false) {
+async function saveWord(saveAndAddNext = false) {
   await triggerValidation();
 
   if (!isValidToSave.value) return;
 
   savingLoading.value = true;
+  const id = draftWordStore.draftWord.id;
 
-  if (props.initialWord?.id) {
+  if (id) {
     await updateWord.mutateAsync({
       ...draftWordStore.draftWord,
-      id: props.initialWord.id,
+      id,
     });
   } else {
-    await createWord.mutateAsync(draftWordStore.draftWord);
+    const { data } = await createWord.mutateAsync(draftWordStore.draftWord);
+
+    if (data) {
+      emit("created", data.id);
+    }
   }
 
   savingLoading.value = false;
 
-  if (resetAfterSave) {
-    draftWordStore.resetDraftWord();
-  } else {
-    emit("saved");
+  draftWordStore.resetDraftWord();
+
+  if (!saveAndAddNext) {
+    close();
   }
 }
 </script>
@@ -196,12 +202,12 @@ async function saveWord(resetAfterSave = false) {
     </div>
 
     <div class="word-form__footer">
-      <ButtonComp appearance="secondary" :label="$t('cancel')" @click="close" />
+      <ButtonComp appearance="secondary" :label="t('cancel')" @click="close" />
 
       <ButtonComp
         v-if="!initialWord"
         appearance="primary"
-        :label="$t('create-and-add-next')"
+        :label="t('create-and-add-next')"
         color="accent-secondary"
         @click="saveWord(true)"
       />

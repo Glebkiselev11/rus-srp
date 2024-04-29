@@ -1,61 +1,60 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
+<script lang="ts" setup>
+import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import type { Category } from "@/types/categories";
-import { extractCurrentLanguageTranslation } from "@/common/translations";
+import { useTranslations } from "@/common/useTranslations";
 import ImagePreviewComp from "./ImagePreviewComp.vue";
 import TooltipComp from "./TooltipComp.vue";
 import ButtonComp from "./ButtonComp.vue";
 
 const MAX_IMAGES = 3;
 
-export default defineComponent({
-  name: "CategoriesPreviewBadgesComp",
-  components: {
-    ImagePreviewComp,
-    TooltipComp,
-    ButtonComp,
-  },
-  props: {
-    categories: {
-      type: Array as PropType<Category[]>,
-      required: true,
-    },
-    showAddButton: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: ["click"],
-  computed: {
-    images() {
-      return this.categories
-        .map((category) => category.image)
-        .slice(0, MAX_IMAGES);
-    },
-    categoryNames() {
-      return this.categories
-        .map((category) => extractCurrentLanguageTranslation(category))
-        .join(", ");
-    },
-    howManyMoreImages() {
-      return this.categories.length - MAX_IMAGES;
-    },
-  },
-  methods: {
-    click(e: MouseEvent) {
-      this.$emit("click", e);
-    },
-    isOverflowing() {
-      const element = this.$refs.names as HTMLSpanElement | undefined;
-      return element && element.scrollWidth > element.clientWidth;
-    },
-  },
+const { t } = useI18n();
+const { extractCurrentLanguageTranslation } = useTranslations();
+
+type Props = {
+  categories: Category[];
+  showAddButton?: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  showAddButton: false,
 });
+
+const emit = defineEmits<{
+  (event: "click", e: MouseEvent): void;
+}>();
+
+const names = ref<HTMLSpanElement | undefined>(undefined);
+
+const images = computed(() => {
+  return props.categories
+    .map((category) => category.image)
+    .slice(0, MAX_IMAGES);
+});
+
+const categoryNames = computed(() => {
+  return props.categories
+    .map((category) => extractCurrentLanguageTranslation(category))
+    .join(", ");
+});
+
+const howManyMoreImages = computed(() => {
+  return props.categories.length - MAX_IMAGES;
+});
+
+function click(e: MouseEvent) {
+  emit("click", e);
+}
+
+function isOverflowing() {
+  return names.value && names.value.scrollWidth > names.value.clientWidth;
+}
 </script>
 
 <template>
   <TooltipComp
-    v-if="categories.length > 0"
+    v-if="props.categories.length > 0"
     :text="categoryNames"
     position="bottom"
     text-wrap
@@ -85,8 +84,8 @@ export default defineComponent({
   </TooltipComp>
 
   <ButtonComp
-    v-else-if="showAddButton"
-    :label="$t('add')"
+    v-else-if="props.showAddButton"
+    :label="t('add')"
     icon="add"
     appearance="inline"
     size="compact"

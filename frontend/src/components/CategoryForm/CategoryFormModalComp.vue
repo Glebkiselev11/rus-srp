@@ -24,7 +24,7 @@ const emit = defineEmits<{
 const isChanged = ref(false);
 const showCloseConfirmationModal = ref(false);
 
-const { data } = useCategoryByIdQuery(toRef(props, "categoryId"));
+const { data, isFetched } = useCategoryByIdQuery(toRef(props, "categoryId"));
 
 const category = computed(() => {
   return data.value?.category;
@@ -71,6 +71,7 @@ function close() {
 
 <template>
   <ModalComp
+    v-if="isFetched"
     :title="title"
     :subtitle="subtitle"
     header-padding-inline="20px"

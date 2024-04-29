@@ -1,127 +1,100 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { useI18n } from "vue-i18n";
+import { computed, ref, watch } from "vue";
 import type { LanguageCode } from "@/types/translations";
-import ImageSectionComp from "../ImageSectionComp.vue";
-import InputComp from "../InputComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";
-import { mapActions, mapState } from "pinia";
-import {
-  getLanguageLabel,
-  translationPreview,
-  getLanguageCodesOrder,
-} from "@/common/translations";
+
+import { useTranslations } from "@/common/useTranslations";
 import ButtonComp from "../ButtonComp.vue";
 import CheckboxListItemComp from "../CheckboxListItemComp.vue";
 import CheckboxComp from "../CheckboxComp.vue";
+import ImageSectionComp from "../ImageSectionComp.vue";
+import InputComp from "../InputComp.vue";
 
-export default defineComponent({
-  name: "WordFormTranslationComp",
-  components: {
-    ImageSectionComp,
-    InputComp,
-    ButtonComp,
-    CheckboxListItemComp,
-    CheckboxComp,
-  },
-  props: {
-    uniqueWordError: {
-      type: Boolean,
-      default: false,
-    },
-    rusValidationError: {
-      type: String,
-      default: undefined,
-    },
-    engValidationError: {
-      type: String,
-      default: undefined,
-    },
-    srpLatinValidationError: {
-      type: String,
-      default: undefined,
-    },
-    srpCyrillicValidationError: {
-      type: String,
-      default: undefined,
-    },
-  },
-  data() {
-    return {
-      autoFillTranslationsLoading: false,
-    };
-  },
-  computed: {
-    ...mapState(useDraftWordStore, [
-      "draftWord",
-      "anyTranslationFilled",
-      "semifilledTranslations",
-      "allTranslationsFilled",
-      "isEditMode",
-      "isTranslationChanged",
-    ]),
-    wordPreview(): string {
-      if (this.isEditMode || this.anyTranslationFilled) {
-        return translationPreview(this.draftWord);
-      } else {
-        return this.$t("new-word");
-      }
-    },
-    showTranslationApprovedCheckbox() {
-      return this.allTranslationsFilled;
-    },
-  },
-  watch: {
-    isTranslationChanged(is: boolean) {
-      if (is) {
-        this.draftWord.translation_approved = false;
-      } else {
-        this.resetTranslationApproved();
-      }
-    },
-  },
-  methods: {
-    ...mapActions(useDraftWordStore, [
-      "autoFillTranslations",
-      "resetTranslationApproved",
-    ]),
-    getLanguageLabel,
-    getLanguageCodesOrder,
-    getValidationError(code: LanguageCode) {
-      switch (code) {
-        case "eng":
-          return this.engValidationError;
-        case "rus":
-          return this.rusValidationError;
-        case "srp_latin":
-          return this.srpLatinValidationError;
-        case "srp_cyrillic":
-          return this.srpCyrillicValidationError;
-      }
-    },
-    async _autoFillTranslations() {
-      if (!this.semifilledTranslations || this.autoFillTranslationsLoading)
-        return;
+type Props = {
+  uniqueWordError?: boolean;
+  rusValidationError?: string;
+  engValidationError?: string;
+  srpLatinValidationError?: string;
+  srpCyrillicValidationError?: string;
+};
 
-      try {
-        this.autoFillTranslationsLoading = true;
-        await this.autoFillTranslations();
-      } finally {
-        this.autoFillTranslationsLoading = false;
-      }
-    },
-  },
+const { translationPreview, getLanguageCodesOrder, getLanguageLabel } =
+  useTranslations();
+const { t } = useI18n();
+const draftWordStore = useDraftWordStore();
+
+const props = withDefaults(defineProps<Props>(), {
+  uniqueWordError: false,
+  rusValidationError: undefined,
+  engValidationError: undefined,
+  srpLatinValidationError: undefined,
+  srpCyrillicValidationError: undefined,
 });
+
+const autoFillTranslationsLoading = ref(false);
+
+const wordPreview = computed(() => {
+  if (draftWordStore.isEditMode || draftWordStore.anyTranslationFilled) {
+    return translationPreview(draftWordStore.draftWord);
+  } else {
+    return t("new-word");
+  }
+});
+
+const showTranslationApprovedCheckbox = computed(() => {
+  return draftWordStore.allTranslationsFilled;
+});
+
+watch(
+  () => draftWordStore.isTranslationChanged,
+  (is) => {
+    if (is) {
+      draftWordStore.draftWord.translation_approved = false;
+    } else {
+      draftWordStore.resetTranslationApproved();
+    }
+  }
+);
+
+function getValidationError(code: LanguageCode) {
+  switch (code) {
+    case "eng":
+      return props.engValidationError;
+    case "rus":
+      return props.rusValidationError;
+    case "srp_latin":
+      return props.srpLatinValidationError;
+    case "srp_cyrillic":
+      return props.srpCyrillicValidationError;
+  }
+}
+
+async function _autoFillTranslations() {
+  if (
+    !draftWordStore.semifilledTranslations ||
+    autoFillTranslationsLoading.value
+  )
+    return;
+
+  try {
+    autoFillTranslationsLoading.value = true;
+    await draftWordStore.autoFillTranslations();
+  } finally {
+    autoFillTranslationsLoading.value = false;
+  }
+}
 </script>
 
 <template>
   <div class="word-form-translation">
     <ImageSectionComp
-      :src="draftWord.image"
-      :default-image-search-query="draftWord.eng"
-      @update:src="draftWord.image = $event"
+      :src="draftWordStore.draftWord.image"
+      :default-image-search-query="draftWordStore.draftWord.eng"
+      @update:src="draftWordStore.draftWord.image = $event"
     >
       <div>
-        <h4>{{ $t("image") }}</h4>
+        <h4>{{ t("image") }}</h4>
 
         <span>{{ wordPreview }}</span>
       </div>
@@ -130,32 +103,38 @@ export default defineComponent({
     <div class="word-form-translation__row">
       <div>
         <span class="word-form-translation__header-wrap">
-          <h3>{{ $t("translation") }}</h3>
+          <h3>{{ t("translation") }}</h3>
 
           <CheckboxListItemComp
             v-if="showTranslationApprovedCheckbox"
             :label="
-              $t(draftWord.translation_approved ? 'approved' : 'not-approved')
+              t(
+                draftWordStore.draftWord.translation_approved
+                  ? 'approved'
+                  : 'not-approved'
+              )
             "
             appearance="secondary"
             padding-block="6px"
           >
-            <CheckboxComp v-model="draftWord.translation_approved" />
+            <CheckboxComp
+              v-model="draftWordStore.draftWord.translation_approved"
+            />
           </CheckboxListItemComp>
         </span>
 
         <span
-          v-if="uniqueWordError"
+          v-if="props.uniqueWordError"
           class="text-color-negative"
-          v-text="$t('word-already-exists')"
+          v-text="t('word-already-exists')"
         />
       </div>
 
       <ButtonComp
-        v-if="semifilledTranslations"
+        v-if="draftWordStore.semifilledTranslations"
         icon="edit_note"
         appearance="inline"
-        :label="$t('fill-in-auto')"
+        :label="t('fill-in-auto')"
         :loading="autoFillTranslationsLoading"
         @click="_autoFillTranslations"
       />
@@ -164,7 +143,7 @@ export default defineComponent({
     <InputComp
       v-for="code in getLanguageCodesOrder()"
       :key="code"
-      v-model="draftWord[code]"
+      v-model="draftWordStore.draftWord[code]"
       appearance="outline"
       :error-text="getValidationError(code)"
       clear-button

@@ -1,77 +1,67 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
+<script setup lang="ts">
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import type { Id, Order, TranslationApprovedStatus } from "@/types/api";
 import InputComp from "@/components/InputComp.vue";
 import SelectComp from "@/components/SelectComp.vue";
 import SwitchComp from "@/components/SwitchComp.vue";
 
-export default defineComponent({
-  name: "WordsViewFilterPanelComp",
-  components: {
-    InputComp,
-    SelectComp,
-    SwitchComp,
+type Props = {
+  search: string;
+  order: Order;
+  translationApprovedStatus: TranslationApprovedStatus;
+  categoryId?: Id;
+};
+
+const { t } = useI18n();
+
+const props = defineProps<Props>();
+
+const emit = defineEmits<{
+  (e: "update:search", value: string): void;
+  (e: "update:order", value: Order): void;
+  (
+    e: "update:translationApprovedStatus",
+    value: TranslationApprovedStatus
+  ): void;
+}>();
+
+const orderOptions = computed(() => [
+  { value: "-created_at" as Order, label: t("order.last-added") },
+  { value: "-updated_at" as Order, label: t("order.last-updated") },
+]);
+
+const switcherValue = computed<boolean>({
+  get() {
+    return props.translationApprovedStatus === "exclude_approved";
   },
-  props: {
-    search: {
-      type: String,
-      default: "",
-    },
-    order: {
-      type: String as PropType<Order>,
-      default: "",
-    },
-    translationApprovedStatus: {
-      type: String as PropType<TranslationApprovedStatus>,
-      required: true,
-    },
-    categoryId: {
-      type: Number as PropType<Id>,
-      default: null,
-    },
-  },
-  emits: ["update:search", "update:order", "update:translationApprovedStatus"],
-  data() {
-    return {
-      orderOptions: [
-        { value: "-created_at", label: this.$t("order.last-added") },
-        { value: "-updated_at", label: this.$t("order.last-updated") },
-      ],
-    };
-  },
-  computed: {
-    switcherValue: {
-      get(): boolean {
-        return this.translationApprovedStatus === "exclude_approved";
-      },
-      set(newValue: boolean) {
-        this.$emit(
-          "update:translationApprovedStatus",
-          newValue ? "exclude_approved" : "all"
-        );
-      },
-    },
-    searchPlaceholder(): string {
-      return this.categoryId
-        ? this.$t("search-in-category-words")
-        : this.$t("search-in-all-words");
-    },
-  },
-  methods: {
-    updateSearch(newSearch: string) {
-      this.$emit("update:search", newSearch);
-    },
-    updateOrder(newOrder: Order) {
-      this.$emit("update:order", newOrder);
-    },
+  set(newValue: boolean) {
+    emit(
+      "update:translationApprovedStatus",
+      newValue ? "exclude_approved" : "all"
+    );
   },
 });
+
+const searchPlaceholder = computed<string>(() => {
+  return props.categoryId
+    ? t("search-in-category-words")
+    : t("search-in-all-words");
+});
+
+function updateSearch(newSearch: string) {
+  emit("update:search", newSearch);
+}
+
+function updateOrder(newOrder: Order) {
+  emit("update:order", newOrder);
+}
 </script>
 
 <template>
   <div class="filter-panel">
     <InputComp
-      :model-value="search"
+      :model-value="props.search"
       appearance="outline"
       type="text"
       :placeholder="searchPlaceholder"
@@ -85,16 +75,16 @@ export default defineComponent({
     <div class="filter-panel__right">
       <div class="unconfirmed-switcher">
         <div class="unconfirmed-switcher__indicator" />
-        <span v-text="$t('only-unconfirmed')" />
+        <span v-text="t('only-unconfirmed')" />
         <SwitchComp v-model="switcherValue" />
       </div>
       <SelectComp
-        :model-value="order"
+        :model-value="props.order"
         :options="orderOptions"
         appearance="inline"
         icon="sort"
         size="compact"
-        :placeholder="$t('to-sort')"
+        :placeholder="t('to-sort')"
         compact
         @update:model-value="updateOrder"
       />

@@ -3,11 +3,7 @@ import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import { highlighTextByQuery } from "@/common/utils";
-import {
-  getLanguageCodesOrder,
-  getLanguageLabel,
-  translationPreview,
-} from "@/common/translations";
+import { useTranslations } from "@/common/useTranslations";
 import { computed, ref } from "vue";
 import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/types/translations";
@@ -40,6 +36,8 @@ import { useUpdateWord, useDeleteWord, useWordsQuery } from "@/queries/words";
 const { t, locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
+const { getLanguageCodesOrder, getLanguageLabel, translationPreview } =
+  useTranslations();
 
 const LIMIT_DEFAULT = 25;
 
@@ -195,7 +193,7 @@ const columns = computed(() => {
     },
     {
       sortable: true,
-      sort_key: "image",
+      sort_key: "image" as const,
       icon: {
         name: "image",
         color: "tertiary",
@@ -205,7 +203,7 @@ const columns = computed(() => {
     ...translationColumns.value,
     {
       sortable: true,
-      sort_key: "category_count",
+      sort_key: "category_count" as const,
       width: "338px",
       label: t("categories"),
     },
@@ -258,7 +256,7 @@ function updateWordImage(word: Word, src: string) {
   updateWord.mutateAsync({ ...word, image: src });
 }
 
-function updateOrder(order: Order) {
+function updateOrder(order?: Order) {
   filter.value = { ...filter.value, order };
 }
 </script>
@@ -278,14 +276,14 @@ function updateOrder(order: Order) {
         <template #right>
           <ButtonComp
             v-show="showAddToCategoryButton"
-            :label="$t('add-to-category')"
+            :label="t('add-to-category')"
             appearance="inline"
             class="words-view__add-to-category-button"
             @click="openWordsListModal"
           />
           <ButtonComp
             icon="add"
-            :label="$t('create-word')"
+            :label="t('create-word')"
             @click="openCreationWordForm"
           />
         </template>
@@ -355,13 +353,13 @@ function updateOrder(order: Order) {
                   v-slot="{ isMenuOpen }"
                   :items="[
                     {
-                      label: $t('edit'),
+                      label: t('edit'),
                       icon: 'edit',
                       handler: () => openEditingWordForm(word),
                     },
                     'separator',
                     {
-                      label: $t('delete'),
+                      label: t('delete'),
                       icon: 'delete',
                       color: 'negative',
                       handler: () => removeWord(word),
@@ -391,8 +389,8 @@ function updateOrder(order: Order) {
           <template v-else>
             <ZeroStateComp
               icon="search"
-              :title="$t('not-found')"
-              :description="$t('not-found-description')"
+              :title="t('not-found')"
+              :description="t('not-found-description')"
             />
           </template>
 

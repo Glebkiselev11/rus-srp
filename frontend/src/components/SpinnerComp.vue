@@ -1,6 +1,4 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
-
+<script setup lang="ts">
 export type SpinnerSize = "20" | "24";
 export type SpinnerColor =
   | "neutral"
@@ -9,23 +7,14 @@ export type SpinnerColor =
   | "negative"
   | "primary";
 
-export default defineComponent({
-  name: "SpinnerComp",
-  props: {
-    size: {
-      type: String as PropType<SpinnerSize>,
-      default: "20",
-    },
-    color: {
-      type: String as PropType<SpinnerColor>,
-      default: "red",
-    },
-  },
-  computed: {
-    _size(): string {
-      return `loader--${this.size}`;
-    },
-  },
+type Props = {
+  size?: SpinnerSize;
+  color?: SpinnerColor;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  size: "20",
+  color: "negative",
 });
 </script>
 
@@ -33,7 +22,7 @@ export default defineComponent({
   <div class="spinner-wrap">
     <div
       class="spinner"
-      :class="[`spinner--${size}`, `spinner--color-${color}`]"
+      :class="[`spinner--${props.size}`, `spinner--color-${props.color}`]"
     />
   </div>
 </template>

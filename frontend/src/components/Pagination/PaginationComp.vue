@@ -1,82 +1,66 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { computed } from "vue";
 import ButtonComp from "@/components/ButtonComp.vue";
 import PaginationButtonComp from "./PaginationButtonComp.vue";
 
 const BEFORE_AND_AFTER_ELLIPSIS = 2;
 
-export default defineComponent({
-  name: "PaginationComp",
-  components: {
-    ButtonComp,
-    PaginationButtonComp,
-  },
-  props: {
-    limit: {
-      type: Number,
-      required: true,
-    },
-    offset: {
-      type: Number,
-      required: true,
-    },
-    count: {
-      type: Number,
-      required: true,
-    },
-  },
-  emits: ["update:offset"],
-  computed: {
-    currentPage(): number {
-      return Math.ceil(this.offset / this.limit) + 1;
-    },
-    lastPage(): number {
-      return Math.ceil(this.count / this.limit);
-    },
-    isSmallList() {
-      return this.lastPage <= 3 + BEFORE_AND_AFTER_ELLIPSIS * 2;
-    },
-    middleNumbers(): number[] {
-      // Here we establish buttons near current button.
-      // For example current is 15 and last page is 20:
-      // it will looks like [1]...[13][14][15][16][17]...[20]
-      return this.isSmallList
-        ? this.getRange(2, this.lastPage - 2)
-        : this.getRange(
-            this.currentPage - BEFORE_AND_AFTER_ELLIPSIS,
-            1 + BEFORE_AND_AFTER_ELLIPSIS * 2
-          ).filter((page) => page > 1 && page < this.lastPage);
-    },
-    ellipsisBeforeMiddle() {
-      return this.currentPage > 4 && !this.isSmallList;
-    },
-    ellipsisAfterMiddle() {
-      return this.currentPage < this.lastPage - 3 && !this.isSmallList;
-    },
-  },
-  methods: {
-    isCurrentPage(page: number): boolean {
-      return page === this.currentPage;
-    },
-    changePage(page: number) {
-      this.updateOffset((page - 1) * this.limit);
-    },
-    updateOffset(value: number) {
-      this.$emit("update:offset", value);
-    },
-    prevPage() {
-      this.changePage(this.currentPage - 1);
-    },
-    nextPage() {
-      this.changePage(this.currentPage + 1);
-    },
-    getRange(start: number, length: number) {
-      return length > 0
-        ? [...Array(length).keys()].map((val) => val + start)
-        : [];
-    },
-  },
+const props = defineProps<{
+  limit: number;
+  offset: number;
+  count: number;
+}>();
+
+const emit = defineEmits<{
+  (event: "update:offset", offset: number): void;
+}>();
+
+const currentPage = computed(() => Math.ceil(props.offset / props.limit) + 1);
+const lastPage = computed(() => Math.ceil(props.count / props.limit));
+const isSmallList = computed(
+  () => lastPage.value <= 3 + BEFORE_AND_AFTER_ELLIPSIS * 2
+);
+const middleNumbers = computed(() => {
+  // Here we establish buttons near current button.
+  // For example current is 15 and last page is 20:
+  // it will looks like [1]...[13][14][15][16][17]...[20]
+  return isSmallList.value
+    ? getRange(2, lastPage.value - 2)
+    : getRange(
+        currentPage.value - BEFORE_AND_AFTER_ELLIPSIS,
+        1 + BEFORE_AND_AFTER_ELLIPSIS * 2
+      ).filter((page) => page > 1 && page < lastPage.value);
 });
+const ellipsisBeforeMiddle = computed(
+  () => currentPage.value > 4 && !isSmallList.value
+);
+const ellipsisAfterMiddle = computed(
+  () => currentPage.value < lastPage.value - 3 && !isSmallList.value
+);
+
+function getRange(start: number, length: number) {
+  return length > 0 ? [...Array(length).keys()].map((val) => val + start) : [];
+}
+
+function isCurrentPage(page: number): boolean {
+  return page === currentPage.value;
+}
+
+function changePage(page: number) {
+  updateOffset((page - 1) * props.limit);
+}
+
+function prevPage() {
+  changePage(currentPage.value - 1);
+}
+
+function nextPage() {
+  changePage(currentPage.value + 1);
+}
+
+function updateOffset(value: number) {
+  emit("update:offset", value);
+}
 </script>
 
 <template>

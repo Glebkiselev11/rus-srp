@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import InputComp from "./InputComp.vue";
-import IconComp from "./IconComp/index.vue";
+import { useI18n } from "vue-i18n";
+import { vInfiniteScroll } from "@vueuse/components";
 import { addCropImagaeParamsToUrl } from "@/common/utils";
 import { useImagesInfinityQuery } from "@/queries/images";
-import { vInfiniteScroll } from "@vueuse/components";
+import InputComp from "./InputComp.vue";
+import IconComp from "./IconComp/index.vue";
 import ButtonComp from "./ButtonComp.vue";
 import ZeroStateComp from "./ZeroStateComp.vue";
 import SkeletonItemComp from "./SkeletonItemComp.vue";
+
+const { t } = useI18n();
 
 type Props = {
   savedLink: string | null;
@@ -65,7 +68,7 @@ function selectImage(src: string) {
       width="100%"
       type="text"
       left-icon="search"
-      :placeholder="$t('find-image')"
+      :placeholder="t('find-image')"
       class="image-search--input"
       debounce
       clear-button
@@ -79,20 +82,20 @@ function selectImage(src: string) {
       <ZeroStateComp
         v-if="!searchQuery"
         icon="manage_search"
-        :title="$t('image-search-title')"
-        :description="$t('image-search-description')"
+        :title="t('image-search-title')"
+        :description="t('image-search-description')"
       />
 
       <!-- Nothing were found -->
       <ZeroStateComp
         v-if="status === 'success' && nothingWereFound"
         icon="search"
-        :title="$t('not-found', { search: searchQuery })"
-        :description="$t('not-found-description')"
+        :title="t('not-found', { search: searchQuery })"
+        :description="t('not-found-description')"
       >
         <ButtonComp
           icon="search"
-          :label="$t('search-by-query', { query: defaultSearchQuery })"
+          :label="t('search-by-query', { query: defaultSearchQuery })"
           @click="searchQuery = defaultSearchQuery"
         />
       </ZeroStateComp>
@@ -105,7 +108,7 @@ function selectImage(src: string) {
 
         <div class="selected-image--badge">
           <IconComp name="check_circle" color="accent-primary" />
-          {{ $t("selected") }}
+          {{ t("selected") }}
         </div>
       </div>
 

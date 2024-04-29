@@ -1,13 +1,4 @@
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  name: "TopBarComp",
-  data() {
-    return {};
-  },
-});
-</script>
+<script lang="ts" setup />
 
 <template>
   <header class="top-bar">
