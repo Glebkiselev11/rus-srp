@@ -111,7 +111,7 @@ function getTooltipText(wordId: Id): string {
     <div class="category-words-insert__panel">
       <InputComp
         v-model="search"
-        appearance="outline"
+        appearance="default"
         clear-button
         debounce
         :placeholder="t('find-word')"
