@@ -104,6 +104,10 @@ function getTooltipText(wordId: Id): string {
 
   return t("add-to-category");
 }
+
+function handleWordCreated(id: Id) {
+  modalWordsStore.updateSelectedWordIds(id, true);
+}
 </script>
 
 <template>
@@ -238,7 +242,11 @@ function getTooltipText(wordId: Id): string {
     </div>
   </div>
 
-  <WordFormModalComp v-if="showWordForm" @close="showWordForm = false" />
+  <WordFormModalComp
+    v-if="showWordForm"
+    @close="showWordForm = false"
+    @created="handleWordCreated"
+  />
 </template>
 
 <style lang="scss" scoped>
