@@ -158,8 +158,6 @@ function onClick(e: MouseEvent) {
 @import "@/styles/main";
 
 .button {
-  @include text-subtitle-1;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -225,16 +223,19 @@ function onClick(e: MouseEvent) {
 
   &--size {
     &-regular {
+      @include text-subtitle-1;
       block-size: 40px;
       min-inline-size: 40px;
     }
 
     &-compact {
+      @include text-subtitle-2;
       block-size: 32px;
       min-inline-size: 32px;
     }
 
     &-small {
+      @include text-subtitle-2;
       block-size: 24px;
       min-inline-size: 24px;
     }
