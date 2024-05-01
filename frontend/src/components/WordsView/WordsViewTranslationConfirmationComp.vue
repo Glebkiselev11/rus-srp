@@ -28,12 +28,14 @@ function openEditingWordForm() {
     <div class="translation-confirmation__buttons">
       <ButtonComp
         :label="t('confirm')"
+        size="compact"
         appearance="secondary"
         @click="confirmTranslation()"
       />
       <ButtonComp
         :label="t('edit')"
-        appearance="secondary"
+        size="compact"
+        appearance="inline"
         icon="edit"
         @click="openEditingWordForm()"
       />
