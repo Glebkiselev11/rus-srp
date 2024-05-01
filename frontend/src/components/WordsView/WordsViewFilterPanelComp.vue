@@ -107,6 +107,7 @@ function updateOrder(newOrder: Order) {
     gap: 16px;
 
     .unconfirmed-switcher {
+      @include text-body-2;
       display: flex;
       align-items: center;
       gap: 10px;
