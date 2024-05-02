@@ -43,7 +43,7 @@ const wordPreview = computed(() => {
 });
 
 const showTranslationApprovedCheckbox = computed(() => {
-  return draftWordStore.allTranslationsFilled;
+  return draftWordStore.allTranslationsFilled && !props.uniqueWordError;
 });
 
 watch(
@@ -107,13 +107,7 @@ async function _autoFillTranslations() {
 
           <CheckboxListItemComp
             v-if="showTranslationApprovedCheckbox"
-            :label="
-              t(
-                draftWordStore.draftWord.translation_approved
-                  ? 'approved'
-                  : 'not-approved'
-              )
-            "
+            :label="t('approved')"
             appearance="secondary"
             padding-block="6px"
           >

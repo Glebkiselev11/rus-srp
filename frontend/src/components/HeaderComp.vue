@@ -37,11 +37,15 @@ function close(e: Event): void {
           {{ props.title }}
         </component>
 
-        <span
-          v-if="props.subtitle"
-          class="header__subtitle"
-          v-text="props.subtitle"
-        />
+        <div class="subtitle">
+          <slot name="before-subtitle" />
+
+          <span
+            v-if="props.subtitle"
+            class="subtitle__text"
+            v-text="props.subtitle"
+          />
+        </div>
       </div>
     </div>
 
@@ -81,10 +85,13 @@ function close(e: Event): void {
     margin-inline-start: 16px;
   }
 
-  &__subtitle {
-    @include text-body-2;
-
-    color: $color-text-primary;
+  .subtitle {
+    display: flex;
+    align-items: center;
+    &__text {
+      @include text-body-2;
+      color: $color-text-primary;
+    }
   }
 }
 </style>

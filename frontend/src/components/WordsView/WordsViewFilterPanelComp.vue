@@ -5,6 +5,7 @@ import type { Id, Order, TranslationApprovedStatus } from "@/types/api";
 import InputComp from "@/components/InputComp.vue";
 import SelectComp from "@/components/SelectComp.vue";
 import SwitchComp from "@/components/SwitchComp.vue";
+import IconComp from "@/components/IconComp/index.vue";
 
 type Props = {
   search: string;
@@ -74,8 +75,11 @@ function updateOrder(newOrder: Order) {
 
     <div class="filter-panel__right">
       <div class="unconfirmed-switcher">
-        <div class="unconfirmed-switcher__indicator" />
-        <span v-text="t('only-unconfirmed')" />
+        <IconComp name="mark_status" color="negative" size="compact" />
+        <span
+          class="unconfirmed-switcher__label"
+          v-text="t('only-unconfirmed')"
+        />
         <SwitchComp v-model="switcherValue" />
       </div>
       <SelectComp
@@ -109,12 +113,10 @@ function updateOrder(newOrder: Order) {
     .unconfirmed-switcher {
       display: flex;
       align-items: center;
-      gap: 10px;
 
-      &__indicator {
-        width: 4px;
-        height: 16px;
-        background-color: $color-background-negative;
+      &__label {
+        @include text-body-2;
+        margin-inline-end: 10px;
       }
     }
   }

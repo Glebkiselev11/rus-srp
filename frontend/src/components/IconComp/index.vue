@@ -52,6 +52,7 @@ const icon = computed((): Component => {
     checkbox: x(() => import("./CheckboxIcon.vue")),
     checkbox_outline_blank: x(() => import("./CheckboxOutlineBlankIcon.vue")),
     logout: x(() => import("./LogoutIcon.vue")),
+    mark_status: x(() => import("./MarkStatusIcon.vue")),
   }[props.name];
 });
 

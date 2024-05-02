@@ -100,7 +100,6 @@
   "login-failed": "Неправилно корисничко име или лозинка",
   "logout": "Одјавите се",
   "approved": "Подтврђен",
-  "not-approved": "Није подтврђен",
   "translation-not-confirmed": "Превод није потврђен",
   "confirm": "Потврди",
   "only-unconfirmed": "Само непотврђени",

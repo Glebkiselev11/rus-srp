@@ -100,7 +100,6 @@
   "login-failed": "Incorrect login or password",
   "logout": "Logout",
   "approved": "Approved",
-  "not-approved": "Not approved",
   "translation-not-confirmed": "Translation not confirmed",
   "confirm": "Confirm",
   "only-unconfirmed": "Only unconfirmed",

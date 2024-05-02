@@ -2,6 +2,7 @@
 import { computed, ref } from "vue";
 import ModalComp from "../ModalComp.vue";
 import WordFormComp from "./WordFormComp.vue";
+import IconComp from "@/components/IconComp/index.vue";
 import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";
@@ -34,6 +35,10 @@ const subtitle = computed(() => {
     return t("new-word");
   }
 });
+
+const translationApproved = computed(
+  () => draftWordStore.draftWord.translation_approved
+);
 
 const closeConfirmationCancelButtonLabel = computed(() =>
   draftWordStore.initialWord
@@ -68,6 +73,10 @@ function handleCreated(createdWordId: Id) {
 
 <template>
   <ModalComp :title="title" :subtitle="subtitle" @close="tryClose">
+    <template v-if="!translationApproved" #header-before-subtitle>
+      <IconComp name="mark_status" color="negative" size="compact" />
+    </template>
+
     <template #content>
       <WordFormComp
         :initial-word="draftWordStore.initialWord"
