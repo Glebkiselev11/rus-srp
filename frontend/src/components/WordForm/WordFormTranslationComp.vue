@@ -107,13 +107,7 @@ async function _autoFillTranslations() {
 
           <CheckboxListItemComp
             v-if="showTranslationApprovedCheckbox"
-            :label="
-              t(
-                draftWordStore.draftWord.translation_approved
-                  ? 'approved'
-                  : 'not-approved'
-              )
-            "
+            :label="t('approved')"
             appearance="secondary"
             padding-block="6px"
           >

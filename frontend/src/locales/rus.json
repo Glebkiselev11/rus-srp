@@ -100,7 +100,6 @@
   "login-failed": "Неправильный логин или пароль",
   "logout": "Выйти",
   "approved": "Подтвержден",
-  "not-approved": "Не подтвержден",
   "translation-not-confirmed": "Перевод не подтвержден",
   "confirm": "Подтвердить",
   "only-unconfirmed": "Только неподтвержденные",
