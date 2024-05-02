@@ -74,7 +74,7 @@ function handleCreated(createdWordId: Id) {
 <template>
   <ModalComp :title="title" :subtitle="subtitle" @close="tryClose">
     <template v-if="!translationApproved" #header-before-subtitle>
-      <IconComp name="mark_status" color="negative" />
+      <IconComp name="mark_status" color="negative" size="compact" />
     </template>
 
     <template #content>

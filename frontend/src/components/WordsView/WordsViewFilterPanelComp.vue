@@ -75,7 +75,7 @@ function updateOrder(newOrder: Order) {
 
     <div class="filter-panel__right">
       <div class="unconfirmed-switcher">
-        <IconComp name="mark_status" color="negative" />
+        <IconComp name="mark_status" color="negative" size="compact" />
         <span
           class="unconfirmed-switcher__label"
           v-text="t('only-unconfirmed')"
