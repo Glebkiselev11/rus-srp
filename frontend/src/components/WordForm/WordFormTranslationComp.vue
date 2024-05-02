@@ -43,7 +43,7 @@ const wordPreview = computed(() => {
 });
 
 const showTranslationApprovedCheckbox = computed(() => {
-  return draftWordStore.allTranslationsFilled;
+  return draftWordStore.allTranslationsFilled && !props.uniqueWordError;
 });
 
 watch(
