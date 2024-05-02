@@ -50,4 +50,5 @@ export type IconName =
   | "indeterminate_checkbox"
   | "checkbox_outline_blank"
   | "checkbox"
-  | "logout";
+  | "logout"
+  | "mark_status";
