@@ -31,7 +31,7 @@ const props = withDefaults(defineProps<Props>(), {
 @import "@/styles/main";
 
 .checkbox-list-item {
-  @include text-body-1;
+  @include text-body-2;
 
   color: $color-text-primary;
   display: flex;
