@@ -57,6 +57,10 @@ function handleClose() {
         <template #left>
           <slot name="header-left" />
         </template>
+
+        <template #before-subtitle>
+          <slot name="header-before-subtitle" />
+        </template>
       </HeaderComp>
       <slot name="content" />
     </div>
