@@ -30,6 +30,10 @@ const category = computed(() => {
   return data.value?.category;
 });
 
+const showModal = computed(() => {
+  return isFetched.value || !Boolean(props.categoryId);
+});
+
 const title = computed(() => {
   return props.categoryId ? t("editing-category") : t("creation-category");
 });
@@ -71,7 +75,7 @@ function close() {
 
 <template>
   <ModalComp
-    v-if="isFetched"
+    v-if="showModal"
     :title="title"
     :subtitle="subtitle"
     header-padding-inline="20px"
