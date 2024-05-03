@@ -1,3 +1,4 @@
+use crate::db::error_type::DbError;
 use crate::models::category::{CategoryBody, CategoryWordsBody, NewCategory};
 use crate::models::pagination::Pagination;
 use crate::models::query_options::QueryOptions;
@@ -31,7 +32,7 @@ pub async fn get_by_id(
         db::categories::methods::select_by_id(id.into_inner(), &mut conn)
     })
     .await?
-    .map_err(actix_web::error::ErrorInternalServerError)?;
+    .map_err(_convert_db_error_to_http_error)?;
 
     Ok(HttpResponse::Ok().json(category))
 }
@@ -69,7 +70,7 @@ pub async fn update(
         db::categories::methods::update(category, id.into_inner(), &mut conn)
     })
     .await?
-    .map_err(actix_web::error::ErrorInternalServerError)?;
+    .map_err(_convert_db_error_to_http_error)?;
 
     match category {
         Some(x) => Ok(HttpResponse::Ok().json(x)),
@@ -86,7 +87,7 @@ pub async fn delete(
         db::categories::methods::delete(id.into_inner(), &mut conn)
     })
     .await?
-    .map_err(actix_web::error::ErrorInternalServerError)?;
+    .map_err(_convert_db_error_to_http_error)?;
 
     Ok(HttpResponse::Ok().finish())
 }
@@ -152,4 +153,12 @@ pub async fn delete_words(
     })?;
 
     Ok(HttpResponse::Ok().finish())
+}
+
+fn _convert_db_error_to_http_error(e: DbError) -> actix_web::Error {
+    CustomHttpError::new(ErrorMessagesBuilder {
+        not_found: "Category not found",
+        ..Default::default()
+    })
+    .convert_db_error_to_http_error(e)
 }
