@@ -52,7 +52,7 @@ onMounted(async () => {
 });
 
 async function removeCategory() {
-  await deleteCategory.mutateAsync(props.category.id);
+  deleteCategory.mutate(props.category.id);
 
   // Remove category_id from router query
   router.push({
