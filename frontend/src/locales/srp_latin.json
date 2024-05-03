@@ -107,5 +107,7 @@
   "search-in-category-words": "Pretraži u rečima kategorije",
   "find-image": "Nađi sliku",
   "new-category": "Nova kategorija",
-  "update": "Ažuriraj"
+  "update": "Ažuriraj",
+  "empty-category": "Kategorija je prazna",
+  "empty-category-description": "Dodajte reč klikom na dugme „Dodaj u kategoriju“"
 }

@@ -3,7 +3,7 @@ import type { IconName } from "@/types/icons";
 import IconComp from "./IconComp/index.vue";
 
 const props = defineProps<{
-  icon: IconName;
+  icon?: IconName;
   title: string;
   description: string;
 }>();
@@ -12,7 +12,7 @@ const props = defineProps<{
 <template>
   <div class="zero-state">
     <div class="zero-state__container">
-      <IconComp :name="props.icon" />
+      <IconComp v-if="props.icon" :name="props.icon" />
 
       <h4>
         {{ props.title }}

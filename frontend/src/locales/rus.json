@@ -107,5 +107,7 @@
   "search-in-category-words": "Искать по словам в категории",
   "find-image": "Найти изображение",
   "new-category": "Новая категория",
-  "update": "Обновить"
+  "update": "Обновить",
+  "empty-category": "Категория пуста",
+  "empty-category-description": "Добавьте слово по клику на кнопку “Добавить в категорию”"
 }

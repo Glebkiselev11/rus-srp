@@ -392,6 +392,21 @@ function createdCategory(categoryId: Id) {
             />
           </template>
 
+          <!-- Empty categry -->
+          <template v-else-if="category_id && !search">
+            <ZeroStateComp
+              :title="t('empty-category')"
+              :description="t('empty-category-description')"
+            >
+              <ButtonComp
+                icon="add"
+                appearance="inline"
+                :label="t('add-to-category')"
+                @click="openWordsListModal"
+              />
+            </ZeroStateComp>
+          </template>
+
           <template v-else>
             <ZeroStateComp
               icon="search"
