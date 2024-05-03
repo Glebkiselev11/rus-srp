@@ -259,6 +259,11 @@ function updateWordImage(word: Word, src: string) {
 function updateOrder(order?: Order) {
   filter.value = { ...filter.value, order };
 }
+
+function createdCategory(categoryId: Id) {
+  category_id.value = categoryId;
+  openWordsListModal();
+}
 </script>
 
 <template>
@@ -266,6 +271,7 @@ function updateOrder(order?: Order) {
     <CategoriesComp
       :selected-category-id="filter.category_id"
       @update:selected-category-id="category_id = $event"
+      @created-category="createdCategory"
     />
 
     <div>
@@ -384,6 +390,21 @@ function updateOrder(order?: Order) {
               :grid-template-columns="gridTemplateColumns"
               :central-columns-count="translationColumns.length"
             />
+          </template>
+
+          <!-- Empty categry -->
+          <template v-else-if="category_id && !search">
+            <ZeroStateComp
+              :title="t('empty-category')"
+              :description="t('empty-category-description')"
+            >
+              <ButtonComp
+                icon="add"
+                appearance="inline"
+                :label="t('add-to-category')"
+                @click="openWordsListModal"
+              />
+            </ZeroStateComp>
           </template>
 
           <template v-else>

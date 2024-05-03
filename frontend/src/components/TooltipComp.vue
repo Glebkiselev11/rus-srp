@@ -77,7 +77,7 @@ const hide = () => {
   position: absolute;
   text-align: center;
   min-width: 100%;
-  z-index: 2;
+  z-index: 4;
   border-radius: 8px;
   padding: 8px 12px;
   text-wrap: nowrap;

@@ -150,7 +150,7 @@ function getLabelColor(item: MenuItem) {
     padding: 8px;
     background-color: $color-background-content-primary;
     border-radius: 12px;
-    z-index: 9999;
+    z-index: 3;
     border: 1px solid $color-separator-primary;
     box-shadow:
       0 0 4px 0 rgb(2 18 38 / 8%),

@@ -107,5 +107,7 @@
   "search-in-category-words": "Search in category words",
   "find-image": "Find image",
   "new-category": "New category",
-  "update": "Update"
+  "update": "Update",
+  "empty-category": "Category is empty",
+  "empty-category-description": "Add a word by clicking on the “Add to Category” button"
 }

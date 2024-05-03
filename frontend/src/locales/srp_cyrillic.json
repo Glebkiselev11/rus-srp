@@ -107,5 +107,7 @@
   "search-in-category-words": "Претражи у речима категорије",
   "find-image": "Нађи слику",
   "new-category": "Нова категорија",
-  "update": "Ажурирај"
+  "update": "Ажурирај",
+  "empty-category": "Категорија је празна",
+  "empty-category-description": "Додајте реч кликом на дугме „Додај у категорију“"
 }

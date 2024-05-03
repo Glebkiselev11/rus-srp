@@ -23,6 +23,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: "update:selected-category-id", catedoryId: Id): void;
+  (e: "created-category", categoryId: Id): void;
 }>();
 
 const showCategoryForm = ref(false);
@@ -104,6 +105,10 @@ function selectCategory(categoryId: Id) {
   emit("update:selected-category-id", categoryId);
 }
 
+function createdCategory(categoryId: Id) {
+  emit("created-category", categoryId);
+}
+
 function openEditingCategoryForm(categoryId: Id) {
   editingCategoryId.value = categoryId;
   showCategoryForm.value = true;
@@ -167,7 +172,7 @@ function openCreationCategoryForm() {
       v-if="showCategoryForm"
       :category-id="editingCategoryId"
       @close="showCategoryForm = false"
-      @created="selectCategory"
+      @created="createdCategory"
     />
   </div>
 </template>

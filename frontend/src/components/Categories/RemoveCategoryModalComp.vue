@@ -52,7 +52,7 @@ onMounted(async () => {
 });
 
 async function removeCategory() {
-  await deleteCategory.mutateAsync(props.category.id);
+  deleteCategory.mutate(props.category.id);
 
   // Remove category_id from router query
   router.push({
@@ -84,6 +84,7 @@ function close() {
 
         <InputComp
           v-model="confirmationInput"
+          focus-on-mount
           :label="t('category-removing.confirmation-label')"
         />
 
