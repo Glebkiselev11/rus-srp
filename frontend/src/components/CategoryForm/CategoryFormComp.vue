@@ -32,6 +32,7 @@ const emits = defineEmits<{
 
 const draftCategory = ref(initDraftCategory());
 const autoFillTranslationsLoading = ref(false);
+const lastAutoFillRequestWord = ref("");
 const categoryNameAlreadyExistsError = ref(false);
 const rusValidationError = ref<string | undefined>(undefined);
 const engValidationError = ref<string | undefined>(undefined);
@@ -41,6 +42,10 @@ const savingLoading = ref(false);
 
 const showFillAutoButton = computed(() => {
   const draftCategoryName = draftCategory.value[selectedLanguage.value];
+
+  if (draftCategoryName === lastAutoFillRequestWord.value) {
+    return false;
+  }
 
   if (categoryNameAlreadyExistsError.value || !draftCategoryName) {
     return false;
@@ -185,7 +190,6 @@ function autoFill() {
       },
       {} as Record<LanguageCode, string>
     );
-
   autoFillTranslationsLoading.value = true;
 
   translate({
@@ -200,6 +204,7 @@ function autoFill() {
     })
     .finally(() => {
       autoFillTranslationsLoading.value = false;
+      lastAutoFillRequestWord.value = draftCategory.value[from];
     });
 }
 
