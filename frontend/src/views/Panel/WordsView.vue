@@ -259,6 +259,11 @@ function updateWordImage(word: Word, src: string) {
 function updateOrder(order?: Order) {
   filter.value = { ...filter.value, order };
 }
+
+function createdCategory(categoryId: Id) {
+  category_id.value = categoryId;
+  openWordsListModal();
+}
 </script>
 
 <template>
@@ -266,6 +271,7 @@ function updateOrder(order?: Order) {
     <CategoriesComp
       :selected-category-id="filter.category_id"
       @update:selected-category-id="category_id = $event"
+      @created-category="createdCategory"
     />
 
     <div>
