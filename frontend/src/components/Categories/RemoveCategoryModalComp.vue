@@ -84,6 +84,7 @@ function close() {
 
         <InputComp
           v-model="confirmationInput"
+          focus-on-mount
           :label="t('category-removing.confirmation-label')"
         />
 
