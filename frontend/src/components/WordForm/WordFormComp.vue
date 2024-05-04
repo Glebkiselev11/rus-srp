@@ -11,8 +11,12 @@ import WordFormTranslationComp from "./WordFormTranslationComp.vue";
 import WordFormCategoriesComp from "./WordFormCategoriesComp.vue";
 import { useUpdateWord, useCreateWord } from "@/queries/words";
 import type { Id } from "@/types/api";
+import { useToasterStore } from "@/stores/toaster";
+import { useTranslations } from "@/common/useTranslations";
 
 const { t } = useI18n();
+const toastStore = useToasterStore();
+const { getLanguageCodesOrder } = useTranslations();
 
 const props = defineProps<{
   initialWord?: DraftWord;
@@ -165,6 +169,14 @@ async function saveWord(saveAndAddNext = false) {
 
     if (data) {
       emit("created", data.id);
+      toastStore.addToast({
+        message: t("word-created-successfully", {
+          word: getLanguageCodesOrder()
+            .map((code) => data[code])
+            .join(" - "),
+        }),
+        type: "success",
+      });
     }
   }
 

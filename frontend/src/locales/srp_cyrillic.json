@@ -109,5 +109,6 @@
   "new-category": "Нова категорија",
   "update": "Ажурирај",
   "empty-category": "Категорија је празна",
-  "empty-category-description": "Додајте реч кликом на дугме „Додај у категорију“"
+  "empty-category-description": "Додајте реч кликом на дугме „Додај у категорију“",
+  "word-created-successfully": "Реч “{word}” је додата у базу"
 }

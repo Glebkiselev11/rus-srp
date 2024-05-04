@@ -109,5 +109,6 @@
   "new-category": "New category",
   "update": "Update",
   "empty-category": "Category is empty",
-  "empty-category-description": "Add a word by clicking on the “Add to Category” button"
+  "empty-category-description": "Add a word by clicking on the “Add to Category” button",
+  "word-created-successfully": "The word “{word}” has been added to the database"
 }
