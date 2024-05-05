@@ -11,10 +11,12 @@ import type { LanguageCode } from "@/types/translations";
 import ImageSectionComp from "../ImageSectionComp.vue";
 import InputComp from "../InputComp.vue";
 import ButtonComp from "../ButtonComp.vue";
+import { useToasterStore } from "@/stores/toaster";
 
 const { getLanguageLabel, getLanguageList, getLanguageCodesOrder } =
   useTranslations();
 
+const toastStore = useToasterStore();
 const { t, locale } = useI18n();
 const createCategory = useCreateCategory();
 const updateCategory = useUpdateCategory();
@@ -270,8 +272,19 @@ async function saveCategory() {
     await updateCategory.mutateAsync({
       ...draftCategory.value,
     } as Category);
+
+    toastStore.addToast({
+      type: "success",
+      message: t("changes-saved"),
+    });
   } else {
     const { data } = await createCategory.mutateAsync(draftCategory.value);
+    toastStore.addToast({
+      type: "success",
+      message: t("category-created-successfully", {
+        category: data[selectedLanguage.value],
+      }),
+    });
     emits("created", data.id);
   }
 

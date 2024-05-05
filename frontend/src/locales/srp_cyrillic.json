@@ -111,5 +111,7 @@
   "empty-category": "Категорија је празна",
   "empty-category-description": "Додајте реч кликом на дугме „Додај у категорију“",
   "word-created-successfully": "Реч “{word}” је додата у базу",
-  "category-was-removed": "Категорија ”{category}” jе уклоњена"
+  "category-was-removed": "Категорија ”{category}” jе уклоњена",
+  "changes-saved": "Промене су сачуване",
+  "category-created-successfully": "Категорија “{category}” је креирана"
 }
