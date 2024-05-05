@@ -110,5 +110,6 @@
   "update": "Обновить",
   "empty-category": "Категория пуста",
   "empty-category-description": "Добавьте слово по клику на кнопку “Добавить в категорию”",
-  "word-created-successfully": "Слово “{word}” добавлено в базу"
+  "word-created-successfully": "Слово “{word}” добавлено в базу",
+  "category-was-removed": "Категория “{category}” удалена"
 }

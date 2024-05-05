@@ -110,5 +110,6 @@
   "update": "Update",
   "empty-category": "Category is empty",
   "empty-category-description": "Add a word by clicking on the “Add to Category” button",
-  "word-created-successfully": "The word “{word}” has been added to the database"
+  "word-created-successfully": "The word “{word}” has been added to the database",
+  "category-was-removed": "The category “{category}” has been removed"
 }

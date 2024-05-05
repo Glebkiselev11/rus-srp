@@ -9,11 +9,13 @@ import InputComp from "../InputComp.vue";
 import ButtonComp from "../ButtonComp.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useDeleteCategory } from "@/queries/categories";
+import { useToasterStore } from "@/stores/toaster";
 
 const { t, locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
+const toastStore = useToasterStore();
 const deleteCategory = useDeleteCategory();
 
 const props = defineProps<{
@@ -53,6 +55,13 @@ onMounted(async () => {
 
 async function removeCategory() {
   deleteCategory.mutate(props.category.id);
+
+  toastStore.addToast({
+    type: "info",
+    message: t("category-was-removed", {
+      category: props.category[locale.value as LanguageCode],
+    }),
+  });
 
   // Remove category_id from router query
   router.push({
