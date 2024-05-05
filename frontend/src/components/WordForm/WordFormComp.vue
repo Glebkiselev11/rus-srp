@@ -16,7 +16,7 @@ import { useTranslations } from "@/common/useTranslations";
 
 const { t } = useI18n();
 const toastStore = useToasterStore();
-const { getLanguageCodesOrder } = useTranslations();
+const { extractCurrentLanguageTranslation } = useTranslations();
 
 const props = defineProps<{
   initialWord?: DraftWord;
@@ -171,9 +171,7 @@ async function saveWord(saveAndAddNext = false) {
       emit("created", data.id);
       toastStore.addToast({
         message: t("word-created-successfully", {
-          word: getLanguageCodesOrder()
-            .map((code) => data[code])
-            .join(" - "),
+          word: extractCurrentLanguageTranslation(data),
         }),
         type: "success",
       });
