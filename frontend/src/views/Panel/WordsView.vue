@@ -32,7 +32,9 @@ import WordsViewFilterPanelComp from "@/components/WordsView/WordsViewFilterPane
 import WordsViewTranslationConfirmationComp from "@/components/WordsView/WordsViewTranslationConfirmationComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";
 import { useUpdateWord, useDeleteWord, useWordsQuery } from "@/queries/words";
+import { useToasterStore } from "@/stores/toaster";
 
+const toastStore = useToasterStore();
 const { t, locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
@@ -252,8 +254,13 @@ async function removeWord(word: Word) {
   }
 }
 
-function updateWordImage(word: Word, src: string) {
-  updateWord.mutateAsync({ ...word, image: src });
+async function updateWordImage(word: Word, src: string) {
+  await updateWord.mutateAsync({ ...word, image: src });
+
+  toastStore.addToast({
+    type: "success",
+    message: t("changes-saved"),
+  });
 }
 
 function updateOrder(order?: Order) {

@@ -164,6 +164,11 @@ async function saveWord(saveAndAddNext = false) {
       ...draftWordStore.draftWord,
       id,
     });
+
+    toastStore.addToast({
+      type: "success",
+      message: t("changes-saved"),
+    });
   } else {
     const { data } = await createWord.mutateAsync(draftWordStore.draftWord);
 
