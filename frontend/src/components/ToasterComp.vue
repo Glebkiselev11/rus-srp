@@ -6,8 +6,12 @@ const toastStore = useToasterStore();
 </script>
 
 <template>
-  <div class="toast-container">
-    <div v-for="(toast, i) in toastStore.toasts" :key="i" class="toast">
+  <div class="toaster">
+    <div
+      v-for="(toast, i) in toastStore.toasts"
+      :key="i"
+      class="toaster__toast"
+    >
       <IconComp
         v-if="toast.type === 'success'"
         name="check_circle"
@@ -22,7 +26,7 @@ const toastStore = useToasterStore();
 <style lang="scss" scoped>
 @import "@/styles/main";
 
-.toast-container {
+.toaster {
   position: fixed;
   inset-inline-start: 96px;
   inset-block-end: 24px;
@@ -32,7 +36,7 @@ const toastStore = useToasterStore();
   align-items: flex-start;
   gap: 12px;
 
-  .toast {
+  &__toast {
     @include text-body-2;
     color: $color-text-contrast;
 
