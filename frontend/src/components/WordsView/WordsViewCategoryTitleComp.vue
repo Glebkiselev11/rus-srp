@@ -5,12 +5,12 @@ import { useTranslations } from "@/common/useTranslations";
 import { useCategoryByIdQuery, useUpdateCategory } from "@/queries/categories";
 import type { Id } from "@/types/api";
 import type { Category } from "@/types/categories";
-import ImagePreviewComp from "./ImagePreviewComp.vue";
-import DropdownMenuComp from "./DropdownMenuComp.vue";
-import ButtonComp from "./ButtonComp.vue";
-import RemoveCategoryModalComp from "./Categories/RemoveCategoryModalComp.vue";
+import ImagePreviewComp from "../ImagePreviewComp.vue";
+import DropdownMenuComp from "../DropdownMenuComp.vue";
+import ButtonComp from "../ButtonComp.vue";
+import RemoveCategoryModalComp from "../Categories/RemoveCategoryModalComp.vue";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
-import AllWordsCategoryImageComp from "./Categories/AllWordsCategoryImageComp.vue";
+import AllWordsCategoryImageComp from "../Categories/AllWordsCategoryImageComp.vue";
 
 const { t } = useI18n();
 const { extractCurrentLanguageTranslation } = useTranslations();
@@ -44,7 +44,7 @@ function updateCategoryImage(src: string) {
 </script>
 
 <template>
-  <div v-if="categoryId && data?.category" class="words-page-category-title">
+  <div v-if="categoryId && data?.category" class="words-view-category-title">
     <ImagePreviewComp
       size="56px"
       :src="data.category.image"
@@ -80,7 +80,7 @@ function updateCategoryImage(src: string) {
         appearance="inline"
         color="neutral"
         size="compact"
-        class="words-page-category-title__menu-button"
+        class="words-view-category-title__menu-button"
         :pressed="isMenuOpen"
       />
     </DropdownMenuComp>
@@ -98,7 +98,7 @@ function updateCategoryImage(src: string) {
     />
   </div>
 
-  <div v-else-if="!categoryId" class="words-page-category-title">
+  <div v-else-if="!categoryId" class="words-view-category-title">
     <AllWordsCategoryImageComp size="56px" />
     <h2>
       {{ t("all-words") }}
@@ -107,7 +107,7 @@ function updateCategoryImage(src: string) {
 </template>
 
 <style scoped lang="scss">
-.words-page-category-title {
+.words-view-category-title {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -121,9 +121,9 @@ function updateCategoryImage(src: string) {
   }
 }
 
-.words-page-category-title:hover,
+.words-view-category-title:hover,
 .dropdown--open {
-  .words-page-category-title__menu-button {
+  .words-view-category-title__menu-button {
     visibility: visible;
   }
 }

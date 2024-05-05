@@ -22,7 +22,7 @@ import ButtonComp from "@/components/ButtonComp.vue";
 import DropdownMenuComp from "@/components/DropdownMenuComp.vue";
 import PaginationBarComp from "@/components/Pagination/PaginationBarComp.vue";
 import ZeroStateComp from "@/components/ZeroStateComp.vue";
-import WordsPageCategoryTitleComp from "@/components/WordsPageCategoryTitleComp.vue";
+import WordsViewCategoryTitleComp from "@/components/WordsView/WordsViewCategoryTitleComp.vue";
 import CategoriesPreviewBadgesComp from "@/components/CategoriesPreviewBadgesComp.vue";
 import WordsViewTableRowSkeletonComp from "@/components/WordsView/WordsViewTableRowSkeletonComp.vue";
 import CategoryWordsInsertModalComp from "@/components/CategoryWordsInsert/CategoryWordsInsertModalComp.vue";
@@ -277,7 +277,7 @@ function createdCategory(categoryId: Id) {
     <div>
       <TopBarComp>
         <template #left>
-          <WordsPageCategoryTitleComp :category-id="filter.category_id" />
+          <WordsViewCategoryTitleComp :category-id="filter.category_id" />
         </template>
         <template #right>
           <ButtonComp
