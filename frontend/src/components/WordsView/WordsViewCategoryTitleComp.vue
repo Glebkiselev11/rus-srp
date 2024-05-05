@@ -11,7 +11,9 @@ import ButtonComp from "../ButtonComp.vue";
 import RemoveCategoryModalComp from "../Categories/RemoveCategoryModalComp.vue";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 import AllWordsCategoryImageComp from "../Categories/AllWordsCategoryImageComp.vue";
+import { useToasterStore } from "@/stores/toaster";
 
+const toastStore = useToasterStore();
 const { t } = useI18n();
 const { extractCurrentLanguageTranslation } = useTranslations();
 
@@ -39,6 +41,11 @@ function updateCategoryImage(src: string) {
       ...data.value.category,
       image: src,
     } as Category);
+
+    toastStore.addToast({
+      type: "success",
+      message: t("changes-saved"),
+    });
   }
 }
 </script>
