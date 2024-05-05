@@ -113,5 +113,7 @@
   "word-created-successfully": "Слово “{word}” добавлено в базу",
   "category-was-removed": "Категория “{category}” удалена",
   "changes-saved": "Изменения сохранены",
-  "category-created-successfully": "Категория “{category}” создана"
+  "category-created-successfully": "Категория “{category}” создана",
+  "remove-word-from-category": "Удалить из “{category}”",
+  "word-removed-from-category": "Слово “{word}” удалено из категории “{category}”"
 }

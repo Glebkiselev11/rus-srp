@@ -113,5 +113,7 @@
   "word-created-successfully": "The word “{word}” has been added to the database",
   "category-was-removed": "The category “{category}” has been removed",
   "changes-saved": "Changes saved",
-  "category-created-successfully": "The category “{category}” has been created"
+  "category-created-successfully": "The category “{category}” has been created",
+  "remove-word-from-category": "Remove from “{category}”",
+  "word-removed-from-category": "The word “{word}” has been removed from the category “{category}”"
 }

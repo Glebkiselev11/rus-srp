@@ -61,7 +61,10 @@ export const ApiTransport = {
   ): Promise<AxiosResponse<T>> {
     return axios.put(url, data);
   },
-  remove<T>(url: string): Promise<AxiosResponse<T>> {
-    return axios.delete(url);
+  remove<T>(
+    url: string,
+    data?: Record<string, unknown>
+  ): Promise<AxiosResponse<T>> {
+    return axios.delete(url, { data });
   },
 };
