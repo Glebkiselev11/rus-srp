@@ -5,7 +5,7 @@ import type { IconColor, IconName } from "@/types/icons";
 import ListItemComp from "./ListItemComp.vue";
 import IconComp from "@/components/IconComp/index.vue";
 
-type MenuItem = {
+export type MenuItem = {
   label: string;
   labelColor?: IconColor;
   icon?: IconName;
@@ -22,11 +22,13 @@ type Props = {
   items: Array<MenuItem | Separator>;
   disabled?: boolean;
   position?: MenuPosition;
+  maxWidth?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   position: "left",
+  maxWidth: "296px",
 });
 
 const isMenuOpen = ref(false);
@@ -107,6 +109,7 @@ function getLabelColor(item: MenuItem) {
       :style="{
         left: `${menuLeft}px`,
         top: `${menuTop}px`,
+        maxWidth: props.maxWidth,
       }"
     >
       <template v-for="(item, i) in items" :key="i">
@@ -126,7 +129,10 @@ function getLabelColor(item: MenuItem) {
           />
 
           <span
-            :class="[`text-color-${getLabelColor(item)}`]"
+            :class="[
+              'text-overflow-ellipsis',
+              `text-color-${getLabelColor(item)}`,
+            ]"
             v-text="item.label"
           />
         </ListItemComp>
