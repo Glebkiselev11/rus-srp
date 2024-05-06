@@ -1,30 +1,28 @@
-<script lang="ts"></script>
-
 <script setup lang="ts">
-import { ref, toRef } from "vue";
+import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useTranslations } from "@/common/useTranslations";
-import { useCategoryByIdQuery, useUpdateCategory } from "@/queries/categories";
-import type { Id } from "@/types/api";
+import { useUpdateCategory } from "@/queries/categories";
 import type { Category } from "@/types/categories";
-import ImagePreviewComp from "./ImagePreviewComp.vue";
-import DropdownMenuComp from "./DropdownMenuComp.vue";
-import ButtonComp from "./ButtonComp.vue";
-import RemoveCategoryModalComp from "./Categories/RemoveCategoryModalComp.vue";
+import ImagePreviewComp from "../ImagePreviewComp.vue";
+import DropdownMenuComp from "../DropdownMenuComp.vue";
+import ButtonComp from "../ButtonComp.vue";
+import RemoveCategoryModalComp from "../Categories/RemoveCategoryModalComp.vue";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
-import AllWordsCategoryImageComp from "./Categories/AllWordsCategoryImageComp.vue";
+import AllWordsCategoryImageComp from "../Categories/AllWordsCategoryImageComp.vue";
+import { useToasterStore } from "@/stores/toaster";
 
+const toastStore = useToasterStore();
 const { t } = useI18n();
 const { extractCurrentLanguageTranslation } = useTranslations();
 
 const props = defineProps<{
-  categoryId?: Id;
+  category?: Category;
 }>();
 
 const isRemoveCategoryModalOpen = ref(false);
 const isEditCategoryModalOpen = ref(false);
 
-const { data } = useCategoryByIdQuery(toRef(props, "categoryId"));
 const updateCategory = useUpdateCategory();
 
 function editCategory() {
@@ -36,28 +34,33 @@ function openRemoveCategoryModal() {
 }
 
 function updateCategoryImage(src: string) {
-  if (data && data.value?.category && src) {
+  if (props.category && src) {
     updateCategory.mutate({
-      ...data.value.category,
+      ...props.category,
       image: src,
     } as Category);
+
+    toastStore.addToast({
+      type: "success",
+      message: t("changes-saved"),
+    });
   }
 }
 </script>
 
 <template>
-  <div v-if="categoryId && data?.category" class="words-page-category-title">
+  <div v-if="props.category" class="words-view-category-title">
     <ImagePreviewComp
       size="56px"
-      :src="data.category.image"
+      :src="props.category.image"
       :image-search-modal-subtitle="
-        extractCurrentLanguageTranslation(data.category)
+        extractCurrentLanguageTranslation(props.category)
       "
-      :default-image-search-query="data.category.eng"
+      :default-image-search-query="props.category.eng"
       @update:src="(src) => updateCategoryImage(src)"
     />
     <h2>
-      {{ extractCurrentLanguageTranslation(data.category) }}
+      {{ extractCurrentLanguageTranslation(props.category) }}
     </h2>
 
     <DropdownMenuComp
@@ -82,25 +85,25 @@ function updateCategoryImage(src: string) {
         appearance="inline"
         color="neutral"
         size="compact"
-        class="words-page-category-title__menu-button"
+        class="words-view-category-title__menu-button"
         :pressed="isMenuOpen"
       />
     </DropdownMenuComp>
 
     <RemoveCategoryModalComp
       v-if="isRemoveCategoryModalOpen"
-      :category="data.category"
+      :category="props.category"
       @close="isRemoveCategoryModalOpen = false"
     />
 
     <CategoryFormModalComp
       v-if="isEditCategoryModalOpen"
-      :category-id="data.category.id"
+      :category-id="props.category.id"
       @close="isEditCategoryModalOpen = false"
     />
   </div>
 
-  <div v-else-if="!categoryId" class="words-page-category-title">
+  <div v-else class="words-view-category-title">
     <AllWordsCategoryImageComp size="56px" />
     <h2>
       {{ t("all-words") }}
@@ -109,7 +112,7 @@ function updateCategoryImage(src: string) {
 </template>
 
 <style scoped lang="scss">
-.words-page-category-title {
+.words-view-category-title {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -123,9 +126,9 @@ function updateCategoryImage(src: string) {
   }
 }
 
-.words-page-category-title:hover,
+.words-view-category-title:hover,
 .dropdown--open {
-  .words-page-category-title__menu-button {
+  .words-view-category-title__menu-button {
     visibility: visible;
   }
 }

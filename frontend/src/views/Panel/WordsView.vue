@@ -19,10 +19,12 @@ import TableComp from "@/components/Table/TableComp.vue";
 import TableRowComp from "@/components/Table/TableRowComp.vue";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import ButtonComp from "@/components/ButtonComp.vue";
-import DropdownMenuComp from "@/components/DropdownMenuComp.vue";
+import DropdownMenuComp, {
+  type MenuItem,
+} from "@/components/DropdownMenuComp.vue";
 import PaginationBarComp from "@/components/Pagination/PaginationBarComp.vue";
 import ZeroStateComp from "@/components/ZeroStateComp.vue";
-import WordsPageCategoryTitleComp from "@/components/WordsPageCategoryTitleComp.vue";
+import WordsViewCategoryTitleComp from "@/components/WordsView/WordsViewCategoryTitleComp.vue";
 import CategoriesPreviewBadgesComp from "@/components/CategoriesPreviewBadgesComp.vue";
 import WordsViewTableRowSkeletonComp from "@/components/WordsView/WordsViewTableRowSkeletonComp.vue";
 import CategoryWordsInsertModalComp from "@/components/CategoryWordsInsert/CategoryWordsInsertModalComp.vue";
@@ -32,7 +34,13 @@ import WordsViewFilterPanelComp from "@/components/WordsView/WordsViewFilterPane
 import WordsViewTranslationConfirmationComp from "@/components/WordsView/WordsViewTranslationConfirmationComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";
 import { useUpdateWord, useDeleteWord, useWordsQuery } from "@/queries/words";
+import { useToasterStore } from "@/stores/toaster";
+import {
+  useCategoryByIdQuery,
+  useDeleteWordsFromCategory,
+} from "@/queries/categories";
 
+const toastStore = useToasterStore();
 const { t, locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
@@ -99,8 +107,19 @@ const filter = computed({
     });
   },
 });
+const category_id = computed({
+  get(): Id | undefined {
+    return filter.value.category_id;
+  },
+  set(category_id: Id | undefined) {
+    filter.value = { ...DEFAULT_FILTER, category_id };
+  },
+});
 
 const { data, status } = useWordsQuery(filter);
+const { data: categoryData, status: categoryStatus } =
+  useCategoryByIdQuery(category_id);
+const deleteWordsFromCategory = useDeleteWordsFromCategory();
 const deleteWord = useDeleteWord();
 const updateWord = useUpdateWord();
 
@@ -144,15 +163,6 @@ const order = computed({
   },
   set(order: Order) {
     filter.value = { ...filter.value, order };
-  },
-});
-
-const category_id = computed({
-  get(): Id | undefined {
-    return filter.value.category_id;
-  },
-  set(category_id: Id | undefined) {
-    filter.value = { ...DEFAULT_FILTER, category_id };
   },
 });
 
@@ -210,6 +220,7 @@ const columns = computed(() => {
     { sortable: false, width: "auto" },
   ];
 });
+
 const gridTemplateColumns = computed(() => {
   return columns.value.map((col) => col.width ?? "auto").join(" ");
 });
@@ -252,8 +263,32 @@ async function removeWord(word: Word) {
   }
 }
 
-function updateWordImage(word: Word, src: string) {
-  updateWord.mutateAsync({ ...word, image: src });
+async function removeWordFromCategory(word: Word) {
+  const category = categoryData.value?.category;
+
+  if (!category) return;
+
+  await deleteWordsFromCategory.mutateAsync({
+    word_ids: [word.id],
+    id: category.id,
+  });
+
+  toastStore.addToast({
+    type: "info",
+    message: t("word-removed-from-category", {
+      word: word[locale.value as LanguageCode],
+      category: category[locale.value as LanguageCode],
+    }),
+  });
+}
+
+async function updateWordImage(word: Word, src: string) {
+  await updateWord.mutateAsync({ ...word, image: src });
+
+  toastStore.addToast({
+    type: "success",
+    message: t("changes-saved"),
+  });
 }
 
 function updateOrder(order?: Order) {
@@ -277,7 +312,10 @@ function createdCategory(categoryId: Id) {
     <div>
       <TopBarComp>
         <template #left>
-          <WordsPageCategoryTitleComp :category-id="filter.category_id" />
+          <WordsViewCategoryTitleComp
+            v-if="categoryStatus !== 'pending' || !category_id"
+            :category="categoryData?.category"
+          />
         </template>
         <template #right>
           <ButtonComp
@@ -357,20 +395,35 @@ function createdCategory(categoryId: Id) {
               <td style="margin-inline-start: auto">
                 <DropdownMenuComp
                   v-slot="{ isMenuOpen }"
-                  :items="[
-                    {
-                      label: t('edit'),
-                      icon: 'edit',
-                      handler: () => openEditingWordForm(word),
-                    },
-                    'separator',
-                    {
-                      label: t('delete'),
-                      icon: 'delete',
-                      color: 'negative',
-                      handler: () => removeWord(word),
-                    },
-                  ]"
+                  :items="
+                    [
+                      {
+                        label: t('edit'),
+                        icon: 'edit',
+                        handler: () => openEditingWordForm(word),
+                      },
+
+                      'separator',
+
+                      categoryData?.category
+                        ? {
+                            label: t('remove-word-from-category', {
+                              category:
+                                categoryData.category[locale as LanguageCode],
+                            }),
+                            icon: 'remove',
+                            handler: () => removeWordFromCategory(word),
+                          }
+                        : false,
+
+                      {
+                        label: t('delete'),
+                        icon: 'delete',
+                        color: 'negative',
+                        handler: () => removeWord(word),
+                      },
+                    ].filter(Boolean) as MenuItem[]
+                  "
                 >
                   <ButtonComp
                     icon="more_vert"
