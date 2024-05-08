@@ -73,7 +73,10 @@ function handleCreated(createdWordId: Id) {
 
 <template>
   <ModalComp :title="title" :subtitle="subtitle" @close="tryClose">
-    <template v-if="!translationApproved" #header-before-subtitle>
+    <template
+      v-if="!translationApproved && draftWordStore.allTranslationsFilled"
+      #header-before-subtitle
+    >
       <IconComp name="mark_status" color="negative" size="compact" />
     </template>
 
