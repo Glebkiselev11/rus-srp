@@ -9,6 +9,7 @@ import { useDraftWordStore } from "@/stores/draftWord";
 import { useTranslations } from "@/common/useTranslations";
 import { useI18n } from "vue-i18n";
 import type { Id } from "@/types/api";
+import { storeToRefs } from "pinia";
 
 const { translationPreview } = useTranslations();
 const { t } = useI18n();
@@ -21,6 +22,7 @@ const showCloseConfirmationModal = ref(false);
 
 const draftWordStore = useDraftWordStore();
 const wordFormTabsStore = useWordFormTabsStore();
+const { uniqueWordError, allTranslationsFilled } = storeToRefs(draftWordStore);
 
 const title = computed(() => {
   return draftWordStore.initialWord ? t("editing-word") : t("creation-word");
@@ -39,6 +41,14 @@ const subtitle = computed(() => {
 const translationApproved = computed(
   () => draftWordStore.draftWord.translation_approved
 );
+
+const showUnprovedStatus = computed(() => {
+  return (
+    !translationApproved.value &&
+    allTranslationsFilled.value &&
+    !uniqueWordError.value
+  );
+});
 
 const closeConfirmationCancelButtonLabel = computed(() =>
   draftWordStore.initialWord
@@ -73,10 +83,7 @@ function handleCreated(createdWordId: Id) {
 
 <template>
   <ModalComp :title="title" :subtitle="subtitle" @close="tryClose">
-    <template
-      v-if="!translationApproved && draftWordStore.allTranslationsFilled"
-      #header-before-subtitle
-    >
+    <template v-if="showUnprovedStatus" #header-before-subtitle>
       <IconComp name="mark_status" color="negative" size="compact" />
     </template>
 

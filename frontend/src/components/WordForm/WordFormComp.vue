@@ -13,6 +13,7 @@ import { useUpdateWord, useCreateWord } from "@/queries/words";
 import type { Id } from "@/types/api";
 import { useToasterStore } from "@/stores/toaster";
 import { useTranslations } from "@/common/useTranslations";
+import { storeToRefs } from "pinia";
 
 const { t } = useI18n();
 const toastStore = useToasterStore();
@@ -32,9 +33,9 @@ const createWord = useCreateWord();
 
 const draftWordStore = useDraftWordStore();
 const wordFormTabsStore = useWordFormTabsStore();
+const { uniqueWordError } = storeToRefs(draftWordStore);
 
 const savingLoading = ref(false);
-const uniqueWordError = ref(false);
 const rusValidationError = ref<string | undefined>(undefined);
 const engValidationError = ref<string | undefined>(undefined);
 const srpCyrillicValidationError = ref<string | undefined>(undefined);

@@ -21,6 +21,7 @@ export const useDraftWordStore = defineStore("draftWord", () => {
   const { getLanguageCodesOrder } = useTranslations();
 
   const draftWord = ref(_initDraftWord());
+  const uniqueWordError = ref(false);
   // if we are in editing mode, we need to store the initial word
   const initialWord = ref<DraftWord>();
 
@@ -106,6 +107,7 @@ export const useDraftWordStore = defineStore("draftWord", () => {
     isEditMode,
     isChanged,
     isTranslationChanged,
+    uniqueWordError,
     initDraftWord,
     resetDraftWord,
     resetTranslationApproved,
