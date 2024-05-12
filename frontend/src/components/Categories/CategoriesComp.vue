@@ -125,19 +125,17 @@ function openCreationCategoryForm() {
     <HeaderComp :title="t('categories')" title-tag="h4" padding-inline="12px">
       <template #right>
         <div class="categories__controls">
-          <DropdownMenuComp
-            v-slot="{ isMenuOpen }"
-            :items="orderOptions"
-            position="right"
-          >
-            <TooltipComp :text="t('to-sort')" :hidden="isMenuOpen">
-              <ButtonComp
-                icon="sort"
-                appearance="inline"
-                color="neutral"
-                :pressed="isMenuOpen"
-              />
-            </TooltipComp>
+          <DropdownMenuComp :items="orderOptions" position="right">
+            <template #trigger="{ isMenuOpen }">
+              <TooltipComp :text="t('to-sort')" :hidden="isMenuOpen">
+                <ButtonComp
+                  icon="sort"
+                  appearance="inline"
+                  color="neutral"
+                  :pressed="isMenuOpen"
+                />
+              </TooltipComp>
+            </template>
           </DropdownMenuComp>
 
           <TooltipComp :text="t('create-category')">

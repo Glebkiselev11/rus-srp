@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, ref } from "vue";
+import { computed, nextTick, onMounted, ref, useSlots, watch } from "vue";
 import { vOnClickOutside, vElementVisibility } from "@vueuse/components";
 import type { IconColor, IconName } from "@/types/icons";
 import ListItemComp from "./ListItemComp.vue";
@@ -23,34 +23,64 @@ type Props = {
   disabled?: boolean;
   position?: MenuPosition;
   maxWidth?: string;
+  showMenu?: boolean;
 };
+
+const slots = useSlots();
 
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   position: "left",
   maxWidth: "296px",
+  showMenu: false,
 });
 
-const isMenuOpen = ref(false);
+const emit = defineEmits<{
+  (e: "close"): void;
+}>();
+
+const _showMenu = ref(false);
 const isBottomMenuVisible = ref<boolean | null>(null);
 const menuLeft = ref(0);
 const menuTop = ref(0);
-const trigger = ref<HTMLElement>();
+const anchor = ref<HTMLElement>();
 const menu = ref<HTMLElement>();
 
-function toggleMenu() {
-  if (props.disabled) return;
-  isMenuOpen.value = !isMenuOpen.value;
+const hasTriggerSlot = computed(() => {
+  return !!slots.trigger;
+});
 
-  if (isMenuOpen.value) {
+const isMenuOpen = computed(() => {
+  if (hasTriggerSlot.value) {
+    return _showMenu.value;
+  }
+
+  // If there is no trigger slot, the menu opens from props
+  return props.showMenu;
+});
+
+watch(isMenuOpen, (isOpen) => {
+  if (isOpen) {
     nextTick(() => {
       calculateMenuPosition();
     });
   }
+});
+
+onMounted(() => {
+  if (isMenuOpen.value) {
+    calculateMenuPosition();
+  }
+});
+
+function toggleMenu() {
+  if (props.disabled) return;
+  _showMenu.value = !_showMenu.value;
 }
 
 function closeMenu() {
-  isMenuOpen.value = false;
+  _showMenu.value = false;
+  emit("close");
 }
 
 function setBottomMenuAngleVisibility(state: boolean) {
@@ -63,23 +93,23 @@ function handdleClickOnItem(handler: () => void) {
 }
 
 function calculateMenuPosition() {
-  if (!trigger.value || !menu.value) return;
+  if (!anchor.value || !menu.value) return;
 
-  const triggerRect = trigger.value.getBoundingClientRect();
+  const anchorRect = anchor.value.getBoundingClientRect();
   const menuRect = menu.value.getBoundingClientRect();
 
   const margin = 8;
-  menuTop.value = triggerRect.y + triggerRect.height + margin;
+  menuTop.value = anchorRect.y + anchorRect.height + margin;
 
   if (props.position === "left") {
-    menuLeft.value = triggerRect.left - menuRect.width + triggerRect.width;
+    menuLeft.value = anchorRect.left - menuRect.width + anchorRect.width;
   } else {
-    menuLeft.value = triggerRect.left;
+    menuLeft.value = anchorRect.left;
   }
 
   setTimeout(() => {
     if (!isBottomMenuVisible.value) {
-      menuTop.value = triggerRect.y - menuRect.height - margin;
+      menuTop.value = anchorRect.y - menuRect.height - margin;
     }
   }, 10);
 }
@@ -98,8 +128,17 @@ function getLabelColor(item: MenuItem) {
     class="dropdown"
     :class="{ 'dropdown--open': isMenuOpen }"
   >
-    <div ref="trigger" class="dropdown__trigger" @click="toggleMenu">
-      <slot :is-menu-open="isMenuOpen" />
+    <div
+      v-if="hasTriggerSlot"
+      ref="anchor"
+      class="dropdown__trigger"
+      @click="toggleMenu"
+    >
+      <slot name="trigger" :is-menu-open="isMenuOpen" />
+    </div>
+
+    <div v-else ref="anchor">
+      <slot name="anchor" />
     </div>
 
     <div

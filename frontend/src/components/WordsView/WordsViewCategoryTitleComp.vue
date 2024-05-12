@@ -64,7 +64,6 @@ function updateCategoryImage(src: string) {
     </h2>
 
     <DropdownMenuComp
-      v-slot="{ isMenuOpen }"
       :items="[
         {
           label: t('edit'),
@@ -80,14 +79,16 @@ function updateCategoryImage(src: string) {
         },
       ]"
     >
-      <ButtonComp
-        icon="more_vert"
-        appearance="inline"
-        color="neutral"
-        size="compact"
-        class="words-view-category-title__menu-button"
-        :pressed="isMenuOpen"
-      />
+      <template #trigger="{ isMenuOpen }">
+        <ButtonComp
+          icon="more_vert"
+          appearance="inline"
+          color="neutral"
+          size="compact"
+          class="words-view-category-title__menu-button"
+          :pressed="isMenuOpen"
+        />
+      </template>
     </DropdownMenuComp>
 
     <RemoveCategoryModalComp
