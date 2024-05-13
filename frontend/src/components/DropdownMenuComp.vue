@@ -8,6 +8,7 @@ import IconComp from "@/components/IconComp/index.vue";
 export type MenuItem = {
   label: string;
   labelColor?: IconColor;
+  description?: string;
   icon?: IconName;
   color?: IconColor;
   iconColor?: IconColor;
@@ -167,13 +168,21 @@ function getLabelColor(item: MenuItem) {
             :color="getIconColor(item)"
           />
 
-          <span
-            :class="[
-              'text-overflow-ellipsis',
-              `text-color-${getLabelColor(item)}`,
-            ]"
-            v-text="item.label"
-          />
+          <div class="list-item-text">
+            <span
+              :class="[
+                'text-overflow-ellipsis',
+                `text-color-${getLabelColor(item)}`,
+              ]"
+              v-text="item.label"
+            />
+
+            <span
+              v-if="item.description"
+              class="text-overflow-ellipsis list-item-text__description"
+              v-text="item.description"
+            />
+          </div>
         </ListItemComp>
       </template>
 
@@ -200,6 +209,16 @@ function getLabelColor(item: MenuItem) {
     box-shadow:
       0 0 4px 0 rgb(2 18 38 / 8%),
       0 4px 8px 0 rgb(2 18 38 / 4%);
+  }
+
+  .list-item-text {
+    display: flex;
+    flex-direction: column;
+
+    &__description {
+      @include text-body-2;
+      color: $color-text-secondary;
+    }
   }
 
   hr {

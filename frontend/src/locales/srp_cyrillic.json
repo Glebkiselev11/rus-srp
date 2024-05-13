@@ -115,5 +115,6 @@
   "changes-saved": "Промене су сачуване",
   "category-created-successfully": "Категорија “{category}” је креирана",
   "remove-word-from-category": "Уклони из “{category}”",
-  "word-removed-from-category": "Реч “{word}” је уклоњена из категорије “{category}”"
+  "word-removed-from-category": "Реч “{word}” је уклоњена из категорије “{category}”",
+  "create-word-from": "Креирајте реч “{word}”"
 }
