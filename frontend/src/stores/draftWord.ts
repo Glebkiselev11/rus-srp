@@ -22,6 +22,7 @@ export const useDraftWordStore = defineStore("draftWord", () => {
 
   const draftWord = ref(_initDraftWord());
   const uniqueWordError = ref(false);
+  const autoFillTranslationsLoading = ref(false);
   // if we are in editing mode, we need to store the initial word
   const initialWord = ref<DraftWord>();
 
@@ -90,11 +91,13 @@ export const useDraftWordStore = defineStore("draftWord", () => {
   }
 
   async function autoFillTranslations() {
+    autoFillTranslationsLoading.value = true;
     const fields = await translate(draftWord.value);
     draftWord.value = {
       ...draftWord.value,
       ...fields,
     };
+    autoFillTranslationsLoading.value = false;
   }
 
   return {
@@ -108,6 +111,7 @@ export const useDraftWordStore = defineStore("draftWord", () => {
     isChanged,
     isTranslationChanged,
     uniqueWordError,
+    autoFillTranslationsLoading,
     initDraftWord,
     resetDraftWord,
     resetTranslationApproved,

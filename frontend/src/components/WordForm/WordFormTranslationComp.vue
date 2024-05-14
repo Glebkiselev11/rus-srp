@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import { computed, ref, watch } from "vue";
+import { computed, watch } from "vue";
 import type { LanguageCode } from "@/types/translations";
 import { useDraftWordStore } from "@/stores/draftWord";
 
@@ -31,8 +31,6 @@ const props = withDefaults(defineProps<Props>(), {
   srpLatinValidationError: undefined,
   srpCyrillicValidationError: undefined,
 });
-
-const autoFillTranslationsLoading = ref(false);
 
 const wordPreview = computed(() => {
   if (draftWordStore.isEditMode || draftWordStore.anyTranslationFilled) {
@@ -70,19 +68,15 @@ function getValidationError(code: LanguageCode) {
   }
 }
 
-async function _autoFillTranslations() {
-  if (
-    !draftWordStore.semifilledTranslations ||
-    autoFillTranslationsLoading.value
-  )
-    return;
+function _autoFillTranslations() {
+  const { autoFillTranslationsLoading, semifilledTranslations } =
+    draftWordStore;
 
-  try {
-    autoFillTranslationsLoading.value = true;
-    await draftWordStore.autoFillTranslations();
-  } finally {
-    autoFillTranslationsLoading.value = false;
+  if (!semifilledTranslations || autoFillTranslationsLoading) {
+    return;
   }
+
+  draftWordStore.autoFillTranslations();
 }
 </script>
 
@@ -129,7 +123,7 @@ async function _autoFillTranslations() {
         icon="edit_note"
         appearance="inline"
         :label="t('fill-in-auto')"
-        :loading="autoFillTranslationsLoading"
+        :loading="draftWordStore.autoFillTranslationsLoading"
         @click="_autoFillTranslations"
       />
     </div>

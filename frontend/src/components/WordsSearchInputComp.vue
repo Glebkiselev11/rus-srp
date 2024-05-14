@@ -2,15 +2,18 @@
 import { useI18n } from "vue-i18n";
 import type { InputAppearance } from "@/types/input";
 import InputComp from "@/components/InputComp.vue";
+import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
 import DropdownMenuComp, {
   type MenuItem,
 } from "@/components/DropdownMenuComp.vue";
-import { computed, ref, watch } from "vue";
+import { computed, nextTick, ref, watch } from "vue";
 import { useTranslations } from "@/common/useTranslations";
 import { getLanguageCodesAccordingText } from "@/common/translations";
 import type { LanguageCode } from "@/types/translations";
+import { useDraftWordStore } from "@/stores/draftWord";
 
 const { t } = useI18n();
+const draftWordStore = useDraftWordStore();
 const { getLanguageLabel, getLanguageCodesOrder } = useTranslations();
 const props = defineProps<{
   search: string;
@@ -23,6 +26,7 @@ const emit = defineEmits<{
   (e: "update:search", value: string): void;
 }>();
 
+const showWordForm = ref(false);
 const showActions = ref(false);
 
 const actions = computed(
@@ -52,8 +56,14 @@ function update(newSearch: string) {
   emit("update:search", newSearch);
 }
 
-function startCreatingWord(code: LanguageCode, word: string) {
-  console.log("start creating word", code, word);
+async function startCreatingWord(code: LanguageCode, word: string) {
+  draftWordStore.initDraftWord(undefined);
+  await nextTick(() => {
+    draftWordStore.draftWord[code] = word;
+    showWordForm.value = true;
+  });
+
+  draftWordStore.autoFillTranslations();
 }
 
 function closeActions() {
@@ -82,4 +92,6 @@ function closeActions() {
       />
     </template>
   </DropdownMenuComp>
+
+  <WordFormModalComp v-if="showWordForm" @close="showWordForm = false" />
 </template>
