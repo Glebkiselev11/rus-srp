@@ -7,9 +7,11 @@ import DropdownMenuComp, {
 } from "@/components/DropdownMenuComp.vue";
 import { computed, ref, watch } from "vue";
 import { useTranslations } from "@/common/useTranslations";
+import { getLanguageCodesAccordingText } from "@/common/translations";
+import type { LanguageCode } from "@/types/translations";
 
 const { t } = useI18n();
-const { getLanguageLabel } = useTranslations();
+const { getLanguageLabel, getLanguageCodesOrder } = useTranslations();
 const props = defineProps<{
   search: string;
   appearance: InputAppearance;
@@ -23,48 +25,20 @@ const emit = defineEmits<{
 
 const showActions = ref(false);
 
-const isLatin = computed(() => {
-  return props.search.charCodeAt(0) < 500;
-});
-
 const actions = computed(
   () =>
-    (isLatin.value
-      ? [
-          {
-            handler: () => {
-              console.log("add serbian latin word");
-            },
-            description: getLanguageLabel("srp_latin"),
-          },
-          {
-            handler: () => {
-              console.log("add english word");
-            },
-            description: getLanguageLabel("eng"),
-          },
-        ]
-      : [
-          {
-            handler: () => {
-              console.log("add serbian cyrillic word");
-            },
-            description: getLanguageLabel("srp_cyrillic"),
-          },
-          {
-            handler: () => {
-              console.log("add russian word");
-            },
-            description: getLanguageLabel("rus"),
-          },
-        ]
-    ).map((x) => {
-      return {
-        ...x,
-        icon: "add",
-        label: t("create-word-from", { word: props.search }),
-      };
-    }) as MenuItem[]
+    getLanguageCodesOrder()
+      .filter((code) =>
+        getLanguageCodesAccordingText(props.search).includes(code)
+      )
+      .map((code) => {
+        return {
+          icon: "add",
+          label: t("create-word-from", { word: props.search }),
+          description: getLanguageLabel(code),
+          handler: () => startCreatingWord(code, props.search),
+        };
+      }) as MenuItem[]
 );
 
 watch(
@@ -76,6 +50,10 @@ watch(
 
 function update(newSearch: string) {
   emit("update:search", newSearch);
+}
+
+function startCreatingWord(code: LanguageCode, word: string) {
+  console.log("start creating word", code, word);
 }
 
 function closeActions() {
