@@ -71,7 +71,6 @@ function editCategory(categoryId: Id) {
       </div>
 
       <DropdownMenuComp
-        v-slot="{ isMenuOpen }"
         :items="[
           {
             label: t('edit'),
@@ -88,14 +87,16 @@ function editCategory(categoryId: Id) {
         ]"
         @click.stop
       >
-        <ButtonComp
-          icon="more_vert"
-          appearance="inline"
-          color="neutral"
-          size="small"
-          class="category-item__menu-button"
-          :pressed="isMenuOpen"
-        />
+        <template #trigger="{ isMenuOpen }">
+          <ButtonComp
+            icon="more_vert"
+            appearance="inline"
+            color="neutral"
+            size="small"
+            class="category-item__menu-button"
+            :pressed="isMenuOpen"
+          />
+        </template>
       </DropdownMenuComp>
     </div>
   </ListItemComp>

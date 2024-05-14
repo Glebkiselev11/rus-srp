@@ -1,4 +1,4 @@
-import type { TranslationObject } from "@/types/translations";
+import type { LanguageCode, TranslationObject } from "@/types/translations";
 import { TranslationsService } from "@/api";
 
 export async function translate(
@@ -11,4 +11,19 @@ export async function translate(
     console.error(error);
     return params;
   }
+}
+export function getLanguageCodesAccordingText(text: string): LanguageCode[] {
+  const table = {
+    rus: /^[а-яё\s]+$/i,
+    srp_cyrillic: /^[абвгдђежзијклљмнњопрстћуфхцчџш\s]+$/i,
+    srp_latin: /^[abcčćdđefghijklmnoprsštuvzž\s]+$/i,
+    eng: /^[a-z\s]+$/i,
+  };
+
+  return Object.entries(table).reduce((codes, [key, value]) => {
+    if (value.test(text)) {
+      codes.push(key as LanguageCode);
+    }
+    return codes;
+  }, [] as LanguageCode[]);
 }

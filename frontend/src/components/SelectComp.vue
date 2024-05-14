@@ -47,37 +47,35 @@ const selectedItem = computed(() => {
 
 <template>
   <InputWrapperComp :label="props.label" for="select">
-    <DropdownMenuComp
-      v-slot="{ isMenuOpen }"
-      :items="items"
-      :disabled="props.disabled"
-    >
-      <button
-        id="select"
-        class="select"
-        :disabled="props.disabled"
-        :class="[
-          `select--appearance-${props.appearance}`,
-          `select--size-${props.size}`,
-          { 'select--menu-open': isMenuOpen },
-          { 'select--with-icon': props.icon },
-        ]"
-      >
-        <IconComp
-          v-if="props.icon"
-          :name="props.icon"
-          size="compact"
-          color="secondary"
-        />
+    <DropdownMenuComp :items="items" :disabled="props.disabled">
+      <template #trigger="{ isMenuOpen }">
+        <button
+          id="select"
+          class="select"
+          :disabled="props.disabled"
+          :class="[
+            `select--appearance-${props.appearance}`,
+            `select--size-${props.size}`,
+            { 'select--menu-open': isMenuOpen },
+            { 'select--with-icon': props.icon },
+          ]"
+        >
+          <IconComp
+            v-if="props.icon"
+            :name="props.icon"
+            size="compact"
+            color="secondary"
+          />
 
-        {{ selectedItem }}
+          {{ selectedItem }}
 
-        <IconComp
-          :name="isMenuOpen ? 'expand_more_up' : 'expand_more_down'"
-          size="compact"
-          color="tertiary"
-        />
-      </button>
+          <IconComp
+            :name="isMenuOpen ? 'expand_more_up' : 'expand_more_down'"
+            size="compact"
+            color="tertiary"
+          />
+        </button>
+      </template>
     </DropdownMenuComp>
   </InputWrapperComp>
 </template>

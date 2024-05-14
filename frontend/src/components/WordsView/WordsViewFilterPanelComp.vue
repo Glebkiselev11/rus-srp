@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { Id, Order, TranslationApprovedStatus } from "@/types/api";
-import InputComp from "@/components/InputComp.vue";
+import WordsSearchInputComp from "@/components/WordsSearchInputComp.vue";
 import SelectComp from "@/components/SelectComp.vue";
 import SwitchComp from "@/components/SwitchComp.vue";
 import IconComp from "@/components/IconComp/index.vue";
@@ -61,16 +61,12 @@ function updateOrder(newOrder: Order) {
 
 <template>
   <div class="filter-panel">
-    <InputComp
-      :model-value="props.search"
+    <WordsSearchInputComp
+      :search="props.search"
+      :search-placeholder="searchPlaceholder"
       appearance="outline"
-      type="text"
-      :placeholder="searchPlaceholder"
-      left-icon="search"
-      debounce
       width="360px"
-      clear-button
-      @update:model-value="updateSearch"
+      @update:search="updateSearch"
     />
 
     <div class="filter-panel__right">

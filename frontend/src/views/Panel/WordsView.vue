@@ -394,7 +394,6 @@ function createdCategory(categoryId: Id) {
 
               <td style="margin-inline-start: auto">
                 <DropdownMenuComp
-                  v-slot="{ isMenuOpen }"
                   :items="
                     [
                       {
@@ -425,13 +424,15 @@ function createdCategory(categoryId: Id) {
                     ].filter(Boolean) as MenuItem[]
                   "
                 >
-                  <ButtonComp
-                    icon="more_vert"
-                    appearance="inline"
-                    color="neutral"
-                    size="compact"
-                    :pressed="isMenuOpen"
-                  />
+                  <template #trigger="{ isMenuOpen }">
+                    <ButtonComp
+                      icon="more_vert"
+                      appearance="inline"
+                      color="neutral"
+                      size="compact"
+                      :pressed="isMenuOpen"
+                    />
+                  </template>
                 </DropdownMenuComp>
               </td>
             </TableRowComp>
