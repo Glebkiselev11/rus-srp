@@ -48,7 +48,7 @@ const actions = computed(
 watch(
   () => props.search,
   () => {
-    showActions.value = props.search.length > 1;
+    showActions.value = actions.value.length > 0;
   }
 );
 
