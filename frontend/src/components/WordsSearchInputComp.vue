@@ -6,7 +6,7 @@ import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
 import DropdownMenuComp, {
   type MenuItem,
 } from "@/components/DropdownMenuComp.vue";
-import { computed, nextTick, ref, watch } from "vue";
+import { computed, nextTick, ref } from "vue";
 import { useTranslations } from "@/common/useTranslations";
 import { getLanguageCodesAccordingText } from "@/common/translations";
 import type { LanguageCode } from "@/types/translations";
@@ -45,12 +45,9 @@ const actions = computed(
       }) as MenuItem[]
 );
 
-watch(
-  () => props.search,
-  () => {
-    showActions.value = props.search.length > 1;
-  }
-);
+const computedShowActions = computed(() => {
+  return showActions.value && actions.value.length > 0;
+});
 
 function update(newSearch: string) {
   emit("update:search", newSearch);
@@ -74,7 +71,7 @@ function closeActions() {
 <template>
   <DropdownMenuComp
     :items="actions"
-    :show-menu="showActions"
+    :show-menu="computedShowActions"
     position="right"
     @close="closeActions"
   >
@@ -89,6 +86,7 @@ function closeActions() {
         :width="props.width"
         clear-button
         @update:model-value="update"
+        @focus="showActions = true"
       />
     </template>
   </DropdownMenuComp>

@@ -55,6 +55,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   (event: "update:modelValue", value: T): void;
   (event: "keypress", e: KeyboardEvent): void;
+  (event: "focus"): void;
 }>();
 
 const input = ref<HTMLInputElement | null>(null);
@@ -96,6 +97,7 @@ function handleInput() {
 
 function setFocus() {
   input.value?.focus();
+  emit("focus");
 }
 
 function clearInput() {
@@ -145,6 +147,7 @@ function resetInput() {
         :min="props.min"
         autocomplete="off"
         @input="handleInput"
+        @focus="emit('focus')"
       />
 
       <div class="input__buttons">

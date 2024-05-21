@@ -37,12 +37,14 @@ pub async fn translate(body: web::Json<AiTranslatePayload>) -> actix_web::Result
     let client = reqwest::Client::new();
 
     let body = json!({
-        "model": "gpt-4o",
-        "temperature": 0,
+        "model": "gpt-4",
+        // response_format is needed for 4o model
+        // "response_format": { "type": "json_object" },
         "messages": [{
             "role": "system",
             "content": format!(
-                "eng: '{}', rus: '{}', srp_cyrillic: '{}', srp_latin: '{}' return json object with filled translation for empty strings",
+                "eng: '{}', rus: '{}', srp_cyrillic: '{}', srp_latin: '{}' return
+                json object with filled translation for empty strings",
                 body.eng, body.rus, body.srp_cyrillic, body.srp_latin
             ),
         }]
