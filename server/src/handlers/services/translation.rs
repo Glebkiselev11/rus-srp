@@ -38,7 +38,6 @@ pub async fn translate(body: web::Json<AiTranslatePayload>) -> actix_web::Result
 
     let body = json!({
         "model": "gpt-4o",
-        "temperature": 0,
         "messages": [{
             "role": "system",
             "content": format!(
