@@ -339,7 +339,7 @@ function close() {
           :focus-on-mount="!props.category"
           :error-text="categoryNameValidationError"
           clear-button
-          @input="triggerCategoryNameUniqueValidation"
+          @update:model-value="triggerCategoryNameUniqueValidation"
           @keypress.enter="autoFill"
         />
       </ImageSectionComp>
