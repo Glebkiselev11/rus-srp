@@ -5,7 +5,7 @@ import { useI18n } from "vue-i18n";
 import { useModalWordsStore } from "@/stores/modalWords";
 import { highlighTextByQuery } from "@/common/utils";
 import { useTranslations } from "@/common/useTranslations";
-import InputComp from "../InputComp.vue";
+import WordsSearchInputComp from "@/components/WordsSearchInputComp.vue";
 import ButtonComp from "../ButtonComp.vue";
 import WordFormModalComp from "../WordForm/WordFormModalComp.vue";
 import TableComp from "@/components/Table/TableComp.vue";
@@ -113,21 +113,20 @@ function handleWordCreated(id: Id) {
 <template>
   <div class="category-words-insert">
     <div class="category-words-insert__panel">
-      <InputComp
-        v-model="search"
+      <WordsSearchInputComp
+        :search="search"
+        :search-placeholder="t('find-word')"
+        :category-id="props.categoryId"
         appearance="default"
-        clear-button
-        debounce
-        focus-on-mount
-        :placeholder="t('find-word')"
-        left-icon="search"
+        width="100%"
+        @update:search="search = $event"
       />
 
       <ButtonComp
         icon="add"
         appearance="inline"
-        class="category-words-insert__create-word-button"
         :label="t('create-word')"
+        class="create-word-button"
         @click="showWordForm = true"
       />
     </div>
@@ -258,19 +257,19 @@ function handleWordCreated(id: Id) {
   &__panel {
     display: flex;
     align-items: center;
+    column-gap: 12px;
     margin-block-end: 16px;
     margin-inline: 16px;
+
+    .create-word-button {
+      flex-shrink: 0;
+    }
   }
 
   &__table {
     margin-inline: 16px;
     border-radius: 8px 8px 0 0;
     border-block-end: none;
-  }
-
-  &__create-word-button {
-    flex-shrink: 0;
-    margin-inline-start: 12px;
   }
 
   &__footer {

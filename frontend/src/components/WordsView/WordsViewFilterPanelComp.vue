@@ -64,6 +64,7 @@ function updateOrder(newOrder: Order) {
     <WordsSearchInputComp
       :search="props.search"
       :search-placeholder="searchPlaceholder"
+      :category-id="props.categoryId"
       appearance="outline"
       width="360px"
       @update:search="updateSearch"
