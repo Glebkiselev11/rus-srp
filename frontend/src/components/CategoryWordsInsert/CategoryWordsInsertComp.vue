@@ -116,6 +116,7 @@ function handleWordCreated(id: Id) {
       <WordsSearchInputComp
         :search="search"
         :search-placeholder="t('find-word')"
+        :category-id="props.categoryId"
         appearance="default"
         width="100%"
         @update:search="search = $event"
