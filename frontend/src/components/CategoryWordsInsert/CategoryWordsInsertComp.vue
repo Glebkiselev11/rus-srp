@@ -117,7 +117,7 @@ function handleWordCreated(id: Id) {
         :search="search"
         :search-placeholder="t('find-word')"
         appearance="default"
-        width="550px"
+        width="100%"
         @update:search="search = $event"
       />
 
@@ -125,6 +125,7 @@ function handleWordCreated(id: Id) {
         icon="add"
         appearance="inline"
         :label="t('create-word')"
+        class="create-word-button"
         @click="showWordForm = true"
       />
     </div>
@@ -258,6 +259,10 @@ function handleWordCreated(id: Id) {
     column-gap: 12px;
     margin-block-end: 16px;
     margin-inline: 16px;
+
+    .create-word-button {
+      flex-shrink: 0;
+    }
   }
 
   &__table {

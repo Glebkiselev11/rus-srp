@@ -69,27 +69,33 @@ function closeActions() {
 </script>
 
 <template>
-  <DropdownMenuComp
-    :items="actions"
-    :show-menu="computedShowActions"
-    position="right"
-    @close="closeActions"
+  <div
+    :style="{
+      width: props.width,
+    }"
   >
-    <template #anchor>
-      <InputComp
-        :model-value="props.search"
-        :appearance="props.appearance"
-        type="text"
-        :placeholder="props.searchPlaceholder"
-        left-icon="search"
-        debounce
-        :width="props.width"
-        clear-button
-        @update:model-value="update"
-        @focus="showActions = true"
-      />
-    </template>
-  </DropdownMenuComp>
+    <DropdownMenuComp
+      :items="actions"
+      :show-menu="computedShowActions"
+      position="right"
+      @close="closeActions"
+    >
+      <template #anchor>
+        <InputComp
+          :model-value="props.search"
+          :appearance="props.appearance"
+          type="text"
+          :placeholder="props.searchPlaceholder"
+          left-icon="search"
+          debounce
+          :width="props.width"
+          clear-button
+          @update:model-value="update"
+          @focus="showActions = true"
+        />
+      </template>
+    </DropdownMenuComp>
 
-  <WordFormModalComp v-if="showWordForm" @close="showWordForm = false" />
+    <WordFormModalComp v-if="showWordForm" @close="showWordForm = false" />
+  </div>
 </template>
