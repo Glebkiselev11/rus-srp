@@ -11,6 +11,7 @@ import { useTranslations } from "@/common/useTranslations";
 import { getLanguageCodesAccordingText } from "@/common/translations";
 import type { LanguageCode } from "@/types/translations";
 import { useDraftWordStore } from "@/stores/draftWord";
+import type { Id } from "@/types/api";
 
 const { t } = useI18n();
 const draftWordStore = useDraftWordStore();
@@ -20,6 +21,7 @@ const props = defineProps<{
   appearance: InputAppearance;
   width: string;
   searchPlaceholder: string;
+  categoryId?: Id;
 }>();
 
 const emit = defineEmits<{
@@ -57,6 +59,11 @@ async function startCreatingWord(code: LanguageCode, word: string) {
   draftWordStore.initDraftWord(undefined);
   await nextTick(() => {
     draftWordStore.draftWord[code] = word;
+
+    if (props.categoryId) {
+      draftWordStore.draftWord.category_ids.push(props.categoryId);
+    }
+
     showWordForm.value = true;
   });
 
