@@ -236,6 +236,11 @@ function openEditingWordForm(word: Word) {
 
 function openCreationWordForm() {
   draftWordStore.initDraftWord(undefined);
+
+  if (category_id.value) {
+    draftWordStore.draftWord.category_ids.push(category_id.value);
+  }
+
   showWordForm.value = true;
 }
 
