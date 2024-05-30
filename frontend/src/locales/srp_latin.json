@@ -116,5 +116,6 @@
   "category-created-successfully": "Kategorija “{category}” je kreirana",
   "remove-word-from-category": "Ukloni iz “{category}”",
   "word-removed-from-category": "Reč “{word}” je uklonjena iz kategorije “{category}”",
-  "create-word-from": "Kreirajte reč “{word}”"
+  "create-word-from": "Kreirajte reč “{word}”",
+  "create-category-from": "Kreirajte kategoriju “{category}”"
 }

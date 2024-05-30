@@ -6,7 +6,7 @@ import { useI18n } from "vue-i18n";
 import type { Id, Order, RequestParams } from "@/types/api";
 import type { LanguageCode } from "@/types/translations";
 import ButtonComp from "@/components/ButtonComp.vue";
-import InputComp from "@/components/InputComp.vue";
+import CategorySearchInputComp from "@/components/CategorySearchInputComp.vue";
 import CategoriesListComp from "@/components/Categories/CategoriesListComp.vue";
 import HeaderComp from "@/components/HeaderComp.vue";
 import DropdownMenuComp from "../DropdownMenuComp.vue";
@@ -150,13 +150,13 @@ function openCreationCategoryForm() {
       </template>
     </HeaderComp>
 
-    <InputComp
-      v-model="search"
-      :placeholder="t('find-category')"
-      left-icon="search"
-      debounce
-      clear-button
+    <CategorySearchInputComp
       class="categories__search"
+      :search="search"
+      appearance="default"
+      :search-placeholder="t('find-category')"
+      width="100%"
+      @update:search="search = $event"
     />
 
     <CategoriesListComp
