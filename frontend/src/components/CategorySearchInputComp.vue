@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
+import { getLanguageCodesAccordingText } from "@/common/translations";
 import type { InputAppearance } from "@/types/input";
 import InputComp from "@/components/InputComp.vue";
 import DropdownMenuComp, {
@@ -7,7 +8,7 @@ import DropdownMenuComp, {
 } from "@/components/DropdownMenuComp.vue";
 import { computed, ref } from "vue";
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 const props = defineProps<{
   search: string;
@@ -31,7 +32,12 @@ const action = computed(
 );
 
 const computedShowSuggestion = computed(() => {
-  return showSuggestion.value && props.search.length > 0;
+  return (
+    showSuggestion.value &&
+    getLanguageCodesAccordingText(props.search).some(
+      (code) => code === locale.value
+    )
+  );
 });
 
 function update(newSearch: string) {
