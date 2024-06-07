@@ -1,4 +1,7 @@
+import type { Id } from "./api";
+
 export type DraftCategory = {
+  id?: Id;
   rus: string;
   eng: string;
   srp_latin: string;
@@ -7,7 +10,7 @@ export type DraftCategory = {
 };
 
 export type Category = {
-  id: number;
+  id: Id;
   created_at: string;
   updated_at: string;
 } & DraftCategory;

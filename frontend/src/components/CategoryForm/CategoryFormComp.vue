@@ -8,6 +8,7 @@ import { translate } from "@/common/translations";
 import { useTranslations } from "@/common/useTranslations";
 import type { Category, DraftCategory } from "@/types/categories";
 import type { LanguageCode } from "@/types/translations";
+import type { Id } from "@/types/api";
 import ImageSectionComp from "../ImageSectionComp.vue";
 import InputComp from "../InputComp.vue";
 import ButtonComp from "../ButtonComp.vue";
@@ -26,7 +27,7 @@ const props = defineProps<{
 }>();
 
 const emits = defineEmits<{
-  (e: "created", id: number): void;
+  (e: "created", id: Id): void;
   (e: "saved"): void;
   (e: "close"): void;
   (e: "set-changed-status", status: boolean): void;
