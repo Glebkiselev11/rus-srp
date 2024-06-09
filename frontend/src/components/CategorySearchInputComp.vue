@@ -2,13 +2,18 @@
 import { useI18n } from "vue-i18n";
 import { getLanguageCodesAccordingText } from "@/common/translations";
 import type { InputAppearance } from "@/types/input";
+import type { Id } from "@/types/api";
 import InputComp from "@/components/InputComp.vue";
 import DropdownMenuComp, {
   type MenuItem,
 } from "@/components/DropdownMenuComp.vue";
-import { computed, ref } from "vue";
+import { computed, nextTick, ref } from "vue";
+import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
+import { useDraftCategoryStore } from "@/stores/draftCategory";
+import type { LanguageCode } from "@/types/translations";
 
 const { t, locale } = useI18n();
+const draftCategoryStore = useDraftCategoryStore();
 
 const props = defineProps<{
   search: string;
@@ -19,8 +24,10 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: "update:search", value: string): void;
+  (e: "created-category", categoryId: Id): void;
 }>();
 
+const showCategoryForm = ref(false);
 const showSuggestion = ref(false);
 const action = computed(
   () =>
@@ -48,7 +55,19 @@ function closeActions() {
 }
 
 function startCategoryCreation() {
-  console.log("startCategoryCreation");
+  showCategoryForm.value = true;
+
+  draftCategoryStore.initDraftCategory();
+
+  draftCategoryStore.draftCategory[locale.value as LanguageCode] = props.search;
+
+  nextTick(() => {
+    draftCategoryStore.autoFillTranslations();
+  });
+}
+
+function createdCategory(categoryId: Id) {
+  emit("created-category", categoryId);
 }
 </script>
 
@@ -79,5 +98,11 @@ function startCategoryCreation() {
         />
       </template>
     </DropdownMenuComp>
+
+    <CategoryFormModalComp
+      v-if="showCategoryForm"
+      @close="showCategoryForm = false"
+      @created="createdCategory"
+    />
   </div>
 </template>
