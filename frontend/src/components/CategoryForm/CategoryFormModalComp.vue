@@ -25,7 +25,7 @@ const { draftCategory, isChanged, isEditMode } =
 const showCloseConfirmationModal = ref(false);
 
 const title = computed(() => {
-  return draftCategory.value ? t("editing-category") : t("creation-category");
+  return isEditMode.value ? t("editing-category") : t("creation-category");
 });
 
 const subtitle = computed(() => {
