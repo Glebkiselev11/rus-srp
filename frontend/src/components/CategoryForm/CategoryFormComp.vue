@@ -4,7 +4,6 @@ import { computed, ref, watch } from "vue";
 import { CategoriesService } from "@/api";
 import { useCreateCategory, useUpdateCategory } from "@/queries/categories";
 import { capitalizeFirstLetter } from "@/common/utils";
-import { translate } from "@/common/translations";
 import { useTranslations } from "@/common/useTranslations";
 import type { Category } from "@/types/categories";
 import type { LanguageCode } from "@/types/translations";
@@ -31,10 +30,13 @@ const emits = defineEmits<{
 }>();
 
 const draftCategoryStore = useDraftCategoryStore();
-const { draftCategory, isEditMode } = storeToRefs(draftCategoryStore);
+const {
+  draftCategory,
+  isEditMode,
+  lastAutoFillRequestWord,
+  autoFillTranslationsLoading,
+} = storeToRefs(draftCategoryStore);
 
-const autoFillTranslationsLoading = ref(false);
-const lastAutoFillRequestWord = ref("");
 const categoryNameAlreadyExistsError = ref(false);
 const rusValidationError = ref<string | undefined>(undefined);
 const engValidationError = ref<string | undefined>(undefined);
@@ -162,37 +164,7 @@ function getValidationError(code: LanguageCode) {
 }
 
 function autoFill() {
-  if (autoFillTranslationsLoading.value) {
-    return;
-  }
-
-  const from = selectedLanguage.value;
-  const targets = getLanguageList()
-    .filter(({ value }) => value !== from)
-    .map(({ value }) => value)
-    .reduce(
-      (acc, cur) => {
-        acc[cur] = "";
-        return acc;
-      },
-      {} as Record<LanguageCode, string>
-    );
-  autoFillTranslationsLoading.value = true;
-
-  translate({
-    [from]: draftCategory.value[from],
-    ...targets,
-  })
-    .then((translations) => {
-      draftCategory.value = {
-        ...draftCategory.value,
-        ...translations,
-      };
-    })
-    .finally(() => {
-      autoFillTranslationsLoading.value = false;
-      lastAutoFillRequestWord.value = draftCategory.value[from];
-    });
+  draftCategoryStore.autoFillTranslations();
 }
 
 async function triggerCategoryNameUniqueValidation(): Promise<void> {

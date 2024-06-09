@@ -1,7 +1,11 @@
+import { translate } from "@/common/translations";
+import { useI18n } from "vue-i18n";
 import { isAnyFieldHasChanged } from "@/common/utils";
+import { useTranslations } from "@/common/useTranslations";
 import type { Category, DraftCategory } from "@/types/categories";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
+import type { LanguageCode } from "@/types/translations";
 
 function _initDraftCategory(): DraftCategory {
   return {
@@ -14,8 +18,13 @@ function _initDraftCategory(): DraftCategory {
 }
 
 export const useDraftCategoryStore = defineStore("draftCategory", () => {
+  const { getLanguageList } = useTranslations();
+  const { locale } = useI18n();
+
   const draftCategory = ref<DraftCategory>(_initDraftCategory());
   const initialCategory = ref<DraftCategory>();
+  const autoFillTranslationsLoading = ref(false);
+  const lastAutoFillRequestWord = ref("");
 
   const isEditMode = computed(() => {
     return Boolean(initialCategory.value);
@@ -42,10 +51,47 @@ export const useDraftCategoryStore = defineStore("draftCategory", () => {
     initDraftCategory();
   }
 
+  function autoFillTranslations() {
+    if (autoFillTranslationsLoading.value) {
+      return;
+    }
+
+    const from = locale.value as LanguageCode;
+    const targets = getLanguageList()
+      .filter(({ value }) => value !== from)
+      .map(({ value }) => value)
+      .reduce(
+        (acc, cur) => {
+          acc[cur] = "";
+          return acc;
+        },
+        {} as Record<LanguageCode, string>
+      );
+    autoFillTranslationsLoading.value = true;
+
+    translate({
+      [from]: draftCategory.value[from],
+      ...targets,
+    })
+      .then((translations) => {
+        draftCategory.value = {
+          ...draftCategory.value,
+          ...translations,
+        };
+      })
+      .finally(() => {
+        autoFillTranslationsLoading.value = false;
+        lastAutoFillRequestWord.value = draftCategory.value[from];
+      });
+  }
+
   return {
     draftCategory,
     isEditMode,
+    autoFillTranslationsLoading,
+    lastAutoFillRequestWord,
     isChanged,
+    autoFillTranslations,
     initDraftCategory,
     resetDraftCategory,
   };
