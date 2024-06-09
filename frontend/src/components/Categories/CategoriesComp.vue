@@ -5,6 +5,8 @@ import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import type { Id, Order, RequestParams } from "@/types/api";
 import type { LanguageCode } from "@/types/translations";
+import type { Category } from "@/types/categories";
+import { useDraftCategoryStore } from "@/stores/draftCategory";
 import ButtonComp from "@/components/ButtonComp.vue";
 import CategorySearchInputComp from "@/components/CategorySearchInputComp.vue";
 import CategoriesListComp from "@/components/Categories/CategoriesListComp.vue";
@@ -16,6 +18,7 @@ import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalCo
 const { t, locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
+const draftCategoryStore = useDraftCategoryStore();
 
 const props = defineProps<{
   selectedCategoryId?: Id;
@@ -27,7 +30,6 @@ const emit = defineEmits<{
 }>();
 
 const showCategoryForm = ref(false);
-const editingCategoryId = ref<Id | undefined>(undefined);
 
 const filter = computed({
   get(): RequestParams {
@@ -109,13 +111,13 @@ function createdCategory(categoryId: Id) {
   emit("created-category", categoryId);
 }
 
-function openEditingCategoryForm(categoryId: Id) {
-  editingCategoryId.value = categoryId;
+function openEditingCategoryForm(category: Category) {
+  draftCategoryStore.initDraftCategory(category);
   showCategoryForm.value = true;
 }
 
 function openCreationCategoryForm() {
-  editingCategoryId.value = undefined;
+  draftCategoryStore.initDraftCategory();
   showCategoryForm.value = true;
 }
 </script>
@@ -157,6 +159,7 @@ function openCreationCategoryForm() {
       :search-placeholder="t('find-category')"
       width="100%"
       @update:search="search = $event"
+      @created-category="createdCategory"
     />
 
     <CategoriesListComp
@@ -168,7 +171,6 @@ function openCreationCategoryForm() {
 
     <CategoryFormModalComp
       v-if="showCategoryForm"
-      :category-id="editingCategoryId"
       @close="showCategoryForm = false"
       @created="createdCategory"
     />
