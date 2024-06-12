@@ -19,7 +19,7 @@ const emit = defineEmits<{
 }>();
 
 const draftCategoryStore = useDraftCategoryStore();
-const { draftCategory, isChanged, isEditMode } =
+const { draftCategory, isChanged, isEditMode, initialCategory } =
   storeToRefs(draftCategoryStore);
 
 const showCloseConfirmationModal = ref(false);
@@ -67,8 +67,8 @@ function close() {
     header-padding-inline="20px"
     @close="tryClose"
   >
-    <template v-if="draftCategory" #header-left>
-      <ImagePreviewComp :src="draftCategory.image" static />
+    <template v-if="initialCategory" #header-left>
+      <ImagePreviewComp :src="initialCategory.image" static />
     </template>
     <template #content>
       <CategoryFormComp
