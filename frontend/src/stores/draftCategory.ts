@@ -44,6 +44,7 @@ export const useDraftCategoryStore = defineStore("draftCategory", () => {
       initialCategory.value = { ...category };
     } else {
       draftCategory.value = _initDraftCategory();
+      initialCategory.value = undefined;
     }
   }
 
