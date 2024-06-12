@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, onMounted } from "vue";
 import { CategoriesService } from "@/api";
 import { useCreateCategory, useUpdateCategory } from "@/queries/categories";
 import { capitalizeFirstLetter } from "@/common/utils";
@@ -123,6 +123,11 @@ const nonSelectedLanguages = computed(() => {
   );
 });
 
+const draftCategoryName = computed(() => {
+  const key = selectedLanguage.value;
+  return draftCategory.value[key];
+});
+
 watch(
   () => draftCategory.value.rus,
   () => {
@@ -151,6 +156,12 @@ watch(
   }
 );
 
+onMounted(() => {
+  if (!isEditMode.value && draftCategoryName.value) {
+    autoFill();
+  }
+});
+
 function getValidationError(code: LanguageCode) {
   switch (code) {
     case "eng":
@@ -164,13 +175,17 @@ function getValidationError(code: LanguageCode) {
   }
 }
 
-function autoFill() {
-  draftCategoryStore.autoFillTranslations();
+async function autoFill() {
+  await triggerCategoryNameUniqueValidation();
+
+  if (!categoryNameAlreadyExistsError.value) {
+    draftCategoryStore.autoFillTranslations();
+  }
 }
 
 async function triggerCategoryNameUniqueValidation(): Promise<void> {
   const key = selectedLanguage.value;
-  const name = draftCategory.value[key];
+  const name = draftCategoryName.value;
 
   if (!name || (initialCategory.value && initialCategory.value[key] === name)) {
     categoryNameAlreadyExistsError.value = false;

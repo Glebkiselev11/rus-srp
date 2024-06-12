@@ -7,7 +7,7 @@ import InputComp from "@/components/InputComp.vue";
 import DropdownMenuComp, {
   type MenuItem,
 } from "@/components/DropdownMenuComp.vue";
-import { computed, nextTick, ref } from "vue";
+import { computed, ref } from "vue";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 import { useDraftCategoryStore } from "@/stores/draftCategory";
 import type { LanguageCode } from "@/types/translations";
@@ -56,14 +56,8 @@ function closeActions() {
 
 function startCategoryCreation() {
   showCategoryForm.value = true;
-
   draftCategoryStore.initDraftCategory();
-
   draftCategoryStore.draftCategory[locale.value as LanguageCode] = props.search;
-
-  nextTick(() => {
-    draftCategoryStore.autoFillTranslations();
-  });
 }
 
 function createdCategory(categoryId: Id) {
