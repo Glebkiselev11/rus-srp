@@ -45,20 +45,22 @@ const srp_latinValidationError = ref<string | undefined>(undefined);
 const srp_cyrillicValidationError = ref<string | undefined>(undefined);
 const savingLoading = ref(false);
 
+const draftCategoryName = computed(
+  () => draftCategory.value[selectedLanguage.value]
+);
+
 const showFillAutoButton = computed(() => {
-  const draftCategoryName = draftCategory.value[selectedLanguage.value];
-
-  if (draftCategoryName === lastAutoFillRequestWord.value) {
+  if (draftCategoryName.value === lastAutoFillRequestWord.value) {
     return false;
   }
 
-  if (categoryNameAlreadyExistsError.value || !draftCategoryName) {
+  if (categoryNameAlreadyExistsError.value || !draftCategoryName.value) {
     return false;
   }
 
-  const categoryName = draftCategory.value?.[selectedLanguage.value];
+  const categoryName = initialCategory.value?.[selectedLanguage.value];
 
-  if (categoryName && categoryName !== draftCategoryName) {
+  if (categoryName && categoryName !== draftCategoryName.value) {
     return true;
   }
 
@@ -121,11 +123,6 @@ const nonSelectedLanguages = computed(() => {
   return getLanguageCodesOrder().filter(
     (code) => code !== selectedLanguage.value
   );
-});
-
-const draftCategoryName = computed(() => {
-  const key = selectedLanguage.value;
-  return draftCategory.value[key];
 });
 
 watch(
