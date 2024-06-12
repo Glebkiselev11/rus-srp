@@ -87,6 +87,7 @@ export const useDraftCategoryStore = defineStore("draftCategory", () => {
 
   return {
     draftCategory,
+    initialCategory,
     isEditMode,
     autoFillTranslationsLoading,
     lastAutoFillRequestWord,

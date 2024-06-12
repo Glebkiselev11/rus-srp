@@ -32,6 +32,7 @@ const emits = defineEmits<{
 const draftCategoryStore = useDraftCategoryStore();
 const {
   draftCategory,
+  initialCategory,
   isEditMode,
   lastAutoFillRequestWord,
   autoFillTranslationsLoading,
@@ -171,7 +172,7 @@ async function triggerCategoryNameUniqueValidation(): Promise<void> {
   const key = selectedLanguage.value;
   const name = draftCategory.value[key];
 
-  if (!name || (draftCategory.value && draftCategory.value[key] === name)) {
+  if (!name || (initialCategory.value && initialCategory.value[key] === name)) {
     categoryNameAlreadyExistsError.value = false;
     return;
   }
