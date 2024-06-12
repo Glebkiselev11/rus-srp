@@ -116,5 +116,6 @@
   "category-created-successfully": "The category “{category}” has been created",
   "remove-word-from-category": "Remove from “{category}”",
   "word-removed-from-category": "The word “{word}” has been removed from the category “{category}”",
-  "create-word-from": "Create the word “{word}”"
+  "create-word-from": "Create the word “{word}”",
+  "create-category-from": "Create the category “{category}”"
 }

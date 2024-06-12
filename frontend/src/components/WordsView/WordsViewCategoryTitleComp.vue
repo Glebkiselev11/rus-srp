@@ -11,9 +11,11 @@ import RemoveCategoryModalComp from "../Categories/RemoveCategoryModalComp.vue";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 import AllWordsCategoryImageComp from "../Categories/AllWordsCategoryImageComp.vue";
 import { useToasterStore } from "@/stores/toaster";
+import { useDraftCategoryStore } from "@/stores/draftCategory";
 
 const toastStore = useToasterStore();
 const { t } = useI18n();
+const draftCategoryStore = useDraftCategoryStore();
 const { extractCurrentLanguageTranslation } = useTranslations();
 
 const props = defineProps<{
@@ -26,6 +28,7 @@ const isEditCategoryModalOpen = ref(false);
 const updateCategory = useUpdateCategory();
 
 function editCategory() {
+  draftCategoryStore.initDraftCategory(props.category);
   isEditCategoryModalOpen.value = true;
 }
 
@@ -99,7 +102,6 @@ function updateCategoryImage(src: string) {
 
     <CategoryFormModalComp
       v-if="isEditCategoryModalOpen"
-      :category-id="props.category.id"
       @close="isEditCategoryModalOpen = false"
     />
   </div>

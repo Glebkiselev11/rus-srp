@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, ref, watch, onMounted } from "vue";
 import { CategoriesService } from "@/api";
 import { useCreateCategory, useUpdateCategory } from "@/queries/categories";
-import { capitalizeFirstLetter, isAnyFieldHasChanged } from "@/common/utils";
-import { translate } from "@/common/translations";
+import { capitalizeFirstLetter } from "@/common/utils";
 import { useTranslations } from "@/common/useTranslations";
-import type { Category, DraftCategory } from "@/types/categories";
+import type { Category } from "@/types/categories";
 import type { LanguageCode } from "@/types/translations";
+import type { Id } from "@/types/api";
 import ImageSectionComp from "../ImageSectionComp.vue";
 import InputComp from "../InputComp.vue";
 import ButtonComp from "../ButtonComp.vue";
 import { useToasterStore } from "@/stores/toaster";
+import { useDraftCategoryStore } from "@/stores/draftCategory";
+import { storeToRefs } from "pinia";
 
 const { getLanguageLabel, getLanguageList, getLanguageCodesOrder } =
   useTranslations();
@@ -21,20 +23,21 @@ const { t, locale } = useI18n();
 const createCategory = useCreateCategory();
 const updateCategory = useUpdateCategory();
 
-const props = defineProps<{
-  category?: Category;
-}>();
-
 const emits = defineEmits<{
-  (e: "created", id: number): void;
+  (e: "created", id: Id): void;
   (e: "saved"): void;
   (e: "close"): void;
-  (e: "set-changed-status", status: boolean): void;
 }>();
 
-const draftCategory = ref(initDraftCategory());
-const autoFillTranslationsLoading = ref(false);
-const lastAutoFillRequestWord = ref("");
+const draftCategoryStore = useDraftCategoryStore();
+const {
+  draftCategory,
+  initialCategory,
+  isEditMode,
+  lastAutoFillRequestWord,
+  autoFillTranslationsLoading,
+} = storeToRefs(draftCategoryStore);
+
 const categoryNameAlreadyExistsError = ref(false);
 const rusValidationError = ref<string | undefined>(undefined);
 const engValidationError = ref<string | undefined>(undefined);
@@ -42,20 +45,22 @@ const srp_latinValidationError = ref<string | undefined>(undefined);
 const srp_cyrillicValidationError = ref<string | undefined>(undefined);
 const savingLoading = ref(false);
 
+const draftCategoryName = computed(
+  () => draftCategory.value[selectedLanguage.value]
+);
+
 const showFillAutoButton = computed(() => {
-  const draftCategoryName = draftCategory.value[selectedLanguage.value];
-
-  if (draftCategoryName === lastAutoFillRequestWord.value) {
+  if (draftCategoryName.value === lastAutoFillRequestWord.value) {
     return false;
   }
 
-  if (categoryNameAlreadyExistsError.value || !draftCategoryName) {
+  if (categoryNameAlreadyExistsError.value || !draftCategoryName.value) {
     return false;
   }
 
-  const categoryName = props.category?.[selectedLanguage.value];
+  const categoryName = initialCategory.value?.[selectedLanguage.value];
 
-  if (categoryName && categoryName !== draftCategoryName) {
+  if (categoryName && categoryName !== draftCategoryName.value) {
     return true;
   }
 
@@ -95,8 +100,7 @@ const isValidToSave = computed(() => {
 });
 
 const fillInText = computed(() => {
-  const inEditMode = Boolean(props.category);
-  return inEditMode ? t("update") : t("fill-in-auto");
+  return isEditMode.value ? t("update") : t("fill-in-auto");
 });
 
 const categoryNameValidationError = computed(() => {
@@ -112,7 +116,7 @@ const defaultImageSearchQuery = computed(() => {
 });
 
 const saveButtonLabel = computed(() => {
-  return props.category ? t("save-changes") : t("create");
+  return isEditMode.value ? t("save-changes") : t("create");
 });
 
 const nonSelectedLanguages = computed(() => {
@@ -120,14 +124,6 @@ const nonSelectedLanguages = computed(() => {
     (code) => code !== selectedLanguage.value
   );
 });
-
-watch(
-  draftCategory,
-  () => {
-    updateChangeStatus();
-  },
-  { deep: true }
-);
 
 watch(
   () => draftCategory.value.rus,
@@ -158,8 +154,8 @@ watch(
 );
 
 onMounted(() => {
-  if (props.category) {
-    draftCategory.value = { ...props.category };
+  if (!isEditMode.value && draftCategoryName.value) {
+    autoFill();
   }
 });
 
@@ -176,45 +172,19 @@ function getValidationError(code: LanguageCode) {
   }
 }
 
-function autoFill() {
-  if (!showFillAutoButton.value || autoFillTranslationsLoading.value) {
-    return;
+async function autoFill() {
+  await triggerCategoryNameUniqueValidation();
+
+  if (!categoryNameAlreadyExistsError.value) {
+    draftCategoryStore.autoFillTranslations();
   }
-
-  const from = selectedLanguage.value;
-  const targets = getLanguageList()
-    .filter(({ value }) => value !== from)
-    .map(({ value }) => value)
-    .reduce(
-      (acc, cur) => {
-        acc[cur] = "";
-        return acc;
-      },
-      {} as Record<LanguageCode, string>
-    );
-  autoFillTranslationsLoading.value = true;
-
-  translate({
-    [from]: draftCategory.value[from],
-    ...targets,
-  })
-    .then((translations) => {
-      draftCategory.value = {
-        ...draftCategory.value,
-        ...translations,
-      };
-    })
-    .finally(() => {
-      autoFillTranslationsLoading.value = false;
-      lastAutoFillRequestWord.value = draftCategory.value[from];
-    });
 }
 
 async function triggerCategoryNameUniqueValidation(): Promise<void> {
   const key = selectedLanguage.value;
-  const name = draftCategory.value[key];
+  const name = draftCategoryName.value;
 
-  if (!name || (props.category && props.category[key] === name)) {
+  if (!name || (initialCategory.value && initialCategory.value[key] === name)) {
     categoryNameAlreadyExistsError.value = false;
     return;
   }
@@ -268,7 +238,7 @@ async function saveCategory() {
   }
 
   savingLoading.value = true;
-  if (props.category) {
+  if (isEditMode.value) {
     await updateCategory.mutateAsync({
       ...draftCategory.value,
     } as Category);
@@ -293,30 +263,6 @@ async function saveCategory() {
   emits("saved");
 }
 
-function updateChangeStatus() {
-  if (props.category) {
-    emits(
-      "set-changed-status",
-      isAnyFieldHasChanged(props.category, draftCategory.value)
-    );
-  } else {
-    emits(
-      "set-changed-status",
-      isAnyFieldHasChanged(initDraftCategory(), draftCategory.value)
-    );
-  }
-}
-
-function initDraftCategory(): DraftCategory {
-  return {
-    rus: "",
-    eng: "",
-    srp_latin: "",
-    srp_cyrillic: "",
-    image: null,
-  };
-}
-
 function close() {
   emits("close");
 }
@@ -336,7 +282,7 @@ function close() {
           :label="t('category-name')"
           width="400px"
           appearance="outline"
-          :focus-on-mount="!props.category"
+          :focus-on-mount="!isEditMode"
           :error-text="categoryNameValidationError"
           clear-button
           @update:model-value="triggerCategoryNameUniqueValidation"

@@ -4,7 +4,7 @@ import { useI18n } from "vue-i18n";
 import { useDraftWordStore } from "@/stores/draftWord";
 import type { Category } from "@/types/categories";
 import type { Id, Order } from "@/types/api";
-import InputComp from "../InputComp.vue";
+import CategorySearchInputComp from "@/components/CategorySearchInputComp.vue";
 import ButtonComp from "../ButtonComp.vue";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 import WordFormCategoryItemComp from "./WordFormCategoryItemComp.vue";
@@ -67,14 +67,13 @@ function addCategory(categoryId: Id) {
 <template>
   <div class="word-form-categories">
     <div class="word-form-categories__row">
-      <InputComp
-        v-model="search"
-        appearance="outline"
-        clear-button
-        debounce
+      <CategorySearchInputComp
         class="word-form-categories__search-input"
-        :placeholder="t('find-category')"
-        left-icon="search"
+        :search="search"
+        appearance="outline"
+        :search-placeholder="t('find-category')"
+        width="100%"
+        @update:search="search = $event"
       />
 
       <ButtonComp

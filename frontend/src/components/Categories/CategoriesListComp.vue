@@ -9,6 +9,7 @@ import { useI18n } from "vue-i18n";
 import { useCategoriesQuery } from "@/queries/categories";
 import { computed } from "vue";
 import { toReactive } from "@vueuse/core";
+import type { Category } from "@/types/categories";
 
 const { t } = useI18n();
 
@@ -19,7 +20,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: "selectCateogry", catedoryId: Id): void;
-  (e: "select-category-for-editing", catedoryId: Id): void;
+  (e: "select-category-for-editing", catedory: Category): void;
 }>();
 
 const filter = computed(() => toReactive(props.requestParams));
@@ -30,8 +31,8 @@ function selectCategory(categoryId: Id) {
   emit("selectCateogry", categoryId);
 }
 
-function selectCategoryForEditing(categoryId: Id) {
-  emit("select-category-for-editing", categoryId);
+function selectCategoryForEditing(category: Category) {
+  emit("select-category-for-editing", category);
 }
 </script>
 

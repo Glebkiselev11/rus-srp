@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
   (e: "selectCateogry", catedoryId: Id): void;
-  (e: "select-category-for-editing", catedoryId: Id): void;
+  (e: "select-category-for-editing", catedory: Category): void;
 }>();
 
 const isRemoveCategoryModalOpen = ref(false);
@@ -41,8 +41,8 @@ function selectCategory() {
   emit("selectCateogry", props.category.id);
 }
 
-function editCategory(categoryId: Id) {
-  emit("select-category-for-editing", categoryId);
+function editCategory(category: Category) {
+  emit("select-category-for-editing", category);
 }
 </script>
 
@@ -75,7 +75,7 @@ function editCategory(categoryId: Id) {
           {
             label: t('edit'),
             icon: 'edit',
-            handler: () => editCategory(category.id),
+            handler: () => editCategory(category),
           },
           'separator',
           {

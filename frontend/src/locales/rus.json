@@ -116,5 +116,6 @@
   "category-created-successfully": "Категория “{category}” создана",
   "remove-word-from-category": "Удалить из “{category}”",
   "word-removed-from-category": "Слово “{word}” удалено из категории “{category}”",
-  "create-word-from": "Создать слово “{word}”"
+  "create-word-from": "Создать слово “{word}”",
+  "create-category-from": "Создать категорию “{category}”"
 }
