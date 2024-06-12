@@ -19,7 +19,7 @@ const emit = defineEmits<{
 }>();
 
 const draftCategoryStore = useDraftCategoryStore();
-const { draftCategory, isChanged, isEditMode, initialCategory } =
+const { isChanged, isEditMode, initialCategory } =
   storeToRefs(draftCategoryStore);
 
 const showCloseConfirmationModal = ref(false);
@@ -30,7 +30,7 @@ const title = computed(() => {
 
 const subtitle = computed(() => {
   return capitalizeFirstLetter(
-    draftCategory.value?.[locale.value as LanguageCode] || ""
+    initialCategory.value?.[locale.value as LanguageCode] || ""
   );
 });
 
