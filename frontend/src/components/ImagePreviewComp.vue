@@ -101,6 +101,7 @@ function handleSelectImage(src: string): void {
     v-if="!props.static && isModalVisible"
     :title="imagesSearchModalTitle"
     :subtitle="imageSearchModalSubtitle"
+    header-padding-inline="20px"
     @close="isModalVisible = false"
   >
     <template v-if="props.src" #header-left>

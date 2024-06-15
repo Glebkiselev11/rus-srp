@@ -132,15 +132,17 @@ function selectImage(src: string) {
 <style lang="scss" scoped>
 @import "@/styles/main";
 
+$image-size: 224.5px;
+
 .image-search {
-  inline-size: 946px;
-  padding-inline-start: 12px;
+  inline-size: 986px;
+  padding-inline-start: 20px;
   padding-block-start: 4px;
   overflow: hidden;
   border-radius: inherit;
 
   &--input {
-    padding-inline-end: 12px;
+    padding-inline-end: 20px;
   }
 }
 
@@ -149,14 +151,13 @@ function selectImage(src: string) {
   flex-wrap: wrap;
   align-content: flex-start;
   gap: 16px;
-  margin-block-start: 20px;
+  padding-block-start: 20px;
   block-size: 70vh;
   overflow: auto;
 
   &--image {
-    width: 218px;
-    height: 218px;
-    object-fit: cover;
+    width: $image-size;
+    height: $image-size;
     border-radius: 12px;
     cursor: pointer;
     overflow: hidden;
@@ -166,6 +167,7 @@ function selectImage(src: string) {
 
 .selected-image {
   position: relative;
+  max-height: $image-size;
 
   &--badge {
     @include text-caption-2;
