@@ -255,8 +255,8 @@ function resetInput() {
 
   &__buttons {
     position: absolute;
-    right: 8px;
-    top: 0;
+    inset-inline-end: 0;
+    inset-block-start: 0;
     height: 100%;
     display: flex;
     align-items: center;
