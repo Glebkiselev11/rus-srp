@@ -151,6 +151,7 @@ function handleWordCreated(id: Id) {
           v-for="word in filteredWords"
           :key="word.id"
           :grid-template-columns="gridTemplateColumns"
+          highlight-on-hover
         >
           <td>
             <TooltipComp

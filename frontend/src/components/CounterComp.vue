@@ -22,7 +22,7 @@ const props = defineProps<{
   height: 20px;
   min-width: 20px;
   border-radius: 100px;
-  background: $color-background-content-primary;
-  color: $color-text-accent-primary;
+  background: $color-background-content-secondary;
+  color: $color-text-primary;
 }
 </style>
