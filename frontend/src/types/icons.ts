@@ -51,4 +51,6 @@ export type IconName =
   | "checkbox_outline_blank"
   | "checkbox"
   | "logout"
-  | "mark_status";
+  | "mark_status"
+  | "volume_up"
+  | "brand_awareness";

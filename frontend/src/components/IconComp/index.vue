@@ -38,6 +38,8 @@ import CheckboxIcon from "./CheckboxIcon.vue";
 import CheckboxOutlineBlankIcon from "./CheckboxOutlineBlankIcon.vue";
 import LogoutIcon from "./LogoutIcon.vue";
 import MarkStatusIcon from "./MarkStatusIcon.vue";
+import VolumeUpIcon from "./VolumeUpIcon.vue";
+import BrandAwarenessIcon from "./BrandAwarenessIcon.vue";
 
 type Props = {
   name: IconName;
@@ -87,6 +89,8 @@ const icon = computed((): Component => {
     checkbox_outline_blank: CheckboxOutlineBlankIcon,
     logout: LogoutIcon,
     mark_status: MarkStatusIcon,
+    volume_up: VolumeUpIcon,
+    brand_awareness: BrandAwarenessIcon,
   }[props.name];
 });
 
