@@ -60,7 +60,7 @@ function editCategory(category: Category) {
         <ImagePreviewComp size="24px" :src="category.image" static />
 
         <span
-          class="category-item__label"
+          class="category-item__label text-overflow-ellipsis"
           v-html="
             highlighTextByQuery(
               extractCurrentLanguageTranslation(category),
@@ -121,6 +121,7 @@ function editCategory(category: Category) {
     display: inherit;
     align-items: inherit;
     column-gap: 8px;
+    overflow: hidden;
   }
 
   &__label {
