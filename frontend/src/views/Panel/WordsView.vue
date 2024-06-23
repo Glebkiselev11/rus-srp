@@ -2,7 +2,6 @@
 import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
-import { highlighTextByQuery } from "@/common/utils";
 import { useTranslations } from "@/common/useTranslations";
 import { computed, ref } from "vue";
 import type { Word } from "@/types/words";
@@ -32,6 +31,7 @@ import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
 import TableRowStatusComp from "@/components/Table/TableRowStatusComp.vue";
 import WordsViewFilterPanelComp from "@/components/WordsView/WordsViewFilterPanelComp.vue";
 import WordsViewTranslationConfirmationComp from "@/components/WordsView/WordsViewTranslationConfirmationComp.vue";
+import WordsViewTranslationCellComp from "@/components/WordsView/WordsViewTranslationCellComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";
 import { useUpdateWord, useDeleteWord, useWordsQuery } from "@/queries/words";
 import { useToasterStore } from "@/stores/toaster";
@@ -384,10 +384,15 @@ function createdCategory(categoryId: Id) {
               <td
                 v-for="(translation, i) in translationColumns"
                 :key="`${word.id}-${i}`"
-                class="text-overflow-ellipsis"
                 :title="word[translation.sort_key]"
-                v-html="highlighTextByQuery(word[translation.sort_key], search)"
-              />
+              >
+                <WordsViewTranslationCellComp
+                  :word="word"
+                  :translation="translation"
+                  :search="search"
+                  :hover="hoverOnWordId === word.id"
+                />
+              </td>
 
               <td>
                 <CategoriesPreviewBadgesComp
