@@ -6,7 +6,7 @@ import { useUpdateCategory } from "@/queries/categories";
 import type { Category } from "@/types/categories";
 import ImagePreviewComp from "../ImagePreviewComp.vue";
 import DropdownMenuComp from "../DropdownMenuComp.vue";
-import ButtonComp from "../ButtonComp.vue";
+import { ButtonComp } from "@/shared/ui/Button";
 import RemoveCategoryModalComp from "../Categories/RemoveCategoryModalComp.vue";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 import AllWordsCategoryImageComp from "../Categories/AllWordsCategoryImageComp.vue";

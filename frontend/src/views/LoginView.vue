@@ -4,7 +4,7 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { login } from "@/common/auth";
 import InputComp from "@/components/InputComp.vue";
-import ButtonComp from "@/components/ButtonComp.vue";
+import { ButtonComp } from "@/shared/ui/Button";
 import AllWordsCategoryImageComp from "@/components/Categories/AllWordsCategoryImageComp.vue";
 import ErrorComp from "@/components/ErrorComp.vue";
 

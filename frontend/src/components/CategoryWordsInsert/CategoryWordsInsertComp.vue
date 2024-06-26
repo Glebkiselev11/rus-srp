@@ -6,7 +6,7 @@ import { useModalWordsStore } from "@/stores/modalWords";
 import { highlighTextByQuery } from "@/common/utils";
 import { useTranslations } from "@/common/useTranslations";
 import WordsSearchInputComp from "@/components/WordsSearchInputComp.vue";
-import ButtonComp from "../ButtonComp.vue";
+import { ButtonComp } from "@/shared/ui/Button";
 import WordFormModalComp from "../WordForm/WordFormModalComp.vue";
 import TableComp from "@/components/Table/TableComp.vue";
 import TableRowComp from "@/components/Table/TableRowComp.vue";

@@ -7,7 +7,7 @@ import type { Id, Order, RequestParams } from "@/types/api";
 import type { LanguageCode } from "@/types/translations";
 import type { Category } from "@/types/categories";
 import { useDraftCategoryStore } from "@/stores/draftCategory";
-import ButtonComp from "@/components/ButtonComp.vue";
+import { ButtonComp } from "@/shared/ui/Button";
 import CategorySearchInputComp from "@/components/CategorySearchInputComp.vue";
 import CategoriesListComp from "@/components/Categories/CategoriesListComp.vue";
 import HeaderComp from "@/components/HeaderComp.vue";

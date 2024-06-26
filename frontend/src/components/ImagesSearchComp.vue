@@ -6,7 +6,7 @@ import { addCropImagaeParamsToUrl } from "@/common/utils";
 import { useImagesInfinityQuery } from "@/queries/images";
 import InputComp from "./InputComp.vue";
 import IconComp from "./IconComp/index.vue";
-import ButtonComp from "./ButtonComp.vue";
+import { ButtonComp } from "@/shared/ui/Button";
 import ZeroStateComp from "./ZeroStateComp.vue";
 import SkeletonItemComp from "./SkeletonItemComp.vue";
 

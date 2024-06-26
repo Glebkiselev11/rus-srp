@@ -5,7 +5,7 @@ import type { Category } from "@/types/categories";
 import { useTranslations } from "@/common/useTranslations";
 import ImagePreviewComp from "./ImagePreviewComp.vue";
 import TooltipComp from "./TooltipComp.vue";
-import ButtonComp from "./ButtonComp.vue";
+import { ButtonComp } from "@/shared/ui/Button";
 
 const MAX_IMAGES = 3;
 

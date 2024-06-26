@@ -10,7 +10,7 @@ import type { LanguageCode } from "@/types/translations";
 import type { Id } from "@/types/api";
 import ImageSectionComp from "../ImageSectionComp.vue";
 import InputComp from "../InputComp.vue";
-import ButtonComp from "../ButtonComp.vue";
+import { ButtonComp } from "@/shared/ui/Button";
 import { useToasterStore } from "@/stores/toaster";
 import { useDraftCategoryStore } from "@/stores/draftCategory";
 import { storeToRefs } from "pinia";

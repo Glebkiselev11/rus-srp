@@ -6,7 +6,7 @@ import ModalComp from "../ModalComp.vue";
 import type { LanguageCode } from "@/types/translations";
 import { WordsService } from "@/api";
 import InputComp from "../InputComp.vue";
-import ButtonComp from "../ButtonComp.vue";
+import { ButtonComp } from "@/shared/ui/Button";
 import { useRoute, useRouter } from "vue-router";
 import { useDeleteCategory } from "@/queries/categories";
 import { useToasterStore } from "@/stores/toaster";

@@ -5,7 +5,7 @@ import { useDraftWordStore } from "@/stores/draftWord";
 import type { Category } from "@/types/categories";
 import type { Id, Order } from "@/types/api";
 import CategorySearchInputComp from "@/components/CategorySearchInputComp.vue";
-import ButtonComp from "../ButtonComp.vue";
+import { ButtonComp } from "@/shared/ui/Button";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 import WordFormCategoryItemComp from "./WordFormCategoryItemComp.vue";
 import IconComp from "../IconComp/index.vue";

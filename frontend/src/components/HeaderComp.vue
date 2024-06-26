@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ButtonComp from "./ButtonComp.vue";
+import { ButtonComp } from "@/shared/ui/Button";
 
 type TitleTag = "h1" | "h2" | "h3" | "h4" | "h5";
 

@@ -5,7 +5,7 @@ import type { LanguageCode } from "@/types/translations";
 import { useDraftWordStore } from "@/stores/draftWord";
 
 import { useTranslations } from "@/common/useTranslations";
-import ButtonComp from "../ButtonComp.vue";
+import { ButtonComp } from "@/shared/ui/Button";
 import CheckboxListItemComp from "../CheckboxListItemComp.vue";
 import CheckboxComp from "../CheckboxComp.vue";
 import ImageSectionComp from "../ImageSectionComp.vue";

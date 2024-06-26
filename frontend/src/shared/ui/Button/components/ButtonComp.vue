@@ -1,20 +1,16 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import type { IconColor, IconName, IconSize } from "@/types/icons";
-import type {
-  ButtonColor,
-  ButtonSize,
-  ButtonAppearance,
-} from "@/types/buttons";
-import SpinnerComp, { type SpinnerColor } from "./SpinnerComp.vue";
+import type { Color, Size, Appearance } from "../types";
+import SpinnerComp, { type SpinnerColor } from "@/components/SpinnerComp.vue";
 import IconComp from "@/components/IconComp/index.vue";
 
 type Props = {
   label?: string;
   icon?: IconName;
-  color?: ButtonColor;
-  size?: ButtonSize;
-  appearance?: ButtonAppearance;
+  color?: Color;
+  size?: Size;
+  appearance?: Appearance;
   disabled?: boolean;
   iconColor?: IconColor;
   pressed?: boolean;
