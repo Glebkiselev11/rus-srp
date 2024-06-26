@@ -4,7 +4,7 @@ import { useI18n } from "vue-i18n";
 import type { Id, Order, TranslationApprovedStatus } from "@/types/api";
 import WordsSearchInputComp from "@/components/WordsSearchInputComp.vue";
 import SelectComp from "@/components/SelectComp.vue";
-import SwitchComp from "@/components/SwitchComp.vue";
+import { SwitchComp } from "@/shared/ui/Switch";
 import { IconComp } from "@/shared/ui/Icon";
 
 type Props = {

@@ -11,7 +11,7 @@ import WordFormModalComp from "../WordForm/WordFormModalComp.vue";
 import TableComp from "@/components/Table/TableComp.vue";
 import TableRowComp from "@/components/Table/TableRowComp.vue";
 import CounterComp from "../CounterComp.vue";
-import SwitchComp from "../SwitchComp.vue";
+import { SwitchComp } from "@/shared/ui/Switch";
 import ZeroStateComp from "../ZeroStateComp.vue";
 import CheckboxComp from "../CheckboxComp.vue";
 import TooltipComp from "../TooltipComp.vue";
