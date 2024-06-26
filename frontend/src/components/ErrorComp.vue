@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { IconSize } from "@/types/icons";
-import IconComp from "@/components/IconComp/index.vue";
+import { IconComp, type IconSize } from "@/shared/ui/Icon";
 
 type Props = {
   text: string;

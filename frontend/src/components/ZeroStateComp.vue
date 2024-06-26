@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { IconName } from "@/types/icons";
-import IconComp from "./IconComp/index.vue";
+import { IconComp, type IconName } from "@/shared/ui/Icon";
 
 const props = defineProps<{
   icon?: IconName;

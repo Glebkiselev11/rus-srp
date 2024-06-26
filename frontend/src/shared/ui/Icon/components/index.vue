@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 import { type Component, computed } from "vue";
-import type { IconColor, IconName, IconSize } from "../../types/icons";
+import type { Color, Name, Size } from "../types";
 
 import AdminPanelSettingsIcon from "./AdminPanelSettingsIcon.vue";
 import ListIcon from "./ListIcon.vue";
@@ -42,9 +42,9 @@ import VolumeUpIcon from "./VolumeUpIcon.vue";
 import BrandAwarenessIcon from "./BrandAwarenessIcon.vue";
 
 type Props = {
-  name: IconName;
-  size?: IconSize;
-  color?: IconColor;
+  name: Name;
+  size?: Size;
+  color?: Color;
 };
 
 const props = withDefaults(defineProps<Props>(), {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import IconComp from "@/components/IconComp/index.vue";
+import { IconComp } from "@/shared/ui/Icon";
 import { computed } from "vue";
 
 const props = defineProps<{

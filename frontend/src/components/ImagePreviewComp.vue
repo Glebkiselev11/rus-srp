@@ -2,8 +2,7 @@
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { addCropImagaeParamsToUrl } from "@/common/utils";
-import type { IconSize } from "@/types/icons";
-import IconComp from "@/components/IconComp/index.vue";
+import { IconComp, type IconSize } from "@/shared/ui/Icon";
 import ModalComp from "@/components/ModalComp.vue";
 import ImagesSearchComp from "./ImagesSearchComp.vue";
 

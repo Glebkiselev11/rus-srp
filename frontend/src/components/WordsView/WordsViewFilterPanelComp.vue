@@ -5,7 +5,7 @@ import type { Id, Order, TranslationApprovedStatus } from "@/types/api";
 import WordsSearchInputComp from "@/components/WordsSearchInputComp.vue";
 import SelectComp from "@/components/SelectComp.vue";
 import SwitchComp from "@/components/SwitchComp.vue";
-import IconComp from "@/components/IconComp/index.vue";
+import { IconComp } from "@/shared/ui/Icon";
 
 type Props = {
   search: string;

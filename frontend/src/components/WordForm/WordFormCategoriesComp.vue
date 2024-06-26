@@ -8,7 +8,7 @@ import CategorySearchInputComp from "@/components/CategorySearchInputComp.vue";
 import { ButtonComp } from "@/shared/ui/Button";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 import WordFormCategoryItemComp from "./WordFormCategoryItemComp.vue";
-import IconComp from "../IconComp/index.vue";
+import { IconComp } from "@/shared/ui/Icon";
 import TooltipComp from "../TooltipComp.vue";
 import ZeroStateComp from "../ZeroStateComp.vue";
 import { useCategoriesQuery } from "@/queries/categories";

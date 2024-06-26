@@ -1,4 +1,4 @@
-import type { IconName } from "./icons";
+import type { IconName } from "@/shared/ui/Icon";
 
 export type NavItem = {
   label: string;

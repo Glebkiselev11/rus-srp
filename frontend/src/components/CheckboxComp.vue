@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import IconComp from "./IconComp/index.vue";
-import type { IconName } from "@/types/icons";
+import { IconComp, type IconName } from "@/shared/ui/Icon";
 
 type Props = {
   modelValue: boolean;

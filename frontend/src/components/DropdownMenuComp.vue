@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, useSlots, watch } from "vue";
 import { vOnClickOutside, vElementVisibility } from "@vueuse/components";
-import type { IconColor, IconName } from "@/types/icons";
 import ListItemComp from "./ListItemComp.vue";
-import IconComp from "@/components/IconComp/index.vue";
+import { IconComp, type IconName, type IconColor } from "@/shared/ui/Icon";
 
 export type MenuItem = {
   label: string;

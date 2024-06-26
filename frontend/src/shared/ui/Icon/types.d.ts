@@ -1,6 +1,6 @@
-export type IconSize = "small" | "compact" | "regular";
+export type Size = "small" | "compact" | "regular";
 
-export type IconColor =
+export type Color =
   | "primary"
   | "secondary"
   | "tertiary"
@@ -16,7 +16,7 @@ export type IconColor =
   | "placeholder"
   | "current-color";
 
-export type IconName =
+export type Name =
   | "admin_panel_settings"
   | "list"
   | "settings"

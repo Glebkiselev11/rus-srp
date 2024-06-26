@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useToasterStore } from "@/stores/toaster";
-import IconComp from "@/components/IconComp/index.vue";
+import { IconComp } from "@/shared/ui/Icon";
 
 const toastStore = useToasterStore();
 </script>

@@ -2,9 +2,8 @@
 import { computed } from "vue";
 import InputWrapperComp from "./InputWrapperComp.vue";
 import DropdownMenuComp from "./DropdownMenuComp.vue";
-import IconComp from "./IconComp/index.vue";
 import type { SelectSize, SelectAppearance } from "@/types/select";
-import type { IconName } from "@/types/icons";
+import { IconComp, type IconName } from "@/shared/ui/Icon";
 
 type Props = {
   modelValue: T;

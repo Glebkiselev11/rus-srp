@@ -2,8 +2,7 @@
 import { useI18n } from "vue-i18n";
 import { useDebounceFn } from "@vueuse/core";
 import { onMounted, ref, watch } from "vue";
-import type { IconName } from "../types/icons";
-import IconComp from "./IconComp/index.vue";
+import { IconComp, type IconName } from "@/shared/ui/Icon";
 import { ButtonComp } from "@/shared/ui/Button";
 import InputWrapperComp from "./InputWrapperComp.vue";
 import TooltipComp from "./TooltipComp.vue";
