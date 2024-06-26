@@ -1,15 +1,9 @@
 <script setup lang="ts">
-export type SpinnerSize = "20" | "24";
-export type SpinnerColor =
-  | "neutral"
-  | "accent-primary"
-  | "accent-secondary"
-  | "negative"
-  | "primary";
+import type { Size, Color } from "../types";
 
 type Props = {
-  size?: SpinnerSize;
-  color?: SpinnerColor;
+  size?: Size;
+  color?: Color;
 };
 
 const props = withDefaults(defineProps<Props>(), {

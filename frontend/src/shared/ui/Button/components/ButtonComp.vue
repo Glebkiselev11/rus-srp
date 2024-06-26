@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import type { Color, Size, Appearance } from "../types";
-import SpinnerComp, { type SpinnerColor } from "@/components/SpinnerComp.vue";
+import { SpinnerComp, type SpinnerColor } from "@/shared/ui/Spinner";
 import {
   IconComp,
   type IconColor,
