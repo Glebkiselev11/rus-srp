@@ -4,7 +4,7 @@ import { useDebounceFn } from "@vueuse/core";
 import { onMounted, ref, watch } from "vue";
 import { IconComp, type IconName } from "@/shared/ui/Icon";
 import { ButtonComp } from "@/shared/ui/Button";
-import InputWrapperComp from "@/components/InputWrapperComp.vue";
+import { InputWrapperComp } from "@/shared/ui/InputWrapper";
 import TooltipComp from "@/components/TooltipComp.vue";
 import type { InputSize, InputAppearance } from "@/shared/ui/Input";
 

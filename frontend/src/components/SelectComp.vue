@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="T">
 import { computed } from "vue";
-import InputWrapperComp from "./InputWrapperComp.vue";
+import { InputWrapperComp } from "@/shared/ui/InputWrapper";
 import DropdownMenuComp from "./DropdownMenuComp.vue";
 import type { SelectSize, SelectAppearance } from "@/types/select";
 import { IconComp, type IconName } from "@/shared/ui/Icon";

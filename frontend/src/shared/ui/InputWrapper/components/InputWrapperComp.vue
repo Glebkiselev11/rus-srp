@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import ErrorComp from "./ErrorComp.vue";
+import ErrorComp from "@/components/ErrorComp.vue";
 
 type Props = {
   for: string;
