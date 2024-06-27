@@ -9,7 +9,7 @@ import { ButtonComp } from "@/shared/ui/Button";
 import CheckboxListItemComp from "../CheckboxListItemComp.vue";
 import { CheckboxComp } from "@/shared/ui/Checkbox";
 import ImageSectionComp from "../ImageSectionComp.vue";
-import InputComp from "../InputComp.vue";
+import { InputComp } from "@/shared/ui/Input";
 
 type Props = {
   uniqueWordError?: boolean;

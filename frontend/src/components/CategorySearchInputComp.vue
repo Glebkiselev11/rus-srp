@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { getLanguageCodesAccordingText } from "@/common/translations";
-import type { InputAppearance } from "@/types/input";
 import type { Id } from "@/types/api";
-import InputComp from "@/components/InputComp.vue";
+import { InputComp, type InputAppearance } from "@/shared/ui/Input";
 import DropdownMenuComp, {
   type MenuItem,
 } from "@/components/DropdownMenuComp.vue";

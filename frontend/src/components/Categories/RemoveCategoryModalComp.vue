@@ -5,7 +5,7 @@ import { computed, onMounted, ref } from "vue";
 import ModalComp from "../ModalComp.vue";
 import type { LanguageCode } from "@/types/translations";
 import { WordsService } from "@/api";
-import InputComp from "../InputComp.vue";
+import { InputComp } from "@/shared/ui/Input";
 import { ButtonComp } from "@/shared/ui/Button";
 import { useRoute, useRouter } from "vue-router";
 import { useDeleteCategory } from "@/queries/categories";
