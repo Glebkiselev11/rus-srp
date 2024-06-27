@@ -6,14 +6,14 @@ import { IconComp, type IconName } from "@/shared/ui/Icon";
 import { ButtonComp } from "@/shared/ui/Button";
 import { InputWrapperComp } from "@/shared/ui/InputWrapper";
 import TooltipComp from "@/components/TooltipComp.vue";
-import type { InputSize, InputAppearance } from "@/shared/ui/Input";
+import type { Size, Appearance } from "../types";
 
 type Props = {
   modelValue: T;
   label?: string;
   inputId?: string;
   type?: string;
-  appearance?: InputAppearance;
+  appearance?: Appearance;
   placeholder?: string;
   disabled?: boolean;
   error?: boolean;
@@ -23,7 +23,7 @@ type Props = {
   max?: number;
   min?: number;
   width?: string;
-  size?: InputSize;
+  size?: Size;
   clearButton?: boolean;
   focusOnMount?: boolean;
   resetValue?: T;
