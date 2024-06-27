@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import ErrorComp from "@/components/ErrorComp.vue";
+import { CaptionComp } from "@/shared/ui/Caption";
 
 type Props = {
   for: string;
@@ -30,7 +30,7 @@ function selectInput() {
       <slot />
     </div>
 
-    <ErrorComp v-if="error" :text="error" size="small" />
+    <CaptionComp v-if="error" type="error" :text="error" size="small" />
   </div>
 </template>
 
