@@ -1,15 +1,15 @@
 <script setup lang="ts" generic="T">
 import { computed } from "vue";
 import { InputWrapperComp } from "@/shared/ui/InputWrapper";
-import DropdownMenuComp from "./DropdownMenuComp.vue";
-import type { SelectSize, SelectAppearance } from "@/types/select";
+import DropdownMenuComp from "@/components/DropdownMenuComp.vue";
 import { IconComp, type IconName } from "@/shared/ui/Icon";
+import type { Size, Appearance } from "../types";
 
 type Props = {
   modelValue: T;
   options: { value: T; label: string }[];
-  appearance?: SelectAppearance;
-  size?: SelectSize;
+  appearance?: Appearance;
+  size?: Size;
   label?: string;
   placeholder?: string;
   disabled?: boolean;

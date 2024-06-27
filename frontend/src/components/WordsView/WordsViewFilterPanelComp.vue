@@ -3,7 +3,7 @@ import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { Id, Order, TranslationApprovedStatus } from "@/types/api";
 import WordsSearchInputComp from "@/components/WordsSearchInputComp.vue";
-import SelectComp from "@/components/SelectComp.vue";
+import { SelectComp } from "@/shared/ui/Select";
 import { SwitchComp } from "@/shared/ui/Switch";
 import { IconComp } from "@/shared/ui/Icon";
 
