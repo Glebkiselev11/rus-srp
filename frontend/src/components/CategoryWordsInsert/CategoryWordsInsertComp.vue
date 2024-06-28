@@ -10,7 +10,7 @@ import { ButtonComp } from "@/shared/ui/Button";
 import WordFormModalComp from "../WordForm/WordFormModalComp.vue";
 import TableComp from "@/components/Table/TableComp.vue";
 import TableRowComp from "@/components/Table/TableRowComp.vue";
-import CounterComp from "../CounterComp.vue";
+import { CounterComp } from "@/shared/ui/Counter";
 import { SwitchComp } from "@/shared/ui/Switch";
 import ZeroStateComp from "../ZeroStateComp.vue";
 import { CheckboxComp } from "@/shared/ui/Checkbox";
