@@ -14,7 +14,7 @@ import { CounterComp } from "@/shared/ui/Counter";
 import { SwitchComp } from "@/shared/ui/Switch";
 import { ZeroStateComp } from "@/shared/ui/ZeroState";
 import { CheckboxComp } from "@/shared/ui/Checkbox";
-import TooltipComp from "../TooltipComp.vue";
+import { TooltipComp } from "@/shared/ui/Tooltip";
 import SkeletonItemComp from "../SkeletonItemComp.vue";
 import ImagePreviewComp from "../ImagePreviewComp.vue";
 import { useWordsInfinityQuery } from "@/queries/words";

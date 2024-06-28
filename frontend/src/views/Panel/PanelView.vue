@@ -4,7 +4,7 @@ import NavbarComp from "@/components/NavbarComp.vue";
 import NavbarItemComp from "@/components/NavbarItemComp.vue";
 import { RouterView, useRoute, useRouter } from "vue-router";
 import type { NavItem } from "../../types";
-import TooltipComp from "@/components/TooltipComp.vue";
+import { TooltipComp } from "@/shared/ui/Tooltip";
 import { logout } from "@/common/auth";
 import { useI18n } from "vue-i18n";
 

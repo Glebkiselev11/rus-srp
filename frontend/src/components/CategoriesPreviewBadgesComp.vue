@@ -4,7 +4,7 @@ import { useI18n } from "vue-i18n";
 import type { Category } from "@/types/categories";
 import { useTranslations } from "@/common/useTranslations";
 import ImagePreviewComp from "./ImagePreviewComp.vue";
-import TooltipComp from "./TooltipComp.vue";
+import { TooltipComp } from "@/shared/ui/Tooltip";
 import { ButtonComp } from "@/shared/ui/Button";
 
 const MAX_IMAGES = 3;

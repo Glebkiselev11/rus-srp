@@ -9,7 +9,7 @@ import { ButtonComp } from "@/shared/ui/Button";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 import WordFormCategoryItemComp from "./WordFormCategoryItemComp.vue";
 import { IconComp } from "@/shared/ui/Icon";
-import TooltipComp from "../TooltipComp.vue";
+import { TooltipComp } from "@/shared/ui/Tooltip";
 import { ZeroStateComp } from "@/shared/ui/ZeroState";
 import { useCategoriesQuery } from "@/queries/categories";
 

@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import type { Position, Color } from "../types";
 
 type Props = {
   text: string;
-  position?: "top" | "bottom" | "left" | "right" | "bottom-right";
+  position?: Position;
   textWrap?: boolean;
   hidden?: boolean;
-  color?: "dark" | "light";
+  color?: Color;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -16,7 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
   color: "dark",
 });
 
-const timeout = ref(0);
+const timeout = ref<ReturnType<typeof setTimeout>>();
 const showTooltip = ref(false);
 
 const show = () => {
