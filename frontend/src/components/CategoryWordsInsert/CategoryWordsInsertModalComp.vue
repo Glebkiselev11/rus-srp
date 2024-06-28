@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { computed, ref, toRef } from "vue";
-import ModalComp from "../ModalComp.vue";
+import { ModalComp } from "@/shared/ui/Modal";
 import { addCropImagaeParamsToUrl } from "@/common/utils";
 import { useTranslations } from "@/common/useTranslations";
 import ImagePreviewComp from "../ImagePreviewComp.vue";

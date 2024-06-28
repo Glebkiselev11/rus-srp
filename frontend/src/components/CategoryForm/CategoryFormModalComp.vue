@@ -5,7 +5,7 @@ import { capitalizeFirstLetter } from "@/common/utils";
 import { useDraftCategoryStore } from "@/stores/draftCategory";
 import type { LanguageCode } from "@/types/translations";
 import type { Id } from "@/types/api";
-import ModalComp from "@/components/ModalComp.vue";
+import { ModalComp } from "@/shared/ui/Modal";
 import CategoryFormComp from "./CategoryFormComp.vue";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import FormCloseConfirmationModalComp from "@/components/FormCloseConfirmationModalComp.vue";

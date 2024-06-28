@@ -2,7 +2,7 @@
 import { useI18n } from "vue-i18n";
 import type { Category } from "@/types/categories";
 import { computed, onMounted, ref } from "vue";
-import ModalComp from "../ModalComp.vue";
+import { ModalComp } from "@/shared/ui/Modal";
 import type { LanguageCode } from "@/types/translations";
 import { WordsService } from "@/api";
 import { InputComp } from "@/shared/ui/Input";
