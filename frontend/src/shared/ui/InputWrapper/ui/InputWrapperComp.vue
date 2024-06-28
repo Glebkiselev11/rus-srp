@@ -35,8 +35,6 @@ function selectInput() {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .input-wrapper {
   display: flex;
   flex-direction: column;

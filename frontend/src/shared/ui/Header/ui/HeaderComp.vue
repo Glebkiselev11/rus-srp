@@ -64,8 +64,6 @@ function close(e: Event): void {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .header {
   width: 100%;
   min-height: 48px;

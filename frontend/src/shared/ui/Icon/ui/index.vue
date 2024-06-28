@@ -112,8 +112,6 @@ const convertedSize = computed(() => {
 </template>
 
 <style lang="scss">
-@import "@/styles/colors";
-
 .icon {
   &--primary {
     fill: $color-icon-primary;

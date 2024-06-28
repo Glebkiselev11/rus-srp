@@ -86,8 +86,6 @@ function handlerSort() {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 $padding: 8px;
 
 .table-column-title__outer {

@@ -177,8 +177,6 @@ function resetInput() {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .input {
   position: relative;
 

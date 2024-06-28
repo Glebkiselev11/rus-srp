@@ -130,8 +130,6 @@ function selectImage(src: string) {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 $image-size: 224.5px;
 
 .image-search {

@@ -328,8 +328,6 @@ function close() {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .category-form {
   width: 598px;
 

@@ -250,8 +250,6 @@ function handleWordCreated(id: Id) {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .category-words-insert {
   width: 742px;
 

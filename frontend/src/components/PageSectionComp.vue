@@ -21,8 +21,6 @@ const props = withDefaults(defineProps<Props>(), {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .page-section {
   background: $color-background-content-primary;
   width: 549px;

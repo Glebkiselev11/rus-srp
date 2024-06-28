@@ -191,8 +191,6 @@ function getLabelColor(item: MenuItem) {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .dropdown {
   &__menu {
     position: fixed;

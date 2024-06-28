@@ -155,8 +155,6 @@ function onClick(e: MouseEvent) {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .button {
   display: flex;
   align-items: center;

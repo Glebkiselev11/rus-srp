@@ -68,8 +68,6 @@ function handleClickInsideModal() {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 $width: 12px;
 
 .table-row-status {

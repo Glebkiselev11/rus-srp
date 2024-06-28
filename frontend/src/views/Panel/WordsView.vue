@@ -504,8 +504,6 @@ function createdCategory(categoryId: Id) {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .words-view {
   display: grid;
   grid-template-columns: 280px 1fr;

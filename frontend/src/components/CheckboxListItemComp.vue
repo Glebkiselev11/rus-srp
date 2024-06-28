@@ -28,8 +28,6 @@ const props = withDefaults(defineProps<Props>(), {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .checkbox-list-item {
   @include text-body-2;
 

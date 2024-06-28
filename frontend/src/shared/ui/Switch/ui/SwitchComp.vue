@@ -36,8 +36,6 @@ function toggleChecked() {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .switch {
   position: relative;
   width: 36px;

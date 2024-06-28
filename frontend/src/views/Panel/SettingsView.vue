@@ -30,8 +30,6 @@ const { t } = useI18n();
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/colors";
-
 .settings-view {
   width: 100%;
   height: 100%;

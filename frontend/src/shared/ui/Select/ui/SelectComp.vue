@@ -80,8 +80,6 @@ const selectedItem = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .select {
   border-radius: 8px;
   padding-block: 0;

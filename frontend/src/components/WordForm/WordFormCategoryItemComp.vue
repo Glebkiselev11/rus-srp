@@ -57,8 +57,6 @@ function selectCategory() {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .word-form-category-item {
   display: flex;
   align-items: center;

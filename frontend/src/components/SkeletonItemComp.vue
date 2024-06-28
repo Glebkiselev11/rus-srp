@@ -37,8 +37,6 @@ const _width = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .skeleton-item {
   background: linear-gradient(
     to right,

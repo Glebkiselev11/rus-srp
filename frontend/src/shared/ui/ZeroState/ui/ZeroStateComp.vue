@@ -27,8 +27,6 @@ const props = defineProps<{
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .zero-state {
   display: flex;
   flex-direction: column;

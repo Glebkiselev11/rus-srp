@@ -68,8 +68,6 @@ function handleClose() {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .modal-screen {
   position: fixed;
   z-index: 2;

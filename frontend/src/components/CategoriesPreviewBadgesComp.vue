@@ -94,8 +94,6 @@ function isOverflowing() {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .categories-preview-badges {
   $radius: 8px;
 

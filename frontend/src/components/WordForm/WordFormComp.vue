@@ -238,8 +238,6 @@ async function saveWord(saveAndAddNext = false) {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .word-form {
   width: 596px;
 

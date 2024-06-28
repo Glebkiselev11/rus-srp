@@ -33,8 +33,6 @@ const props = withDefaults(defineProps<Props>(), {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .navbar-item {
   display: flex;
   align-items: center;

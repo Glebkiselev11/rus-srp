@@ -94,8 +94,6 @@ async function tryLogin() {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .login-view {
   display: flex;
   justify-content: center;

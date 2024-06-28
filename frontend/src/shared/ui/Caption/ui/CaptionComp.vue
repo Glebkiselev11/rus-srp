@@ -53,8 +53,6 @@ const iconName = computed(() => {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .caption {
   display: flex;
   align-items: center;

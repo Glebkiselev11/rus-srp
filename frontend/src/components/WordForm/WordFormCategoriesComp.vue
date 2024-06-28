@@ -136,8 +136,6 @@ function addCategory(categoryId: Id) {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .word-form-categories {
   &__row {
     display: flex;

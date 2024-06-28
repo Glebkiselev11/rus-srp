@@ -44,8 +44,6 @@ function openEditingWordForm() {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .translation-confirmation {
   display: flex;
   flex-direction: column;

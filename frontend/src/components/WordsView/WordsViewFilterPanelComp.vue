@@ -94,8 +94,6 @@ function updateOrder(newOrder: Order) {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .filter-panel {
   display: flex;
   align-items: center;

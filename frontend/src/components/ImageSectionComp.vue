@@ -33,8 +33,6 @@ function updateSrc(src: string) {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .image-section {
   display: flex;
   column-gap: 24px;

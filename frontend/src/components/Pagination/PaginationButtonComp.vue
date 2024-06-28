@@ -28,8 +28,6 @@ function click(e: MouseEvent) {
 </template>
 
 <style scoped lang="scss">
-@import "src/styles/main";
-
 .pagination-button {
   width: 32px;
   height: 32px;

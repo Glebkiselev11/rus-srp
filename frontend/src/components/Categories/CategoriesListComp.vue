@@ -92,8 +92,6 @@ function selectCategoryForEditing(category: Category) {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .categories-list {
   &__all-words-item {
     display: flex;

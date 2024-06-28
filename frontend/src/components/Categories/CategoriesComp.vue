@@ -178,8 +178,6 @@ function openCreationCategoryForm() {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .categories {
   background-color: $color-background-content-primary;
   border-inline-end: 1px solid $color-separator-primary;

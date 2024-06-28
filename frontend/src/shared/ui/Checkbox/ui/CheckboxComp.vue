@@ -55,8 +55,6 @@ function toggleChecked() {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .checkbox {
   display: flex;
   justify-content: center;

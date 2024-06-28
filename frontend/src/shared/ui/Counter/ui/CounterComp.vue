@@ -11,8 +11,6 @@ const props = defineProps<{
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .counter {
   @include text-caption-2;
 

@@ -53,8 +53,6 @@ const hide = () => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .tooltip__container {
   position: relative;
   display: inline-block;

@@ -109,8 +109,6 @@ function editCategory(category: Category) {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .category-item {
   display: flex;
   align-items: center;

@@ -24,8 +24,6 @@ const toastStore = useToasterStore();
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .toaster {
   position: fixed;
   inset-inline-start: 96px;

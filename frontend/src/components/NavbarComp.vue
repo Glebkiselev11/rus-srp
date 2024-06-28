@@ -44,8 +44,6 @@ function handleClick(item: NavItem) {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .navbar {
   height: 100%;
   background-color: $color-background-content-primary;

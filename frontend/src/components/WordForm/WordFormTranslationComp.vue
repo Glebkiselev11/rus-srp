@@ -143,8 +143,6 @@ function _autoFillTranslations() {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .word-form-translation {
   @include text-body-2;
 

@@ -118,8 +118,6 @@ function handleSelectImage(src: string): void {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .image-preview {
   border: 1px solid $color-image-border;
   border-radius: 8px;

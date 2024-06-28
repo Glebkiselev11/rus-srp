@@ -90,8 +90,6 @@ function updateOffset(value: number) {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .pagination-bar {
   display: flex;
   justify-content: space-between;

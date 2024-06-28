@@ -60,8 +60,6 @@ function handleLogout() {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .panel-view {
   display: flex;
   width: 100%;

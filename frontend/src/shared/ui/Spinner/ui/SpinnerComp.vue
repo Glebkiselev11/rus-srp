@@ -22,8 +22,6 @@ const props = withDefaults(defineProps<Props>(), {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main.scss";
-
 .spinner-wrap {
   display: flex;
   justify-content: center;

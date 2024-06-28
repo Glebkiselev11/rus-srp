@@ -15,8 +15,6 @@
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .top-bar {
   padding: 16px;
 

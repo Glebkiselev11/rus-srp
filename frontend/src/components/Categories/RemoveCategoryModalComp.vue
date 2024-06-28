@@ -117,8 +117,6 @@ function close() {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .remove-category-modal {
   display: flex;
   flex-direction: column;
