@@ -1,1 +1,1 @@
-export { default as CounterComp } from "./components/CounterComp.vue";
+export { default as CounterComp } from "./ui/CounterComp.vue";

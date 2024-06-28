@@ -1,4 +1,4 @@
-export { default as IconComp } from "./components/index.vue";
+export { default as IconComp } from "./ui/index.vue";
 
 export type {
   Size as IconSize,

@@ -1,1 +1,1 @@
-export { default as HeaderComp } from "./components/HeaderComp.vue";
+export { default as HeaderComp } from "./ui/HeaderComp.vue";

@@ -1,1 +1,1 @@
-export { default as SwitchComp } from "./components/SwitchComp.vue";
+export { default as SwitchComp } from "./ui/SwitchComp.vue";

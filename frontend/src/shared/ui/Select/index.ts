@@ -1,4 +1,4 @@
-export { default as SelectComp } from "./components/SelectComp.vue";
+export { default as SelectComp } from "./ui/SelectComp.vue";
 
 export type {
   Appearance as SelectAppearance,

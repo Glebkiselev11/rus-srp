@@ -1,4 +1,4 @@
-export { default as ButtonComp } from "./components/ButtonComp.vue";
+export { default as ButtonComp } from "./ui/ButtonComp.vue";
 
 export type {
   Size as ButtonSize,

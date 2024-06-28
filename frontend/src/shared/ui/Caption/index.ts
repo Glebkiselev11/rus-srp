@@ -1,1 +1,1 @@
-export { default as CaptionComp } from "./components/CaptionComp.vue";
+export { default as CaptionComp } from "./ui/CaptionComp.vue";
