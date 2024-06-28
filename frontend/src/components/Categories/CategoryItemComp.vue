@@ -7,7 +7,7 @@ import type { Category } from "@/types/categories";
 import type { Id } from "@/types/api";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import ListItemComp from "@/components/ListItemComp.vue";
-import ButtonComp from "../ButtonComp.vue";
+import { ButtonComp } from "@/shared/ui/Button";
 import DropdownMenuComp from "../DropdownMenuComp.vue";
 import RemoveCategoryModalComp from "./RemoveCategoryModalComp.vue";
 
@@ -109,8 +109,6 @@ function editCategory(category: Category) {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .category-item {
   display: flex;
   align-items: center;

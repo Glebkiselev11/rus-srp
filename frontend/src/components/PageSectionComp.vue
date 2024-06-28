@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import HeaderComp from "@/components/HeaderComp.vue";
+import { HeaderComp } from "@/shared/ui/Header";
 
 type Props = {
   title?: string;
@@ -21,8 +21,6 @@ const props = withDefaults(defineProps<Props>(), {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .page-section {
   background: $color-background-content-primary;
   width: 549px;

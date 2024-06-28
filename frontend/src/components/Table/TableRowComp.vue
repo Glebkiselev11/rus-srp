@@ -39,8 +39,6 @@ function onHover(x: boolean) {
 </template>
 
 <style lang="scss">
-@import "@/styles/main";
-
 .table-row {
   height: 64px;
   display: grid;

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import SelectComp from "@/components/SelectComp.vue";
-import InputComp from "@/components/InputComp.vue";
+import { SelectComp } from "@/shared/ui/Select";
+import { InputComp } from "@/shared/ui/Input";
 import PaginationComp from "./PaginationComp.vue";
 
 const { t } = useI18n();
@@ -90,8 +90,6 @@ function updateOffset(value: number) {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .pagination-bar {
   display: flex;
   justify-content: space-between;

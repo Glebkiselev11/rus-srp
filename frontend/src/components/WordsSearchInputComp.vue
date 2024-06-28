@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import type { InputAppearance } from "@/types/input";
-import InputComp from "@/components/InputComp.vue";
+import { InputComp, type InputAppearance } from "@/shared/ui/Input";
 import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
 import DropdownMenuComp, {
   type MenuItem,

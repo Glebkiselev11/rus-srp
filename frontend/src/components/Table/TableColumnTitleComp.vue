@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import type { IconColor, IconName } from "../../types/icons";
 import { computed } from "vue";
-import IconComp from "../IconComp/index.vue";
+import { IconComp, type IconName, type IconColor } from "@/shared/ui/Icon";
 import type { Order, SortKey } from "../../types/api";
 
 type Props = {
@@ -87,8 +86,6 @@ function handlerSort() {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 $padding: 8px;
 
 .table-column-title__outer {

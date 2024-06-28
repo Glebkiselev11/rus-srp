@@ -42,8 +42,6 @@ function handleClick(index: number) {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .tabs {
   display: flex;
   column-gap: 32px;

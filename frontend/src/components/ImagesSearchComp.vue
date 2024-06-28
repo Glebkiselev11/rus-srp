@@ -4,10 +4,10 @@ import { useI18n } from "vue-i18n";
 import { vInfiniteScroll } from "@vueuse/components";
 import { addCropImagaeParamsToUrl } from "@/common/utils";
 import { useImagesInfinityQuery } from "@/queries/images";
-import InputComp from "./InputComp.vue";
-import IconComp from "./IconComp/index.vue";
-import ButtonComp from "./ButtonComp.vue";
-import ZeroStateComp from "./ZeroStateComp.vue";
+import { InputComp } from "@/shared/ui/Input";
+import { IconComp } from "@/shared/ui/Icon";
+import { ButtonComp } from "@/shared/ui/Button";
+import { ZeroStateComp } from "@/shared/ui/ZeroState";
 import SkeletonItemComp from "./SkeletonItemComp.vue";
 
 const { t } = useI18n();
@@ -130,8 +130,6 @@ function selectImage(src: string) {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 $image-size: 224.5px;
 
 .image-search {

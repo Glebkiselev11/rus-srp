@@ -6,15 +6,15 @@ import { useModalWordsStore } from "@/stores/modalWords";
 import { highlighTextByQuery } from "@/common/utils";
 import { useTranslations } from "@/common/useTranslations";
 import WordsSearchInputComp from "@/components/WordsSearchInputComp.vue";
-import ButtonComp from "../ButtonComp.vue";
+import { ButtonComp } from "@/shared/ui/Button";
 import WordFormModalComp from "../WordForm/WordFormModalComp.vue";
 import TableComp from "@/components/Table/TableComp.vue";
 import TableRowComp from "@/components/Table/TableRowComp.vue";
-import CounterComp from "../CounterComp.vue";
-import SwitchComp from "../SwitchComp.vue";
-import ZeroStateComp from "../ZeroStateComp.vue";
-import CheckboxComp from "../CheckboxComp.vue";
-import TooltipComp from "../TooltipComp.vue";
+import { CounterComp } from "@/shared/ui/Counter";
+import { SwitchComp } from "@/shared/ui/Switch";
+import { ZeroStateComp } from "@/shared/ui/ZeroState";
+import { CheckboxComp } from "@/shared/ui/Checkbox";
+import { TooltipComp } from "@/shared/ui/Tooltip";
 import SkeletonItemComp from "../SkeletonItemComp.vue";
 import ImagePreviewComp from "../ImagePreviewComp.vue";
 import { useWordsInfinityQuery } from "@/queries/words";
@@ -250,8 +250,6 @@ function handleWordCreated(id: Id) {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .category-words-insert {
   width: 742px;
 

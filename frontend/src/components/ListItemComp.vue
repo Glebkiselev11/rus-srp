@@ -33,8 +33,6 @@ const props = withDefaults(defineProps<Props>(), {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .list-item {
   padding-block: 12px;
   border-radius: 12px;

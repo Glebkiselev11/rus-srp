@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import ModalComp from "../ModalComp.vue";
+import { ModalComp } from "@/shared/ui/Modal";
 import WordFormComp from "./WordFormComp.vue";
-import IconComp from "@/components/IconComp/index.vue";
+import { IconComp } from "@/shared/ui/Icon";
 import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";

@@ -2,11 +2,11 @@
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { login } from "@/common/auth";
-import InputComp from "@/components/InputComp.vue";
-import ButtonComp from "@/components/ButtonComp.vue";
+import { login } from "@/shared/auth";
+import { InputComp } from "@/shared/ui/Input";
+import { ButtonComp } from "@/shared/ui/Button";
 import AllWordsCategoryImageComp from "@/components/Categories/AllWordsCategoryImageComp.vue";
-import ErrorComp from "@/components/ErrorComp.vue";
+import { CaptionComp } from "@/shared/ui/Caption";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -63,7 +63,7 @@ async function tryLogin() {
         <AllWordsCategoryImageComp size="56px" />
         <h1>{{ t("login-to-word-database") }}</h1>
 
-        <ErrorComp v-if="authError" :text="authError" />
+        <CaptionComp v-if="authError" type="error" :text="authError" />
       </div>
 
       <InputComp
@@ -94,8 +94,6 @@ async function tryLogin() {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .login-view {
   display: flex;
   justify-content: center;

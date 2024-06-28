@@ -5,11 +5,11 @@ import type { LanguageCode } from "@/types/translations";
 import { useDraftWordStore } from "@/stores/draftWord";
 
 import { useTranslations } from "@/common/useTranslations";
-import ButtonComp from "../ButtonComp.vue";
+import { ButtonComp } from "@/shared/ui/Button";
 import CheckboxListItemComp from "../CheckboxListItemComp.vue";
-import CheckboxComp from "../CheckboxComp.vue";
+import { CheckboxComp } from "@/shared/ui/Checkbox";
 import ImageSectionComp from "../ImageSectionComp.vue";
-import InputComp from "../InputComp.vue";
+import { InputComp } from "@/shared/ui/Input";
 
 type Props = {
   uniqueWordError?: boolean;
@@ -143,8 +143,6 @@ function _autoFillTranslations() {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .word-form-translation {
   @include text-body-2;
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import ModalComp from "./ModalComp.vue";
-import ButtonComp from "./ButtonComp.vue";
+import { ModalComp } from "@/shared/ui/Modal";
+import { ButtonComp } from "@/shared/ui/Button";
 
 const { t } = useI18n();
 

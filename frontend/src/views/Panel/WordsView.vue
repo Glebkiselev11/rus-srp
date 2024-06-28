@@ -17,12 +17,12 @@ import TopBarComp from "@/components/TopBarComp.vue";
 import TableComp from "@/components/Table/TableComp.vue";
 import TableRowComp from "@/components/Table/TableRowComp.vue";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
-import ButtonComp from "@/components/ButtonComp.vue";
+import { ButtonComp } from "@/shared/ui/Button";
 import DropdownMenuComp, {
   type MenuItem,
 } from "@/components/DropdownMenuComp.vue";
 import PaginationBarComp from "@/components/Pagination/PaginationBarComp.vue";
-import ZeroStateComp from "@/components/ZeroStateComp.vue";
+import { ZeroStateComp } from "@/shared/ui/ZeroState";
 import WordsViewCategoryTitleComp from "@/components/WordsView/WordsViewCategoryTitleComp.vue";
 import CategoriesPreviewBadgesComp from "@/components/CategoriesPreviewBadgesComp.vue";
 import WordsViewTableRowSkeletonComp from "@/components/WordsView/WordsViewTableRowSkeletonComp.vue";
@@ -504,8 +504,6 @@ function createdCategory(categoryId: Id) {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .words-view {
   display: grid;
   grid-template-columns: 280px 1fr;

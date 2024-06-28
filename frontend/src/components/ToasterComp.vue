@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useToasterStore } from "@/stores/toaster";
-import IconComp from "@/components/IconComp/index.vue";
+import { IconComp } from "@/shared/ui/Icon";
 
 const toastStore = useToasterStore();
 </script>
@@ -24,8 +24,6 @@ const toastStore = useToasterStore();
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .toaster {
   position: fixed;
   inset-inline-start: 96px;

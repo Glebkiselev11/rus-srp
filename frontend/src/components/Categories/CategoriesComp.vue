@@ -7,12 +7,12 @@ import type { Id, Order, RequestParams } from "@/types/api";
 import type { LanguageCode } from "@/types/translations";
 import type { Category } from "@/types/categories";
 import { useDraftCategoryStore } from "@/stores/draftCategory";
-import ButtonComp from "@/components/ButtonComp.vue";
+import { ButtonComp } from "@/shared/ui/Button";
 import CategorySearchInputComp from "@/components/CategorySearchInputComp.vue";
 import CategoriesListComp from "@/components/Categories/CategoriesListComp.vue";
-import HeaderComp from "@/components/HeaderComp.vue";
+import { HeaderComp } from "@/shared/ui/Header";
 import DropdownMenuComp from "../DropdownMenuComp.vue";
-import TooltipComp from "../TooltipComp.vue";
+import { TooltipComp } from "@/shared/ui/Tooltip";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 
 const { t, locale } = useI18n();
@@ -178,8 +178,6 @@ function openCreationCategoryForm() {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .categories {
   background-color: $color-background-content-primary;
   border-inline-end: 1px solid $color-separator-primary;

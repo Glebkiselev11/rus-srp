@@ -2,11 +2,11 @@
 import { useI18n } from "vue-i18n";
 import type { Category } from "@/types/categories";
 import { computed, onMounted, ref } from "vue";
-import ModalComp from "../ModalComp.vue";
+import { ModalComp } from "@/shared/ui/Modal";
 import type { LanguageCode } from "@/types/translations";
-import { WordsService } from "@/api";
-import InputComp from "../InputComp.vue";
-import ButtonComp from "../ButtonComp.vue";
+import { WordsService } from "@/shared/api";
+import { InputComp } from "@/shared/ui/Input";
+import { ButtonComp } from "@/shared/ui/Button";
 import { useRoute, useRouter } from "vue-router";
 import { useDeleteCategory } from "@/queries/categories";
 import { useToasterStore } from "@/stores/toaster";
@@ -117,8 +117,6 @@ function close() {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .remove-category-modal {
   display: flex;
   flex-direction: column;

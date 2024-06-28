@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import ButtonComp from "@/components/ButtonComp.vue";
+import { ButtonComp } from "@/shared/ui/Button";
 
 const { t } = useI18n();
 
@@ -44,8 +44,6 @@ function openEditingWordForm() {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .translation-confirmation {
   display: flex;
   flex-direction: column;

@@ -3,7 +3,7 @@ import type { Id, RequestParams } from "@/types/api";
 import CategoryItemComp from "./CategoryItemComp.vue";
 import ListItemComp from "@/components/ListItemComp.vue";
 import AllWordsCategoryImageComp from "./AllWordsCategoryImageComp.vue";
-import ZeroStateComp from "../ZeroStateComp.vue";
+import { ZeroStateComp } from "@/shared/ui/ZeroState";
 import SkeletonItemComp from "../SkeletonItemComp.vue";
 import { useI18n } from "vue-i18n";
 import { useCategoriesQuery } from "@/queries/categories";
@@ -92,8 +92,6 @@ function selectCategoryForEditing(category: Category) {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .categories-list {
   &__all-words-item {
     display: flex;

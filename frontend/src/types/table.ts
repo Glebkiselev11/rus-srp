@@ -1,5 +1,5 @@
 import type { SortKey } from "./api";
-import type { IconColor, IconName } from "./icons";
+import type { IconColor, IconName } from "@/shared/ui/Icon";
 
 export type TableColumn = {
   sort_key?: SortKey;

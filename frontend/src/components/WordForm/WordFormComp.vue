@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import type { DraftWord } from "@/types/words";
-import { WordsService } from "@/api";
+import { WordsService } from "@/shared/api";
 import { useDraftWordStore } from "@/stores/draftWord";
 import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 import { useI18n } from "vue-i18n";
-import ButtonComp from "../ButtonComp.vue";
+import { ButtonComp } from "@/shared/ui/Button";
 import TabsComp from "../TabsComp.vue";
 import WordFormTranslationComp from "./WordFormTranslationComp.vue";
 import WordFormCategoriesComp from "./WordFormCategoriesComp.vue";
@@ -238,8 +238,6 @@ async function saveWord(saveAndAddNext = false) {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .word-form {
   width: 596px;
 

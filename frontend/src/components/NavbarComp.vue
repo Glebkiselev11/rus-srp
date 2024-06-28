@@ -2,7 +2,7 @@
 import { useI18n } from "vue-i18n";
 import type { NavItem } from "../types";
 import NavbarItemComp from "./NavbarItemComp.vue";
-import TooltipComp from "./TooltipComp.vue";
+import { TooltipComp } from "@/shared/ui/Tooltip";
 
 const { t } = useI18n();
 
@@ -44,8 +44,6 @@ function handleClick(item: NavItem) {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/main";
-
 .navbar {
   height: 100%;
   background-color: $color-background-content-primary;

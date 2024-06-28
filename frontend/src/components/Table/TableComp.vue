@@ -89,8 +89,6 @@ function handleScrollToBottom() {
 </template>
 
 <style lang="scss">
-@import "@/styles/main";
-
 .table-wrap {
   display: flex;
   flex-direction: column;

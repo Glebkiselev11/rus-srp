@@ -2,9 +2,8 @@
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { addCropImagaeParamsToUrl } from "@/common/utils";
-import type { IconSize } from "@/types/icons";
-import IconComp from "@/components/IconComp/index.vue";
-import ModalComp from "@/components/ModalComp.vue";
+import { IconComp, type IconSize } from "@/shared/ui/Icon";
+import { ModalComp } from "@/shared/ui/Modal";
 import ImagesSearchComp from "./ImagesSearchComp.vue";
 
 type PreviewSize = "24px" | "32px" | "40px" | "48px" | "56px" | "64px" | "96px";
@@ -119,8 +118,6 @@ function handleSelectImage(src: string): void {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/main";
-
 .image-preview {
   border: 1px solid $color-image-border;
   border-radius: 8px;
