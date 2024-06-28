@@ -1,6 +1,6 @@
 import type { Id, ListResponse, OptionalRequestParams } from "@/types/api";
 import type { Category, DraftCategory } from "@/types/categories";
-import { ApiTransport } from "@/api/apiTransport";
+import { ApiTransport } from "../apiTransport";
 
 export const CategoriesService = {
   ENDPOINT: "/api/v1/private/categories",

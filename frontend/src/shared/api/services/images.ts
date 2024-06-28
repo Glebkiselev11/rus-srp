@@ -1,6 +1,6 @@
 import type { ListResponse, OptionalRequestParams } from "@/types/api";
 import type { Image } from "@/types/images";
-import { ApiTransport } from "@/api/apiTransport";
+import { ApiTransport } from "../apiTransport";
 
 export const ImagesService = {
   ENDPOINT: "/api/v1/private/services/images",

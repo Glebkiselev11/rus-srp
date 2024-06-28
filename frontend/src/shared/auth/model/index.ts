@@ -1,7 +1,6 @@
-import { AuthService } from "@/api";
-import type { Login } from "@/types/auth";
-
-export const TOKEN_KEY = "auth_token";
+import { AuthService } from "../api";
+import type { Login } from "../types";
+import { TOKEN_KEY } from "../config";
 
 export async function login(data: Login) {
   try {

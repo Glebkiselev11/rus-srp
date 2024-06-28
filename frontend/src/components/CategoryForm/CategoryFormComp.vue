@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { computed, ref, watch, onMounted } from "vue";
-import { CategoriesService } from "@/api";
+import { CategoriesService } from "@/shared/api";
 import { useCreateCategory, useUpdateCategory } from "@/queries/categories";
 import { capitalizeFirstLetter } from "@/common/utils";
 import { useTranslations } from "@/common/useTranslations";

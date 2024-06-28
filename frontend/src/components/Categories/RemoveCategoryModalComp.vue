@@ -4,7 +4,7 @@ import type { Category } from "@/types/categories";
 import { computed, onMounted, ref } from "vue";
 import { ModalComp } from "@/shared/ui/Modal";
 import type { LanguageCode } from "@/types/translations";
-import { WordsService } from "@/api";
+import { WordsService } from "@/shared/api";
 import { InputComp } from "@/shared/ui/Input";
 import { ButtonComp } from "@/shared/ui/Button";
 import { useRoute, useRouter } from "vue-router";

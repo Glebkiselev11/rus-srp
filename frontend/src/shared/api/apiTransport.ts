@@ -1,4 +1,4 @@
-import { TOKEN_KEY } from "@/common/auth";
+import { TOKEN_KEY } from "@/shared/auth";
 import axios, { type AxiosResponse, type CancelTokenSource } from "axios";
 import type { Router } from "vue-router";
 

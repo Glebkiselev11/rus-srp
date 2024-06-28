@@ -1,5 +1,5 @@
 import type { LanguageCode, TranslationObject } from "@/types/translations";
-import { TranslationsService } from "@/api";
+import { TranslationsService } from "@/shared/api";
 
 export async function translate(
   params: TranslationObject

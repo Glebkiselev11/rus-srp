@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from "@tanstack/vue-query";
 import type { DraftWord, Word } from "@/types/words";
-import { WordsService } from "@/api/services/words";
+import { WordsService } from "@/shared/api";
 import type { Id, RequestParams } from "@/types/api";
 import type { Ref } from "vue";
 

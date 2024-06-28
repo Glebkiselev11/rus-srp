@@ -3,7 +3,7 @@ import "./styles/main.scss";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import i18n from "./i18n";
-import { initApiTransport } from "@/api/apiTransport";
+import { initApiTransport } from "@/shared/api";
 import { VueQueryPlugin } from "@tanstack/vue-query";
 
 import App from "./App.vue";

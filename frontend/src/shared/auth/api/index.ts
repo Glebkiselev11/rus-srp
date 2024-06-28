@@ -1,5 +1,5 @@
-import type { Login, AuthToken } from "@/types/auth";
-import { ApiTransport } from "../apiTransport";
+import type { Login, AuthToken } from "../types";
+import { ApiTransport } from "@/shared/api";
 
 export const AuthService = {
   ENDPOINT: "/api/v1/auth",

@@ -1,6 +1,6 @@
 import type { Id, ListResponse, OptionalRequestParams } from "@/types/api";
 import type { DraftWord, Word } from "@/types/words";
-import { ApiTransport } from "@/api/apiTransport";
+import { ApiTransport } from "../apiTransport";
 import { convertWordToDraftWord } from "@/common/utils";
 
 export const WordsService = {

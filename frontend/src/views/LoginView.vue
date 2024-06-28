@@ -2,7 +2,7 @@
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { login } from "@/common/auth";
+import { login } from "@/shared/auth";
 import { InputComp } from "@/shared/ui/Input";
 import { ButtonComp } from "@/shared/ui/Button";
 import AllWordsCategoryImageComp from "@/components/Categories/AllWordsCategoryImageComp.vue";
