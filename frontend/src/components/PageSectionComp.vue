@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import HeaderComp from "@/components/HeaderComp.vue";
+import { HeaderComp } from "@/shared/ui/Header";
 
 type Props = {
   title?: string;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from "vue";
-import HeaderComp from "@/components/HeaderComp.vue";
+import { HeaderComp } from "@/shared/ui/Header";
 
 type Props = {
   title: string;

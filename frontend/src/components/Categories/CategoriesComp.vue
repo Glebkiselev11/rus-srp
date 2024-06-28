@@ -10,7 +10,7 @@ import { useDraftCategoryStore } from "@/stores/draftCategory";
 import { ButtonComp } from "@/shared/ui/Button";
 import CategorySearchInputComp from "@/components/CategorySearchInputComp.vue";
 import CategoriesListComp from "@/components/Categories/CategoriesListComp.vue";
-import HeaderComp from "@/components/HeaderComp.vue";
+import { HeaderComp } from "@/shared/ui/Header";
 import DropdownMenuComp from "../DropdownMenuComp.vue";
 import TooltipComp from "../TooltipComp.vue";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";

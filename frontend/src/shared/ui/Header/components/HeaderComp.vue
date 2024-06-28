@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ButtonComp } from "@/shared/ui/Button";
-
-type TitleTag = "h1" | "h2" | "h3" | "h4" | "h5";
+import type { TitleTag } from "../types";
 
 type Props = {
   title?: string;
