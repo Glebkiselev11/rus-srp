@@ -10,7 +10,7 @@ import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalCo
 import WordFormCategoryItemComp from "./WordFormCategoryItemComp.vue";
 import { IconComp } from "@/shared/ui/Icon";
 import TooltipComp from "../TooltipComp.vue";
-import ZeroStateComp from "../ZeroStateComp.vue";
+import { ZeroStateComp } from "@/shared/ui/ZeroState";
 import { useCategoriesQuery } from "@/queries/categories";
 
 const { t } = useI18n();

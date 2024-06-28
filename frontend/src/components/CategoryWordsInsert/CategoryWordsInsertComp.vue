@@ -12,7 +12,7 @@ import TableComp from "@/components/Table/TableComp.vue";
 import TableRowComp from "@/components/Table/TableRowComp.vue";
 import { CounterComp } from "@/shared/ui/Counter";
 import { SwitchComp } from "@/shared/ui/Switch";
-import ZeroStateComp from "../ZeroStateComp.vue";
+import { ZeroStateComp } from "@/shared/ui/ZeroState";
 import { CheckboxComp } from "@/shared/ui/Checkbox";
 import TooltipComp from "../TooltipComp.vue";
 import SkeletonItemComp from "../SkeletonItemComp.vue";
