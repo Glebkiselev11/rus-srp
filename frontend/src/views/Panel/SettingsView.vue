@@ -4,7 +4,7 @@ import TopBarComp from "@/components/TopBarComp.vue";
 import PageSectionComp from "@/components/PageSectionComp.vue";
 import { IconComp } from "@/shared/ui/Icon";
 import ListItemComp from "@/components/ListItemComp.vue";
-import LanguageSelectComp from "@/components/LanguageSelectComp.vue";
+import { LanguageSelectComp } from "@/shared/i18n";
 
 const { t } = useI18n();
 </script>
