@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { IconComp, type IconSize, type IconName } from "@/shared/ui/Icon";
-import type { Type } from "../types";
+import type { Type } from "../model/types";
 
 type Props = {
   text: string;

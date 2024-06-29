@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 import { type Component, computed } from "vue";
-import type { Color, Name, Size } from "../types";
+import type { Color, Name, Size } from "../model/types";
 
 import AdminPanelSettingsIcon from "./AdminPanelSettingsIcon.vue";
 import ListIcon from "./ListIcon.vue";
