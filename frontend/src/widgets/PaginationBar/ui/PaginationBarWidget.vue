@@ -3,7 +3,7 @@ import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { SelectComp } from "@/shared/ui/Select";
 import { InputComp } from "@/shared/ui/Input";
-import PaginationComp from "./PaginationComp.vue";
+import { PaginationComp } from "@/shared/ui/Pagination";
 
 const { t } = useI18n();
 

@@ -2,14 +2,15 @@
 import { computed } from "vue";
 import { ButtonComp } from "@/shared/ui/Button";
 import PaginationButtonComp from "./PaginationButtonComp.vue";
+import { BEFORE_AND_AFTER_ELLIPSIS } from "../config";
 
-const BEFORE_AND_AFTER_ELLIPSIS = 2;
-
-const props = defineProps<{
+type Props = {
   limit: number;
   offset: number;
   count: number;
-}>();
+};
+
+const props = defineProps<Props>();
 
 const emit = defineEmits<{
   (event: "update:offset", offset: number): void;

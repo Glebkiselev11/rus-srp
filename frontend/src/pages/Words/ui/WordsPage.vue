@@ -19,7 +19,7 @@ import TableRowComp from "@/components/Table/TableRowComp.vue";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import { ButtonComp } from "@/shared/ui/Button";
 import { DropdownMenuComp, type MenuItem } from "@/shared/ui/DropdownMenu";
-import PaginationBarComp from "@/components/Pagination/PaginationBarComp.vue";
+import { PaginationBarWidget } from "@/widgets/PaginationBar";
 import { ZeroStateComp } from "@/shared/ui/ZeroState";
 import CategoryTitleComp from "./CategoryTitleComp.vue";
 import CategoriesPreviewBadgesComp from "@/components/CategoriesPreviewBadgesComp.vue";
@@ -480,7 +480,7 @@ function createdCategory(categoryId: Id) {
           </template>
 
           <template v-if="showPagination && data" #pagination>
-            <PaginationBarComp
+            <PaginationBarWidget
               :count="data.count"
               :offset="data.offset"
               :limit="limit"
