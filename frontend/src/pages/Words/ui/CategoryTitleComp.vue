@@ -7,9 +7,9 @@ import type { Category } from "@/types/categories";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import DropdownMenuComp from "@/components/DropdownMenuComp.vue";
 import { ButtonComp } from "@/shared/ui/Button";
-import RemoveCategoryModalComp from "@/components/Categories/RemoveCategoryModalComp.vue";
+import { RemoveCategoryModalComp } from "@/features/remove-category";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
-import AllWordsCategoryImageComp from "@/components/Categories/AllWordsCategoryImageComp.vue";
+import { LogoComp } from "@/shared/ui/Logo";
 import { useToasterStore } from "@/stores/toaster";
 import { useDraftCategoryStore } from "@/stores/draftCategory";
 
@@ -107,7 +107,7 @@ function updateCategoryImage(src: string) {
   </div>
 
   <div v-else class="category-title">
-    <AllWordsCategoryImageComp size="56px" />
+    <LogoComp size="56px" />
     <h2>
       {{ t("all-words") }}
     </h2>

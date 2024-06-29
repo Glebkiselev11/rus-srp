@@ -5,7 +5,7 @@ import { useRouter } from "vue-router";
 import { login } from "@/shared/auth";
 import { InputComp } from "@/shared/ui/Input";
 import { ButtonComp } from "@/shared/ui/Button";
-import AllWordsCategoryImageComp from "@/components/Categories/AllWordsCategoryImageComp.vue";
+import { LogoComp } from "@/shared/ui/Logo";
 import { CaptionComp } from "@/shared/ui/Caption";
 
 const { t } = useI18n();
@@ -60,7 +60,7 @@ async function tryLogin() {
   <div class="login-page">
     <div class="login-page__container">
       <div class="login-page__header">
-        <AllWordsCategoryImageComp size="56px" />
+        <LogoComp size="56px" />
         <h1>{{ t("login-to-word-database") }}</h1>
 
         <CaptionComp v-if="authError" type="error" :text="authError" />

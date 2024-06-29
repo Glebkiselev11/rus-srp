@@ -58,9 +58,6 @@ function handleLogout() {
 
 <style scoped lang="scss">
 .navbar-widget {
-  display: flex;
-  width: 100%;
   height: 100vh;
-  background-color: $color-background;
 }
 </style>

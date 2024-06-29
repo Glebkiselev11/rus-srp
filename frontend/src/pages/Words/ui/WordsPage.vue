@@ -12,7 +12,7 @@ import type {
   RequestParams,
   TranslationApprovedStatus,
 } from "@/types/api";
-import CategoriesComp from "@/components/Categories/CategoriesComp.vue";
+import { CategoriesWidget } from "@/widgets/Categories";
 import TopBarComp from "@/components/TopBarComp.vue";
 import TableComp from "@/components/Table/TableComp.vue";
 import TableRowComp from "@/components/Table/TableRowComp.vue";
@@ -310,7 +310,7 @@ function createdCategory(categoryId: Id) {
 <template>
   <div class="words-page">
     <NavbarWidget />
-    <CategoriesComp
+    <CategoriesWidget
       :selected-category-id="filter.category_id"
       @update:selected-category-id="category_id = $event"
       @created-category="createdCategory"

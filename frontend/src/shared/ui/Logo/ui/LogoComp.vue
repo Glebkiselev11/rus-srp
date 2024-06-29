@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { IconComp } from "@/shared/ui/Icon";
 import { computed } from "vue";
+import type { Size } from "../model/types";
 
 const props = defineProps<{
-  size: "24px" | "56px";
+  size: Size;
 }>();
 
 const iconSize = computed(() => {
@@ -17,16 +18,13 @@ const iconSize = computed(() => {
 </script>
 
 <template>
-  <div
-    class="all-words-category-image"
-    :class="[`all-words-category-image--${props.size}`]"
-  >
+  <div class="logo" :class="[`logo--${props.size}`]">
     <IconComp name="widgets" :size="iconSize" color="contrast" />
   </div>
 </template>
 
 <style scoped lang="scss">
-.all-words-category-image {
+.logo {
   display: flex;
   align-items: center;
   justify-content: center;

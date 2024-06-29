@@ -9,9 +9,9 @@ import type { Category } from "@/types/categories";
 import { useDraftCategoryStore } from "@/stores/draftCategory";
 import { ButtonComp } from "@/shared/ui/Button";
 import CategorySearchInputComp from "@/components/CategorySearchInputComp.vue";
-import CategoriesListComp from "@/components/Categories/CategoriesListComp.vue";
+import CategoriesListComp from "./CategoriesListComp.vue";
 import { HeaderComp } from "@/shared/ui/Header";
-import DropdownMenuComp from "../DropdownMenuComp.vue";
+import DropdownMenuComp from "@/components/DropdownMenuComp.vue";
 import { TooltipComp } from "@/shared/ui/Tooltip";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 

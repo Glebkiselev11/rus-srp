@@ -8,8 +8,8 @@ import type { Id } from "@/types/api";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import ListItemComp from "@/components/ListItemComp.vue";
 import { ButtonComp } from "@/shared/ui/Button";
-import DropdownMenuComp from "../DropdownMenuComp.vue";
-import RemoveCategoryModalComp from "./RemoveCategoryModalComp.vue";
+import DropdownMenuComp from "@/components/DropdownMenuComp.vue";
+import { RemoveCategoryModalComp } from "@/features/remove-category";
 
 const { t } = useI18n();
 const { extractCurrentLanguageTranslation } = useTranslations();

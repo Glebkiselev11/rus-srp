@@ -2,9 +2,9 @@
 import type { Id, RequestParams } from "@/types/api";
 import CategoryItemComp from "./CategoryItemComp.vue";
 import ListItemComp from "@/components/ListItemComp.vue";
-import AllWordsCategoryImageComp from "./AllWordsCategoryImageComp.vue";
+import { LogoComp } from "@/shared/ui/Logo";
 import { ZeroStateComp } from "@/shared/ui/ZeroState";
-import SkeletonItemComp from "../SkeletonItemComp.vue";
+import SkeletonItemComp from "@/components/SkeletonItemComp.vue";
 import { useI18n } from "vue-i18n";
 import { useCategoriesQuery } from "@/queries/categories";
 import { computed } from "vue";
@@ -47,7 +47,7 @@ function selectCategoryForEditing(category: Category) {
         @click="selectCategory(0)"
       >
         <div class="categories-list__all-words-item">
-          <AllWordsCategoryImageComp size="24px" />
+          <LogoComp size="24px" />
 
           <span>{{ t("all-words") }}</span>
         </div>
