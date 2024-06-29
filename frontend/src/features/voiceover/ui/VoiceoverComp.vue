@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { ButtonComp } from "@/shared/ui/Button";
-import * as voiceover from "@/common/voiceover";
+import type { Lang } from "../model/types";
+import { playText } from "../lib/voiceover";
 
 const props = defineProps<{
   text: string;
-  lang: voiceover.Lang;
+  lang: Lang;
 }>();
 
 const playing = ref(false);
@@ -14,7 +15,7 @@ const icon = computed(() => (playing.value ? "brand_awareness" : "volume_up"));
 
 async function play() {
   playing.value = true;
-  await voiceover.play(props.text, props.lang);
+  await playText(props.text, props.lang);
   playing.value = false;
 }
 </script>

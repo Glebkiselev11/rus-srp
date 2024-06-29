@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/types/translations";
-import VoiceoverComp from "@/components/VoiceoverComp.vue";
+import { VoiceoverComp } from "@/features/voiceover";
 import { highlighTextByQuery } from "@/common/utils";
 
 type Translation = {

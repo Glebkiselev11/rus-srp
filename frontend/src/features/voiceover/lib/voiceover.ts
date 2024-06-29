@@ -1,8 +1,8 @@
+import type { Lang } from "../model/types";
+
 const audio = new Audio();
 
-export type Lang = "sr" | "en" | "ru";
-
-export async function play(text: string, lang = "sr") {
+export async function playText(text: string, lang: Lang) {
   const url =
     "https://translate.google.com/translate_tts" +
     "?client=gtx" +
