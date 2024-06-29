@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import NavbarComp from "@/components/NavbarComp.vue";
-import NavbarItemComp from "@/components/NavbarItemComp.vue";
-import { RouterView, useRoute, useRouter } from "vue-router";
-import type { NavItem } from "../../types";
+import { useI18n } from "vue-i18n";
+import { useRoute, useRouter } from "vue-router";
+import { NavbarComp, NavbarItemComp, type NavItem } from "@/shared/ui/Navbar";
 import { TooltipComp } from "@/shared/ui/Tooltip";
 import { logout } from "@/shared/auth";
-import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -43,7 +41,7 @@ function handleLogout() {
 </script>
 
 <template>
-  <div class="panel-view">
+  <div class="navbar-widget">
     <NavbarComp :items="panelPages" @click-on-item="changePage">
       <template #bottom>
         <TooltipComp :text="t('logout')" position="right">
@@ -55,12 +53,11 @@ function handleLogout() {
         </TooltipComp>
       </template>
     </NavbarComp>
-    <RouterView />
   </div>
 </template>
 
 <style scoped lang="scss">
-.panel-view {
+.navbar-widget {
   display: flex;
   width: 100%;
   height: 100vh;

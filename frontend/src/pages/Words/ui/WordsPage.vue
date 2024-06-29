@@ -23,15 +23,15 @@ import DropdownMenuComp, {
 } from "@/components/DropdownMenuComp.vue";
 import PaginationBarComp from "@/components/Pagination/PaginationBarComp.vue";
 import { ZeroStateComp } from "@/shared/ui/ZeroState";
-import WordsViewCategoryTitleComp from "@/components/WordsView/WordsViewCategoryTitleComp.vue";
+import CategoryTitleComp from "./CategoryTitleComp.vue";
 import CategoriesPreviewBadgesComp from "@/components/CategoriesPreviewBadgesComp.vue";
-import WordsViewTableRowSkeletonComp from "@/components/WordsView/WordsViewTableRowSkeletonComp.vue";
+import TableRowSkeletonComp from "./TableRowSkeletonComp.vue";
 import CategoryWordsInsertModalComp from "@/components/CategoryWordsInsert/CategoryWordsInsertModalComp.vue";
 import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
 import TableRowStatusComp from "@/components/Table/TableRowStatusComp.vue";
-import WordsViewFilterPanelComp from "@/components/WordsView/WordsViewFilterPanelComp.vue";
-import WordsViewTranslationConfirmationComp from "@/components/WordsView/WordsViewTranslationConfirmationComp.vue";
-import WordsViewTranslationCellComp from "@/components/WordsView/WordsViewTranslationCellComp.vue";
+import FilterPanelComp from "./FilterPanelComp.vue";
+import TranslationConfirmationComp from "./TranslationConfirmationComp.vue";
+import TranslationCellComp from "./TranslationCellComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";
 import { useUpdateWord, useDeleteWord, useWordsQuery } from "@/queries/words";
 import { useToasterStore } from "@/stores/toaster";
@@ -39,6 +39,7 @@ import {
   useCategoryByIdQuery,
   useDeleteWordsFromCategory,
 } from "@/queries/categories";
+import { NavbarWidget } from "@/widgets/Navbar";
 
 const toastStore = useToasterStore();
 const { t, locale } = useI18n();
@@ -307,7 +308,8 @@ function createdCategory(categoryId: Id) {
 </script>
 
 <template>
-  <div class="words-view">
+  <div class="words-page">
+    <NavbarWidget />
     <CategoriesComp
       :selected-category-id="filter.category_id"
       @update:selected-category-id="category_id = $event"
@@ -317,7 +319,7 @@ function createdCategory(categoryId: Id) {
     <div>
       <TopBarComp>
         <template #left>
-          <WordsViewCategoryTitleComp
+          <CategoryTitleComp
             v-if="categoryStatus !== 'pending' || !category_id"
             :category="categoryData?.category"
           />
@@ -327,7 +329,7 @@ function createdCategory(categoryId: Id) {
             v-show="showAddToCategoryButton"
             :label="t('add-to-category')"
             appearance="inline"
-            class="words-view__add-to-category-button"
+            class="words-page__add-to-category-button"
             @click="openWordsListModal"
           />
           <ButtonComp
@@ -338,8 +340,8 @@ function createdCategory(categoryId: Id) {
         </template>
       </TopBarComp>
 
-      <div class="words-view__content">
-        <WordsViewFilterPanelComp
+      <div class="words-page__content">
+        <FilterPanelComp
           v-model:search="search"
           v-model:order="order"
           v-model:translation-approved-status="translation_approved_status"
@@ -366,7 +368,7 @@ function createdCategory(categoryId: Id) {
                 :active="!word.translation_approved"
                 :disabled="word.translation_approved"
               >
-                <WordsViewTranslationConfirmationComp
+                <TranslationConfirmationComp
                   @confirm-translation="confirmTranslation(word)"
                   @open-editing-word-form="openEditingWordForm(word)"
                 />
@@ -386,7 +388,7 @@ function createdCategory(categoryId: Id) {
                 :key="`${word.id}-${i}`"
                 :title="word[translation.sort_key]"
               >
-                <WordsViewTranslationCellComp
+                <TranslationCellComp
                   :word="word"
                   :translation="translation"
                   :search="search"
@@ -449,7 +451,7 @@ function createdCategory(categoryId: Id) {
           </template>
 
           <template v-else-if="status === 'pending'">
-            <WordsViewTableRowSkeletonComp
+            <TableRowSkeletonComp
               :rows="limit"
               :grid-template-columns="gridTemplateColumns"
               :central-columns-count="translationColumns.length"
@@ -504,9 +506,9 @@ function createdCategory(categoryId: Id) {
 </template>
 
 <style scoped lang="scss">
-.words-view {
+.words-page {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: auto 280px 1fr;
   width: 100%;
   height: 100%;
 

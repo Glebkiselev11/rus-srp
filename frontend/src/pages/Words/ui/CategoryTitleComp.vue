@@ -4,12 +4,12 @@ import { useI18n } from "vue-i18n";
 import { useTranslations } from "@/common/useTranslations";
 import { useUpdateCategory } from "@/queries/categories";
 import type { Category } from "@/types/categories";
-import ImagePreviewComp from "../ImagePreviewComp.vue";
-import DropdownMenuComp from "../DropdownMenuComp.vue";
+import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
+import DropdownMenuComp from "@/components/DropdownMenuComp.vue";
 import { ButtonComp } from "@/shared/ui/Button";
-import RemoveCategoryModalComp from "../Categories/RemoveCategoryModalComp.vue";
+import RemoveCategoryModalComp from "@/components/Categories/RemoveCategoryModalComp.vue";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
-import AllWordsCategoryImageComp from "../Categories/AllWordsCategoryImageComp.vue";
+import AllWordsCategoryImageComp from "@/components/Categories/AllWordsCategoryImageComp.vue";
 import { useToasterStore } from "@/stores/toaster";
 import { useDraftCategoryStore } from "@/stores/draftCategory";
 
@@ -52,7 +52,7 @@ function updateCategoryImage(src: string) {
 </script>
 
 <template>
-  <div v-if="props.category" class="words-view-category-title">
+  <div v-if="props.category" class="category-title">
     <ImagePreviewComp
       size="56px"
       :src="props.category.image"
@@ -88,7 +88,7 @@ function updateCategoryImage(src: string) {
           appearance="inline"
           color="neutral"
           size="compact"
-          class="words-view-category-title__menu-button"
+          class="category-title__menu-button"
           :pressed="isMenuOpen"
         />
       </template>
@@ -106,7 +106,7 @@ function updateCategoryImage(src: string) {
     />
   </div>
 
-  <div v-else class="words-view-category-title">
+  <div v-else class="category-title">
     <AllWordsCategoryImageComp size="56px" />
     <h2>
       {{ t("all-words") }}
@@ -115,7 +115,7 @@ function updateCategoryImage(src: string) {
 </template>
 
 <style scoped lang="scss">
-.words-view-category-title {
+.category-title {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -129,9 +129,9 @@ function updateCategoryImage(src: string) {
   }
 }
 
-.words-view-category-title:hover,
+.category-title:hover,
 .dropdown--open {
-  .words-view-category-title__menu-button {
+  .category-title__menu-button {
     visibility: visible;
   }
 }

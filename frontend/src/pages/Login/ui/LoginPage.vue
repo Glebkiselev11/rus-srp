@@ -57,9 +57,9 @@ async function tryLogin() {
 </script>
 
 <template>
-  <div class="login-view">
-    <div class="login-view__container">
-      <div class="login-view__header">
+  <div class="login-page">
+    <div class="login-page__container">
+      <div class="login-page__header">
         <AllWordsCategoryImageComp size="56px" />
         <h1>{{ t("login-to-word-database") }}</h1>
 
@@ -84,7 +84,7 @@ async function tryLogin() {
       />
 
       <ButtonComp
-        class="login-view__login-button"
+        class="login-page__login-button"
         :label="t('to-login')"
         full-width
         @click="tryLogin"
@@ -94,7 +94,7 @@ async function tryLogin() {
 </template>
 
 <style scoped lang="scss">
-.login-view {
+.login-page {
   display: flex;
   justify-content: center;
   align-items: center;
