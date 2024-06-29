@@ -11,7 +11,7 @@ import { ButtonComp } from "@/shared/ui/Button";
 import CategorySearchInputComp from "@/components/CategorySearchInputComp.vue";
 import CategoriesListComp from "./CategoriesListComp.vue";
 import { HeaderComp } from "@/shared/ui/Header";
-import DropdownMenuComp from "@/components/DropdownMenuComp.vue";
+import { DropdownMenuComp } from "@/shared/ui/DropdownMenu";
 import { TooltipComp } from "@/shared/ui/Tooltip";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 

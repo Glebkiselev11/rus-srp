@@ -18,9 +18,7 @@ import TableComp from "@/components/Table/TableComp.vue";
 import TableRowComp from "@/components/Table/TableRowComp.vue";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import { ButtonComp } from "@/shared/ui/Button";
-import DropdownMenuComp, {
-  type MenuItem,
-} from "@/components/DropdownMenuComp.vue";
+import { DropdownMenuComp, type MenuItem } from "@/shared/ui/DropdownMenu";
 import PaginationBarComp from "@/components/Pagination/PaginationBarComp.vue";
 import { ZeroStateComp } from "@/shared/ui/ZeroState";
 import CategoryTitleComp from "./CategoryTitleComp.vue";

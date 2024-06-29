@@ -2,9 +2,7 @@
 import { useI18n } from "vue-i18n";
 import { InputComp, type InputAppearance } from "@/shared/ui/Input";
 import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
-import DropdownMenuComp, {
-  type MenuItem,
-} from "@/components/DropdownMenuComp.vue";
+import { DropdownMenuComp, type MenuItem } from "@/shared/ui/DropdownMenu";
 import { computed, nextTick, ref } from "vue";
 import { useTranslations } from "@/common/useTranslations";
 import { getLanguageCodesAccordingText } from "@/common/translations";

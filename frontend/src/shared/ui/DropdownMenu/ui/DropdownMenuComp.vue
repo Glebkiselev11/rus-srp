@@ -2,26 +2,15 @@
 import { computed, nextTick, onMounted, ref, useSlots, watch } from "vue";
 import { vOnClickOutside, vElementVisibility } from "@vueuse/components";
 import { ListItemComp } from "@/shared/ui/ListItem";
-import { IconComp, type IconName, type IconColor } from "@/shared/ui/Icon";
-
-export type MenuItem = {
-  label: string;
-  labelColor?: IconColor;
-  description?: string;
-  icon?: IconName;
-  color?: IconColor;
-  iconColor?: IconColor;
-  handler: () => void;
-};
+import { IconComp } from "@/shared/ui/Icon";
+import type { MenuItem, Position } from "../model/types";
 
 type Separator = "separator";
-
-type MenuPosition = "left" | "right";
 
 type Props = {
   items: Array<MenuItem | Separator>;
   disabled?: boolean;
-  position?: MenuPosition;
+  position?: Position;
   maxWidth?: string;
   showMenu?: boolean;
 };

@@ -8,7 +8,7 @@ import type { Id } from "@/types/api";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import { ListItemComp } from "@/shared/ui/ListItem";
 import { ButtonComp } from "@/shared/ui/Button";
-import DropdownMenuComp from "@/components/DropdownMenuComp.vue";
+import { DropdownMenuComp } from "@/shared/ui/DropdownMenu";
 import { RemoveCategoryModalComp } from "@/features/remove-category";
 
 const { t } = useI18n();
