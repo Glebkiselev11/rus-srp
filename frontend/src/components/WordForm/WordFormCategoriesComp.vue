@@ -2,7 +2,6 @@
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDraftWordStore } from "@/stores/draftWord";
-import type { Category } from "@/types/categories";
 import type { Id, Order } from "@/types/api";
 import CategorySearchInputComp from "@/components/CategorySearchInputComp.vue";
 import { ButtonComp } from "@/shared/ui/Button";
@@ -11,7 +10,7 @@ import WordFormCategoryItemComp from "./WordFormCategoryItemComp.vue";
 import { IconComp } from "@/shared/ui/Icon";
 import { TooltipComp } from "@/shared/ui/Tooltip";
 import { ZeroStateComp } from "@/shared/ui/ZeroState";
-import { useCategoriesQuery } from "@/queries/categories";
+import { useCategoriesQuery, type Category } from "@/entities/category";
 
 const { t } = useI18n();
 const draftWordStore = useDraftWordStore();

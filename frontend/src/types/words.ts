@@ -1,5 +1,5 @@
 import type { Id } from "./api";
-import type { Category } from "./categories";
+import type { Category } from "@/entities/category";
 
 type WordBase = {
   rus: string;

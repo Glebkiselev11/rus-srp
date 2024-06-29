@@ -1,4 +1,4 @@
-import type { Id } from "./api";
+import type { Id } from "@/types/api";
 
 export type DraftCategory = {
   id?: Id;

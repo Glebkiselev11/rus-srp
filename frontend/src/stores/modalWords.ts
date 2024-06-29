@@ -1,6 +1,6 @@
 import type { Id } from "@/types/api";
 import { defineStore } from "pinia";
-import { CategoriesService } from "@/shared/api";
+import { CategoriesService } from "@/entities/category";
 import { computed, ref } from "vue";
 import { useQueryClient } from "@tanstack/vue-query";
 import { KEY as WORDS_KEY } from "@/queries/words";

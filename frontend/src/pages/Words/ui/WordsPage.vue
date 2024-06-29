@@ -36,7 +36,7 @@ import { useToasterStore } from "@/stores/toaster";
 import {
   useCategoryByIdQuery,
   useDeleteWordsFromCategory,
-} from "@/queries/categories";
+} from "@/entities/category";
 import { NavbarWidget } from "@/widgets/Navbar";
 
 const toastStore = useToasterStore();

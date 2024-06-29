@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Id } from "@/types/api";
-import type { Category } from "@/types/categories";
+import type { Category } from "@/entities/category";
 import { highlighTextByQuery } from "@/common/utils";
 import { useTranslations } from "@/common/useTranslations";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";

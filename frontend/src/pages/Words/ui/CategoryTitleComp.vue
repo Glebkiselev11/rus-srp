@@ -2,8 +2,7 @@
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useTranslations } from "@/common/useTranslations";
-import { useUpdateCategory } from "@/queries/categories";
-import type { Category } from "@/types/categories";
+import { type Category, useUpdateCategory } from "@/entities/category";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import { DropdownMenuComp } from "@/shared/ui/DropdownMenu";
 import { ButtonComp } from "@/shared/ui/Button";

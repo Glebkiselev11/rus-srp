@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
-import { CategoriesService } from "@/shared/api";
+import { CategoriesService } from "../api";
 import type { Id, RequestParams } from "@/types/api";
 import { computed, type Ref } from "vue";
-import type { Category, DraftCategory } from "@/types/categories";
+import type { Category, DraftCategory } from "./types";
 import { KEY as WORD_KEY } from "@/queries/words";
 
 export const KEY = "categories";

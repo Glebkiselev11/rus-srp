@@ -3,7 +3,7 @@ import { useI18n } from "vue-i18n";
 import { ref } from "vue";
 import { highlighTextByQuery } from "@/common/utils";
 import { useTranslations } from "@/common/useTranslations";
-import type { Category } from "@/types/categories";
+import type { Category } from "@/entities/category";
 import type { Id } from "@/types/api";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import { ListItemComp } from "@/shared/ui/ListItem";

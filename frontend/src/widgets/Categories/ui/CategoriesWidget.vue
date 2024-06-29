@@ -5,7 +5,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import type { Id, Order, RequestParams } from "@/types/api";
 import type { LanguageCode } from "@/types/translations";
-import type { Category } from "@/types/categories";
+import type { Category } from "@/entities/category";
 import { useDraftCategoryStore } from "@/stores/draftCategory";
 import { ButtonComp } from "@/shared/ui/Button";
 import CategorySearchInputComp from "@/components/CategorySearchInputComp.vue";

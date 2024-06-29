@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { computed, ref, watch, onMounted } from "vue";
-import { CategoriesService } from "@/shared/api";
-import { useCreateCategory, useUpdateCategory } from "@/queries/categories";
+import {
+  useCreateCategory,
+  useUpdateCategory,
+  CategoriesService,
+  type Category,
+} from "@/entities/category";
 import { capitalizeFirstLetter } from "@/common/utils";
 import { useTranslations } from "@/common/useTranslations";
-import type { Category } from "@/types/categories";
 import type { LanguageCode } from "@/types/translations";
 import type { Id } from "@/types/api";
 import ImageSectionComp from "../ImageSectionComp.vue";

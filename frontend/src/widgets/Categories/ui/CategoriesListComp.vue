@@ -6,10 +6,9 @@ import { LogoComp } from "@/shared/ui/Logo";
 import { ZeroStateComp } from "@/shared/ui/ZeroState";
 import SkeletonItemComp from "@/components/SkeletonItemComp.vue";
 import { useI18n } from "vue-i18n";
-import { useCategoriesQuery } from "@/queries/categories";
 import { computed } from "vue";
 import { toReactive } from "@vueuse/core";
-import type { Category } from "@/types/categories";
+import { type Category, useCategoriesQuery } from "@/entities/category";
 
 const { t } = useI18n();
 
