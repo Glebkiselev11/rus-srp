@@ -4,7 +4,7 @@ import type { Category } from "@/types/categories";
 import { highlighTextByQuery } from "@/common/utils";
 import { useTranslations } from "@/common/useTranslations";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
-import ListItemComp from "@/components/ListItemComp.vue";
+import { ListItemComp } from "@/shared/ui/ListItem";
 
 type Props = {
   category: Category;

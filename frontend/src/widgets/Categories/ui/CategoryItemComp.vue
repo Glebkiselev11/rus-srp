@@ -6,7 +6,7 @@ import { useTranslations } from "@/common/useTranslations";
 import type { Category } from "@/types/categories";
 import type { Id } from "@/types/api";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
-import ListItemComp from "@/components/ListItemComp.vue";
+import { ListItemComp } from "@/shared/ui/ListItem";
 import { ButtonComp } from "@/shared/ui/Button";
 import DropdownMenuComp from "@/components/DropdownMenuComp.vue";
 import { RemoveCategoryModalComp } from "@/features/remove-category";

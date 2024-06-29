@@ -1,5 +1,5 @@
 <script setup lang="ts">
-type Size = "regular" | "compact";
+import type { Size } from "../model/types";
 
 type Props = {
   clickable?: boolean;

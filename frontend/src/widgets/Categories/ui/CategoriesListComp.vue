@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Id, RequestParams } from "@/types/api";
 import CategoryItemComp from "./CategoryItemComp.vue";
-import ListItemComp from "@/components/ListItemComp.vue";
+import { ListItemComp } from "@/shared/ui/ListItem";
 import { LogoComp } from "@/shared/ui/Logo";
 import { ZeroStateComp } from "@/shared/ui/ZeroState";
 import SkeletonItemComp from "@/components/SkeletonItemComp.vue";
