@@ -5,7 +5,7 @@ import { computed, ref, toRef } from "vue";
 import { ModalComp } from "@/shared/ui/Modal";
 import { addCropImagaeParamsToUrl } from "@/common/utils";
 import { useTranslations } from "@/common/useTranslations";
-import ImagePreviewComp from "../ImagePreviewComp.vue";
+import { ImagePreviewComp } from "@/features/ImageExplorer";
 import CategoryWordsInsertComp from "./CategoryWordsInsertComp.vue";
 import { useModalWordsStore } from "@/stores/modalWords";
 import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vue";

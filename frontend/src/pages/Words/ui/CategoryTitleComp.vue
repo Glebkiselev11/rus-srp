@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useTranslations } from "@/common/useTranslations";
 import { type Category, useUpdateCategory } from "@/entities/Category";
-import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
+import { ImagePreviewComp } from "@/features/ImageExplorer";
 import { DropdownMenuComp } from "@/shared/ui/DropdownMenu";
 import { ButtonComp } from "@/shared/ui/Button";
 import { RemoveCategoryModalComp } from "@/features/RemoveCategory";

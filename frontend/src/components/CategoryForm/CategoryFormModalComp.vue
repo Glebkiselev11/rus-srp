@@ -7,7 +7,7 @@ import type { LanguageCode } from "@/types/translations";
 import type { Id } from "@/types/api";
 import { ModalComp } from "@/shared/ui/Modal";
 import CategoryFormComp from "./CategoryFormComp.vue";
-import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
+import { ImagePreviewComp } from "@/features/ImageExplorer";
 import FormCloseConfirmationModalComp from "@/components/FormCloseConfirmationModalComp.vue";
 import { storeToRefs } from "pinia";
 

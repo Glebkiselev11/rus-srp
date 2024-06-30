@@ -1,8 +1,8 @@
 import { useInfiniteQuery } from "@tanstack/vue-query";
 import type { RequestParams } from "@/types/api";
 import type { Ref } from "vue";
-import { ImagesService } from "@/shared/api";
-import type { Image } from "@/types/images";
+import { ImagesService } from "../api";
+import type { Image } from "../model/types";
 
 export const KEY = "images";
 

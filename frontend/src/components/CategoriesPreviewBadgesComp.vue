@@ -3,7 +3,7 @@ import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import type { Category } from "@/entities/Category";
 import { useTranslations } from "@/common/useTranslations";
-import ImagePreviewComp from "./ImagePreviewComp.vue";
+import { ImagePreviewComp } from "@/features/ImageExplorer";
 import { TooltipComp } from "@/shared/ui/Tooltip";
 import { ButtonComp } from "@/shared/ui/Button";
 

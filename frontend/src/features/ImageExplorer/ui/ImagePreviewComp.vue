@@ -5,8 +5,7 @@ import { addCropImagaeParamsToUrl } from "@/common/utils";
 import { IconComp, type IconSize } from "@/shared/ui/Icon";
 import { ModalComp } from "@/shared/ui/Modal";
 import ImagesSearchComp from "./ImagesSearchComp.vue";
-
-type PreviewSize = "24px" | "32px" | "40px" | "48px" | "56px" | "64px" | "96px";
+import type { PreviewSize } from "../model/types";
 
 const { t } = useI18n();
 

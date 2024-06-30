@@ -15,7 +15,7 @@ import { CategoriesWidget } from "@/widgets/Categories";
 import TopBarComp from "@/components/TopBarComp.vue";
 import TableComp from "@/components/Table/TableComp.vue";
 import TableRowComp from "@/components/Table/TableRowComp.vue";
-import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
+import { ImagePreviewComp } from "@/features/ImageExplorer";
 import { ButtonComp } from "@/shared/ui/Button";
 import { DropdownMenuComp, type MenuItem } from "@/shared/ui/DropdownMenu";
 import { PaginationBarWidget } from "@/widgets/PaginationBar";

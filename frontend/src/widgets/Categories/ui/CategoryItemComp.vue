@@ -5,7 +5,7 @@ import { highlighTextByQuery } from "@/common/utils";
 import { useTranslations } from "@/common/useTranslations";
 import type { Category } from "@/entities/Category";
 import type { Id } from "@/types/api";
-import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
+import { ImagePreviewComp } from "@/features/ImageExplorer";
 import { ListItemComp } from "@/shared/ui/ListItem";
 import { ButtonComp } from "@/shared/ui/Button";
 import { DropdownMenuComp } from "@/shared/ui/DropdownMenu";

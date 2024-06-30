@@ -3,7 +3,7 @@ import type { Id } from "@/types/api";
 import type { Category } from "@/entities/Category";
 import { highlighTextByQuery } from "@/common/utils";
 import { useTranslations } from "@/common/useTranslations";
-import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
+import { ImagePreviewComp } from "@/features/ImageExplorer";
 import { ListItemComp } from "@/shared/ui/ListItem";
 
 type Props = {
