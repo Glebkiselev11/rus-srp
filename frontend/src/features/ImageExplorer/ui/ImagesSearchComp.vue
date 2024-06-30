@@ -2,7 +2,7 @@
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { vInfiniteScroll } from "@vueuse/components";
-import { addCropImagaeParamsToUrl } from "@/common/utils";
+import { addCropImagaeParamsToUrl } from "../lib";
 import { useImagesInfinityQuery } from "../model/query";
 import { InputComp } from "@/shared/ui/Input";
 import { IconComp } from "@/shared/ui/Icon";

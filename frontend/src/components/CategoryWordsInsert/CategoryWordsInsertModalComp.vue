@@ -3,7 +3,6 @@
 import { useI18n } from "vue-i18n";
 import { computed, ref, toRef } from "vue";
 import { ModalComp } from "@/shared/ui/Modal";
-import { addCropImagaeParamsToUrl } from "@/common/utils";
 import { useTranslateHelpers } from "@/shared/Translate";
 import { ImagePreviewComp } from "@/features/ImageExplorer";
 import CategoryWordsInsertComp from "./CategoryWordsInsertComp.vue";
@@ -31,9 +30,9 @@ const { data } = useCategoryByIdQuery(toRef(props, "categoryId"));
 
 const category = computed(() => data.value?.category);
 
-const srcWithParams = computed(() => {
+const categoryImage = computed(() => {
   const src = category.value?.image;
-  return src ? addCropImagaeParamsToUrl(src, 200) : "";
+  return src ?? "";
 });
 
 const subtitle = computed(() =>
@@ -61,7 +60,7 @@ function close() {
     @close="tryClose"
   >
     <template #header-left>
-      <ImagePreviewComp :src="srcWithParams" static />
+      <ImagePreviewComp :src="categoryImage" static />
     </template>
     <template #content>
       <CategoryWordsInsertComp

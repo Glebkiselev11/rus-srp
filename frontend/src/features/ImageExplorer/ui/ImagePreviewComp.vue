@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { addCropImagaeParamsToUrl } from "@/common/utils";
+import { addCropImagaeParamsToUrl } from "../lib";
 import { IconComp, type IconSize } from "@/shared/ui/Icon";
 import { ModalComp } from "@/shared/ui/Modal";
 import ImagesSearchComp from "./ImagesSearchComp.vue";
