@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { CategoriesService } from "../api";
-import type { Id, RequestParams } from "@/types/api";
+import type { Id, RequestParams } from "@/shared/types";
 import { computed, type Ref } from "vue";
 import type { Category, DraftCategory } from "./types";
 

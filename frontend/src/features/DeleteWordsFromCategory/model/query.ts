@@ -1,4 +1,4 @@
-import type { Id } from "@/types/api";
+import type { Id } from "@/shared/types";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import { KEY as CATEGORY_KEY } from "@/entities/Category";
 import { KEY as WORD_KEY } from "@/entities/Word";

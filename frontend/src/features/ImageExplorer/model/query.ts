@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/vue-query";
-import type { RequestParams } from "@/types/api";
+import type { RequestParams } from "@/shared/types";
 import type { Ref } from "vue";
 import { ImagesService } from "../api";
 import type { Image } from "../model/types";

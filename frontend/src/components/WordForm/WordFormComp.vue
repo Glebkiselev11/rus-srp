@@ -13,7 +13,7 @@ import {
   WordsService,
   type DraftWord,
 } from "@/entities/Word";
-import type { Id } from "@/types/api";
+import type { Id } from "@/shared/types";
 import { useToasterStore } from "@/stores/toaster";
 import { useTranslateHelpers } from "@/shared/Translate";
 import { storeToRefs } from "pinia";

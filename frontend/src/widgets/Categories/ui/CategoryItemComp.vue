@@ -4,7 +4,7 @@ import { ref } from "vue";
 import { highlighTextByQuery } from "@/shared/lib";
 import { useTranslateHelpers } from "@/shared/Translate";
 import type { Category } from "@/entities/Category";
-import type { Id } from "@/types/api";
+import type { Id } from "@/shared/types";
 import { ImagePreviewComp } from "@/features/ImageExplorer";
 import { ListItemComp } from "@/shared/ui/ListItem";
 import { ButtonComp } from "@/shared/ui/Button";

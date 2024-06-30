@@ -4,7 +4,7 @@ import {
   getLanguageCodesAccordingText,
   type LanguageCode,
 } from "@/shared/Translate";
-import type { Id } from "@/types/api";
+import type { Id } from "@/shared/types";
 import { InputComp, type InputAppearance } from "@/shared/ui/Input";
 import { DropdownMenuComp, type MenuItem } from "@/shared/ui/DropdownMenu";
 

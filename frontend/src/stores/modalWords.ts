@@ -1,4 +1,4 @@
-import type { Id } from "@/types/api";
+import type { Id } from "@/shared/types";
 import { defineStore } from "pinia";
 import { CategoriesService } from "@/entities/Category";
 import { computed, ref } from "vue";

@@ -1,4 +1,4 @@
-import type { ListResponse, OptionalRequestParams } from "@/types/api";
+import type { ListResponse, OptionalRequestParams } from "@/shared/types";
 import type { Image } from "../model/types";
 import { ApiTransport } from "@/shared/api";
 

@@ -8,7 +8,7 @@ import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vu
 import { useDraftWordStore } from "@/stores/draftWord";
 import { useTranslateHelpers } from "@/shared/Translate";
 import { useI18n } from "vue-i18n";
-import type { Id } from "@/types/api";
+import type { Id } from "@/shared/types";
 import { storeToRefs } from "pinia";
 
 const { translationPreview } = useTranslateHelpers();

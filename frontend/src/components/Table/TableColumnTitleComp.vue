@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { IconComp, type IconName, type IconColor } from "@/shared/ui/Icon";
-import type { Order, SortKey } from "../../types/api";
+import type { Order, SortKey } from "@/shared/types";
 
 type Props = {
   label?: string;

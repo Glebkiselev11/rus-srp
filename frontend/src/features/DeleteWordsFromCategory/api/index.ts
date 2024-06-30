@@ -1,4 +1,4 @@
-import type { Id } from "@/types/api";
+import type { Id } from "@/shared/types";
 import { ApiTransport } from "@/shared/api";
 
 export const deleteWordsFromCategory = async (id: Id, word_ids: Id[]) => {

@@ -31,5 +31,3 @@ export type RequestParams = {
 export type TranslationApprovedStatus = "exclude_approved" | "all";
 
 export type OptionalRequestParams = Partial<RequestParams>;
-
-export type Load = "initial" | "loading" | "loaded" | "error";

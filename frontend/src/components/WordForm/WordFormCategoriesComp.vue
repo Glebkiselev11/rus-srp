@@ -2,7 +2,7 @@
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDraftWordStore } from "@/stores/draftWord";
-import type { Id, Order } from "@/types/api";
+import type { Id, Order } from "@/shared/types";
 import CategorySearchInputComp from "@/components/CategorySearchInputComp.vue";
 import { ButtonComp } from "@/shared/ui/Button";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";

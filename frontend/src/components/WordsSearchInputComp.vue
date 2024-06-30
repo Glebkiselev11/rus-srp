@@ -10,7 +10,7 @@ import {
   type LanguageCode,
 } from "@/shared/Translate";
 import { useDraftWordStore } from "@/stores/draftWord";
-import type { Id } from "@/types/api";
+import type { Id } from "@/shared/types";
 
 const { t } = useI18n();
 const draftWordStore = useDraftWordStore();

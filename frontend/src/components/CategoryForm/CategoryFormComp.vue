@@ -9,7 +9,7 @@ import {
 } from "@/entities/Category";
 import { capitalizeFirstLetter } from "@/shared/lib";
 import { useTranslateHelpers, type LanguageCode } from "@/shared/Translate";
-import type { Id } from "@/types/api";
+import type { Id } from "@/shared/types";
 import ImageSectionComp from "../ImageSectionComp.vue";
 import { InputComp } from "@/shared/ui/Input";
 import { ButtonComp } from "@/shared/ui/Button";

@@ -9,7 +9,7 @@ import type {
   Order,
   RequestParams,
   TranslationApprovedStatus,
-} from "@/types/api";
+} from "@/shared/types";
 import { CategoriesWidget } from "@/widgets/Categories";
 import TopBarComp from "@/components/TopBarComp.vue";
 import TableComp from "@/components/Table/TableComp.vue";

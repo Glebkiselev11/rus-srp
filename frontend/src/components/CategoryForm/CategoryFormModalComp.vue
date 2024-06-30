@@ -4,7 +4,7 @@ import { useI18n } from "vue-i18n";
 import { capitalizeFirstLetter } from "@/shared/lib";
 import { useDraftCategoryStore } from "@/stores/draftCategory";
 import type { LanguageCode } from "@/shared/Translate";
-import type { Id } from "@/types/api";
+import type { Id } from "@/shared/types";
 import { ModalComp } from "@/shared/ui/Modal";
 import CategoryFormComp from "./CategoryFormComp.vue";
 import { ImagePreviewComp } from "@/features/ImageExplorer";

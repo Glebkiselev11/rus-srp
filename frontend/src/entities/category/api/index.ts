@@ -1,4 +1,4 @@
-import type { Id, ListResponse, OptionalRequestParams } from "@/types/api";
+import type { Id, ListResponse, OptionalRequestParams } from "@/shared/types";
 import type { Category, DraftCategory } from "../model/types";
 import { ApiTransport } from "@/shared/api";
 

@@ -8,7 +8,7 @@ import { ImagePreviewComp } from "@/features/ImageExplorer";
 import CategoryWordsInsertComp from "./CategoryWordsInsertComp.vue";
 import { useModalWordsStore } from "@/stores/modalWords";
 import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vue";
-import type { Id } from "@/types/api";
+import type { Id } from "@/shared/types";
 import { useCategoryByIdQuery } from "@/entities/Category";
 
 const { t } = useI18n();

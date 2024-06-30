@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Id, RequestParams } from "@/types/api";
+import type { Id, RequestParams } from "@/shared/types";
 import CategoryItemComp from "./CategoryItemComp.vue";
 import { ListItemComp } from "@/shared/ui/ListItem";
 import { LogoComp } from "@/shared/ui/Logo";

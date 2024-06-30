@@ -6,7 +6,7 @@ import {
 } from "@tanstack/vue-query";
 import type { DraftWord, Word } from "./types";
 import { WordsService } from "../api";
-import type { Id, RequestParams } from "@/types/api";
+import type { Id, RequestParams } from "@/shared/types";
 import type { Ref } from "vue";
 
 export const KEY = "words";

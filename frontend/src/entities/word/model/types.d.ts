@@ -1,4 +1,4 @@
-import type { Id } from "@/types/api";
+import type { Id } from "@/shared/types";
 import type { Category } from "@/entities/Category";
 
 type WordBase = {

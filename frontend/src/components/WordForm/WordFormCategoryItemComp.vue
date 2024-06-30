@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Id } from "@/types/api";
+import type { Id } from "@/shared/types";
 import type { Category } from "@/entities/Category";
 import { highlighTextByQuery } from "@/shared/lib";
 import { useTranslateHelpers } from "@/shared/Translate";

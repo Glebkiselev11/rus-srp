@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Id } from "@/types/api";
+import type { Id } from "@/shared/types";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useModalWordsStore } from "@/stores/modalWords";
