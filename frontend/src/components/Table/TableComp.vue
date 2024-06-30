@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onUpdated, ref } from "vue";
 import TableColumnTitleComp from "./TableColumnTitleComp.vue";
-import type { Order } from "../../types/api";
+import type { Order } from "@/shared/types";
 import type { TableColumn } from "@/types/table";
 import { vInfiniteScroll } from "@vueuse/components";
 import type { UseInfiniteScrollOptions } from "@vueuse/core";

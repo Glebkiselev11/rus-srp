@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import type { Id } from "@/types/api";
+import type { Id } from "@/shared/types";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useModalWordsStore } from "@/stores/modalWords";
-import { highlighTextByQuery } from "@/common/utils";
-import { useTranslations } from "@/common/useTranslations";
+import { highlighTextByQuery } from "@/shared/lib";
+import { useTranslateHelpers } from "@/shared/Translate";
 import WordsSearchInputComp from "@/components/WordsSearchInputComp.vue";
 import { ButtonComp } from "@/shared/ui/Button";
 import WordFormModalComp from "../WordForm/WordFormModalComp.vue";
@@ -16,10 +16,10 @@ import { ZeroStateComp } from "@/shared/ui/ZeroState";
 import { CheckboxComp } from "@/shared/ui/Checkbox";
 import { TooltipComp } from "@/shared/ui/Tooltip";
 import SkeletonItemComp from "../SkeletonItemComp.vue";
-import ImagePreviewComp from "../ImagePreviewComp.vue";
-import { useWordsInfinityQuery } from "@/queries/words";
+import { ImagePreviewComp } from "@/features/ImageExplorer";
+import { useWordsInfinityQuery } from "@/entities/Word";
 
-const { getLanguageCodesOrder } = useTranslations();
+const { getLanguageCodesOrder } = useTranslateHelpers();
 const { t } = useI18n();
 const props = defineProps<{
   categoryId: Id;

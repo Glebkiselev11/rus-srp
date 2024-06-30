@@ -1,9 +1,9 @@
 <script setup lang="ts" generic="T">
 import { computed } from "vue";
 import { InputWrapperComp } from "@/shared/ui/InputWrapper";
-import DropdownMenuComp from "@/components/DropdownMenuComp.vue";
+import { DropdownMenuComp } from "@/shared/ui/DropdownMenu";
 import { IconComp, type IconName } from "@/shared/ui/Icon";
-import type { Size, Appearance } from "../types";
+import type { Size, Appearance } from "../model/types";
 
 type Props = {
   modelValue: T;

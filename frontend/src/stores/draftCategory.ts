@@ -1,11 +1,13 @@
-import { translate } from "@/common/translations";
 import { useI18n } from "vue-i18n";
-import { isAnyFieldHasChanged } from "@/common/utils";
-import { useTranslations } from "@/common/useTranslations";
-import type { Category, DraftCategory } from "@/types/categories";
+import { isAnyFieldHasChanged } from "@/shared/lib";
+import {
+  useTranslateHelpers,
+  translate,
+  type LanguageCode,
+} from "@/shared/Translate";
+import type { Category, DraftCategory } from "@/entities/Category";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import type { LanguageCode } from "@/types/translations";
 
 function _initDraftCategory(): DraftCategory {
   return {
@@ -18,7 +20,7 @@ function _initDraftCategory(): DraftCategory {
 }
 
 export const useDraftCategoryStore = defineStore("draftCategory", () => {
-  const { getLanguageList } = useTranslations();
+  const { getLanguageList } = useTranslateHelpers();
   const { locale } = useI18n();
 
   const draftCategory = ref<DraftCategory>(_initDraftCategory());

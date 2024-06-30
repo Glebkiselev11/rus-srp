@@ -1,4 +1,4 @@
-import type { SortKey } from "./api";
+import type { SortKey } from "@/shared/types";
 import type { IconColor, IconName } from "@/shared/ui/Icon";
 
 export type TableColumn = {

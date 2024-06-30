@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { computed, ref, watch, onMounted } from "vue";
-import { CategoriesService } from "@/shared/api";
-import { useCreateCategory, useUpdateCategory } from "@/queries/categories";
-import { capitalizeFirstLetter } from "@/common/utils";
-import { useTranslations } from "@/common/useTranslations";
-import type { Category } from "@/types/categories";
-import type { LanguageCode } from "@/types/translations";
-import type { Id } from "@/types/api";
+import {
+  useCreateCategory,
+  useUpdateCategory,
+  CategoriesService,
+  type Category,
+} from "@/entities/Category";
+import { capitalizeFirstLetter } from "@/shared/lib";
+import { useTranslateHelpers, type LanguageCode } from "@/shared/Translate";
+import type { Id } from "@/shared/types";
 import ImageSectionComp from "../ImageSectionComp.vue";
 import { InputComp } from "@/shared/ui/Input";
 import { ButtonComp } from "@/shared/ui/Button";
@@ -16,7 +18,7 @@ import { useDraftCategoryStore } from "@/stores/draftCategory";
 import { storeToRefs } from "pinia";
 
 const { getLanguageLabel, getLanguageList, getLanguageCodesOrder } =
-  useTranslations();
+  useTranslateHelpers();
 
 const toastStore = useToasterStore();
 const { t, locale } = useI18n();

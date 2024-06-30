@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ButtonComp } from "@/shared/ui/Button";
-import type { TitleTag } from "../types";
+import type { TitleTag } from "../model/types";
 
 type Props = {
   title?: string;

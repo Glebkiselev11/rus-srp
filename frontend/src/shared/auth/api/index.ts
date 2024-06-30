@@ -1,4 +1,4 @@
-import type { Login, AuthToken } from "../types";
+import type { Login, AuthToken } from "../model/types";
 import { ApiTransport } from "@/shared/api";
 
 export const AuthService = {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Id } from "@/types/api";
+import type { Id } from "@/shared/types";
 import { vElementHover } from "@vueuse/components";
 import type { PropType } from "vue";
 

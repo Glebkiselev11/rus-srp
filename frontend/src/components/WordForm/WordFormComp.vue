@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import type { DraftWord } from "@/types/words";
-import { WordsService } from "@/shared/api";
 import { useDraftWordStore } from "@/stores/draftWord";
 import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 import { useI18n } from "vue-i18n";
@@ -9,15 +7,20 @@ import { ButtonComp } from "@/shared/ui/Button";
 import TabsComp from "../TabsComp.vue";
 import WordFormTranslationComp from "./WordFormTranslationComp.vue";
 import WordFormCategoriesComp from "./WordFormCategoriesComp.vue";
-import { useUpdateWord, useCreateWord } from "@/queries/words";
-import type { Id } from "@/types/api";
+import {
+  useUpdateWord,
+  useCreateWord,
+  WordsService,
+  type DraftWord,
+} from "@/entities/Word";
+import type { Id } from "@/shared/types";
 import { useToasterStore } from "@/stores/toaster";
-import { useTranslations } from "@/common/useTranslations";
+import { useTranslateHelpers } from "@/shared/Translate";
 import { storeToRefs } from "pinia";
 
 const { t } = useI18n();
 const toastStore = useToasterStore();
-const { extractCurrentLanguageTranslation } = useTranslations();
+const { extractCurrentLanguageTranslation } = useTranslateHelpers();
 
 const props = defineProps<{
   initialWord?: DraftWord;

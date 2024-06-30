@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import type { Position, Color } from "../types";
+import type { Position, Color } from "../model/types";
 
 type Props = {
   text: string;

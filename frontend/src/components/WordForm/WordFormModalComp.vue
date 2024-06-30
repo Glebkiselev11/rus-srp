@@ -6,12 +6,12 @@ import { IconComp } from "@/shared/ui/Icon";
 import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";
-import { useTranslations } from "@/common/useTranslations";
+import { useTranslateHelpers } from "@/shared/Translate";
 import { useI18n } from "vue-i18n";
-import type { Id } from "@/types/api";
+import type { Id } from "@/shared/types";
 import { storeToRefs } from "pinia";
 
-const { translationPreview } = useTranslations();
+const { translationPreview } = useTranslateHelpers();
 const { t } = useI18n();
 const emit = defineEmits<{
   (e: "close"): void;

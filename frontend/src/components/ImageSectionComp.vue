@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ImagePreviewComp from "./ImagePreviewComp.vue";
+import { ImagePreviewComp } from "@/features/ImageExplorer";
 
 type Props = {
   src: string | null;

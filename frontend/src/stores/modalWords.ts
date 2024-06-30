@@ -1,9 +1,9 @@
-import type { Id } from "@/types/api";
+import type { Id } from "@/shared/types";
 import { defineStore } from "pinia";
-import { CategoriesService } from "@/shared/api";
+import { CategoriesService } from "@/entities/Category";
 import { computed, ref } from "vue";
 import { useQueryClient } from "@tanstack/vue-query";
-import { KEY as WORDS_KEY } from "@/queries/words";
+import { KEY as WORDS_KEY } from "@/entities/Word";
 
 export const useModalWordsStore = defineStore("modalWords", () => {
   const queryClient = useQueryClient();

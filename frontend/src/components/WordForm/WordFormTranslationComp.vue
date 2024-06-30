@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { computed, watch } from "vue";
-import type { LanguageCode } from "@/types/translations";
 import { useDraftWordStore } from "@/stores/draftWord";
 
-import { useTranslations } from "@/common/useTranslations";
+import { useTranslateHelpers, type LanguageCode } from "@/shared/Translate";
 import { ButtonComp } from "@/shared/ui/Button";
 import CheckboxListItemComp from "../CheckboxListItemComp.vue";
 import { CheckboxComp } from "@/shared/ui/Checkbox";
@@ -20,7 +19,7 @@ type Props = {
 };
 
 const { translationPreview, getLanguageCodesOrder, getLanguageLabel } =
-  useTranslations();
+  useTranslateHelpers();
 const { t } = useI18n();
 const draftWordStore = useDraftWordStore();
 

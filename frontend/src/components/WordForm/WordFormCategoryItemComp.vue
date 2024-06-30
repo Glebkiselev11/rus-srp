@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import type { Id } from "@/types/api";
-import type { Category } from "@/types/categories";
-import { highlighTextByQuery } from "@/common/utils";
-import { useTranslations } from "@/common/useTranslations";
-import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
-import ListItemComp from "@/components/ListItemComp.vue";
+import type { Id } from "@/shared/types";
+import type { Category } from "@/entities/Category";
+import { highlighTextByQuery } from "@/shared/lib";
+import { useTranslateHelpers } from "@/shared/Translate";
+import { ImagePreviewComp } from "@/features/ImageExplorer";
+import { ListItemComp } from "@/shared/ui/ListItem";
 
 type Props = {
   category: Category;
   query?: string;
 };
 
-const { extractCurrentLanguageTranslation } = useTranslations();
+const { extractCurrentLanguageTranslation } = useTranslateHelpers();
 
 const props = withDefaults(defineProps<Props>(), {
   query: "",

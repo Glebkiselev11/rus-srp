@@ -6,7 +6,7 @@ import { IconComp, type IconName } from "@/shared/ui/Icon";
 import { ButtonComp } from "@/shared/ui/Button";
 import { InputWrapperComp } from "@/shared/ui/InputWrapper";
 import { TooltipComp } from "@/shared/ui/Tooltip";
-import type { Size, Appearance } from "../types";
+import type { Size, Appearance } from "../model/types";
 
 type Props = {
   modelValue: T;

@@ -1,8 +1,11 @@
-import type { DraftWord, Word } from "@/types/words";
 import { defineStore } from "pinia";
-import { convertWordToDraftWord, isAnyFieldHasChanged } from "@/common/utils";
-import { translate } from "@/common/translations";
-import { useTranslations } from "@/common/useTranslations";
+import { isAnyFieldHasChanged } from "@/shared/lib";
+import {
+  convertWordToDraftWord,
+  type DraftWord,
+  type Word,
+} from "@/entities/Word";
+import { translate, useTranslateHelpers } from "@/shared/Translate";
 import { computed, ref } from "vue";
 
 function _initDraftWord(): DraftWord {
@@ -18,7 +21,7 @@ function _initDraftWord(): DraftWord {
 }
 
 export const useDraftWordStore = defineStore("draftWord", () => {
-  const { getLanguageCodesOrder } = useTranslations();
+  const { getLanguageCodesOrder } = useTranslateHelpers();
 
   const draftWord = ref(_initDraftWord());
   const uniqueWordError = ref(false);

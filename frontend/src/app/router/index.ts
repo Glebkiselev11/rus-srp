@@ -5,25 +5,25 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      component: () => import("@/views/Panel/PanelView.vue"),
       redirect: "/words",
-      children: [
-        {
-          path: "/words",
-          name: "words",
-          component: () => import("@/views/Panel/WordsView.vue"),
-        },
-        {
-          path: "/settings",
-          name: "settings",
-          component: () => import("@/views/Panel/SettingsView.vue"),
-        },
-      ],
+    },
+    {
+      path: "/words",
+      name: "words",
+      component: () =>
+        import("@/pages/Words").then((module) => module.WordsPage),
+    },
+    {
+      path: "/settings",
+      name: "settings",
+      component: () =>
+        import("@/pages/Settings").then((module) => module.SettingsPage),
     },
     {
       path: "/login",
       name: "login",
-      component: () => import("@/views/LoginView.vue"),
+      component: () =>
+        import("@/pages/Login").then((module) => module.LoginPage),
     },
   ],
 });

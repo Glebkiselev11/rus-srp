@@ -2,19 +2,19 @@
 import { useI18n } from "vue-i18n";
 import { InputComp, type InputAppearance } from "@/shared/ui/Input";
 import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
-import DropdownMenuComp, {
-  type MenuItem,
-} from "@/components/DropdownMenuComp.vue";
+import { DropdownMenuComp, type MenuItem } from "@/shared/ui/DropdownMenu";
 import { computed, nextTick, ref } from "vue";
-import { useTranslations } from "@/common/useTranslations";
-import { getLanguageCodesAccordingText } from "@/common/translations";
-import type { LanguageCode } from "@/types/translations";
+import {
+  useTranslateHelpers,
+  getLanguageCodesAccordingText,
+  type LanguageCode,
+} from "@/shared/Translate";
 import { useDraftWordStore } from "@/stores/draftWord";
-import type { Id } from "@/types/api";
+import type { Id } from "@/shared/types";
 
 const { t } = useI18n();
 const draftWordStore = useDraftWordStore();
-const { getLanguageLabel, getLanguageCodesOrder } = useTranslations();
+const { getLanguageLabel, getLanguageCodesOrder } = useTranslateHelpers();
 const props = defineProps<{
   search: string;
   appearance: InputAppearance;

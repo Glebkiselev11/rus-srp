@@ -4,4 +4,4 @@ export type {
   Size as IconSize,
   Color as IconColor,
   Name as IconName,
-} from "./types";
+} from "./model/types";

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Size, Color } from "../types";
+import type { Size, Color } from "../model/types";
 
 type Props = {
   size?: Size;
