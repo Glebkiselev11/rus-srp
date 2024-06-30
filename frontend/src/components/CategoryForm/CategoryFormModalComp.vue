@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { capitalizeFirstLetter } from "@/common/utils";
+import { capitalizeFirstLetter } from "@/shared/lib";
 import { useDraftCategoryStore } from "@/stores/draftCategory";
 import type { LanguageCode } from "@/shared/Translate";
 import type { Id } from "@/types/api";

@@ -1,5 +1,5 @@
 import { useI18n } from "vue-i18n";
-import { isAnyFieldHasChanged } from "@/common/utils";
+import { isAnyFieldHasChanged } from "@/shared/lib";
 import {
   useTranslateHelpers,
   translate,

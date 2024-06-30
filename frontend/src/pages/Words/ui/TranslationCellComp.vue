@@ -3,7 +3,7 @@ import { computed } from "vue";
 import type { Word } from "@/entities/Word";
 import type { LanguageCode } from "@/shared/Translate";
 import { VoiceoverComp } from "@/features/Voiceover";
-import { highlighTextByQuery } from "@/common/utils";
+import { highlighTextByQuery } from "@/shared/lib";
 
 type Translation = {
   label: string;

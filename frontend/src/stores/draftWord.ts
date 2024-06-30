@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { isAnyFieldHasChanged } from "@/common/utils";
+import { isAnyFieldHasChanged } from "@/shared/lib";
 import {
   convertWordToDraftWord,
   type DraftWord,

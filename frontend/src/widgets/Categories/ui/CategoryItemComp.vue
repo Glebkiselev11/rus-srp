@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { ref } from "vue";
-import { highlighTextByQuery } from "@/common/utils";
+import { highlighTextByQuery } from "@/shared/lib";
 import { useTranslateHelpers } from "@/shared/Translate";
 import type { Category } from "@/entities/Category";
 import type { Id } from "@/types/api";

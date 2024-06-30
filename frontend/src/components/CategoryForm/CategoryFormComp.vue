@@ -7,7 +7,7 @@ import {
   CategoriesService,
   type Category,
 } from "@/entities/Category";
-import { capitalizeFirstLetter } from "@/common/utils";
+import { capitalizeFirstLetter } from "@/shared/lib";
 import { useTranslateHelpers, type LanguageCode } from "@/shared/Translate";
 import type { Id } from "@/types/api";
 import ImageSectionComp from "../ImageSectionComp.vue";
