@@ -3,9 +3,9 @@ import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { SelectComp } from "@/shared/ui/Select";
 import { STORAGE_KEY } from "../config";
-import { useTranslations } from "@/common/useTranslations";
+import { useTranslateHelpers } from "@/shared/Translate";
 
-const { getLanguageList } = useTranslations();
+const { getLanguageList } = useTranslateHelpers();
 const { t, locale } = useI18n();
 
 const options = getLanguageList();

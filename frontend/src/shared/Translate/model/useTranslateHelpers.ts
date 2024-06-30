@@ -1,8 +1,9 @@
-import type { LanguageCode, TranslationObject } from "@/types/translations";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
+import type { LanguageCode, TranslationObject } from "./types";
+import { getLanguageLabel } from "../lib";
 
-export function useTranslations() {
+export function useTranslateHelpers() {
   const { locale } = useI18n();
 
   const currentLanguage = computed(() => locale.value as LanguageCode);
@@ -18,15 +19,6 @@ export function useTranslations() {
       case "srp_cyrillic":
         return ["srp_cyrillic", "rus", "srp_latin", "eng"];
     }
-  }
-
-  function getLanguageLabel(key: LanguageCode): string {
-    return {
-      eng: "English",
-      rus: "Русский",
-      srp_latin: "Srpski",
-      srp_cyrillic: "Српски",
-    }[key];
   }
 
   function getLanguageList() {

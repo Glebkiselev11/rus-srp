@@ -15,12 +15,12 @@ import {
 } from "@/entities/Word";
 import type { Id } from "@/types/api";
 import { useToasterStore } from "@/stores/toaster";
-import { useTranslations } from "@/common/useTranslations";
+import { useTranslateHelpers } from "@/shared/Translate";
 import { storeToRefs } from "pinia";
 
 const { t } = useI18n();
 const toastStore = useToasterStore();
-const { extractCurrentLanguageTranslation } = useTranslations();
+const { extractCurrentLanguageTranslation } = useTranslateHelpers();
 
 const props = defineProps<{
   initialWord?: DraftWord;

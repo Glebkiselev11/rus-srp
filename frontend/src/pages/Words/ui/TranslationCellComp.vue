@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import type { Word } from "@/entities/Word";
-import type { LanguageCode } from "@/types/translations";
+import type { LanguageCode } from "@/shared/Translate";
 import { VoiceoverComp } from "@/features/Voiceover";
 import { highlighTextByQuery } from "@/common/utils";
 

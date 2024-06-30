@@ -8,8 +8,7 @@ import {
   type Category,
 } from "@/entities/Category";
 import { capitalizeFirstLetter } from "@/common/utils";
-import { useTranslations } from "@/common/useTranslations";
-import type { LanguageCode } from "@/types/translations";
+import { useTranslateHelpers, type LanguageCode } from "@/shared/Translate";
 import type { Id } from "@/types/api";
 import ImageSectionComp from "../ImageSectionComp.vue";
 import { InputComp } from "@/shared/ui/Input";
@@ -19,7 +18,7 @@ import { useDraftCategoryStore } from "@/stores/draftCategory";
 import { storeToRefs } from "pinia";
 
 const { getLanguageLabel, getLanguageList, getLanguageCodesOrder } =
-  useTranslations();
+  useTranslateHelpers();
 
 const toastStore = useToasterStore();
 const { t, locale } = useI18n();

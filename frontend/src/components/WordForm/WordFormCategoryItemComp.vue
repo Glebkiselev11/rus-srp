@@ -2,7 +2,7 @@
 import type { Id } from "@/types/api";
 import type { Category } from "@/entities/Category";
 import { highlighTextByQuery } from "@/common/utils";
-import { useTranslations } from "@/common/useTranslations";
+import { useTranslateHelpers } from "@/shared/Translate";
 import { ImagePreviewComp } from "@/features/ImageExplorer";
 import { ListItemComp } from "@/shared/ui/ListItem";
 
@@ -11,7 +11,7 @@ type Props = {
   query?: string;
 };
 
-const { extractCurrentLanguageTranslation } = useTranslations();
+const { extractCurrentLanguageTranslation } = useTranslateHelpers();
 
 const props = withDefaults(defineProps<Props>(), {
   query: "",

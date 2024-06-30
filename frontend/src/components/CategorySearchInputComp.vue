@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import { getLanguageCodesAccordingText } from "@/common/translations";
+import {
+  getLanguageCodesAccordingText,
+  type LanguageCode,
+} from "@/shared/Translate";
 import type { Id } from "@/types/api";
 import { InputComp, type InputAppearance } from "@/shared/ui/Input";
 import { DropdownMenuComp, type MenuItem } from "@/shared/ui/DropdownMenu";
@@ -8,7 +11,6 @@ import { DropdownMenuComp, type MenuItem } from "@/shared/ui/DropdownMenu";
 import { computed, ref } from "vue";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 import { useDraftCategoryStore } from "@/stores/draftCategory";
-import type { LanguageCode } from "@/types/translations";
 
 const { t, locale } = useI18n();
 const draftCategoryStore = useDraftCategoryStore();

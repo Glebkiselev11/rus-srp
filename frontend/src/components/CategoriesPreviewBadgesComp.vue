@@ -2,7 +2,7 @@
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import type { Category } from "@/entities/Category";
-import { useTranslations } from "@/common/useTranslations";
+import { useTranslateHelpers } from "@/shared/Translate";
 import { ImagePreviewComp } from "@/features/ImageExplorer";
 import { TooltipComp } from "@/shared/ui/Tooltip";
 import { ButtonComp } from "@/shared/ui/Button";
@@ -10,7 +10,7 @@ import { ButtonComp } from "@/shared/ui/Button";
 const MAX_IMAGES = 3;
 
 const { t } = useI18n();
-const { extractCurrentLanguageTranslation } = useTranslations();
+const { extractCurrentLanguageTranslation } = useTranslateHelpers();
 
 type Props = {
   categories: Category[];

@@ -4,7 +4,7 @@ import { computed, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import type { Id, Order, RequestParams } from "@/types/api";
-import type { LanguageCode } from "@/types/translations";
+import type { LanguageCode } from "@/shared/Translate";
 import type { Category } from "@/entities/Category";
 import { useDraftCategoryStore } from "@/stores/draftCategory";
 import { ButtonComp } from "@/shared/ui/Button";

@@ -5,8 +5,7 @@ import {
   type DraftWord,
   type Word,
 } from "@/entities/Word";
-import { translate } from "@/common/translations";
-import { useTranslations } from "@/common/useTranslations";
+import { translate, useTranslateHelpers } from "@/shared/Translate";
 import { computed, ref } from "vue";
 
 function _initDraftWord(): DraftWord {
@@ -22,7 +21,7 @@ function _initDraftWord(): DraftWord {
 }
 
 export const useDraftWordStore = defineStore("draftWord", () => {
-  const { getLanguageCodesOrder } = useTranslations();
+  const { getLanguageCodesOrder } = useTranslateHelpers();
 
   const draftWord = ref(_initDraftWord());
   const uniqueWordError = ref(false);

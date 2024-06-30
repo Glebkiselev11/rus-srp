@@ -3,7 +3,7 @@ import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { capitalizeFirstLetter } from "@/common/utils";
 import { useDraftCategoryStore } from "@/stores/draftCategory";
-import type { LanguageCode } from "@/types/translations";
+import type { LanguageCode } from "@/shared/Translate";
 import type { Id } from "@/types/api";
 import { ModalComp } from "@/shared/ui/Modal";
 import CategoryFormComp from "./CategoryFormComp.vue";

@@ -2,9 +2,8 @@
 import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
-import { useTranslations } from "@/common/useTranslations";
+import { useTranslateHelpers, type LanguageCode } from "@/shared/Translate";
 import { computed, ref } from "vue";
-import type { LanguageCode } from "@/types/translations";
 import type {
   Id,
   Order,
@@ -46,7 +45,7 @@ const { t, locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const { getLanguageCodesOrder, getLanguageLabel, translationPreview } =
-  useTranslations();
+  useTranslateHelpers();
 
 const LIMIT_DEFAULT = 25;
 

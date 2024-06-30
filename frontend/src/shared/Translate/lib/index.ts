@@ -1,5 +1,5 @@
-import type { LanguageCode, TranslationObject } from "@/types/translations";
-import { TranslationsService } from "@/shared/api";
+import type { LanguageCode, TranslationObject } from "../model/types";
+import { TranslationsService } from "../api";
 
 export async function translate(
   params: TranslationObject
@@ -26,4 +26,13 @@ export function getLanguageCodesAccordingText(text: string): LanguageCode[] {
     }
     return codes;
   }, [] as LanguageCode[]);
+}
+
+export function getLanguageLabel(key: LanguageCode): string {
+  return {
+    eng: "English",
+    rus: "Русский",
+    srp_latin: "Srpski",
+    srp_cyrillic: "Српски",
+  }[key];
 }

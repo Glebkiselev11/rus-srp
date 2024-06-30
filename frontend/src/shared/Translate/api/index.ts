@@ -1,5 +1,5 @@
-import type { TranslationObject } from "@/types/translations";
-import { ApiTransport } from "../apiTransport";
+import type { TranslationObject } from "../model/types";
+import { ApiTransport } from "@/shared/api";
 
 export const TranslationsService = {
   ENDPOINT: "/api/v1/private/services/translation",

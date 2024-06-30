@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { useTranslations } from "@/common/useTranslations";
+import { useTranslateHelpers } from "@/shared/Translate";
 import { type Category, useUpdateCategory } from "@/entities/Category";
 import { ImagePreviewComp } from "@/features/ImageExplorer";
 import { DropdownMenuComp } from "@/shared/ui/DropdownMenu";
@@ -15,7 +15,7 @@ import { useDraftCategoryStore } from "@/stores/draftCategory";
 const toastStore = useToasterStore();
 const { t } = useI18n();
 const draftCategoryStore = useDraftCategoryStore();
-const { extractCurrentLanguageTranslation } = useTranslations();
+const { extractCurrentLanguageTranslation } = useTranslateHelpers();
 
 const props = defineProps<{
   category?: Category;
