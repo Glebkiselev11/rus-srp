@@ -37,10 +37,8 @@ import {
   type Word,
 } from "@/entities/word";
 import { useToasterStore } from "@/stores/toaster";
-import {
-  useCategoryByIdQuery,
-  useDeleteWordsFromCategory,
-} from "@/entities/category";
+import { useCategoryByIdQuery } from "@/entities/category";
+import { useDeleteWordsFromCategory } from "@/features/delete-words-from-category";
 import { NavbarWidget } from "@/widgets/Navbar";
 
 const toastStore = useToasterStore();

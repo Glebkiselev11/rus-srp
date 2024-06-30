@@ -8,6 +8,5 @@ export {
   useUpdateCategory,
   useCreateCategory,
   useDeleteCategory,
-  useDeleteWordsFromCategory,
   KEY,
 } from "./model/query";

@@ -37,13 +37,4 @@ export const CategoriesService = {
       word_ids,
     });
   },
-
-  async deleteWords(id: Id, word_ids: Id[]) {
-    return await ApiTransport.remove<void>(
-      `${this.ENDPOINT}/${id}/delete-words`,
-      {
-        word_ids,
-      }
-    );
-  },
 };

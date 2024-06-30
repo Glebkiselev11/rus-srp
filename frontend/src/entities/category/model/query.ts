@@ -3,7 +3,6 @@ import { CategoriesService } from "../api";
 import type { Id, RequestParams } from "@/types/api";
 import { computed, type Ref } from "vue";
 import type { Category, DraftCategory } from "./types";
-import { KEY as WORD_KEY } from "@/entities/word";
 
 export const KEY = "categories";
 
@@ -52,18 +51,5 @@ export const useDeleteCategory = () => {
   return useMutation({
     mutationFn: (id: Id) => CategoriesService.delete(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [KEY] }),
-  });
-};
-// TODO: move into features
-export const useDeleteWordsFromCategory = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (params: { id: Id; word_ids: Id[] }) =>
-      CategoriesService.deleteWords(params.id, params.word_ids),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [KEY] });
-      queryClient.invalidateQueries({ queryKey: [WORD_KEY] });
-    },
   });
 };
