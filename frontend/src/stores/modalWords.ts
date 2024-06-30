@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { CategoriesService } from "@/entities/category";
 import { computed, ref } from "vue";
 import { useQueryClient } from "@tanstack/vue-query";
-import { KEY as WORDS_KEY } from "@/queries/words";
+import { KEY as WORDS_KEY } from "@/entities/word";
 
 export const useModalWordsStore = defineStore("modalWords", () => {
   const queryClient = useQueryClient();

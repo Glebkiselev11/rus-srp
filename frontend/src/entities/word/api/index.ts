@@ -1,7 +1,7 @@
 import type { Id, ListResponse, OptionalRequestParams } from "@/types/api";
-import type { DraftWord, Word } from "@/types/words";
-import { ApiTransport } from "../apiTransport";
-import { convertWordToDraftWord } from "@/common/utils";
+import type { DraftWord, Word } from "../model/types";
+import { ApiTransport } from "@/shared/api";
+import { convertWordToDraftWord } from "../lib";
 
 export const WordsService = {
   ENDPOINT: "/api/v1/private/words",

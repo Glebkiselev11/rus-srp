@@ -1,6 +1,10 @@
-import type { DraftWord, Word } from "@/types/words";
 import { defineStore } from "pinia";
-import { convertWordToDraftWord, isAnyFieldHasChanged } from "@/common/utils";
+import { isAnyFieldHasChanged } from "@/common/utils";
+import {
+  convertWordToDraftWord,
+  type DraftWord,
+  type Word,
+} from "@/entities/word";
 import { translate } from "@/common/translations";
 import { useTranslations } from "@/common/useTranslations";
 import { computed, ref } from "vue";

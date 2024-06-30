@@ -1,4 +1,4 @@
-import type { Id } from "./api";
+import type { Id } from "@/types/api";
 import type { Category } from "@/entities/category";
 
 type WordBase = {

@@ -17,7 +17,7 @@ import { CheckboxComp } from "@/shared/ui/Checkbox";
 import { TooltipComp } from "@/shared/ui/Tooltip";
 import SkeletonItemComp from "../SkeletonItemComp.vue";
 import ImagePreviewComp from "../ImagePreviewComp.vue";
-import { useWordsInfinityQuery } from "@/queries/words";
+import { useWordsInfinityQuery } from "@/entities/word";
 
 const { getLanguageCodesOrder } = useTranslations();
 const { t } = useI18n();

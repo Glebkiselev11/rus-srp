@@ -3,7 +3,7 @@ import { CategoriesService } from "../api";
 import type { Id, RequestParams } from "@/types/api";
 import { computed, type Ref } from "vue";
 import type { Category, DraftCategory } from "./types";
-import { KEY as WORD_KEY } from "@/queries/words";
+import { KEY as WORD_KEY } from "@/entities/word";
 
 export const KEY = "categories";
 
@@ -54,7 +54,7 @@ export const useDeleteCategory = () => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [KEY] }),
   });
 };
-
+// TODO: move into features
 export const useDeleteWordsFromCategory = () => {
   const queryClient = useQueryClient();
 

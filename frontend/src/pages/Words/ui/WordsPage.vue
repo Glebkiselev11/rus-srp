@@ -4,7 +4,6 @@ import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import { useTranslations } from "@/common/useTranslations";
 import { computed, ref } from "vue";
-import type { Word } from "@/types/words";
 import type { LanguageCode } from "@/types/translations";
 import type {
   Id,
@@ -31,7 +30,12 @@ import FilterPanelComp from "./FilterPanelComp.vue";
 import TranslationConfirmationComp from "./TranslationConfirmationComp.vue";
 import TranslationCellComp from "./TranslationCellComp.vue";
 import { useDraftWordStore } from "@/stores/draftWord";
-import { useUpdateWord, useDeleteWord, useWordsQuery } from "@/queries/words";
+import {
+  useUpdateWord,
+  useDeleteWord,
+  useWordsQuery,
+  type Word,
+} from "@/entities/word";
 import { useToasterStore } from "@/stores/toaster";
 import {
   useCategoryByIdQuery,

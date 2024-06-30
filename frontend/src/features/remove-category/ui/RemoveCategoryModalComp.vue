@@ -3,7 +3,7 @@ import { useI18n } from "vue-i18n";
 import { computed, onMounted, ref } from "vue";
 import { ModalComp } from "@/shared/ui/Modal";
 import type { LanguageCode } from "@/types/translations";
-import { WordsService } from "@/shared/api";
+import { WordsService } from "@/entities/word";
 import { InputComp } from "@/shared/ui/Input";
 import { ButtonComp } from "@/shared/ui/Button";
 import { useRoute, useRouter } from "vue-router";
