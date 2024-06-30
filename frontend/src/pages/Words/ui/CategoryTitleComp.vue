@@ -2,11 +2,11 @@
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useTranslations } from "@/common/useTranslations";
-import { type Category, useUpdateCategory } from "@/entities/category";
+import { type Category, useUpdateCategory } from "@/entities/Category";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import { DropdownMenuComp } from "@/shared/ui/DropdownMenu";
 import { ButtonComp } from "@/shared/ui/Button";
-import { RemoveCategoryModalComp } from "@/features/remove-category";
+import { RemoveCategoryModalComp } from "@/features/RemoveCategory";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 import { LogoComp } from "@/shared/ui/Logo";
 import { useToasterStore } from "@/stores/toaster";

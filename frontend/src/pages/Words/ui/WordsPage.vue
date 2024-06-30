@@ -35,10 +35,10 @@ import {
   useDeleteWord,
   useWordsQuery,
   type Word,
-} from "@/entities/word";
+} from "@/entities/Word";
 import { useToasterStore } from "@/stores/toaster";
-import { useCategoryByIdQuery } from "@/entities/category";
-import { useDeleteWordsFromCategory } from "@/features/delete-words-from-category";
+import { useCategoryByIdQuery } from "@/entities/Category";
+import { useDeleteWordsFromCategory } from "@/features/DeleteWordsFromCategory";
 import { NavbarWidget } from "@/widgets/Navbar";
 
 const toastStore = useToasterStore();

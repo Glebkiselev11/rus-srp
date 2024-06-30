@@ -4,7 +4,7 @@ import {
   convertWordToDraftWord,
   type DraftWord,
   type Word,
-} from "@/entities/word";
+} from "@/entities/Word";
 import { translate } from "@/common/translations";
 import { useTranslations } from "@/common/useTranslations";
 import { computed, ref } from "vue";

@@ -3,11 +3,11 @@ import { useI18n } from "vue-i18n";
 import { computed, onMounted, ref } from "vue";
 import { ModalComp } from "@/shared/ui/Modal";
 import type { LanguageCode } from "@/types/translations";
-import { WordsService } from "@/entities/word";
+import { WordsService } from "@/entities/Word";
 import { InputComp } from "@/shared/ui/Input";
 import { ButtonComp } from "@/shared/ui/Button";
 import { useRoute, useRouter } from "vue-router";
-import { useDeleteCategory, type Category } from "@/entities/category";
+import { useDeleteCategory, type Category } from "@/entities/Category";
 import { useToasterStore } from "@/stores/toaster";
 
 const { t, locale } = useI18n();

@@ -2,7 +2,7 @@ import { translate } from "@/common/translations";
 import { useI18n } from "vue-i18n";
 import { isAnyFieldHasChanged } from "@/common/utils";
 import { useTranslations } from "@/common/useTranslations";
-import type { Category, DraftCategory } from "@/entities/category";
+import type { Category, DraftCategory } from "@/entities/Category";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import type { LanguageCode } from "@/types/translations";

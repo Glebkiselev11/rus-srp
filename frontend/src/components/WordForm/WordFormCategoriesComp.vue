@@ -10,7 +10,7 @@ import WordFormCategoryItemComp from "./WordFormCategoryItemComp.vue";
 import { IconComp } from "@/shared/ui/Icon";
 import { TooltipComp } from "@/shared/ui/Tooltip";
 import { ZeroStateComp } from "@/shared/ui/ZeroState";
-import { useCategoriesQuery, type Category } from "@/entities/category";
+import { useCategoriesQuery, type Category } from "@/entities/Category";
 
 const { t } = useI18n();
 const draftWordStore = useDraftWordStore();

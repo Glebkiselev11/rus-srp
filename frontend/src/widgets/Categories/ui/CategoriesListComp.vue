@@ -8,7 +8,7 @@ import SkeletonItemComp from "@/components/SkeletonItemComp.vue";
 import { useI18n } from "vue-i18n";
 import { computed } from "vue";
 import { toReactive } from "@vueuse/core";
-import { type Category, useCategoriesQuery } from "@/entities/category";
+import { type Category, useCategoriesQuery } from "@/entities/Category";
 
 const { t } = useI18n();
 

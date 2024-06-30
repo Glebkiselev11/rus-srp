@@ -1,7 +1,7 @@
 import type { Id } from "@/types/api";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
-import { KEY as CATEGORY_KEY } from "@/entities/category";
-import { KEY as WORD_KEY } from "@/entities/word";
+import { KEY as CATEGORY_KEY } from "@/entities/Category";
+import { KEY as WORD_KEY } from "@/entities/Word";
 import { deleteWordsFromCategory } from "../api";
 
 export const useDeleteWordsFromCategory = () => {

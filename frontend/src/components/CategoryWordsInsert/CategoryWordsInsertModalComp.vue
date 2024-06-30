@@ -10,7 +10,7 @@ import CategoryWordsInsertComp from "./CategoryWordsInsertComp.vue";
 import { useModalWordsStore } from "@/stores/modalWords";
 import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vue";
 import type { Id } from "@/types/api";
-import { useCategoryByIdQuery } from "@/entities/category";
+import { useCategoryByIdQuery } from "@/entities/Category";
 
 const { t } = useI18n();
 const { extractCurrentLanguageTranslation } = useTranslations();

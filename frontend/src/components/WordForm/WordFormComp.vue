@@ -12,7 +12,7 @@ import {
   useCreateWord,
   WordsService,
   type DraftWord,
-} from "@/entities/word";
+} from "@/entities/Word";
 import type { Id } from "@/types/api";
 import { useToasterStore } from "@/stores/toaster";
 import { useTranslations } from "@/common/useTranslations";

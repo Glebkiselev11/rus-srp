@@ -3,13 +3,13 @@ import { useI18n } from "vue-i18n";
 import { ref } from "vue";
 import { highlighTextByQuery } from "@/common/utils";
 import { useTranslations } from "@/common/useTranslations";
-import type { Category } from "@/entities/category";
+import type { Category } from "@/entities/Category";
 import type { Id } from "@/types/api";
 import ImagePreviewComp from "@/components/ImagePreviewComp.vue";
 import { ListItemComp } from "@/shared/ui/ListItem";
 import { ButtonComp } from "@/shared/ui/Button";
 import { DropdownMenuComp } from "@/shared/ui/DropdownMenu";
-import { RemoveCategoryModalComp } from "@/features/remove-category";
+import { RemoveCategoryModalComp } from "@/features/RemoveCategory";
 
 const { t } = useI18n();
 const { extractCurrentLanguageTranslation } = useTranslations();

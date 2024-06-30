@@ -6,7 +6,7 @@ import {
   useUpdateCategory,
   CategoriesService,
   type Category,
-} from "@/entities/category";
+} from "@/entities/Category";
 import { capitalizeFirstLetter } from "@/common/utils";
 import { useTranslations } from "@/common/useTranslations";
 import type { LanguageCode } from "@/types/translations";
