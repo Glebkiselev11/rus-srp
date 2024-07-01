@@ -15,7 +15,7 @@ import { SwitchComp } from "@/shared/ui/Switch";
 import { ZeroStateComp } from "@/shared/ui/ZeroState";
 import { CheckboxComp } from "@/shared/ui/Checkbox";
 import { TooltipComp } from "@/shared/ui/Tooltip";
-import SkeletonItemComp from "../SkeletonItemComp.vue";
+import { SkeletonItemComp } from "@/shared/ui/SkeletonItem";
 import { ImagePreviewComp } from "@/features/ImageExplorer";
 import { useWordsInfinityQuery } from "@/entities/Word";
 
