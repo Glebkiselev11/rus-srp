@@ -4,7 +4,7 @@ import { useDraftWordStore } from "@/stores/draftWord";
 import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 import { useI18n } from "vue-i18n";
 import { ButtonComp } from "@/shared/ui/Button";
-import TabsComp from "../TabsComp.vue";
+import { TabsComp } from "@/shared/ui/Tabs";
 import WordFormTranslationComp from "./WordFormTranslationComp.vue";
 import WordFormCategoriesComp from "./WordFormCategoriesComp.vue";
 import {
