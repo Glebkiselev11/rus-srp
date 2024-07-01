@@ -1,8 +1,8 @@
-import type { Toast } from "@/types/toast";
+import type { Toast } from "./types";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
-export const useToasterStore = defineStore("toaster", () => {
+export const useToaster = defineStore("toaster", () => {
   const toasts = ref<Toast[]>([]);
 
   const addToast = (toast: Toast) => {

@@ -14,12 +14,12 @@ import {
   type DraftWord,
 } from "@/entities/Word";
 import type { Id } from "@/shared/types";
-import { useToasterStore } from "@/stores/toaster";
+import { useToaster } from "@/shared/ui/Toaster";
 import { useTranslateHelpers } from "@/shared/Translate";
 import { storeToRefs } from "pinia";
 
 const { t } = useI18n();
-const toastStore = useToasterStore();
+const toaster = useToaster();
 const { extractCurrentLanguageTranslation } = useTranslateHelpers();
 
 const props = defineProps<{
@@ -169,7 +169,7 @@ async function saveWord(saveAndAddNext = false) {
       id,
     });
 
-    toastStore.addToast({
+    toaster.addToast({
       type: "success",
       message: t("changes-saved"),
     });
@@ -178,7 +178,7 @@ async function saveWord(saveAndAddNext = false) {
 
     if (data) {
       emit("created", data.id);
-      toastStore.addToast({
+      toaster.addToast({
         message: t("word-created-successfully", {
           word: extractCurrentLanguageTranslation(data),
         }),

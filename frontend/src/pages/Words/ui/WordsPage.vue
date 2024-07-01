@@ -35,12 +35,12 @@ import {
   useWordsQuery,
   type Word,
 } from "@/entities/Word";
-import { useToasterStore } from "@/stores/toaster";
+import { useToaster } from "@/shared/ui/Toaster";
 import { useCategoryByIdQuery } from "@/entities/Category";
 import { useDeleteWordsFromCategory } from "@/features/DeleteWordsFromCategory";
 import { NavbarWidget } from "@/widgets/Navbar";
 
-const toastStore = useToasterStore();
+const toaster = useToaster();
 const { t, locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
@@ -278,7 +278,7 @@ async function removeWordFromCategory(word: Word) {
     id: category.id,
   });
 
-  toastStore.addToast({
+  toaster.addToast({
     type: "info",
     message: t("word-removed-from-category", {
       word: word[locale.value as LanguageCode],
@@ -290,7 +290,7 @@ async function removeWordFromCategory(word: Word) {
 async function updateWordImage(word: Word, src: string) {
   await updateWord.mutateAsync({ ...word, image: src });
 
-  toastStore.addToast({
+  toaster.addToast({
     type: "success",
     message: t("changes-saved"),
   });
