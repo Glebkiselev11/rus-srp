@@ -12,7 +12,7 @@ import type {
 } from "@/shared/types";
 import { CategoriesWidget } from "@/widgets/Categories";
 import TopBarComp from "@/components/TopBarComp.vue";
-import TableComp from "@/components/Table/TableComp.vue";
+import { TableComp } from "@/shared/ui/Table";
 import TableRowComp from "@/components/Table/TableRowComp.vue";
 import { ImagePreviewComp } from "@/features/ImageExplorer";
 import { ButtonComp } from "@/shared/ui/Button";

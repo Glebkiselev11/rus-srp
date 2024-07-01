@@ -8,7 +8,7 @@ import { useTranslateHelpers } from "@/shared/Translate";
 import WordsSearchInputComp from "@/components/WordsSearchInputComp.vue";
 import { ButtonComp } from "@/shared/ui/Button";
 import WordFormModalComp from "../WordForm/WordFormModalComp.vue";
-import TableComp from "@/components/Table/TableComp.vue";
+import { TableComp } from "@/shared/ui/Table";
 import TableRowComp from "@/components/Table/TableRowComp.vue";
 import { CounterComp } from "@/shared/ui/Counter";
 import { SwitchComp } from "@/shared/ui/Switch";
