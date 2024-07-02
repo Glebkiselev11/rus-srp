@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useI18n } from "vue-i18n";
-import TopBarComp from "@/components/TopBarComp.vue";
+import { TopBarComp } from "@/shared/ui/TopBar";
 import PageSectionComp from "./PageSectionComp.vue";
 import { IconComp } from "@/shared/ui/Icon";
 import { ListItemComp } from "@/shared/ui/ListItem";

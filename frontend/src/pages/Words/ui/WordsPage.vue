@@ -11,7 +11,7 @@ import type {
   TranslationApprovedStatus,
 } from "@/shared/types";
 import { CategoriesWidget } from "@/widgets/Categories";
-import TopBarComp from "@/components/TopBarComp.vue";
+import { TopBarComp } from "@/shared/ui/TopBar";
 import { TableComp } from "@/shared/ui/Table";
 import TableRowComp from "@/components/Table/TableRowComp.vue";
 import { ImagePreviewComp } from "@/features/ImageExplorer";
