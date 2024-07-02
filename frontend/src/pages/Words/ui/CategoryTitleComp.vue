@@ -9,10 +9,10 @@ import { ButtonComp } from "@/shared/ui/Button";
 import { RemoveCategoryModalComp } from "@/features/RemoveCategory";
 import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 import { LogoComp } from "@/shared/ui/Logo";
-import { useToasterStore } from "@/stores/toaster";
+import { useToaster } from "@/shared/ui/Toaster";
 import { useDraftCategoryStore } from "@/stores/draftCategory";
 
-const toastStore = useToasterStore();
+const toaster = useToaster();
 const { t } = useI18n();
 const draftCategoryStore = useDraftCategoryStore();
 const { extractCurrentLanguageTranslation } = useTranslateHelpers();
@@ -42,7 +42,7 @@ function updateCategoryImage(src: string) {
       image: src,
     } as Category);
 
-    toastStore.addToast({
+    toaster.addToast({
       type: "success",
       message: t("changes-saved"),
     });

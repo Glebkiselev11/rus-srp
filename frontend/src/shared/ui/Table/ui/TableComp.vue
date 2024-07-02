@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { onUpdated, ref } from "vue";
-import TableColumnTitleComp from "./TableColumnTitleComp.vue";
 import type { Order } from "@/shared/types";
-import type { TableColumn } from "@/types/table";
+import type { TableColumn } from "../model/types";
 import { vInfiniteScroll } from "@vueuse/components";
 import type { UseInfiniteScrollOptions } from "@vueuse/core";
+import TableColumnTitleComp from "./TableColumnTitleComp.vue";
 
 type Props = {
   gridTemplateColumns: string;

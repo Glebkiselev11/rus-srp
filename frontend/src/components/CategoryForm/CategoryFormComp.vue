@@ -13,14 +13,14 @@ import type { Id } from "@/shared/types";
 import ImageSectionComp from "../ImageSectionComp.vue";
 import { InputComp } from "@/shared/ui/Input";
 import { ButtonComp } from "@/shared/ui/Button";
-import { useToasterStore } from "@/stores/toaster";
+import { useToaster } from "@/shared/ui/Toaster";
 import { useDraftCategoryStore } from "@/stores/draftCategory";
 import { storeToRefs } from "pinia";
 
 const { getLanguageLabel, getLanguageList, getLanguageCodesOrder } =
   useTranslateHelpers();
 
-const toastStore = useToasterStore();
+const toaster = useToaster();
 const { t, locale } = useI18n();
 const createCategory = useCreateCategory();
 const updateCategory = useUpdateCategory();
@@ -245,13 +245,13 @@ async function saveCategory() {
       ...draftCategory.value,
     } as Category);
 
-    toastStore.addToast({
+    toaster.addToast({
       type: "success",
       message: t("changes-saved"),
     });
   } else {
     const { data } = await createCategory.mutateAsync(draftCategory.value);
-    toastStore.addToast({
+    toaster.addToast({
       type: "success",
       message: t("category-created-successfully", {
         category: data[selectedLanguage.value],

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
-import ToasterComp from "@/components/ToasterComp.vue";
+import { ToasterComp } from "@/shared/ui/Toaster";
 </script>
 
 <template>

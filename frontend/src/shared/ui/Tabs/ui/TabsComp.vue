@@ -1,8 +1,5 @@
 <script setup lang="ts">
-type Tab = {
-  name: string;
-  error: boolean;
-};
+import type { Tab } from "../model/types";
 
 type Props = {
   tabs: Tab[];

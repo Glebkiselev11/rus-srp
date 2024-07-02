@@ -8,7 +8,7 @@ import { InputComp } from "@/shared/ui/Input";
 import { IconComp } from "@/shared/ui/Icon";
 import { ButtonComp } from "@/shared/ui/Button";
 import { ZeroStateComp } from "@/shared/ui/ZeroState";
-import SkeletonItemComp from "@/components/SkeletonItemComp.vue";
+import { SkeletonItemComp } from "@/shared/ui/SkeletonItem";
 
 const { t } = useI18n();
 

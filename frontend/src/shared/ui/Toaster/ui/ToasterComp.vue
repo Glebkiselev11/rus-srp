@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useToasterStore } from "@/stores/toaster";
+import { useToaster } from "../model/store";
 import { IconComp } from "@/shared/ui/Icon";
 
-const toastStore = useToasterStore();
+const toastStore = useToaster();
 </script>
 
 <template>
