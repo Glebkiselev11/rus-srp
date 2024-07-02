@@ -5,7 +5,7 @@ import { useI18n } from "vue-i18n";
 import { useModalWordsStore } from "@/stores/modalWords";
 import { highlighTextByQuery } from "@/shared/lib";
 import { useTranslateHelpers } from "@/shared/Translate";
-import WordsSearchInputComp from "@/components/WordsSearchInputComp.vue";
+import { WordsSearchInputComp } from "@/features/WordsSearchInput";
 import { ButtonComp } from "@/shared/ui/Button";
 import WordFormModalComp from "../WordForm/WordFormModalComp.vue";
 import { TableComp } from "@/shared/ui/Table";
