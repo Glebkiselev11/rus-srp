@@ -1,13 +1,7 @@
 <script setup lang="ts">
-import type { Id } from "@/shared/types";
 import { vElementHover } from "@vueuse/components";
-import type { PropType } from "vue";
 
 defineProps({
-  id: {
-    type: [String, Number] as PropType<Id>,
-    default: null,
-  },
   gridTemplateColumns: {
     type: String,
     required: true,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TableRowComp from "@/components/Table/TableRowComp.vue";
+import { TableRowComp } from "@/shared/ui/Table";
 import { SkeletonItemComp } from "@/shared/ui/SkeletonItem";
 
 const props = defineProps<{

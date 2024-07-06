@@ -11,8 +11,7 @@ import type {
 } from "@/shared/types";
 import { CategoriesWidget } from "@/widgets/Categories";
 import { TopBarComp } from "@/shared/ui/TopBar";
-import { TableComp } from "@/shared/ui/Table";
-import TableRowComp from "@/components/Table/TableRowComp.vue";
+import { TableComp, TableRowComp } from "@/shared/ui/Table";
 import { ImagePreviewComp } from "@/features/ImageExplorer";
 import { ButtonComp } from "@/shared/ui/Button";
 import { DropdownMenuComp, type MenuItem } from "@/shared/ui/DropdownMenu";
