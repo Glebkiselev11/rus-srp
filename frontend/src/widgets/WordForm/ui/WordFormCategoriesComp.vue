@@ -3,9 +3,11 @@ import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDraftWordStore } from "../model/draftWord";
 import type { Id, Order } from "@/shared/types";
-import CategorySearchInputComp from "@/components/CategorySearchInputComp.vue";
+import {
+  CategoriesSearchInputComp,
+  CategoryFormModalWidget,
+} from "@/widgets/CategoryForm";
 import { ButtonComp } from "@/shared/ui/Button";
-import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 import WordFormCategoryItemComp from "./WordFormCategoryItemComp.vue";
 import { IconComp } from "@/shared/ui/Icon";
 import { TooltipComp } from "@/shared/ui/Tooltip";
@@ -66,7 +68,7 @@ function addCategory(categoryId: Id) {
 <template>
   <div class="word-form-categories">
     <div class="word-form-categories__row">
-      <CategorySearchInputComp
+      <CategoriesSearchInputComp
         class="word-form-categories__search-input"
         :search="search"
         appearance="outline"
@@ -127,7 +129,7 @@ function addCategory(categoryId: Id) {
       </div>
     </template>
 
-    <CategoryFormModalComp
+    <CategoryFormModalWidget
       v-if="showCategoryForm"
       @close="showCategoryForm = false"
     />

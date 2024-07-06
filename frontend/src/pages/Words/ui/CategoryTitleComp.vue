@@ -7,10 +7,12 @@ import { ImagePreviewComp } from "@/features/ImageExplorer";
 import { DropdownMenuComp } from "@/shared/ui/DropdownMenu";
 import { ButtonComp } from "@/shared/ui/Button";
 import { RemoveCategoryModalComp } from "@/features/RemoveCategory";
-import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 import { LogoComp } from "@/shared/ui/Logo";
 import { useToaster } from "@/shared/ui/Toaster";
-import { useDraftCategoryStore } from "@/stores/draftCategory";
+import {
+  useDraftCategoryStore,
+  CategoryFormModalWidget,
+} from "@/widgets/CategoryForm";
 
 const toaster = useToaster();
 const { t } = useI18n();
@@ -99,7 +101,7 @@ function updateCategoryImage(src: string) {
       @close="isRemoveCategoryModalOpen = false"
     />
 
-    <CategoryFormModalComp
+    <CategoryFormModalWidget
       v-if="isEditCategoryModalOpen"
       @close="isEditCategoryModalOpen = false"
     />

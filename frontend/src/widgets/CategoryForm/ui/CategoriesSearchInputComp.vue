@@ -9,8 +9,8 @@ import { InputComp, type InputAppearance } from "@/shared/ui/Input";
 import { DropdownMenuComp, type MenuItem } from "@/shared/ui/DropdownMenu";
 
 import { computed, ref } from "vue";
-import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
-import { useDraftCategoryStore } from "@/stores/draftCategory";
+import CategoryFormModalWidget from "./CategoryFormModalWidget.vue";
+import { useDraftCategoryStore } from "../model/draftCategory";
 
 const { t, locale } = useI18n();
 const draftCategoryStore = useDraftCategoryStore();
@@ -93,7 +93,7 @@ function createdCategory(categoryId: Id) {
       </template>
     </DropdownMenuComp>
 
-    <CategoryFormModalComp
+    <CategoryFormModalWidget
       v-if="showCategoryForm"
       @close="showCategoryForm = false"
       @created="createdCategory"

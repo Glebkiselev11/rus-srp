@@ -10,11 +10,11 @@ import {
 import { capitalizeFirstLetter } from "@/shared/lib";
 import { useTranslateHelpers, type LanguageCode } from "@/shared/Translate";
 import type { Id } from "@/shared/types";
-import ImageSectionComp from "../ImageSectionComp.vue";
+import ImageSectionComp from "@/components/ImageSectionComp.vue";
 import { InputComp } from "@/shared/ui/Input";
 import { ButtonComp } from "@/shared/ui/Button";
 import { useToaster } from "@/shared/ui/Toaster";
-import { useDraftCategoryStore } from "@/stores/draftCategory";
+import { useDraftCategoryStore } from "../model/draftCategory";
 import { storeToRefs } from "pinia";
 
 const { getLanguageLabel, getLanguageList, getLanguageCodesOrder } =
