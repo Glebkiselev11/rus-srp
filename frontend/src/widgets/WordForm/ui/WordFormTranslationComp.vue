@@ -7,7 +7,7 @@ import { useTranslateHelpers, type LanguageCode } from "@/shared/Translate";
 import { ButtonComp } from "@/shared/ui/Button";
 import CheckboxListItemComp from "@/components/CheckboxListItemComp.vue";
 import { CheckboxComp } from "@/shared/ui/Checkbox";
-import ImageSectionComp from "@/components/ImageSectionComp.vue";
+import { ImageSectionComp } from "@/features/ImageExplorer";
 import { InputComp } from "@/shared/ui/Input";
 
 type Props = {
