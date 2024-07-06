@@ -21,7 +21,7 @@ import { ZeroStateComp } from "@/shared/ui/ZeroState";
 import CategoryTitleComp from "./CategoryTitleComp.vue";
 import CategoriesPreviewBadgesComp from "@/components/CategoriesPreviewBadgesComp.vue";
 import TableRowSkeletonComp from "./TableRowSkeletonComp.vue";
-import CategoryWordsInsertModalComp from "@/components/CategoryWordsInsert/CategoryWordsInsertModalComp.vue";
+import { CategoryWordsInsertModalWidget } from "@/widgets/CategoryWordsInsert";
 import TableRowStatusComp from "@/components/Table/TableRowStatusComp.vue";
 import FilterPanelComp from "./FilterPanelComp.vue";
 import TranslationConfirmationComp from "./TranslationConfirmationComp.vue";
@@ -499,7 +499,7 @@ function createdCategory(categoryId: Id) {
 
   <WordFormModalWidget v-if="showWordForm" @close="showWordForm = false" />
 
-  <CategoryWordsInsertModalComp
+  <CategoryWordsInsertModalWidget
     v-if="showCategoryWordsInsertModal && filter.category_id"
     :category-id="filter.category_id"
     @close="showCategoryWordsInsertModal = false"

@@ -6,8 +6,8 @@ import { ModalComp } from "@/shared/ui/Modal";
 import { useTranslateHelpers } from "@/shared/Translate";
 import { ImagePreviewComp } from "@/features/ImageExplorer";
 import CategoryWordsInsertComp from "./CategoryWordsInsertComp.vue";
-import { useModalWordsStore } from "@/stores/modalWords";
-import FormCloseConfirmationModalComp from "../FormCloseConfirmationModalComp.vue";
+import { useCategoryWordsInsertStore } from "../model/categoryWordsInsert";
+import FormCloseConfirmationModalComp from "@/components/FormCloseConfirmationModalComp.vue";
 import type { Id } from "@/shared/types";
 import { useCategoryByIdQuery } from "@/entities/Category";
 
@@ -22,7 +22,7 @@ const emit = defineEmits<{
   (event: "close"): void;
 }>();
 
-const modalWordsStore = useModalWordsStore();
+const categoryWordsInsertStore = useCategoryWordsInsertStore();
 
 const showCloseConfirmationModal = ref(false);
 
@@ -40,7 +40,7 @@ const subtitle = computed(() =>
 );
 
 function tryClose() {
-  if (modalWordsStore.isAnyWordSelected) {
+  if (categoryWordsInsertStore.isAnyWordSelected) {
     showCloseConfirmationModal.value = true;
   } else {
     close();
@@ -49,7 +49,7 @@ function tryClose() {
 
 function close() {
   emit("close");
-  modalWordsStore.$reset();
+  categoryWordsInsertStore.$reset();
 }
 </script>
 

@@ -2,7 +2,7 @@
 import type { Id } from "@/shared/types";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { useModalWordsStore } from "@/stores/modalWords";
+import { useCategoryWordsInsertStore } from "../model/categoryWordsInsert";
 import { highlighTextByQuery } from "@/shared/lib";
 import { useTranslateHelpers } from "@/shared/Translate";
 import { WordsSearchInputComp } from "@/widgets/WordForm";
@@ -30,7 +30,7 @@ const emit = defineEmits<{
   (event: "words-inserted"): void;
 }>();
 
-const modalWordsStore = useModalWordsStore();
+const categoryWordsInsertStore = useCategoryWordsInsertStore();
 
 const limit = 50;
 const search = ref("");
@@ -62,7 +62,7 @@ const alreadyAddedWordIds = computed(() =>
 const filteredWords = computed(() => {
   if (showOnlySelected.value) {
     return words.value.filter(({ id }) =>
-      modalWordsStore.selectedWordIds.includes(id)
+      categoryWordsInsertStore.selectedWordIds.includes(id)
     );
   } else {
     return words.value;
@@ -78,7 +78,7 @@ function close() {
 }
 
 async function clickAddButton() {
-  await modalWordsStore.addSelectedWordsToCategory(props.categoryId);
+  await categoryWordsInsertStore.addSelectedWordsToCategory(props.categoryId);
   emit("words-inserted");
 }
 
@@ -88,7 +88,7 @@ function isWordDisabled(wordId: Id): boolean {
 
 function isWordChecked(wordId: Id): boolean {
   return (
-    modalWordsStore.selectedWordIds.includes(wordId) ||
+    categoryWordsInsertStore.selectedWordIds.includes(wordId) ||
     alreadyAddedWordIds.value.includes(wordId)
   );
 }
@@ -106,7 +106,7 @@ function getTooltipText(wordId: Id): string {
 }
 
 function handleWordCreated(id: Id) {
-  modalWordsStore.updateSelectedWordIds(id, true);
+  categoryWordsInsertStore.updateSelectedWordIds(id, true);
 }
 </script>
 
@@ -162,7 +162,8 @@ function handleWordCreated(id: Id) {
                 :model-value="isWordChecked(word.id)"
                 :disabled="isWordDisabled(word.id)"
                 @update:model-value="
-                  (x) => modalWordsStore.updateSelectedWordIds(word.id, x)
+                  (x) =>
+                    categoryWordsInsertStore.updateSelectedWordIds(word.id, x)
                 "
               />
             </TooltipComp>
@@ -214,7 +215,7 @@ function handleWordCreated(id: Id) {
     </TableComp>
 
     <div class="category-words-insert__footer">
-      <div v-show="modalWordsStore.isAnyWordSelected">
+      <div v-show="categoryWordsInsertStore.isAnyWordSelected">
         <span v-text="t('show-only-selected')" />
         <SwitchComp v-model="showOnlySelected" />
       </div>
@@ -231,11 +232,13 @@ function handleWordCreated(id: Id) {
 
         <ButtonComp
           :label="t('add')"
-          :disabled="!modalWordsStore.isAnyWordSelected"
+          :disabled="!categoryWordsInsertStore.isAnyWordSelected"
           @click="clickAddButton"
         >
-          <template v-if="modalWordsStore.isAnyWordSelected" #right>
-            <CounterComp :count="modalWordsStore.selectedWordIds.length" />
+          <template v-if="categoryWordsInsertStore.isAnyWordSelected" #right>
+            <CounterComp
+              :count="categoryWordsInsertStore.selectedWordIds.length"
+            />
           </template>
         </ButtonComp>
       </div>
