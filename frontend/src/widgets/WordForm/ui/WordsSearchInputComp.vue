@@ -2,14 +2,15 @@
 import { computed, nextTick, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { InputComp, type InputAppearance } from "@/shared/ui/Input";
-import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
 import { DropdownMenuComp, type MenuItem } from "@/shared/ui/DropdownMenu";
 import {
   useTranslateHelpers,
   getLanguageCodesAccordingText,
   type LanguageCode,
 } from "@/shared/Translate";
-import { useDraftWordStore } from "@/stores/draftWord";
+import { useDraftWordStore } from "../model/draftWord";
+import WordFormModalWidget from "./WordFormModalWidget.vue";
+
 import type { Id } from "@/shared/types";
 
 const { t } = useI18n();
@@ -102,6 +103,6 @@ function closeActions() {
       </template>
     </DropdownMenuComp>
 
-    <WordFormModalComp v-if="showWordForm" @close="showWordForm = false" />
+    <WordFormModalWidget v-if="showWordForm" @close="showWordForm = false" />
   </div>
 </template>

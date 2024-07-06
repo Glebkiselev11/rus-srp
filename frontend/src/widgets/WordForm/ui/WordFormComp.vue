@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { useDraftWordStore } from "@/stores/draftWord";
-import { useWordFormTabsStore } from "@/stores/wordFormTabs";
+import { useDraftWordStore } from "../model/draftWord";
+import { useWordFormTabsStore } from "../model/wordFormTabs";
 import { useI18n } from "vue-i18n";
 import { ButtonComp } from "@/shared/ui/Button";
 import { TabsComp } from "@/shared/ui/Tabs";

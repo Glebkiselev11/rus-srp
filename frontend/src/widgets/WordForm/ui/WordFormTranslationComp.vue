@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { computed, watch } from "vue";
-import { useDraftWordStore } from "@/stores/draftWord";
+import { useDraftWordStore } from "../model/draftWord";
 
 import { useTranslateHelpers, type LanguageCode } from "@/shared/Translate";
 import { ButtonComp } from "@/shared/ui/Button";
-import CheckboxListItemComp from "../CheckboxListItemComp.vue";
+import CheckboxListItemComp from "@/components/CheckboxListItemComp.vue";
 import { CheckboxComp } from "@/shared/ui/Checkbox";
-import ImageSectionComp from "../ImageSectionComp.vue";
+import ImageSectionComp from "@/components/ImageSectionComp.vue";
 import { InputComp } from "@/shared/ui/Input";
 
 type Props = {

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import { useTranslateHelpers, type LanguageCode } from "@/shared/Translate";
@@ -23,12 +22,15 @@ import CategoryTitleComp from "./CategoryTitleComp.vue";
 import CategoriesPreviewBadgesComp from "@/components/CategoriesPreviewBadgesComp.vue";
 import TableRowSkeletonComp from "./TableRowSkeletonComp.vue";
 import CategoryWordsInsertModalComp from "@/components/CategoryWordsInsert/CategoryWordsInsertModalComp.vue";
-import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
 import TableRowStatusComp from "@/components/Table/TableRowStatusComp.vue";
 import FilterPanelComp from "./FilterPanelComp.vue";
 import TranslationConfirmationComp from "./TranslationConfirmationComp.vue";
 import TranslationCellComp from "./TranslationCellComp.vue";
-import { useDraftWordStore } from "@/stores/draftWord";
+import {
+  useDraftWordStore,
+  useWordFormTabsStore,
+  WordFormModalWidget,
+} from "@/widgets/WordForm";
 import {
   useUpdateWord,
   useDeleteWord,
@@ -495,7 +497,7 @@ function createdCategory(categoryId: Id) {
     </div>
   </div>
 
-  <WordFormModalComp v-if="showWordForm" @close="showWordForm = false" />
+  <WordFormModalWidget v-if="showWordForm" @close="showWordForm = false" />
 
   <CategoryWordsInsertModalComp
     v-if="showCategoryWordsInsertModal && filter.category_id"

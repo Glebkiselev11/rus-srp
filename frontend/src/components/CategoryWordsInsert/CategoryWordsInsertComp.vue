@@ -5,9 +5,9 @@ import { useI18n } from "vue-i18n";
 import { useModalWordsStore } from "@/stores/modalWords";
 import { highlighTextByQuery } from "@/shared/lib";
 import { useTranslateHelpers } from "@/shared/Translate";
-import { WordsSearchInputComp } from "@/features/WordsSearchInput";
+import { WordsSearchInputComp } from "@/widgets/WordForm";
 import { ButtonComp } from "@/shared/ui/Button";
-import WordFormModalComp from "../WordForm/WordFormModalComp.vue";
+import { WordFormModalWidget } from "@/widgets/WordForm";
 import { TableComp } from "@/shared/ui/Table";
 import TableRowComp from "@/components/Table/TableRowComp.vue";
 import { CounterComp } from "@/shared/ui/Counter";
@@ -242,7 +242,7 @@ function handleWordCreated(id: Id) {
     </div>
   </div>
 
-  <WordFormModalComp
+  <WordFormModalWidget
     v-if="showWordForm"
     @close="showWordForm = false"
     @created="handleWordCreated"
