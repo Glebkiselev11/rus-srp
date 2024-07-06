@@ -11,7 +11,7 @@ import type {
 } from "@/shared/types";
 import { CategoriesWidget } from "@/widgets/Categories";
 import { TopBarComp } from "@/shared/ui/TopBar";
-import { TableComp, TableRowComp } from "@/shared/ui/Table";
+import { TableComp, TableRowComp, TableRowStatusComp } from "@/shared/ui/Table";
 import { ImagePreviewComp } from "@/features/ImageExplorer";
 import { ButtonComp } from "@/shared/ui/Button";
 import { DropdownMenuComp, type MenuItem } from "@/shared/ui/DropdownMenu";
@@ -21,7 +21,6 @@ import CategoryTitleComp from "./CategoryTitleComp.vue";
 import CategoriesPreviewBadgesComp from "@/components/CategoriesPreviewBadgesComp.vue";
 import TableRowSkeletonComp from "./TableRowSkeletonComp.vue";
 import { CategoryWordsInsertModalWidget } from "@/widgets/CategoryWordsInsert";
-import TableRowStatusComp from "@/components/Table/TableRowStatusComp.vue";
 import FilterPanelComp from "./FilterPanelComp.vue";
 import TranslationConfirmationComp from "./TranslationConfirmationComp.vue";
 import TranslationCellComp from "./TranslationCellComp.vue";
