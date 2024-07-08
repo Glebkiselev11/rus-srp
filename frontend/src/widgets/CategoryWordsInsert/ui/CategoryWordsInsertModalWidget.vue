@@ -4,7 +4,7 @@ import { useI18n } from "vue-i18n";
 import { computed, ref, toRef } from "vue";
 import { ModalComp } from "@/shared/ui/Modal";
 import { useTranslateHelpers } from "@/shared/Translate";
-import { ImagePreviewComp } from "@/features/ImageExplorer";
+import { ImageComp } from "@/shared/ui/Image";
 import CategoryWordsInsertComp from "./CategoryWordsInsertComp.vue";
 import { useCategoryWordsInsertStore } from "../model/categoryWordsInsert";
 import FormCloseConfirmationModalComp from "@/components/FormCloseConfirmationModalComp.vue";
@@ -60,7 +60,7 @@ function close() {
     @close="tryClose"
   >
     <template #header-left>
-      <ImagePreviewComp :src="categoryImage" static />
+      <ImageComp :src="categoryImage" />
     </template>
     <template #content>
       <CategoryWordsInsertComp

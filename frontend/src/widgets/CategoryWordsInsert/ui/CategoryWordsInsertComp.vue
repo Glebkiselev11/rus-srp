@@ -15,7 +15,7 @@ import { ZeroStateComp } from "@/shared/ui/ZeroState";
 import { CheckboxComp } from "@/shared/ui/Checkbox";
 import { TooltipComp } from "@/shared/ui/Tooltip";
 import { SkeletonItemComp } from "@/shared/ui/SkeletonItem";
-import { ImagePreviewComp } from "@/features/ImageExplorer";
+import { ImageComp } from "@/shared/ui/Image";
 import { useWordsInfinityQuery } from "@/entities/Word";
 
 const { getLanguageCodesOrder } = useTranslateHelpers();
@@ -169,7 +169,7 @@ function handleWordCreated(id: Id) {
           </td>
 
           <td>
-            <ImagePreviewComp :src="word.image" static />
+            <ImageComp :src="word.image" />
           </td>
 
           <td

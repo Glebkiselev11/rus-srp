@@ -3,8 +3,8 @@ import type { Id } from "@/shared/types";
 import type { Category } from "@/entities/Category";
 import { highlighTextByQuery } from "@/shared/lib";
 import { useTranslateHelpers } from "@/shared/Translate";
-import { ImagePreviewComp } from "@/features/ImageExplorer";
 import { ListItemComp } from "@/shared/ui/ListItem";
+import { ImageComp } from "@/shared/ui/Image";
 
 type Props = {
   category: Category;
@@ -36,7 +36,7 @@ function selectCategory() {
   >
     <div class="word-form-category-item">
       <div class="word-form-category-item__row">
-        <ImagePreviewComp size="24px" :src="props.category.image" static />
+        <ImageComp size="24px" :src="props.category.image" />
 
         <span
           class="word-form-category-item__label"

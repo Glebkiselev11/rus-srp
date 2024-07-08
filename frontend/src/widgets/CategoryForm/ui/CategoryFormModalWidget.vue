@@ -7,7 +7,7 @@ import type { LanguageCode } from "@/shared/Translate";
 import type { Id } from "@/shared/types";
 import { ModalComp } from "@/shared/ui/Modal";
 import CategoryFormComp from "./CategoryFormComp.vue";
-import { ImagePreviewComp } from "@/features/ImageExplorer";
+import { ImageComp } from "@/shared/ui/Image";
 import FormCloseConfirmationModalComp from "@/components/FormCloseConfirmationModalComp.vue";
 import { storeToRefs } from "pinia";
 
@@ -68,7 +68,7 @@ function close() {
     @close="tryClose"
   >
     <template v-if="initialCategory" #header-left>
-      <ImagePreviewComp :src="initialCategory.image" static />
+      <ImageComp :src="initialCategory.image" />
     </template>
     <template #content>
       <CategoryFormComp

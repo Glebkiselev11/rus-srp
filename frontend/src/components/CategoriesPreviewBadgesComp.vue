@@ -3,7 +3,7 @@ import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import type { Category } from "@/entities/Category";
 import { useTranslateHelpers } from "@/shared/Translate";
-import { ImagePreviewComp } from "@/features/ImageExplorer";
+import { ImageComp } from "@/shared/ui/Image";
 import { TooltipComp } from "@/shared/ui/Tooltip";
 import { ButtonComp } from "@/shared/ui/Button";
 
@@ -64,7 +64,7 @@ function isOverflowing() {
     <button class="categories-preview-badges" @click="click">
       <div class="categories-preview-badges__images">
         <div v-for="(src, i) in images" :key="i">
-          <ImagePreviewComp :src="src" size="24px" static />
+          <ImageComp :src="src" size="24px" />
         </div>
 
         <div
