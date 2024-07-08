@@ -7,12 +7,14 @@ import { ImagePreviewComp } from "@/features/ImageExplorer";
 import { DropdownMenuComp } from "@/shared/ui/DropdownMenu";
 import { ButtonComp } from "@/shared/ui/Button";
 import { RemoveCategoryModalComp } from "@/features/RemoveCategory";
-import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
 import { LogoComp } from "@/shared/ui/Logo";
-import { useToasterStore } from "@/stores/toaster";
-import { useDraftCategoryStore } from "@/stores/draftCategory";
+import { useToaster } from "@/shared/ui/Toaster";
+import {
+  useDraftCategoryStore,
+  CategoryFormModalWidget,
+} from "@/widgets/CategoryForm";
 
-const toastStore = useToasterStore();
+const toaster = useToaster();
 const { t } = useI18n();
 const draftCategoryStore = useDraftCategoryStore();
 const { extractCurrentLanguageTranslation } = useTranslateHelpers();
@@ -42,7 +44,7 @@ function updateCategoryImage(src: string) {
       image: src,
     } as Category);
 
-    toastStore.addToast({
+    toaster.addToast({
       type: "success",
       message: t("changes-saved"),
     });
@@ -99,7 +101,7 @@ function updateCategoryImage(src: string) {
       @close="isRemoveCategoryModalOpen = false"
     />
 
-    <CategoryFormModalComp
+    <CategoryFormModalWidget
       v-if="isEditCategoryModalOpen"
       @close="isEditCategoryModalOpen = false"
     />

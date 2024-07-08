@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { Id, Order, TranslationApprovedStatus } from "@/shared/types";
-import WordsSearchInputComp from "@/components/WordsSearchInputComp.vue";
+import { WordsSearchInputComp } from "@/widgets/WordForm";
 import { SelectComp } from "@/shared/ui/Select";
 import { SwitchComp } from "@/shared/ui/Switch";
 import { IconComp } from "@/shared/ui/Icon";

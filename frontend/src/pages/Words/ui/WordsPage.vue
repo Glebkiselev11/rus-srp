@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useWordFormTabsStore } from "@/stores/wordFormTabs";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import { useTranslateHelpers, type LanguageCode } from "@/shared/Translate";
@@ -11,36 +10,39 @@ import type {
   TranslationApprovedStatus,
 } from "@/shared/types";
 import { CategoriesWidget } from "@/widgets/Categories";
-import TopBarComp from "@/components/TopBarComp.vue";
-import TableComp from "@/components/Table/TableComp.vue";
-import TableRowComp from "@/components/Table/TableRowComp.vue";
+import { TopBarComp } from "@/shared/ui/TopBar";
+import { TableComp, TableRowComp, TableRowStatusComp } from "@/shared/ui/Table";
 import { ImagePreviewComp } from "@/features/ImageExplorer";
 import { ButtonComp } from "@/shared/ui/Button";
 import { DropdownMenuComp, type MenuItem } from "@/shared/ui/DropdownMenu";
 import { PaginationBarWidget } from "@/widgets/PaginationBar";
 import { ZeroStateComp } from "@/shared/ui/ZeroState";
 import CategoryTitleComp from "./CategoryTitleComp.vue";
-import CategoriesPreviewBadgesComp from "@/components/CategoriesPreviewBadgesComp.vue";
 import TableRowSkeletonComp from "./TableRowSkeletonComp.vue";
-import CategoryWordsInsertModalComp from "@/components/CategoryWordsInsert/CategoryWordsInsertModalComp.vue";
-import WordFormModalComp from "@/components/WordForm/WordFormModalComp.vue";
-import TableRowStatusComp from "@/components/Table/TableRowStatusComp.vue";
+import { CategoryWordsInsertModalWidget } from "@/widgets/CategoryWordsInsert";
 import FilterPanelComp from "./FilterPanelComp.vue";
 import TranslationConfirmationComp from "./TranslationConfirmationComp.vue";
 import TranslationCellComp from "./TranslationCellComp.vue";
-import { useDraftWordStore } from "@/stores/draftWord";
+import {
+  useDraftWordStore,
+  useWordFormTabsStore,
+  WordFormModalWidget,
+} from "@/widgets/WordForm";
 import {
   useUpdateWord,
   useDeleteWord,
   useWordsQuery,
   type Word,
 } from "@/entities/Word";
-import { useToasterStore } from "@/stores/toaster";
-import { useCategoryByIdQuery } from "@/entities/Category";
+import { useToaster } from "@/shared/ui/Toaster";
+import {
+  useCategoryByIdQuery,
+  CategoriesPreviewBadgesComp,
+} from "@/entities/Category";
 import { useDeleteWordsFromCategory } from "@/features/DeleteWordsFromCategory";
 import { NavbarWidget } from "@/widgets/Navbar";
 
-const toastStore = useToasterStore();
+const toaster = useToaster();
 const { t, locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
@@ -278,7 +280,7 @@ async function removeWordFromCategory(word: Word) {
     id: category.id,
   });
 
-  toastStore.addToast({
+  toaster.addToast({
     type: "info",
     message: t("word-removed-from-category", {
       word: word[locale.value as LanguageCode],
@@ -290,7 +292,7 @@ async function removeWordFromCategory(word: Word) {
 async function updateWordImage(word: Word, src: string) {
   await updateWord.mutateAsync({ ...word, image: src });
 
-  toastStore.addToast({
+  toaster.addToast({
     type: "success",
     message: t("changes-saved"),
   });
@@ -495,9 +497,9 @@ function createdCategory(categoryId: Id) {
     </div>
   </div>
 
-  <WordFormModalComp v-if="showWordForm" @close="showWordForm = false" />
+  <WordFormModalWidget v-if="showWordForm" @close="showWordForm = false" />
 
-  <CategoryWordsInsertModalComp
+  <CategoryWordsInsertModalWidget
     v-if="showCategoryWordsInsertModal && filter.category_id"
     :category-id="filter.category_id"
     @close="showCategoryWordsInsertModal = false"

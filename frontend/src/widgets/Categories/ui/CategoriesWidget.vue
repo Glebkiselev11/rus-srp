@@ -6,14 +6,16 @@ import { useI18n } from "vue-i18n";
 import type { Id, Order, RequestParams } from "@/shared/types";
 import type { LanguageCode } from "@/shared/Translate";
 import type { Category } from "@/entities/Category";
-import { useDraftCategoryStore } from "@/stores/draftCategory";
 import { ButtonComp } from "@/shared/ui/Button";
-import CategorySearchInputComp from "@/components/CategorySearchInputComp.vue";
 import CategoriesListComp from "./CategoriesListComp.vue";
 import { HeaderComp } from "@/shared/ui/Header";
 import { DropdownMenuComp } from "@/shared/ui/DropdownMenu";
 import { TooltipComp } from "@/shared/ui/Tooltip";
-import CategoryFormModalComp from "@/components/CategoryForm/CategoryFormModalComp.vue";
+import {
+  useDraftCategoryStore,
+  CategoriesSearchInputComp,
+  CategoryFormModalWidget,
+} from "@/widgets/CategoryForm";
 
 const { t, locale } = useI18n();
 const route = useRoute();
@@ -152,7 +154,7 @@ function openCreationCategoryForm() {
       </template>
     </HeaderComp>
 
-    <CategorySearchInputComp
+    <CategoriesSearchInputComp
       class="categories__search"
       :search="search"
       appearance="default"
@@ -169,7 +171,7 @@ function openCreationCategoryForm() {
       @select-category-for-editing="openEditingCategoryForm"
     />
 
-    <CategoryFormModalComp
+    <CategoryFormModalWidget
       v-if="showCategoryForm"
       @close="showCategoryForm = false"
       @created="createdCategory"

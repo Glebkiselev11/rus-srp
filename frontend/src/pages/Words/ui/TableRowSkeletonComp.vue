@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import TableRowComp from "@/components/Table/TableRowComp.vue";
-import SkeletonItemComp from "@/components/SkeletonItemComp.vue";
+import { TableRowComp } from "@/shared/ui/Table";
+import { SkeletonItemComp } from "@/shared/ui/SkeletonItem";
 
 const props = defineProps<{
   rows: number;

@@ -4,7 +4,7 @@ import CategoryItemComp from "./CategoryItemComp.vue";
 import { ListItemComp } from "@/shared/ui/ListItem";
 import { LogoComp } from "@/shared/ui/Logo";
 import { ZeroStateComp } from "@/shared/ui/ZeroState";
-import SkeletonItemComp from "@/components/SkeletonItemComp.vue";
+import { SkeletonItemComp } from "@/shared/ui/SkeletonItem";
 import { useI18n } from "vue-i18n";
 import { computed } from "vue";
 import { toReactive } from "@vueuse/core";

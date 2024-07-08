@@ -5,7 +5,7 @@ import { highlighTextByQuery } from "@/shared/lib";
 import { useTranslateHelpers } from "@/shared/Translate";
 import type { Category } from "@/entities/Category";
 import type { Id } from "@/shared/types";
-import { ImagePreviewComp } from "@/features/ImageExplorer";
+import { ImageComp } from "@/shared/ui/Image";
 import { ListItemComp } from "@/shared/ui/ListItem";
 import { ButtonComp } from "@/shared/ui/Button";
 import { DropdownMenuComp } from "@/shared/ui/DropdownMenu";
@@ -57,7 +57,7 @@ function editCategory(category: Category) {
   >
     <div class="category-item">
       <div class="category-item__row">
-        <ImagePreviewComp size="24px" :src="category.image" static />
+        <ImageComp size="24px" :src="category.image" />
 
         <span
           class="category-item__label text-overflow-ellipsis"
