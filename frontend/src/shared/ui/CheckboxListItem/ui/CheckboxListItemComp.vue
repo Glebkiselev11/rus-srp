@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import type { Appearance } from "../model/types";
+
 type Props = {
   label: string;
   paddingBlock?: string;
-  appearance?: "inline" | "secondary";
+  appearance?: Appearance;
   disabled?: boolean;
 };
 
