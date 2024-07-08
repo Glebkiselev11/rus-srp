@@ -8,7 +8,7 @@ import type { Id } from "@/shared/types";
 import { ModalComp } from "@/shared/ui/Modal";
 import CategoryFormComp from "./CategoryFormComp.vue";
 import { ImageComp } from "@/shared/ui/Image";
-import FormCloseConfirmationModalComp from "@/components/FormCloseConfirmationModalComp.vue";
+import { CloseConfirmationModalComp } from "@/shared/ui/CloseConfirmation";
 import { storeToRefs } from "pinia";
 
 const { t, locale } = useI18n();
@@ -79,7 +79,7 @@ function close() {
     </template>
   </ModalComp>
 
-  <FormCloseConfirmationModalComp
+  <CloseConfirmationModalComp
     v-if="showCloseConfirmationModal"
     :title="closeConfirmationTitle"
     :cancel-button-label="closeConfirmationCancelButtonLabel"

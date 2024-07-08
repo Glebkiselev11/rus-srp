@@ -27,10 +27,10 @@ function confirm() {
 <template>
   <ModalComp :title="props.title" header-padding-inline="20px" @close="close">
     <template #content>
-      <div class="form-close-confirmation-modal">
+      <div class="close-confirmation-modal">
         {{ t("modal-exit-confirmation.description") }}
 
-        <div class="form-close-confirmation-modal__buttons">
+        <div class="close-confirmation-modal__buttons">
           <ButtonComp
             :label="props.cancelButtonLabel"
             appearance="secondary"
@@ -48,7 +48,7 @@ function confirm() {
 </template>
 
 <style lang="scss" scoped>
-.form-close-confirmation-modal {
+.close-confirmation-modal {
   width: 502px;
   padding: 20px;
 

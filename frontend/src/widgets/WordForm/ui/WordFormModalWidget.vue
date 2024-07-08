@@ -4,7 +4,7 @@ import { ModalComp } from "@/shared/ui/Modal";
 import WordFormComp from "./WordFormComp.vue";
 import { IconComp } from "@/shared/ui/Icon";
 import { useWordFormTabsStore } from "../model/wordFormTabs";
-import FormCloseConfirmationModalComp from "@/components/FormCloseConfirmationModalComp.vue";
+import { CloseConfirmationModalComp } from "@/shared/ui/CloseConfirmation";
 import { useDraftWordStore } from "../model/draftWord";
 import { useTranslateHelpers } from "@/shared/Translate";
 import { useI18n } from "vue-i18n";
@@ -96,7 +96,7 @@ function handleCreated(createdWordId: Id) {
     </template>
   </ModalComp>
 
-  <FormCloseConfirmationModalComp
+  <CloseConfirmationModalComp
     v-if="showCloseConfirmationModal"
     :title="closeConfirmationTitle"
     :cancel-button-label="closeConfirmationCancelButtonLabel"

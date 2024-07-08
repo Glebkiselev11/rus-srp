@@ -7,7 +7,7 @@ import { useTranslateHelpers } from "@/shared/Translate";
 import { ImageComp } from "@/shared/ui/Image";
 import CategoryWordsInsertComp from "./CategoryWordsInsertComp.vue";
 import { useCategoryWordsInsertStore } from "../model/categoryWordsInsert";
-import FormCloseConfirmationModalComp from "@/components/FormCloseConfirmationModalComp.vue";
+import { CloseConfirmationModalComp } from "@/shared/ui/CloseConfirmation";
 import type { Id } from "@/shared/types";
 import { useCategoryByIdQuery } from "@/entities/Category";
 
@@ -71,7 +71,7 @@ function close() {
     </template>
   </ModalComp>
 
-  <FormCloseConfirmationModalComp
+  <CloseConfirmationModalComp
     v-if="showCloseConfirmationModal"
     :title="t('modal-exit-confirmation.adding-words-in-category-title')"
     :cancel-button-label="t('modal-exit-confirmation.continue-editing')"
