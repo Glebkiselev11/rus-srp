@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import type { Category } from "@/entities/Category";
 import { useTranslateHelpers } from "@/shared/Translate";
 import { ImageComp } from "@/shared/ui/Image";
 import { TooltipComp } from "@/shared/ui/Tooltip";
 import { ButtonComp } from "@/shared/ui/Button";
+import type { Category } from "../model/types";
 
 const MAX_IMAGES = 3;
 

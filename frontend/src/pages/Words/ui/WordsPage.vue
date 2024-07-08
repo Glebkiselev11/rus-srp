@@ -18,7 +18,6 @@ import { DropdownMenuComp, type MenuItem } from "@/shared/ui/DropdownMenu";
 import { PaginationBarWidget } from "@/widgets/PaginationBar";
 import { ZeroStateComp } from "@/shared/ui/ZeroState";
 import CategoryTitleComp from "./CategoryTitleComp.vue";
-import CategoriesPreviewBadgesComp from "@/components/CategoriesPreviewBadgesComp.vue";
 import TableRowSkeletonComp from "./TableRowSkeletonComp.vue";
 import { CategoryWordsInsertModalWidget } from "@/widgets/CategoryWordsInsert";
 import FilterPanelComp from "./FilterPanelComp.vue";
@@ -36,7 +35,10 @@ import {
   type Word,
 } from "@/entities/Word";
 import { useToaster } from "@/shared/ui/Toaster";
-import { useCategoryByIdQuery } from "@/entities/Category";
+import {
+  useCategoryByIdQuery,
+  CategoriesPreviewBadgesComp,
+} from "@/entities/Category";
 import { useDeleteWordsFromCategory } from "@/features/DeleteWordsFromCategory";
 import { NavbarWidget } from "@/widgets/Navbar";
 
