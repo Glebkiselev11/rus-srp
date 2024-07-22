@@ -1,4 +1,4 @@
-use super::models::{DbCategory, DbNewCategory};
+use super::models::{DbCategory, DbCategoryWithWordsCount, DbNewCategory};
 use crate::db::error_type::DbError;
 use crate::db::schema;
 use crate::models::category::NewCategory;
@@ -36,7 +36,7 @@ pub fn select_by_id(id: i32, conn: &mut PgConnection) -> Result<DbCategory, DbEr
 pub fn select_all_with_filter(
     conn: &mut PgConnection,
     query: QueryOptions,
-) -> Result<DbQueryResult<DbCategory>, DbError> {
+) -> Result<DbQueryResult<DbCategoryWithWordsCount>, DbError> {
     use crate::db::schema::categories::dsl;
 
     let order_by =
@@ -81,7 +81,10 @@ pub fn select_all_with_filter(
         .limit(limit)
         .load::<DbCategory>(conn)?;
 
-    Ok(DbQueryResult { count, result })
+    Ok(DbQueryResult {
+        count,
+        result: join_words_count_with_categories(result, conn)?,
+    })
 }
 
 pub fn update(
@@ -105,4 +108,25 @@ pub fn delete(id: i32, conn: &mut PgConnection) -> Result<(), DbError> {
     diesel::delete(dsl::categories.filter(dsl::id.eq(id))).execute(conn)?;
 
     Ok(())
+}
+
+fn join_words_count_with_categories(
+    categories: Vec<DbCategory>,
+    conn: &mut PgConnection,
+) -> Result<Vec<DbCategoryWithWordsCount>, DbError> {
+    let categories_with_words_count: Vec<DbCategoryWithWordsCount> = categories
+        .into_iter()
+        .map(|category| {
+            let words_count = crate::db::words_categories::methods::get_words_ids_by_category_id(
+                category.id,
+                conn,
+            )
+            .map(|ids| ids.len() as i64)
+            .unwrap_or(0);
+
+            DbCategoryWithWordsCount::new(category, words_count)
+        })
+        .collect();
+
+    Ok(categories_with_words_count)
 }
