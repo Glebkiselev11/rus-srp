@@ -1,9 +1,7 @@
-use std::collections::HashMap;
-
 use super::models::{DbCategory, DbCategoryWithWordsCount, DbNewCategory};
 use crate::db::error_type::DbError;
 use crate::db::schema;
-use crate::db::words_categories::models::DbWordCategory;
+use crate::db::words_categories;
 use crate::models::category::NewCategory;
 use crate::models::{
     category::CategoryBody, pagination::DbQueryResult, query_options::QueryOptions,
@@ -86,7 +84,7 @@ pub fn select_all_with_filter(
 
     Ok(DbQueryResult {
         count,
-        result: join_categories_with_words_count(result, conn)?,
+        result: words_categories::methods::join_categories_with_words_count(result, conn)?,
     })
 }
 
@@ -111,33 +109,4 @@ pub fn delete(id: i32, conn: &mut PgConnection) -> Result<(), DbError> {
     diesel::delete(dsl::categories.filter(dsl::id.eq(id))).execute(conn)?;
 
     Ok(())
-}
-
-fn join_categories_with_words_count(
-    categories: Vec<DbCategory>,
-    conn: &mut PgConnection,
-) -> Result<Vec<DbCategoryWithWordsCount>, DbError> {
-    use crate::db::schema::words_categories::dsl;
-
-    let category_ids: Vec<i32> = categories.iter().map(|c| c.id).collect();
-
-    let links: Vec<DbWordCategory> = schema::words_categories::table
-        .filter(dsl::category_id.eq_any(&category_ids))
-        .load::<DbWordCategory>(conn)?;
-
-    let count_map: HashMap<i32, i32> = links.into_iter().fold(HashMap::new(), |mut acc, link| {
-        let count = acc.entry(link.category_id).or_insert(0);
-        *count += 1;
-
-        acc
-    });
-
-    let categories_with_words_count = categories
-        .iter()
-        .map(|cat| {
-            DbCategoryWithWordsCount::new(cat.clone(), *count_map.get(&cat.id).unwrap_or(&0))
-        })
-        .collect();
-
-    Ok(categories_with_words_count)
 }

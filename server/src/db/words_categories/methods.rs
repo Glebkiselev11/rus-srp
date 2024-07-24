@@ -1,4 +1,12 @@
-use crate::db::{error_type::DbError, words_categories::models};
+use std::collections::HashMap;
+
+use crate::db::{
+    categories::models::{DbCategory, DbCategoryWithWordsCount},
+    error_type::DbError,
+    schema,
+    words::models::{DbWord, DbWordWithCategories},
+    words_categories::models,
+};
 use diesel::prelude::*;
 
 use super::models::DbWordCategory;
@@ -82,4 +90,87 @@ pub fn sync_categories_with_word(
     }
 
     Ok(())
+}
+
+pub fn join_categories_with_words_count(
+    categories: Vec<DbCategory>,
+    conn: &mut PgConnection,
+) -> Result<Vec<DbCategoryWithWordsCount>, DbError> {
+    use crate::db::schema::words_categories::dsl;
+
+    let category_ids: Vec<i32> = categories.iter().map(|c| c.id).collect();
+
+    let links: Vec<DbWordCategory> = schema::words_categories::table
+        .filter(dsl::category_id.eq_any(&category_ids))
+        .load::<DbWordCategory>(conn)?;
+
+    let count_map: HashMap<i32, i32> = links.into_iter().fold(HashMap::new(), |mut acc, link| {
+        let count = acc.entry(link.category_id).or_insert(0);
+        *count += 1;
+
+        acc
+    });
+
+    let categories_with_words_count = categories
+        .iter()
+        .map(|cat| {
+            DbCategoryWithWordsCount::new(cat.clone(), *count_map.get(&cat.id).unwrap_or(&0))
+        })
+        .collect();
+
+    Ok(categories_with_words_count)
+}
+
+pub fn join_word_with_categories(
+    word: DbWord,
+    conn: &mut PgConnection,
+) -> Result<DbWordWithCategories, DbError> {
+    let categories = DbWordCategory::belonging_to(&word)
+        .inner_join(schema::categories::table)
+        .select(schema::categories::all_columns)
+        .load::<DbCategory>(conn)
+        .expect("Error on join_word_with_categories");
+
+    Ok(DbWordWithCategories::new(word, categories))
+}
+
+pub fn join_words_with_categories(
+    words: Vec<DbWord>,
+    conn: &mut PgConnection,
+) -> Result<Vec<DbWordWithCategories>, DbError> {
+    use crate::db::schema::words_categories::dsl;
+
+    let word_ids: Vec<i32> = words.iter().map(|word| word.id).collect();
+
+    let category_links: Vec<DbWordCategory> = schema::words_categories::table
+        .filter(dsl::word_id.eq_any(&word_ids))
+        .load::<DbWordCategory>(conn)?;
+
+    let category_ids: Vec<i32> = category_links.iter().map(|x| x.category_id).collect();
+
+    let categories = schema::categories::table
+        .filter(schema::categories::dsl::id.eq_any(&category_ids))
+        .load::<DbCategory>(conn)?;
+
+    let category_map: HashMap<i32, DbCategory> =
+        categories.into_iter().map(|cat| (cat.id, cat)).collect();
+
+    let words_with_categories = words
+        .into_iter()
+        .map(|word| {
+            let categories = category_links
+                .iter()
+                .filter_map(|x| {
+                    if x.word_id == word.id {
+                        category_map.get(&x.category_id).cloned()
+                    } else {
+                        None
+                    }
+                })
+                .collect::<Vec<DbCategory>>();
+            DbWordWithCategories::new(word, categories)
+        })
+        .collect::<Vec<DbWordWithCategories>>();
+
+    Ok(words_with_categories)
 }
