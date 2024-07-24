@@ -79,11 +79,11 @@ pub struct DbCategoryWithWordsCount {
     pub created_at: chrono::NaiveDateTime,
     pub updated_at: Option<chrono::NaiveDateTime>,
     pub image: Option<String>,
-    pub words_count: i64,
+    pub words_count: i32,
 }
 
 impl DbCategoryWithWordsCount {
-    pub fn new(category: DbCategory, words_count: i64) -> Self {
+    pub fn new(category: DbCategory, words_count: i32) -> Self {
         DbCategoryWithWordsCount {
             id: category.id,
             eng: category.eng,
