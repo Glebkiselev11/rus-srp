@@ -1,6 +1,7 @@
-use super::models::{DbCategory, DbNewCategory};
+use super::models::{DbCategory, DbCategoryWithWordsCount, DbNewCategory};
 use crate::db::error_type::DbError;
 use crate::db::schema;
+use crate::db::words_categories;
 use crate::models::category::NewCategory;
 use crate::models::{
     category::CategoryBody, pagination::DbQueryResult, query_options::QueryOptions,
@@ -36,7 +37,7 @@ pub fn select_by_id(id: i32, conn: &mut PgConnection) -> Result<DbCategory, DbEr
 pub fn select_all_with_filter(
     conn: &mut PgConnection,
     query: QueryOptions,
-) -> Result<DbQueryResult<DbCategory>, DbError> {
+) -> Result<DbQueryResult<DbCategoryWithWordsCount>, DbError> {
     use crate::db::schema::categories::dsl;
 
     let order_by =
@@ -81,7 +82,10 @@ pub fn select_all_with_filter(
         .limit(limit)
         .load::<DbCategory>(conn)?;
 
-    Ok(DbQueryResult { count, result })
+    Ok(DbQueryResult {
+        count,
+        result: words_categories::methods::join_categories_with_words_count(result, conn)?,
+    })
 }
 
 pub fn update(

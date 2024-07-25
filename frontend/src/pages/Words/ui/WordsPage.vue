@@ -317,7 +317,7 @@ function createdCategory(categoryId: Id) {
       @created-category="createdCategory"
     />
 
-    <div>
+    <div class="words-page__main">
       <TopBarComp>
         <template #left>
           <CategoryTitleComp
@@ -512,6 +512,10 @@ function createdCategory(categoryId: Id) {
   grid-template-columns: auto 280px 1fr;
   width: 100%;
   height: 100%;
+
+  &__main {
+    background: $color-background;
+  }
 
   &__content {
     padding-inline: 16px;

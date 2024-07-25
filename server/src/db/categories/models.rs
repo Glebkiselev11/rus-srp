@@ -68,3 +68,32 @@ impl DbCategory {
         }
     }
 }
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DbCategoryWithWordsCount {
+    pub id: i32,
+    pub eng: String,
+    pub rus: String,
+    pub srp_latin: String,
+    pub srp_cyrillic: String,
+    pub created_at: chrono::NaiveDateTime,
+    pub updated_at: Option<chrono::NaiveDateTime>,
+    pub image: Option<String>,
+    pub words_count: i32,
+}
+
+impl DbCategoryWithWordsCount {
+    pub fn new(category: DbCategory, words_count: i32) -> Self {
+        DbCategoryWithWordsCount {
+            id: category.id,
+            eng: category.eng,
+            rus: category.rus,
+            srp_latin: category.srp_latin,
+            srp_cyrillic: category.srp_cyrillic,
+            created_at: category.created_at,
+            updated_at: category.updated_at,
+            image: category.image,
+            words_count,
+        }
+    }
+}

@@ -68,6 +68,12 @@ function editCategory(category: Category) {
             )
           "
         />
+
+        <span
+          v-show="category.words_count > 0"
+          class="category-item__count"
+          v-text="category.words_count"
+        />
       </div>
 
       <DropdownMenuComp
@@ -128,6 +134,11 @@ function editCategory(category: Category) {
     &::first-letter {
       text-transform: uppercase;
     }
+  }
+
+  &__count {
+    @include text-body-2;
+    color: $color-text-tertiary;
   }
 
   &__menu-button {

@@ -1,11 +1,6 @@
-use std::collections::HashMap;
-
 use super::models::{DbNewWord, DbWord};
 use crate::{
-    db::{
-        self, categories::models::DbCategory, schema, words::models::DbWordWithCategories,
-        words_categories::models::DbWordCategory,
-    },
+    db::{self, schema, words::models::DbWordWithCategories, words_categories},
     models::{pagination::DbQueryResult, query_options::QueryOptions, word::Word},
 };
 use diesel::{expression::expression_types::NotSelectable, pg::Pg, prelude::*};
@@ -22,7 +17,7 @@ pub fn insert(new_word: Word, conn: &mut PgConnection) -> Result<DbWordWithCateg
         .values(&new_word)
         .get_result::<DbWord>(conn)?;
 
-    join_word_with_categories(word, conn)
+    words_categories::methods::join_word_with_categories(word, conn)
 }
 
 /// Run query using Diesel to find word by uid and return it.
@@ -35,7 +30,7 @@ pub fn select_by_id(id: i32, conn: &mut PgConnection) -> Result<DbWordWithCatego
         .optional()?
         .ok_or(diesel::result::Error::NotFound)?;
 
-    join_word_with_categories(word, conn)
+    words_categories::methods::join_word_with_categories(word, conn)
 }
 
 pub fn select_all_with_filter(
@@ -106,7 +101,7 @@ pub fn select_all_with_filter(
         .limit(query.get_limit())
         .load::<DbWord>(conn)?;
 
-    let words_with_categories = join_words_with_categories(words, conn)?;
+    let words_with_categories = words_categories::methods::join_words_with_categories(words, conn)?;
 
     return Ok(DbQueryResult {
         count,
@@ -136,58 +131,4 @@ pub fn delete(id: i32, conn: &mut PgConnection) -> Result<(), DbError> {
     diesel::delete(dsl::words.filter(dsl::id.eq(id))).execute(conn)?;
 
     Ok(())
-}
-
-fn join_word_with_categories(
-    word: DbWord,
-    conn: &mut PgConnection,
-) -> Result<DbWordWithCategories, DbError> {
-    let categories = DbWordCategory::belonging_to(&word)
-        .inner_join(schema::categories::table)
-        .select(schema::categories::all_columns)
-        .load::<DbCategory>(conn)
-        .expect("Error on join_word_with_categories");
-
-    Ok(DbWordWithCategories::new(word, categories))
-}
-
-fn join_words_with_categories(
-    words: Vec<DbWord>,
-    conn: &mut PgConnection,
-) -> Result<Vec<DbWordWithCategories>, DbError> {
-    use crate::db::schema::words_categories::dsl;
-
-    let word_ids: Vec<i32> = words.iter().map(|word| word.id).collect();
-
-    let category_links: Vec<DbWordCategory> = schema::words_categories::table
-        .filter(dsl::word_id.eq_any(&word_ids))
-        .load::<DbWordCategory>(conn)?;
-
-    let category_ids: Vec<i32> = category_links.iter().map(|x| x.category_id).collect();
-
-    let categories = schema::categories::table
-        .filter(schema::categories::dsl::id.eq_any(&category_ids))
-        .load::<DbCategory>(conn)?;
-
-    let category_map: HashMap<i32, DbCategory> =
-        categories.into_iter().map(|cat| (cat.id, cat)).collect();
-
-    let words_with_categories = words
-        .into_iter()
-        .map(|word| {
-            let categories = category_links
-                .iter()
-                .filter_map(|x| {
-                    if x.word_id == word.id {
-                        category_map.get(&x.category_id).cloned()
-                    } else {
-                        None
-                    }
-                })
-                .collect::<Vec<DbCategory>>();
-            DbWordWithCategories::new(word, categories)
-        })
-        .collect::<Vec<DbWordWithCategories>>();
-
-    Ok(words_with_categories)
 }
