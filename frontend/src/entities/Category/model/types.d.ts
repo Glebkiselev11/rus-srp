@@ -13,4 +13,5 @@ export type Category = {
   id: Id;
   created_at: string;
   updated_at: string;
+  words_count: number;
 } & DraftCategory;
