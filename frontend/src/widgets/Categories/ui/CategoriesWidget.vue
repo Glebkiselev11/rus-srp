@@ -64,7 +64,7 @@ const order = computed({
 
 const search = computed({
   get(): string {
-    return filter.value.search;
+    return filter.value.search ?? "";
   },
   set(search: string) {
     filter.value = { ...filter.value, search };

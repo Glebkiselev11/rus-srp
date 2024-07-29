@@ -19,7 +19,7 @@ export type SortKey =
 export type Order = `${SortKey}` | `-${SortKey}`;
 
 export type RequestParams = {
-  search: string;
+  search?: string;
   offset?: number;
   limit: number;
   order?: Order;

@@ -127,7 +127,7 @@ const updateWord = useUpdateWord();
 
 const search = computed({
   get(): string {
-    return filter.value.search;
+    return filter.value.search ?? "";
   },
   set(search: string) {
     const { offset } = DEFAULT_FILTER;
