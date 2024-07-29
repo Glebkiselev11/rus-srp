@@ -13,6 +13,8 @@ import {
   WordsService,
   type DraftWord,
 } from "@/entities/Word";
+import { KEY as CATEGORY_KEY } from "@/entities/Category";
+import { useQueryClient } from "@tanstack/vue-query";
 import type { Id } from "@/shared/types";
 import { useToaster } from "@/shared/ui/Toaster";
 import { useTranslateHelpers } from "@/shared/Translate";
@@ -34,6 +36,7 @@ const emit = defineEmits<{
 const updateWord = useUpdateWord();
 const createWord = useCreateWord();
 
+const queryClient = useQueryClient();
 const draftWordStore = useDraftWordStore();
 const wordFormTabsStore = useWordFormTabsStore();
 const { uniqueWordError } = storeToRefs(draftWordStore);
@@ -186,6 +189,8 @@ async function saveWord(saveAndAddNext = false) {
       });
     }
   }
+
+  queryClient.invalidateQueries({ queryKey: [CATEGORY_KEY] });
 
   savingLoading.value = false;
 
