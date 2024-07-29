@@ -6,9 +6,10 @@ import { LogoComp } from "@/shared/ui/Logo";
 import { ZeroStateComp } from "@/shared/ui/ZeroState";
 import { SkeletonItemComp } from "@/shared/ui/SkeletonItem";
 import { useI18n } from "vue-i18n";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { toReactive } from "@vueuse/core";
 import { type Category, useCategoriesQuery } from "@/entities/Category";
+import { useWordsQuery } from "@/entities/Word";
 
 const { t } = useI18n();
 
@@ -24,6 +25,7 @@ const emit = defineEmits<{
 
 const filter = computed(() => toReactive(props.requestParams));
 const { data, status } = useCategoriesQuery(filter);
+const { data: allWords } = useWordsQuery(ref({ limit: 0 }));
 
 function selectCategory(categoryId: Id) {
   if (categoryId === props.selectedCategoryId) return;
@@ -49,6 +51,7 @@ function selectCategoryForEditing(category: Category) {
           <LogoComp size="24px" />
 
           <span>{{ t("all-words") }}</span>
+          <span class="all-words-count" v-text="allWords?.count" />
         </div>
       </ListItemComp>
     </div>
@@ -98,6 +101,10 @@ function selectCategoryForEditing(category: Category) {
     column-gap: 8px;
 
     @include text-body-2;
+
+    .all-words-count {
+      color: $color-text-tertiary;
+    }
   }
 
   &__items {
