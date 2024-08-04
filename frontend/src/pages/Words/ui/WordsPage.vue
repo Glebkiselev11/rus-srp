@@ -28,12 +28,7 @@ import {
   useWordFormTabsStore,
   WordFormModalWidget,
 } from "@/widgets/WordForm";
-import {
-  useUpdateWord,
-  useDeleteWord,
-  useWordsQuery,
-  type Word,
-} from "@/entities/Word";
+import { useUpdateWord, useWordsQuery, type Word } from "@/entities/Word";
 import { useToaster } from "@/shared/ui/Toaster";
 import {
   useCategoryByIdQuery,
@@ -41,6 +36,7 @@ import {
 } from "@/entities/Category";
 import { useDeleteWordsFromCategory } from "@/features/DeleteWordsFromCategory";
 import { NavbarWidget } from "@/widgets/Navbar";
+import { RemoveWordModalComp } from "@/features/RemoveWord";
 
 const toaster = useToaster();
 const { t, locale } = useI18n();
@@ -72,6 +68,7 @@ const draftWordStore = useDraftWordStore();
 const hoverOnWordId = ref<Id | undefined>(undefined);
 const showWordForm = ref(false);
 const showCategoryWordsInsertModal = ref(false);
+const wordForRemove = ref<Word | undefined>(undefined);
 
 const filter = computed({
   get(): RequestParams {
@@ -122,7 +119,6 @@ const { data, status } = useWordsQuery(filter);
 const { data: categoryData, status: categoryStatus } =
   useCategoryByIdQuery(category_id);
 const deleteWordsFromCategory = useDeleteWordsFromCategory();
-const deleteWord = useDeleteWord();
 const updateWord = useUpdateWord();
 
 const search = computed({
@@ -260,14 +256,6 @@ function confirmTranslation(word: Word) {
     ...word,
     translation_approved: true,
   });
-}
-
-async function removeWord(word: Word) {
-  const key = locale.value as LanguageCode;
-
-  if (confirm(t("are-you-sure-delete", { word: word[key] }))) {
-    await deleteWord.mutateAsync(word.id);
-  }
 }
 
 async function removeWordFromCategory(word: Word) {
@@ -432,7 +420,7 @@ function createdCategory(categoryId: Id) {
                         label: t('delete'),
                         icon: 'delete',
                         color: 'negative',
-                        handler: () => removeWord(word),
+                        handler: () => (wordForRemove = word),
                       },
                     ].filter(Boolean) as MenuItem[]
                   "
@@ -498,6 +486,12 @@ function createdCategory(categoryId: Id) {
   </div>
 
   <WordFormModalWidget v-if="showWordForm" @close="showWordForm = false" />
+
+  <RemoveWordModalComp
+    v-if="wordForRemove"
+    :word="wordForRemove"
+    @close="wordForRemove = undefined"
+  />
 
   <CategoryWordsInsertModalWidget
     v-if="showCategoryWordsInsertModal && filter.category_id"
