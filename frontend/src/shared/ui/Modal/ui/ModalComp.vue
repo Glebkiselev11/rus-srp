@@ -6,11 +6,13 @@ type Props = {
   title: string;
   subtitle?: string;
   headerPaddingInline?: string;
+  maxWidth?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   subtitle: "",
   headerPaddingInline: "16px",
+  maxWidth: "none",
 });
 
 const emit = defineEmits<{
@@ -46,7 +48,7 @@ function handleClose() {
 
 <template>
   <div class="modal-screen">
-    <div class="modal">
+    <div class="modal" :style="{ maxWidth: props.maxWidth }">
       <HeaderComp
         :title="props.title"
         :subtitle="props.subtitle"

@@ -2,13 +2,14 @@
 import { useI18n } from "vue-i18n";
 import { computed, ref } from "vue";
 import { useDeleteWord, type Word } from "@/entities/Word";
-import { type LanguageCode } from "@/shared/Translate";
+import { useTranslateHelpers, type LanguageCode } from "@/shared/Translate";
 import { ModalComp } from "@/shared/ui/Modal";
 import { InputComp } from "@/shared/ui/Input";
 import { ButtonComp } from "@/shared/ui/Button";
 
 const { t, locale } = useI18n();
 const deleteWord = useDeleteWord();
+const { translationPreview } = useTranslateHelpers();
 
 const props = defineProps<{
   word: Word;
@@ -19,6 +20,10 @@ const emit = defineEmits<{
 }>();
 
 const confirmationInput = ref("");
+
+const title = computed(() =>
+  t("are-you-sure-delete", { word: translationPreview(props.word) })
+);
 
 const confirmed = computed(() => {
   const key = props.word[locale.value as LanguageCode].toLocaleLowerCase();
