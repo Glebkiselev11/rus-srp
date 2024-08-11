@@ -55,7 +55,12 @@
   "wait": "Čekati",
   "word-added": "Riječ je uspešno dodat",
   "word-updated": "Riječ je uspešno ažurirana",
-  "are-you-sure-delete": "Da li želite izbrisati reč '{word}'?",
+  "word-removing": {
+    "title": "Uklonite reč „{vord}“ iz baze podataka reči?",
+    "description": "Neće biti moguće vratiti reč",
+    "label": "Da biste potvrdili brisanje, unesite reč „{word}“",
+    "toast": "Reč „{word}“ je izbrisana iz baze podataka"
+  },
   "interface-language": "Jezik interfejsa",
   "lang": {
     "russian": "ruska",
@@ -78,7 +83,7 @@
   "creation-word": "Kreiranje reči",
   "editing-word": "Uređivanje reči",
   "selected": "Izabrano",
-  "search-by-query": "Traži “{query}”",
+  "search-by-query": "Traži „{query}”",
   "image-search-title": "Da biste pronašli sliku, unesite upit na engleskom",
   "image-search-description": "Ovo može biti direktan prevod ili sinonim dodane reči",
   "to-sort": "Sortirati",
@@ -110,12 +115,12 @@
   "update": "Ažuriraj",
   "empty-category": "Kategorija je prazna",
   "empty-category-description": "Dodajte reč klikom na dugme „Dodaj u kategoriju“",
-  "word-created-successfully": "Reč “{word}” je dodata u bazu",
-  "category-was-removed": "Kategorija ”{category}” je uklonjena",
+  "word-created-successfully": "Reč „{word}” je dodata u bazu",
+  "category-was-removed": "Kategorija „{category}” je uklonjena",
   "changes-saved": "Promene su sačuvane",
-  "category-created-successfully": "Kategorija “{category}” je kreirana",
-  "remove-word-from-category": "Ukloni iz “{category}”",
-  "word-removed-from-category": "Reč “{word}” je uklonjena iz kategorije “{category}”",
-  "create-word-from": "Kreirajte reč “{word}”",
-  "create-category-from": "Kreirajte kategoriju “{category}”"
+  "category-created-successfully": "Kategorija „{category}” je kreirana",
+  "remove-word-from-category": "Ukloni iz „{category}”",
+  "word-removed-from-category": "Reč „{word}” je uklonjena iz kategorije „{category}”",
+  "create-word-from": "Kreirajte reč „{word}”",
+  "create-category-from": "Kreirajte kategoriju „{category}”"
 }

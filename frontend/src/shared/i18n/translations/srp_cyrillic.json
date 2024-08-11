@@ -55,7 +55,12 @@
   "wait": "Чекати",
   "word-added": "Реч је успешно додата",
   "word-updated": "Реч је успешно ажурирана",
-  "are-you-sure-delete": "Да ли желите избрисати реч '{word}'?",
+  "word-removing": {
+    "title": "Уклоните реч „{ворд}“ из базе података речи?",
+    "description": "Неће бити могуће вратити реч",
+    "label": "Да бисте потврдили брисање, унесите реч „{word}“",
+    "toast": "Реч „{word}“ је избрисана из базе података"
+  },
   "interface-language": "Језик интерфејса",
   "lang": {
     "russian": "руска",
@@ -78,7 +83,7 @@
   "creation-word": "Креирање речи",
   "editing-word": "Уређивање речи",
   "selected": "Изабрано",
-  "search-by-query": "Тражи “{query}”",
+  "search-by-query": "Тражи „{query}”",
   "image-search-title": "Да бисте пронашли слику, унесите упит на енглеском",
   "image-search-description": "Ово може бити директан превод или синоним додане речи",
   "to-sort": "Сортирати",
@@ -110,12 +115,12 @@
   "update": "Ажурирај",
   "empty-category": "Категорија је празна",
   "empty-category-description": "Додајте реч кликом на дугме „Додај у категорију“",
-  "word-created-successfully": "Реч “{word}” је додата у базу",
-  "category-was-removed": "Категорија ”{category}” jе уклоњена",
+  "word-created-successfully": "Реч „{word}” је додата у базу",
+  "category-was-removed": "Категорија „{category}” jе уклоњена",
   "changes-saved": "Промене су сачуване",
-  "category-created-successfully": "Категорија “{category}” је креирана",
-  "remove-word-from-category": "Уклони из “{category}”",
-  "word-removed-from-category": "Реч “{word}” је уклоњена из категорије “{category}”",
-  "create-word-from": "Креирајте реч “{word}”",
-  "create-category-from": "Креирајте категорију “{category}”"
+  "category-created-successfully": "Категорија „{category}” је креирана",
+  "remove-word-from-category": "Уклони из „{category}”",
+  "word-removed-from-category": "Реч „{word}” је уклоњена из категорије „{category}”",
+  "create-word-from": "Креирајте реч „{word}”",
+  "create-category-from": "Креирајте категорију „{category}”"
 }

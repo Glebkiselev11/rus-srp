@@ -65,12 +65,3 @@ export const useCreateWord = () => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [KEY] }),
   });
 };
-
-export const useDeleteWord = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (id: Id) => WordsService.delete(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [KEY] }),
-  });
-};
