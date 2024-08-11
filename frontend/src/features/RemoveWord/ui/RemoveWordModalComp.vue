@@ -46,7 +46,7 @@ function close() {
 </script>
 
 <template>
-  <ModalComp title="title" @close="close">
+  <ModalComp :title="title" max-width="520px" @close="close">
     <template #content>
       <div class="remove-word-modal">
         <span v-text="t('word-removing.description')" />
