@@ -8,7 +8,7 @@ import { InputComp } from "@/shared/ui/Input";
 import { ButtonComp } from "@/shared/ui/Button";
 
 const { t, locale } = useI18n();
-const deleteWord = useDeleteWord();
+const { mutateAsync, isPending } = useDeleteWord();
 const { translationPreview } = useTranslateHelpers();
 
 const props = defineProps<{
@@ -25,6 +25,10 @@ const title = computed(() =>
   t("word-removing.title", { word: translationPreview(props.word) })
 );
 
+const label = computed(() =>
+  t("word-removing.label", { word: props.word[locale.value as LanguageCode] })
+);
+
 const confirmed = computed(() => {
   const key = props.word[locale.value as LanguageCode].toLocaleLowerCase();
   const input = confirmationInput.value.toLocaleLowerCase();
@@ -33,7 +37,7 @@ const confirmed = computed(() => {
 
 async function removeWord() {
   try {
-    await deleteWord.mutateAsync(props.word.id);
+    await mutateAsync(props.word.id);
     close();
   } catch (error) {
     console.log("error on removing word: ", error);
@@ -46,16 +50,17 @@ function close() {
 </script>
 
 <template>
-  <ModalComp :title="title" max-width="520px" @close="close">
+  <ModalComp
+    :title="title"
+    max-width="520px"
+    header-padding-inline="20px"
+    @close="close"
+  >
     <template #content>
       <div class="remove-word-modal">
         <span v-text="t('word-removing.description')" />
 
-        <InputComp
-          v-model="confirmationInput"
-          focus-on-mount
-          :label="t('word-removing.label')"
-        />
+        <InputComp v-model="confirmationInput" focus-on-mount :label="label" />
 
         <div class="remove-word-modal__buttons">
           <ButtonComp
@@ -68,6 +73,7 @@ function close() {
             :disabled="!confirmed"
             color="negative"
             :label="t('yes-remove')"
+            :loading="isPending"
             @click="removeWord"
           />
         </div>
@@ -75,3 +81,20 @@ function close() {
     </template>
   </ModalComp>
 </template>
+
+<style scoped lang="scss">
+.remove-word-modal {
+  padding-block: 12px;
+  padding-inline: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .remove-word-modal__buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-block-start: 20px;
+  }
+}
+</style>
