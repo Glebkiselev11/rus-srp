@@ -58,7 +58,8 @@
   "word-removing": {
     "title": "Remove the word “{word}” from the word database?",
     "description": "It will be impossible to restore the word",
-    "label": "To confirm deletion, enter the word: {word}"
+    "label": "To confirm deletion, enter the word: {word}",
+    "toast": "The word “{word}” has been from the database"
   },
   "interface-language": "Interface language",
   "lang": {

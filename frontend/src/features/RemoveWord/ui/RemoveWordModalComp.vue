@@ -6,10 +6,12 @@ import { useTranslateHelpers, type LanguageCode } from "@/shared/Translate";
 import { ModalComp } from "@/shared/ui/Modal";
 import { InputComp } from "@/shared/ui/Input";
 import { ButtonComp } from "@/shared/ui/Button";
+import { useToaster } from "@/shared/ui/Toaster";
 
 const { t, locale } = useI18n();
 const { mutateAsync, isPending } = useDeleteWord();
 const { translationPreview } = useTranslateHelpers();
+const toaster = useToaster();
 
 const props = defineProps<{
   word: Word;
@@ -38,6 +40,13 @@ const confirmed = computed(() => {
 async function removeWord() {
   try {
     await mutateAsync(props.word.id);
+    toaster.addToast({
+      type: "info",
+      message: t("word-removing.toast", {
+        word: props.word[locale.value as LanguageCode],
+      }),
+    });
+
     close();
   } catch (error) {
     console.log("error on removing word: ", error);

@@ -58,7 +58,8 @@
   "word-removing": {
     "title": "Uklonite reč „{vord}“ iz baze podataka reči?",
     "description": "Neće biti moguće vratiti reč",
-    "label": "Da biste potvrdili brisanje, unesite reč „{word}“"
+    "label": "Da biste potvrdili brisanje, unesite reč „{word}“",
+    "toast": "Reč „{word}“ je izbrisana iz baze podataka"
   },
   "interface-language": "Jezik interfejsa",
   "lang": {
