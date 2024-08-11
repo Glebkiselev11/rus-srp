@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { computed, ref } from "vue";
-import { useDeleteWord, type Word } from "@/entities/Word";
+import { type Word } from "@/entities/Word";
 import { useTranslateHelpers, type LanguageCode } from "@/shared/Translate";
 import { ModalComp } from "@/shared/ui/Modal";
 import { InputComp } from "@/shared/ui/Input";
 import { ButtonComp } from "@/shared/ui/Button";
 import { useToaster } from "@/shared/ui/Toaster";
+import { useDeleteWord } from "../model/query";
 
 const { t, locale } = useI18n();
 const { mutateAsync, isPending } = useDeleteWord();

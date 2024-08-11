@@ -7,7 +7,6 @@ export {
   useWordsInfinityQuery,
   useUpdateWord,
   useCreateWord,
-  useDeleteWord,
   KEY,
 } from "./model/query";
 
