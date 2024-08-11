@@ -55,7 +55,11 @@
   "wait": "Čekati",
   "word-added": "Riječ je uspešno dodat",
   "word-updated": "Riječ je uspešno ažurirana",
-  "are-you-sure-delete": "Uklonite reč „{vord}“ iz baze podataka reči?",
+  "word-removing": {
+    "title": "Uklonite reč „{vord}“ iz baze podataka reči?",
+    "description": "Neće biti moguće vratiti reč",
+    "label": "Da biste potvrdili brisanje, unesite reč „{word}“"
+  },
   "interface-language": "Jezik interfejsa",
   "lang": {
     "russian": "ruska",

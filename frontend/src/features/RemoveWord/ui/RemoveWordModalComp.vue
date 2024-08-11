@@ -22,7 +22,7 @@ const emit = defineEmits<{
 const confirmationInput = ref("");
 
 const title = computed(() =>
-  t("are-you-sure-delete", { word: translationPreview(props.word) })
+  t("word-removing.title", { word: translationPreview(props.word) })
 );
 
 const confirmed = computed(() => {
@@ -54,7 +54,7 @@ function close() {
         <InputComp
           v-model="confirmationInput"
           focus-on-mount
-          :label="t('word-removing.confirmation-label')"
+          :label="t('word-removing.label')"
         />
 
         <div class="remove-word-modal__buttons">

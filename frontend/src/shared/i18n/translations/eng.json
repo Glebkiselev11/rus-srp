@@ -55,7 +55,11 @@
   "wait": "Wait",
   "word-added": "Word was added",
   "word-updated": "Word was updated",
-  "are-you-sure-delete": "Remove the word “{word}” from the word database?",
+  "word-removing": {
+    "title": "Remove the word “{word}” from the word database?",
+    "description": "It will be impossible to restore the word",
+    "label": "To confirm deletion, enter the word: {word}"
+  },
   "interface-language": "Interface language",
   "lang": {
     "russian": "russian",
