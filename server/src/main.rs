@@ -59,6 +59,10 @@ async fn main() -> std::io::Result<()> {
                                 web::scope("/words")
                                     .route("/create", web::post().to(handler::words::create))
                                     .route("", web::get().to(handler::words::get_list_by_query))
+                                    .route(
+                                        "/count",
+                                        web::get().to(handler::words::get_count_by_query),
+                                    )
                                     .route("/{id}", web::get().to(handler::words::get_by_id))
                                     .route("/{id}", web::put().to(handler::words::update))
                                     .route("/{id}", web::delete().to(handler::words::delete)),
