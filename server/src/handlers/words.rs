@@ -65,14 +65,14 @@ pub async fn get_count_by_query(
 ) -> actix_web::Result<impl Responder> {
     let query = query.into_inner();
 
-    let result = web::block(move || {
+    let count = web::block(move || {
         let mut conn = pool.get()?;
-        db::words::methods::select_all_with_filter(&mut conn, query)
+        db::words::methods::select_count_with_filter(&mut conn, query)
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
 
-    Ok(HttpResponse::Ok().json(result.count))
+    Ok(HttpResponse::Ok().json(count))
 }
 
 pub async fn get_by_id(
