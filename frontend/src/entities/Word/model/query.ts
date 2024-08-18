@@ -18,6 +18,13 @@ export const useWordsQuery = (params: Ref<RequestParams>) => {
   });
 };
 
+export const useWordsCountQuery = (params?: Ref<RequestParams>) => {
+  return useQuery({
+    queryKey: [KEY, params],
+    queryFn: () => WordsService.queryCount(params?.value),
+  });
+};
+
 export const useWordsInfinityQuery = (params: Ref<RequestParams>) => {
   return useInfiniteQuery({
     queryKey: [KEY, params],

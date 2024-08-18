@@ -35,4 +35,14 @@ export const WordsService = {
       offset: data.offset,
     };
   },
+  async queryCount(params?: OptionalRequestParams) {
+    const { data } = await ApiTransport.query<number>(
+      `${this.ENDPOINT}/count`,
+      {
+        params,
+      }
+    );
+
+    return data;
+  },
 };
