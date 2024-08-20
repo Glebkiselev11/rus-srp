@@ -6,7 +6,7 @@ import {
 } from "@tanstack/vue-query";
 import type { DraftWord, Word } from "./types";
 import { WordsService } from "../api";
-import type { Id, RequestParams } from "@/shared/types";
+import type { Id, OptionalRequestParams, RequestParams } from "@/shared/types";
 import type { Ref } from "vue";
 
 export const KEY = "words";
@@ -18,7 +18,7 @@ export const useWordsQuery = (params: Ref<RequestParams>) => {
   });
 };
 
-export const useWordsCountQuery = (params?: Ref<RequestParams>) => {
+export const useWordsCountQuery = (params?: Ref<OptionalRequestParams>) => {
   return useQuery({
     queryKey: [KEY, params],
     queryFn: () => WordsService.queryCount(params?.value),
