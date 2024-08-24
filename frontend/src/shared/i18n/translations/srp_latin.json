@@ -122,5 +122,6 @@
   "remove-word-from-category": "Ukloni iz „{category}”",
   "word-removed-from-category": "Reč „{word}” je uklonjena iz kategorije „{category}”",
   "create-word-from": "Kreirajte reč „{word}”",
-  "create-category-from": "Kreirajte kategoriju „{category}”"
+  "create-category-from": "Kreirajte kategoriju „{category}”",
+  "show-all-results": "Prikaži sve rezultate"
 }

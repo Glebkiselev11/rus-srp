@@ -59,6 +59,22 @@ pub async fn get_list_by_query(
     }))
 }
 
+pub async fn get_count_by_query(
+    pool: web::Data<db::PgPool>,
+    query: web::Query<QueryOptions>,
+) -> actix_web::Result<impl Responder> {
+    let query = query.into_inner();
+
+    let count = web::block(move || {
+        let mut conn = pool.get()?;
+        db::words::methods::select_count_with_filter(&mut conn, query)
+    })
+    .await?
+    .map_err(actix_web::error::ErrorInternalServerError)?;
+
+    Ok(HttpResponse::Ok().json(count))
+}
+
 pub async fn get_by_id(
     pool: web::Data<db::PgPool>,
     id: web::Path<i32>,

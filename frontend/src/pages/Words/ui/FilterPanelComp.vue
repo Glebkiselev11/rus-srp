@@ -1,16 +1,23 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import type { Id, Order, TranslationApprovedStatus } from "@/shared/types";
+import type {
+  Id,
+  OptionalRequestParams,
+  Order,
+  TranslationApprovedStatus,
+} from "@/shared/types";
 import { WordsSearchInputComp } from "@/widgets/WordForm";
 import { SelectComp } from "@/shared/ui/Select";
 import { SwitchComp } from "@/shared/ui/Switch";
 import { IconComp } from "@/shared/ui/Icon";
+import { useWordsCountQuery } from "@/entities/Word";
 
 type Props = {
   search: string;
   order: Order;
   translationApprovedStatus: TranslationApprovedStatus;
+  wordsCountWithFilter?: number; // It is found with filter (category, search, confirmed, etc.)
   categoryId?: Id;
 };
 
@@ -25,7 +32,26 @@ const emit = defineEmits<{
     e: "update:translationApprovedStatus",
     value: TranslationApprovedStatus
   ): void;
+  (e: "reset-filters-except-search"): void;
 }>();
+
+const searchFilter = computed((): OptionalRequestParams => {
+  return { search: props.search };
+});
+
+// This is common number of words count for filtered only by search
+const { data: wordsCountFilteredBySearch } = useWordsCountQuery(searchFilter);
+
+const hiddenWordsCount = computed(() => {
+  if (
+    wordsCountFilteredBySearch.value === undefined ||
+    props.wordsCountWithFilter === undefined
+  ) {
+    return 0;
+  }
+
+  return wordsCountFilteredBySearch.value - (props.wordsCountWithFilter ?? 0);
+});
 
 const orderOptions = computed(() => [
   { value: "-created_at" as Order, label: t("order.last-added") },
@@ -57,6 +83,10 @@ function updateSearch(newSearch: string) {
 function updateOrder(newOrder: Order) {
   emit("update:order", newOrder);
 }
+
+function resetFilter() {
+  emit("reset-filters-except-search");
+}
 </script>
 
 <template>
@@ -65,9 +95,12 @@ function updateOrder(newOrder: Order) {
       :search="props.search"
       :search-placeholder="searchPlaceholder"
       :category-id="props.categoryId"
+      :words-count-with-filters="props.wordsCountWithFilter"
+      :hidden-words-count="hiddenWordsCount"
       appearance="outline"
       width="360px"
       @update:search="updateSearch"
+      @reset-filter="resetFilter"
     />
 
     <div class="filter-panel__right">

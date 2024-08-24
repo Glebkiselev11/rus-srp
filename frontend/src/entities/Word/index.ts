@@ -4,6 +4,7 @@ export { WordsService } from "./api";
 
 export {
   useWordsQuery,
+  useWordsCountQuery,
   useWordsInfinityQuery,
   useUpdateWord,
   useCreateWord,

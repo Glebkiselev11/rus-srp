@@ -140,6 +140,8 @@ function getLabelColor(item: MenuItem) {
         maxWidth: props.maxWidth,
       }"
     >
+      <slot name="menu" />
+
       <template v-for="(item, i) in items" :key="i">
         <template v-if="item === 'separator'">
           <hr />

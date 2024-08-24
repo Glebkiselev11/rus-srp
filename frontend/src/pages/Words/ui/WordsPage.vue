@@ -111,7 +111,7 @@ const category_id = computed({
     return filter.value.category_id;
   },
   set(category_id: Id | undefined) {
-    filter.value = { ...DEFAULT_FILTER, category_id };
+    filter.value = { ...filter.value, category_id };
   },
 });
 
@@ -294,6 +294,17 @@ function createdCategory(categoryId: Id) {
   category_id.value = categoryId;
   openWordsListModal();
 }
+
+function selectCategory(categoryId: Id) {
+  filter.value = { ...DEFAULT_FILTER, search: "", category_id: categoryId };
+}
+
+function resetFiltersExcept(preserveFilter: keyof RequestParams) {
+  filter.value = {
+    ...DEFAULT_FILTER,
+    [preserveFilter]: filter.value[preserveFilter],
+  };
+}
 </script>
 
 <template>
@@ -301,7 +312,7 @@ function createdCategory(categoryId: Id) {
     <NavbarWidget />
     <CategoriesWidget
       :selected-category-id="filter.category_id"
-      @update:selected-category-id="category_id = $event"
+      @update:selected-category-id="selectCategory"
       @created-category="createdCategory"
     />
 
@@ -334,7 +345,9 @@ function createdCategory(categoryId: Id) {
           v-model:search="search"
           v-model:order="order"
           v-model:translation-approved-status="translation_approved_status"
+          :words-count-with-filter="data?.count"
           :category-id="category_id"
+          @reset-filters-except-search="resetFiltersExcept('search')"
         />
 
         <TableComp
