@@ -122,5 +122,6 @@
   "remove-word-from-category": "Удалить из “{category}”",
   "word-removed-from-category": "Слово “{word}” удалено из категории “{category}”",
   "create-word-from": "Создать слово “{word}”",
-  "create-category-from": "Создать категорию “{category}”"
+  "create-category-from": "Создать категорию “{category}”",
+  "show-all-results": "Показать все результаты"
 }

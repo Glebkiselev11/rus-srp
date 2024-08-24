@@ -3,6 +3,8 @@ import { computed, nextTick, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { InputComp, type InputAppearance } from "@/shared/ui/Input";
 import { DropdownMenuComp, type MenuItem } from "@/shared/ui/DropdownMenu";
+import { ListItemComp } from "@/shared/ui/ListItem";
+import HiddenWordsCountComp from "./HiddenWordsCountComp.vue";
 import {
   useTranslateHelpers,
   getLanguageCodesAccordingText,
@@ -22,10 +24,12 @@ const props = defineProps<{
   width: string;
   searchPlaceholder: string;
   categoryId?: Id;
+  hiddenWordsCount?: number;
 }>();
 
 const emit = defineEmits<{
   (e: "update:search", value: string): void;
+  (e: "reset-filter"): void;
 }>();
 
 const showWordForm = ref(false);
@@ -34,6 +38,7 @@ const showActions = ref(false);
 const actions = computed(
   () =>
     getLanguageCodesOrder()
+      .filter(() => !showHiddenWordsCount.value) // don't show actions if there are hidden words
       .filter((code) =>
         getLanguageCodesAccordingText(props.search).includes(code)
       )
@@ -47,8 +52,20 @@ const actions = computed(
       }) as MenuItem[]
 );
 
+const showHiddenWordsCount = computed(() => {
+  return Boolean(
+    showActions.value &&
+      props.hiddenWordsCount &&
+      props.hiddenWordsCount > 0 &&
+      props.search.length > 0
+  );
+});
+
 const computedShowActions = computed(() => {
-  return showActions.value && actions.value.length > 0;
+  return (
+    (showActions.value && actions.value.length > 0) ||
+    showHiddenWordsCount.value
+  );
 });
 
 function update(newSearch: string) {
@@ -73,6 +90,14 @@ async function startCreatingWord(code: LanguageCode, word: string) {
 function closeActions() {
   showActions.value = false;
 }
+
+function resetFilter() {
+  emit("reset-filter");
+}
+
+function handleFocus() {
+  showActions.value = true;
+}
 </script>
 
 <template>
@@ -85,8 +110,15 @@ function closeActions() {
       :items="actions"
       :show-menu="computedShowActions"
       position="right"
+      :max-width="props.width"
       @close="closeActions"
     >
+      <template v-if="showHiddenWordsCount" #menu>
+        <ListItemComp clickable @click="resetFilter">
+          <HiddenWordsCountComp :count="props.hiddenWordsCount!" />
+        </ListItemComp>
+      </template>
+
       <template #anchor>
         <InputComp
           :model-value="props.search"
@@ -98,7 +130,7 @@ function closeActions() {
           :width="props.width"
           clear-button
           @update:model-value="update"
-          @focus="showActions = true"
+          @focus="handleFocus"
         />
       </template>
     </DropdownMenuComp>
