@@ -94,6 +94,7 @@ function closeActions() {
 }
 
 function resetFilter() {
+  showActions.value = false;
   emit("reset-filter");
 }
 
