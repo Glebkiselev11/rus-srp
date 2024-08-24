@@ -43,7 +43,10 @@ const searchFilter = computed((): OptionalRequestParams => {
 const { data: wordsCountFilteredBySearch } = useWordsCountQuery(searchFilter);
 
 const hiddenWordsCount = computed(() => {
-  if (!wordsCountFilteredBySearch.value || props.wordsCount === undefined) {
+  if (
+    wordsCountFilteredBySearch.value === undefined ||
+    props.wordsCount === undefined
+  ) {
     return 0;
   }
 
@@ -92,6 +95,7 @@ function resetFilter() {
       :search="props.search"
       :search-placeholder="searchPlaceholder"
       :category-id="props.categoryId"
+      :words-count-with-filters="props.wordsCount"
       :hidden-words-count="hiddenWordsCount"
       appearance="outline"
       width="360px"

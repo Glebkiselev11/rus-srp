@@ -24,7 +24,8 @@ const props = defineProps<{
   width: string;
   searchPlaceholder: string;
   categoryId?: Id;
-  hiddenWordsCount?: number;
+  wordsCountWithFilters?: number; // It is found with filter (category, search, confirmed, etc.)
+  hiddenWordsCount?: number; // It is found with filter search
 }>();
 
 const emit = defineEmits<{
@@ -39,6 +40,7 @@ const actions = computed(
   () =>
     getLanguageCodesOrder()
       .filter(() => !showHiddenWordsCount.value) // don't show actions if there are hidden words
+      .filter(() => props.wordsCountWithFilters !== undefined) // don't show actions if there are no loaded count of words
       .filter((code) =>
         getLanguageCodesAccordingText(props.search).includes(code)
       )
