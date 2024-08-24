@@ -17,7 +17,7 @@ type Props = {
   search: string;
   order: Order;
   translationApprovedStatus: TranslationApprovedStatus;
-  wordsCount?: number; // It is found with filter (category, search, confirmed, etc.)
+  wordsCountWithFilter?: number; // It is found with filter (category, search, confirmed, etc.)
   categoryId?: Id;
 };
 
@@ -45,12 +45,12 @@ const { data: wordsCountFilteredBySearch } = useWordsCountQuery(searchFilter);
 const hiddenWordsCount = computed(() => {
   if (
     wordsCountFilteredBySearch.value === undefined ||
-    props.wordsCount === undefined
+    props.wordsCountWithFilter === undefined
   ) {
     return 0;
   }
 
-  return wordsCountFilteredBySearch.value - (props.wordsCount ?? 0);
+  return wordsCountFilteredBySearch.value - (props.wordsCountWithFilter ?? 0);
 });
 
 const orderOptions = computed(() => [
@@ -95,7 +95,7 @@ function resetFilter() {
       :search="props.search"
       :search-placeholder="searchPlaceholder"
       :category-id="props.categoryId"
-      :words-count-with-filters="props.wordsCount"
+      :words-count-with-filters="props.wordsCountWithFilter"
       :hidden-words-count="hiddenWordsCount"
       appearance="outline"
       width="360px"

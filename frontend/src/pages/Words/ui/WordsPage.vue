@@ -345,7 +345,7 @@ function resetFiltersExcept(preserveFilter: keyof RequestParams) {
           v-model:search="search"
           v-model:order="order"
           v-model:translation-approved-status="translation_approved_status"
-          :words-count="data?.count"
+          :words-count-with-filter="data?.count"
           :category-id="category_id"
           @reset-filters-except-search="resetFiltersExcept('search')"
         />
