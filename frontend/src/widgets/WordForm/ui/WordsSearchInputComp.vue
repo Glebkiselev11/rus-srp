@@ -70,6 +70,10 @@ const computedShowActions = computed(() => {
   );
 });
 
+const commonWordsCount = computed(() => {
+  return (props.wordsCountWithFilters ?? 0) + (props.hiddenWordsCount ?? 0);
+});
+
 function update(newSearch: string) {
   emit("update:search", newSearch);
 }
@@ -118,7 +122,7 @@ function handleFocus() {
     >
       <template v-if="showHiddenWordsCount" #menu>
         <ListItemComp clickable @click="resetFilter">
-          <HiddenWordsCountComp :count="props.hiddenWordsCount!" />
+          <HiddenWordsCountComp :count="commonWordsCount" />
         </ListItemComp>
       </template>
 
