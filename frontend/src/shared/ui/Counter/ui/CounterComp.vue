@@ -1,11 +1,18 @@
 <script setup lang="ts">
-const props = defineProps<{
+import type { Color } from "../model/types";
+
+type Props = {
   count: number;
-}>();
+  color?: Color;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  color: "neutral",
+});
 </script>
 
 <template>
-  <div class="counter">
+  <div class="counter" :class="`counter--color-${props.color}`">
     {{ props.count }}
   </div>
 </template>
@@ -20,7 +27,15 @@ const props = defineProps<{
   height: 20px;
   min-width: 20px;
   border-radius: 100px;
-  background: $color-background-content-secondary;
-  color: $color-text-primary;
+
+  &--color-neutral {
+    background: $color-background-content-secondary;
+    color: $color-text-primary;
+  }
+
+  &--color-accent-primary {
+    background: $color-text-accent-primary;
+    color: $color-text-contrast;
+  }
 }
 </style>
