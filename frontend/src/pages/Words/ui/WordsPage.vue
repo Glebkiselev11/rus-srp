@@ -21,7 +21,7 @@ import CategoryTitleComp from "./CategoryTitleComp.vue";
 import TableRowSkeletonComp from "./TableRowSkeletonComp.vue";
 import { CategoryWordsInsertModalWidget } from "@/widgets/CategoryWordsInsert";
 import FilterPanelComp from "./FilterPanelComp.vue";
-import TranslationConfirmationComp from "./TranslationConfirmationComp.vue";
+import { TranslationConfirmationComp } from "@/features/TranslationConfirmation";
 import TranslationCellComp from "./TranslationCellComp.vue";
 import {
   useDraftWordStore,
@@ -251,13 +251,6 @@ function openWordsListModal() {
   showCategoryWordsInsertModal.value = true;
 }
 
-function confirmTranslation(word: Word) {
-  updateWord.mutateAsync({
-    ...word,
-    translation_approved: true,
-  });
-}
-
 async function removeWordFromCategory(word: Word) {
   const category = categoryData.value?.category;
 
@@ -371,7 +364,7 @@ function resetFiltersExcept(preserveFilter: keyof RequestParams) {
                 :disabled="word.translation_approved"
               >
                 <TranslationConfirmationComp
-                  @confirm-translation="confirmTranslation(word)"
+                  :word="word"
                   @open-editing-word-form="openEditingWordForm(word)"
                 />
               </TableRowStatusComp>

@@ -1,20 +1,29 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { ButtonComp } from "@/shared/ui/Button";
+import { useUpdateWord, type Word } from "@/entities/Word";
 
 const { t } = useI18n();
 
+const updateWord = useUpdateWord();
+
+const props = defineProps<{
+  word: Word;
+}>();
+
 const emit = defineEmits<{
-  (e: "confirm-translation"): void;
   (e: "open-editing-word-form"): void;
 }>();
 
-function confirmTranslation() {
-  emit("confirm-translation");
-}
-
 function openEditingWordForm() {
   emit("open-editing-word-form");
+}
+
+function confirmTranslation() {
+  updateWord.mutateAsync({
+    ...props.word,
+    translation_approved: true,
+  });
 }
 </script>
 
@@ -30,7 +39,7 @@ function openEditingWordForm() {
         :label="t('confirm')"
         size="compact"
         appearance="secondary"
-        @click="confirmTranslation()"
+        @click="confirmTranslation"
       />
       <ButtonComp
         :label="t('edit')"
