@@ -17,22 +17,27 @@ import { ButtonComp } from "@/shared/ui/Button";
 import { DropdownMenuComp, type MenuItem } from "@/shared/ui/DropdownMenu";
 import { PaginationBarWidget } from "@/widgets/PaginationBar";
 import { ZeroStateComp } from "@/shared/ui/ZeroState";
-import CategoryTitleComp from "./CategoryTitleComp.vue";
+import { CategoryTitleWidget } from "@/widgets/CategoryTitle";
 import TableRowSkeletonComp from "./TableRowSkeletonComp.vue";
 import { CategoryWordsInsertModalWidget } from "@/widgets/CategoryWordsInsert";
 import FilterPanelComp from "./FilterPanelComp.vue";
-import TranslationConfirmationComp from "./TranslationConfirmationComp.vue";
+import { TranslationConfirmationComp } from "@/features/TranslationConfirmation";
 import TranslationCellComp from "./TranslationCellComp.vue";
 import {
   useDraftWordStore,
   useWordFormTabsStore,
   WordFormModalWidget,
 } from "@/widgets/WordForm";
+import {
+  useDraftCategoryStore,
+  CategoryFormModalWidget,
+} from "@/widgets/CategoryForm";
 import { useUpdateWord, useWordsQuery, type Word } from "@/entities/Word";
 import { useToaster } from "@/shared/ui/Toaster";
 import {
   useCategoryByIdQuery,
   CategoriesPreviewBadgesComp,
+  type Category,
 } from "@/entities/Category";
 import { useDeleteWordsFromCategory } from "@/features/DeleteWordsFromCategory";
 import { NavbarWidget } from "@/widgets/Navbar";
@@ -64,9 +69,11 @@ const LIMIT_OPTIONS = [
 
 const wordFormTabsStore = useWordFormTabsStore();
 const draftWordStore = useDraftWordStore();
+const draftCategoryStore = useDraftCategoryStore();
 
 const hoverOnWordId = ref<Id | undefined>(undefined);
 const showWordForm = ref(false);
+const showCategoryForm = ref(false);
 const showCategoryWordsInsertModal = ref(false);
 const wordForRemove = ref<Word | undefined>(undefined);
 
@@ -232,6 +239,11 @@ function openEditingWordForm(word: Word) {
   showWordForm.value = true;
 }
 
+function openEditingCategory(category: Category) {
+  draftCategoryStore.initDraftCategory(category);
+  showCategoryForm.value = true;
+}
+
 function openCreationWordForm() {
   draftWordStore.initDraftWord(undefined);
 
@@ -249,13 +261,6 @@ function openEditingWordFormOnCategoriesTab(word: Word) {
 
 function openWordsListModal() {
   showCategoryWordsInsertModal.value = true;
-}
-
-function confirmTranslation(word: Word) {
-  updateWord.mutateAsync({
-    ...word,
-    translation_approved: true,
-  });
 }
 
 async function removeWordFromCategory(word: Word) {
@@ -319,9 +324,10 @@ function resetFiltersExcept(preserveFilter: keyof RequestParams) {
     <div class="words-page__main">
       <TopBarComp>
         <template #left>
-          <CategoryTitleComp
+          <CategoryTitleWidget
             v-if="categoryStatus !== 'pending' || !category_id"
             :category="categoryData?.category"
+            @edit="openEditingCategory"
           />
         </template>
         <template #right>
@@ -371,7 +377,7 @@ function resetFiltersExcept(preserveFilter: keyof RequestParams) {
                 :disabled="word.translation_approved"
               >
                 <TranslationConfirmationComp
-                  @confirm-translation="confirmTranslation(word)"
+                  :word="word"
                   @open-editing-word-form="openEditingWordForm(word)"
                 />
               </TableRowStatusComp>
@@ -499,6 +505,11 @@ function resetFiltersExcept(preserveFilter: keyof RequestParams) {
   </div>
 
   <WordFormModalWidget v-if="showWordForm" @close="showWordForm = false" />
+
+  <CategoryFormModalWidget
+    v-if="showCategoryForm"
+    @close="showCategoryForm = false"
+  />
 
   <RemoveWordModalComp
     v-if="wordForRemove"

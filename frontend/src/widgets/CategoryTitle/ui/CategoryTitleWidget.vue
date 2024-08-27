@@ -9,28 +9,26 @@ import { ButtonComp } from "@/shared/ui/Button";
 import { RemoveCategoryModalComp } from "@/features/RemoveCategory";
 import { LogoComp } from "@/shared/ui/Logo";
 import { useToaster } from "@/shared/ui/Toaster";
-import {
-  useDraftCategoryStore,
-  CategoryFormModalWidget,
-} from "@/widgets/CategoryForm";
-
 const toaster = useToaster();
 const { t } = useI18n();
-const draftCategoryStore = useDraftCategoryStore();
 const { extractCurrentLanguageTranslation } = useTranslateHelpers();
 
 const props = defineProps<{
   category?: Category;
 }>();
 
+const emit = defineEmits<{
+  (e: "edit", value: Category): void;
+}>();
+
 const isRemoveCategoryModalOpen = ref(false);
-const isEditCategoryModalOpen = ref(false);
 
 const updateCategory = useUpdateCategory();
 
 function editCategory() {
-  draftCategoryStore.initDraftCategory(props.category);
-  isEditCategoryModalOpen.value = true;
+  if (props.category) {
+    emit("edit", props.category);
+  }
 }
 
 function openRemoveCategoryModal() {
@@ -99,11 +97,6 @@ function updateCategoryImage(src: string) {
       v-if="isRemoveCategoryModalOpen"
       :category="props.category"
       @close="isRemoveCategoryModalOpen = false"
-    />
-
-    <CategoryFormModalWidget
-      v-if="isEditCategoryModalOpen"
-      @close="isEditCategoryModalOpen = false"
     />
   </div>
 
