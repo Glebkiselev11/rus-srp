@@ -17,7 +17,7 @@ import { ButtonComp } from "@/shared/ui/Button";
 import { DropdownMenuComp, type MenuItem } from "@/shared/ui/DropdownMenu";
 import { PaginationBarWidget } from "@/widgets/PaginationBar";
 import { ZeroStateComp } from "@/shared/ui/ZeroState";
-import CategoryTitleComp from "./CategoryTitleComp.vue";
+import { CategoryTitleWidget } from "@/widgets/CategoryTitle";
 import TableRowSkeletonComp from "./TableRowSkeletonComp.vue";
 import { CategoryWordsInsertModalWidget } from "@/widgets/CategoryWordsInsert";
 import FilterPanelComp from "./FilterPanelComp.vue";
@@ -312,7 +312,7 @@ function resetFiltersExcept(preserveFilter: keyof RequestParams) {
     <div class="words-page__main">
       <TopBarComp>
         <template #left>
-          <CategoryTitleComp
+          <CategoryTitleWidget
             v-if="categoryStatus !== 'pending' || !category_id"
             :category="categoryData?.category"
           />
