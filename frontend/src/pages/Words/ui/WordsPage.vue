@@ -28,11 +28,16 @@ import {
   useWordFormTabsStore,
   WordFormModalWidget,
 } from "@/widgets/WordForm";
+import {
+  useDraftCategoryStore,
+  CategoryFormModalWidget,
+} from "@/widgets/CategoryForm";
 import { useUpdateWord, useWordsQuery, type Word } from "@/entities/Word";
 import { useToaster } from "@/shared/ui/Toaster";
 import {
   useCategoryByIdQuery,
   CategoriesPreviewBadgesComp,
+  type Category,
 } from "@/entities/Category";
 import { useDeleteWordsFromCategory } from "@/features/DeleteWordsFromCategory";
 import { NavbarWidget } from "@/widgets/Navbar";
@@ -64,9 +69,11 @@ const LIMIT_OPTIONS = [
 
 const wordFormTabsStore = useWordFormTabsStore();
 const draftWordStore = useDraftWordStore();
+const draftCategoryStore = useDraftCategoryStore();
 
 const hoverOnWordId = ref<Id | undefined>(undefined);
 const showWordForm = ref(false);
+const showCategoryForm = ref(false);
 const showCategoryWordsInsertModal = ref(false);
 const wordForRemove = ref<Word | undefined>(undefined);
 
@@ -232,6 +239,11 @@ function openEditingWordForm(word: Word) {
   showWordForm.value = true;
 }
 
+function openEditingCategory(category: Category) {
+  draftCategoryStore.initDraftCategory(category);
+  showCategoryForm.value = true;
+}
+
 function openCreationWordForm() {
   draftWordStore.initDraftWord(undefined);
 
@@ -315,6 +327,7 @@ function resetFiltersExcept(preserveFilter: keyof RequestParams) {
           <CategoryTitleWidget
             v-if="categoryStatus !== 'pending' || !category_id"
             :category="categoryData?.category"
+            @edit="openEditingCategory"
           />
         </template>
         <template #right>
@@ -492,6 +505,11 @@ function resetFiltersExcept(preserveFilter: keyof RequestParams) {
   </div>
 
   <WordFormModalWidget v-if="showWordForm" @close="showWordForm = false" />
+
+  <CategoryFormModalWidget
+    v-if="showCategoryForm"
+    @close="showCategoryForm = false"
+  />
 
   <RemoveWordModalComp
     v-if="wordForRemove"
