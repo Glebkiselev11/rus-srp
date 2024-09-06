@@ -18,7 +18,8 @@ import type { Id } from "@/shared/types";
 const { t } = useI18n();
 const draftWordStore = useDraftWordStore();
 const { getLanguageLabel, getLanguageCodesOrder } = useTranslateHelpers();
-const props = defineProps<{
+
+type Props = {
   search: string;
   appearance: InputAppearance;
   width: string;
@@ -26,7 +27,9 @@ const props = defineProps<{
   categoryId?: Id;
   wordsCountWithFilters?: number; // It is found with filter (category, search, confirmed, etc.)
   hiddenWordsCount?: number; // It is found with filter search
-}>();
+};
+
+const props = defineProps<Props>();
 
 const emit = defineEmits<{
   (e: "update:search", value: string): void;
@@ -39,8 +42,19 @@ const showActions = ref(false);
 const actions = computed(
   () =>
     getLanguageCodesOrder()
-      .filter(() => !showHiddenWordsCount.value) // don't show actions if there are hidden words
-      .filter(() => props.wordsCountWithFilters !== undefined) // don't show actions if there are no loaded count of words
+      .filter(() => {
+        if (
+          props.wordsCountWithFilters === undefined &&
+          props.hiddenWordsCount === undefined
+        ) {
+          return true;
+        }
+
+        return (
+          !showHiddenWordsCount.value && // don't show actions if there are hidden words
+          props.wordsCountWithFilters !== undefined // don't show actions if there are no loaded count of words
+        );
+      })
       .filter((code) =>
         getLanguageCodesAccordingText(props.search).includes(code)
       )
