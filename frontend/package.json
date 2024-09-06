@@ -9,7 +9,8 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "stylelint": "stylelint \"src/**/*.{vue,scss}\" --fix"
+    "stylelint": "stylelint \"src/**/*.{vue,scss}\" --fix",
+    "test": "npx vitest"
   },
   "dependencies": {
     "@tanstack/vue-query": "^5.29.0",
