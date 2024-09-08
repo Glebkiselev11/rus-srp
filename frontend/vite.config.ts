@@ -1,9 +1,9 @@
+/// <reference types="vitest" />
 import path from "path";
 
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import checker from "vite-plugin-checker";
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -24,5 +24,8 @@ export default defineConfig({
         additionalData: `@import "@/shared/styles/index.scss";`,
       },
     },
+  },
+  test: {
+    environment: "happy-dom",
   },
 });
