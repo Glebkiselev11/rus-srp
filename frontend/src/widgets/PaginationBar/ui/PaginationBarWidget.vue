@@ -27,7 +27,7 @@ const currentRange = computed(() => {
 });
 const currentPage = computed(() => Math.ceil(props.offset / props.limit) + 1);
 const lastPage = computed(() => Math.ceil(props.count / props.limit));
-const showPaginationConrols = computed(() => props.count > props.limit);
+const showPaginationControls = computed(() => props.count > props.limit);
 
 function updateLimit(value: number) {
   emit("update:limit", value);
@@ -61,7 +61,7 @@ function updateOffset(value: number) {
       </div>
     </div>
 
-    <div v-if="showPaginationConrols" class="pagination-bar__section">
+    <div v-if="showPaginationControls" class="pagination-bar__section">
       <div class="select-page-controller">
         <span class="select-page-controller__text">
           {{ t("pagination.select-page") }}

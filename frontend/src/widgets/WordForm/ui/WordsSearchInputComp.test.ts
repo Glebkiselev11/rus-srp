@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { shallowMount, VueWrapper } from "@vue/test-utils";
 import WordsSearchInputComp from "./WordsSearchInputComp.vue";
-import { describe } from "node:test";
-import { expect, test, vi } from "vitest";
+import { expect, test, vi, describe } from "vitest";
 import { createPinia } from "pinia";
 import { i18n } from "@/shared/i18n";
 
