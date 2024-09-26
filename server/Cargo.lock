@@ -2022,6 +2022,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "92d43fe69e652f3df9bdc2b85b2854a0825b86e4fb76bc44d945137d053639ca"
 
 [[package]]
+name = "serbian-cyrillic-latin-conversion"
+version = "1.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4abb1f28b03004d395af894d3f87d38c0cd0aa3cd6a71c903d8e4f5201a9be43"
+dependencies = [
+ "unicode-segmentation",
+]
+
+[[package]]
 name = "serde"
 version = "1.0.197"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2082,6 +2091,7 @@ dependencies = [
  "log",
  "openssl",
  "reqwest",
+ "serbian-cyrillic-latin-conversion",
  "serde",
  "serde_json",
 ]
@@ -2468,6 +2478,12 @@ checksum = "a56d1686db2308d901306f92a263857ef59ea39678a5458e7cb17f01415101f5"
 dependencies = [
  "tinyvec",
 ]
+
+[[package]]
+name = "unicode-segmentation"
+version = "1.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f6ccf251212114b54433ec949fd6a7841275f9ada20dddd2f29e9ceea4501493"
 
 [[package]]
 name = "unicode-width"
