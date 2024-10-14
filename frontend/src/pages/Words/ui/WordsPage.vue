@@ -1,14 +1,8 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import { useRoute, useRouter } from "vue-router";
 import { useTranslateHelpers, type LanguageCode } from "@/shared/Translate";
 import { computed, ref } from "vue";
-import type {
-  Id,
-  Order,
-  RequestParams,
-  TranslationApprovedStatus,
-} from "@/shared/types";
+import type { Id, Order, RequestParams } from "@/shared/types";
 import { CategoriesWidget } from "@/widgets/Categories";
 import { TopBarComp } from "@/shared/ui/TopBar";
 import { TableComp, TableRowComp, TableRowStatusComp } from "@/shared/ui/Table";
@@ -42,24 +36,24 @@ import {
 import { useDeleteWordsFromCategory } from "@/features/DeleteWordsFromCategory";
 import { NavbarWidget } from "@/widgets/Navbar";
 import { RemoveWordModalComp } from "@/features/RemoveWord";
+import { useWordsPageFilter } from "../model/useWordsPageFilter";
 
 const toaster = useToaster();
 const { t, locale } = useI18n();
-const route = useRoute();
-const router = useRouter();
+
+const {
+  category_id,
+  filter,
+  search,
+  order,
+  translation_approved_status,
+  limit,
+  offset,
+  DEFAULT_FILTER,
+  LIMIT_DEFAULT,
+} = useWordsPageFilter();
 const { getLanguageCodesOrder, getLanguageLabel, translationPreview } =
   useTranslateHelpers();
-
-const LIMIT_DEFAULT = 25;
-
-const DEFAULT_FILTER = {
-  search: "",
-  offset: 0,
-  limit: LIMIT_DEFAULT,
-  order: "-created_at" as Order,
-  category_id: undefined,
-  translation_approved_status: "all" as TranslationApprovedStatus,
-};
 
 const LIMIT_OPTIONS = [
   { value: LIMIT_DEFAULT, label: String(LIMIT_DEFAULT) },
@@ -77,113 +71,11 @@ const showCategoryForm = ref(false);
 const showCategoryWordsInsertModal = ref(false);
 const wordForRemove = ref<Word | undefined>(undefined);
 
-const filter = computed({
-  get(): RequestParams {
-    const {
-      search,
-      offset,
-      limit,
-      order,
-      category_id,
-      translation_approved_status,
-    } = DEFAULT_FILTER;
-    return {
-      search: (route.query.search_word as string) || search,
-      offset: Number(route.query.offset) || offset,
-      limit: Number(route.query.limit) || limit,
-      order: (route.query.order_word as Order) || order,
-      category_id: Number(route.query.category_id) || category_id,
-      translation_approved_status:
-        (route.query
-          .translation_approved_status as TranslationApprovedStatus) ||
-        translation_approved_status,
-    };
-  },
-  set(params: RequestParams) {
-    router.push({
-      query: {
-        ...route.query,
-        search_word: params.search,
-        offset: params.offset,
-        limit: params.limit,
-        order_word: params.order,
-        category_id: params.category_id,
-        translation_approved_status: params.translation_approved_status,
-      },
-    });
-  },
-});
-const category_id = computed({
-  get(): Id | undefined {
-    return filter.value.category_id;
-  },
-  set(category_id: Id | undefined) {
-    filter.value = { ...filter.value, category_id };
-  },
-});
-
 const { data, status } = useWordsQuery(filter);
 const { data: categoryData, status: categoryStatus } =
   useCategoryByIdQuery(category_id);
 const deleteWordsFromCategory = useDeleteWordsFromCategory();
 const updateWord = useUpdateWord();
-
-const search = computed({
-  get(): string {
-    return filter.value.search ?? "";
-  },
-  set(search: string) {
-    const { offset } = DEFAULT_FILTER;
-    filter.value = {
-      ...filter.value,
-      search,
-
-      // reset pagination filters
-      offset,
-    };
-  },
-});
-
-const limit = computed({
-  get(): number {
-    return filter.value.limit;
-  },
-  set(limit: number) {
-    filter.value = { ...filter.value, limit, offset: 0 };
-  },
-});
-
-const offset = computed({
-  get(): number {
-    return filter.value.offset || 0;
-  },
-  set(offset: number) {
-    filter.value = { ...filter.value, offset };
-  },
-});
-
-const order = computed({
-  get(): Order {
-    return filter.value.order || "-created_at";
-  },
-  set(order: Order) {
-    filter.value = { ...filter.value, order };
-  },
-});
-
-const translation_approved_status = computed({
-  get(): TranslationApprovedStatus {
-    return filter.value.translation_approved_status || "all";
-  },
-  set(translation_approved_status: TranslationApprovedStatus) {
-    const { offset } = DEFAULT_FILTER;
-    filter.value = {
-      ...filter.value,
-      translation_approved_status,
-      offset,
-    };
-  },
-});
 
 const showAddToCategoryButton = computed(() => category_id.value !== undefined);
 const showPagination = computed(() => data.value && data.value.count > 0);
