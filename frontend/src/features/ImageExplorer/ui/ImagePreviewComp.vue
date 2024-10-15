@@ -57,7 +57,7 @@ function handleSelectImage(src: string): void {
     @close="isModalVisible = false"
   >
     <template v-if="props.src" #header-left>
-      <ImageComp :src="src" :size="props.size" />
+      <ImageComp :src="src" size="40px" />
     </template>
 
     <template #content>
