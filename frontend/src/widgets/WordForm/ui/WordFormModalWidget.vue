@@ -82,7 +82,12 @@ function handleCreated(createdWordId: Id) {
 </script>
 
 <template>
-  <ModalComp :title="title" :subtitle="subtitle" @close="tryClose">
+  <ModalComp
+    :title="title"
+    :subtitle="subtitle"
+    max-width="600px"
+    @close="tryClose"
+  >
     <template v-if="showUnprovedStatus" #header-before-subtitle>
       <IconComp name="mark_status" color="negative" size="compact" />
     </template>

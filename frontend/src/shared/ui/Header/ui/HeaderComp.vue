@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed, ref } from "vue";
+import { useElementSize } from "@vueuse/core";
 import { ButtonComp } from "@/shared/ui/Button";
 import type { TitleTag } from "../model/types";
 
@@ -8,6 +10,7 @@ type Props = {
   paddingInline?: string;
   subtitle?: string;
   closeButton?: boolean;
+  maxWidth?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -16,11 +19,19 @@ const props = withDefaults(defineProps<Props>(), {
   paddingInline: "16px",
   subtitle: undefined,
   closeButton: false,
+  maxWidth: "none",
 });
 
 const emit = defineEmits<{
   (event: "close", e: Event): void;
 }>();
+
+const rightContainer = ref(null);
+const { width } = useElementSize(rightContainer);
+
+const leftPartMaxWidth = computed(() => {
+  return `calc(${props.maxWidth} - ${width.value}px - ${props.paddingInline} - 16px)`;
+});
 
 function close(e: Event): void {
   emit("close", e);
@@ -32,23 +43,28 @@ function close(e: Event): void {
     <div class="header__part-container">
       <slot name="left" />
       <div>
-        <component :is="props.titleTag" v-if="props.title">
+        <component
+          :is="props.titleTag"
+          v-if="props.title"
+          class="text-overflow-ellipsis"
+          :style="{ maxWidth: leftPartMaxWidth }"
+        >
           {{ props.title }}
         </component>
 
-        <div class="subtitle">
+        <div class="subtitle" :style="{ maxWidth: leftPartMaxWidth }">
           <slot name="before-subtitle" />
 
           <span
             v-if="props.subtitle"
-            class="subtitle__text"
+            class="subtitle__text text-overflow-ellipsis"
             v-text="props.subtitle"
           />
         </div>
       </div>
     </div>
 
-    <div class="header__part-container">
+    <div ref="rightContainer" class="header__part-container">
       <slot name="right" />
 
       <ButtonComp
