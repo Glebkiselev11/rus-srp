@@ -123,6 +123,21 @@ export const useWordsPageFilter = () => {
     },
   });
 
+  function updateOrder(order?: Order) {
+    filter.value = { ...filter.value, order };
+  }
+
+  function selectCategory(categoryId: Id) {
+    filter.value = { ...DEFAULT_FILTER, search: "", category_id: categoryId };
+  }
+
+  function resetFiltersExcept(preserveFilter: keyof RequestParams) {
+    filter.value = {
+      ...DEFAULT_FILTER,
+      [preserveFilter]: filter.value[preserveFilter],
+    };
+  }
+
   return {
     filter,
     category_id,
@@ -131,7 +146,9 @@ export const useWordsPageFilter = () => {
     offset,
     order,
     translation_approved_status,
-    DEFAULT_FILTER,
     LIMIT_DEFAULT,
+    selectCategory,
+    resetFiltersExcept,
+    updateOrder,
   };
 };

@@ -2,7 +2,7 @@
 import { useI18n } from "vue-i18n";
 import { useTranslateHelpers, type LanguageCode } from "@/shared/Translate";
 import { computed, ref } from "vue";
-import type { Id, Order, RequestParams } from "@/shared/types";
+import type { Id } from "@/shared/types";
 import { CategoriesWidget } from "@/widgets/Categories";
 import { TopBarComp } from "@/shared/ui/TopBar";
 import { TableComp, TableRowComp, TableRowStatusComp } from "@/shared/ui/Table";
@@ -49,8 +49,10 @@ const {
   translation_approved_status,
   limit,
   offset,
-  DEFAULT_FILTER,
   LIMIT_DEFAULT,
+  selectCategory,
+  resetFiltersExcept,
+  updateOrder,
 } = useWordsPageFilter();
 const { getLanguageCodesOrder, getLanguageLabel, translationPreview } =
   useTranslateHelpers();
@@ -183,24 +185,9 @@ async function updateWordImage(word: Word, src: string) {
   });
 }
 
-function updateOrder(order?: Order) {
-  filter.value = { ...filter.value, order };
-}
-
 function createdCategory(categoryId: Id) {
-  category_id.value = categoryId;
+  selectCategory(categoryId);
   openWordsListModal();
-}
-
-function selectCategory(categoryId: Id) {
-  filter.value = { ...DEFAULT_FILTER, search: "", category_id: categoryId };
-}
-
-function resetFiltersExcept(preserveFilter: keyof RequestParams) {
-  filter.value = {
-    ...DEFAULT_FILTER,
-    [preserveFilter]: filter.value[preserveFilter],
-  };
 }
 </script>
 
