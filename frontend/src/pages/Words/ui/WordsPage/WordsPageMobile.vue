@@ -25,6 +25,7 @@ const { data } = useWordsQuery(filter);
     <WordsSearchInputComp
       v-model:search="search"
       class="words-page__search"
+      disable-actions
       :search-placeholder="t('search-in-all-words')"
       appearance="outline"
       width="100%"
