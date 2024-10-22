@@ -40,6 +40,7 @@ import { useWordsPageFilter } from "../../model/useWordsPageFilter";
 
 const toaster = useToaster();
 const { t, locale } = useI18n();
+const LIMIT_DEFAULT = 25;
 
 const {
   category_id,
@@ -49,11 +50,12 @@ const {
   translation_approved_status,
   limit,
   offset,
-  LIMIT_DEFAULT,
   selectCategory,
   resetFiltersExcept,
   updateOrder,
-} = useWordsPageFilter();
+} = useWordsPageFilter({
+  limitDefault: LIMIT_DEFAULT,
+});
 const { getLanguageCodesOrder, getLanguageLabel, translationPreview } =
   useTranslateHelpers();
 

@@ -7,13 +7,17 @@ import type {
 import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-export const useWordsPageFilter = () => {
-  const LIMIT_DEFAULT = 25;
+type UseWordsPageFilter = {
+  limitDefault?: number;
+};
 
+export const useWordsPageFilter = ({
+  limitDefault = 25,
+}: UseWordsPageFilter) => {
   const DEFAULT_FILTER = {
     search: "",
     offset: 0,
-    limit: LIMIT_DEFAULT,
+    limit: limitDefault,
     order: "-created_at" as Order,
     category_id: undefined,
     translation_approved_status: "all" as TranslationApprovedStatus,
@@ -146,7 +150,6 @@ export const useWordsPageFilter = () => {
     offset,
     order,
     translation_approved_status,
-    LIMIT_DEFAULT,
     selectCategory,
     resetFiltersExcept,
     updateOrder,
