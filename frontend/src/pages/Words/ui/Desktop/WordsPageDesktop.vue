@@ -12,9 +12,9 @@ import { DropdownMenuComp, type MenuItem } from "@/shared/ui/DropdownMenu";
 import { PaginationBarWidget } from "@/widgets/PaginationBar";
 import { ZeroStateComp } from "@/shared/ui/ZeroState";
 import { CategoryTitleWidget } from "@/widgets/CategoryTitle";
-import TableRowSkeletonComp from "../TableRowSkeletonComp.vue";
+import TableRowSkeletonComp from "./TableRowSkeletonComp.vue";
 import { CategoryWordsInsertModalWidget } from "@/widgets/CategoryWordsInsert";
-import FilterPanelComp from "../FilterPanelComp.vue";
+import FilterPanelComp from "./FilterPanelComp.vue";
 import { TranslationConfirmationComp } from "@/features/TranslationConfirmation";
 import TranslationCellComp from "../TranslationCellComp.vue";
 import {
