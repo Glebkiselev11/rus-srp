@@ -1,9 +1,10 @@
 <script lang="ts" setup>
+import { onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { WordsSearchInputComp } from "@/widgets/WordForm";
+import { WordCard } from "@/widgets/WordCard";
 import { useWordsPageFilter } from "../../model/useWordsPageFilter";
 import { useWordsQuery } from "@/entities/Word";
-import { onMounted } from "vue";
 
 const { t } = useI18n();
 
@@ -33,9 +34,7 @@ const { data } = useWordsQuery(filter);
     />
 
     <div class="words-page__words-wrap">
-      <div v-for="word in data?.words" :key="word.id">
-        {{ word.rus }}
-      </div>
+      <WordCard v-for="word in data?.words" :key="word.id" :word="word" />
     </div>
   </div>
 </template>
@@ -46,15 +45,20 @@ const { data } = useWordsQuery(filter);
   position: relative;
   height: 100dvh;
   padding: $padding;
+  background: $color-background;
   overflow: auto;
 
   &__search {
     position: sticky;
+    z-index: 2;
     inset-block-start: 0;
   }
 
   &__words-wrap {
     padding-block-start: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 }
 </style>
