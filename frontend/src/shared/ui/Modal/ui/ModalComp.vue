@@ -53,6 +53,7 @@ function handleClose() {
         :title="props.title"
         :subtitle="props.subtitle"
         :padding-inline="props.headerPaddingInline"
+        :max-width="props.maxWidth"
         close-button
         @close="handleClose"
       >

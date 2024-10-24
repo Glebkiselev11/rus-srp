@@ -27,6 +27,7 @@ type Props = {
   categoryId?: Id;
   wordsCountWithFilters?: number; // It is found with filter (category, search, confirmed, etc.)
   hiddenWordsCount?: number; // It is found with filter search
+  disableActions?: boolean;
 };
 
 const props = defineProps<Props>();
@@ -42,6 +43,7 @@ const showActions = ref(false);
 const actions = computed(
   () =>
     getLanguageCodesOrder()
+      .filter(() => !props.disableActions)
       .filter(() => {
         if (
           props.wordsCountWithFilters === undefined &&
