@@ -27,6 +27,7 @@ const { getLanguageCodesOrder } = useTranslateHelpers();
   padding: 16px;
   border-radius: 8px;
   border: 1px solid $color-separator-primary;
+  background: $color-background-content-primary;
   display: flex;
   column-gap: 12px;
 
